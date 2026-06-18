@@ -1,33 +1,30 @@
 package com.test.SurvivorGame;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+public class Main extends Game {
+    private Batch batch; // ist so ein sammler für sprites die dann an die GPU gesendet werden
 
     @Override
-    public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+    public void create() // wird genau einmal aufgerufen, wenn das Spiel startet.
+    {
+        batch = new SpriteBatch(); // ist kurzgesagt ein auf 2d speziallisierte Batch-Art
+
+        setScreen(new GamePlayScreen(this)); //das setzt den Screen den wir nutzen wollen
     }
 
     @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
+    public void dispose() // Speicher und GPU-Ressourcen sauber freigeben
+    {
+        super.dispose();
         batch.dispose();
-        image.dispose();
+    }
+
+    public Batch getBatch()
+    {
+        return batch;
     }
 }
 //test1
