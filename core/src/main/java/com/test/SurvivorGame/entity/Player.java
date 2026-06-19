@@ -26,7 +26,7 @@ public class Player extends GameObject {
         currentHP = maxStartHP;
     }
     @Override
-    void update(float deltaTime)
+    public void update(float deltaTime)
     {
         move((deltaTime));
     }

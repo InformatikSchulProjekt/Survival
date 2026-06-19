@@ -26,7 +26,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private final Texture playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
     private final Player player = new Player(screenWidth / 2, screenHeight / 2, playerTexture); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
     private Vector2 playerMoveDirection = new Vector2();
-    GamePlayScreen(Main game)
+    public GamePlayScreen(Main game)
     {
         this.batch = game.getBatch();
     }
