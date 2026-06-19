@@ -12,7 +12,8 @@ public class DataLoader {
 
     public DataLoader() {
         this.json = new Json();
-        this.json.setUsePrototypes(false);
+        this.json.setUsePrototypes(false); // Tells LibGDX: Do not skip fields just because they have the same value as a default object.
+        this.json.setTypeName(null); // damit in der .json net so class: Java.Util etc. steht
 
         // Lädt den Save einmal und hält ihn danach im Speicher.
         this.saveData = loadSaveData();
