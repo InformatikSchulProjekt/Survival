@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.Main;
+import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 
 public class GamePlayScreen extends ScreenAdapter {
@@ -19,6 +20,9 @@ public class GamePlayScreen extends ScreenAdapter {
     private final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
                                             //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
 
+
+    private DataLoader dataLoader;
+
     private final Viewport viewport = new FitViewport(screenWidth,screenHeight); // WICHTIG wir müssen entscheiden welches viewport, weil andre mögen evtl. advantages bringen
 
     private final Batch batch;
@@ -26,9 +30,12 @@ public class GamePlayScreen extends ScreenAdapter {
     private final Texture playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
     private final Player player = new Player(screenWidth / 2, screenHeight / 2, playerTexture); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
     private Vector2 playerMoveDirection = new Vector2();
-    public GamePlayScreen(Main game)
+    public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         this.batch = game.getBatch();
+        // testing für data:
+        this.dataLoader = dataLoader;
+        player.setPlayerData(dataLoader.getPlayerData("TestMap"));
     }
 
     @Override
@@ -56,6 +63,15 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.x -= 1;
         }
+        // TEST KEY
+        if(Gdx.input.isKeyJustPressed(Input.Keys.T))
+        {
+            System.out.println();
+            System.out.println(player.getLevel()+" Level");
+            player.giveXP(1);
+            dataLoader.savePlayerData("TestMap", player.getPlayerData());
+
+        } // TEST KEY FOR TESTING DATA
 
         if(!playerMoveDirection.isZero()) //wenns schräg geht normalisieren, aber wenn sich der Player nicht bewegt wird (x = 0,y = 0) / 0
         {
