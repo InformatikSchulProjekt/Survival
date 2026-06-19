@@ -1,4 +1,4 @@
-package com.test.SurvivorGame;
+package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +15,7 @@ public class Player extends GameObject {
     private float movementSpeed = 2f; //nicht final, damit items anpassen können
 
     public Player(float x, float y, Texture texture) {
-        super(x, y, PLAYER_SIZE, PLAYER_SIZE * 3, texture);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.Player Konstruktors
+        super(x, y, PLAYER_SIZE, PLAYER_SIZE * 3, texture);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
     }
 
     public void reset(float x, float y)
@@ -26,7 +26,7 @@ public class Player extends GameObject {
         currentHP = maxStartHP;
     }
     @Override
-    void update(float deltaTime)
+    public void update(float deltaTime)
     {
         move((deltaTime));
     }
