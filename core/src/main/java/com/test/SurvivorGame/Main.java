@@ -3,6 +3,7 @@ package com.test.SurvivorGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.test.SurvivorGame.screen.GamePlayScreen;
 
 public class Main extends Game {
     private Batch batch; // ist so ein sammler für sprites die dann an die GPU gesendet werden
