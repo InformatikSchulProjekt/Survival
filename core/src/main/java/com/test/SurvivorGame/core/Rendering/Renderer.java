@@ -1,15 +1,17 @@
 package com.test.SurvivorGame.core.Rendering;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Renderer {
 
@@ -44,7 +46,8 @@ public class Renderer {
 
     public Renderer(Batch batch, float screenWidth, float screenHeight) {
         this.batch = batch;
-        this.viewport = new FitViewport(screenWidth, screenHeight);
+        this.viewport = new FillViewport(screenWidth, screenHeight);
+
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
         idle1 = new Texture(Gdx.files.internal("Player/idle 1.png"));
@@ -94,23 +97,38 @@ public class Renderer {
             new TextureRegion(left4));
         leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-
-
     }
 
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
 
-    public void render(Player player,float deltaTime) {
+    public void render(GameMap map, Player player,float deltaTime) {
         ScreenUtils.clear(Color.BLUE);
 
+        //das updated die viewport kamera und sorgt dafür, dass der Spieler verfolgt wird davon
         viewport.apply();
-        batch.setProjectionMatrix(viewport.getCamera().combined);
+        OrthographicCamera cam = (OrthographicCamera) viewport.getCamera();
 
+        float halfW = viewport.getWorldWidth() / 2f;
+        float halfH = viewport.getWorldHeight() / 2f;
+
+        float mapW = map.getWorldWidth();
+        float mapH = map.getWorldHeight();
+
+        float targetX = player.getX() + player.getWidth() / 2f;
+        float targetY = player.getY() + player.getHeight() / 2f;
+
+       //das fixiert die kamera zur map sodass man nicht rausschauen kann
+        float camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
+        float camY = MathUtils.clamp(targetY, Math.min(halfH, mapH/2f), Math.max(halfH, mapH - halfH));
+        cam.position.set(camX, camY, 0f);
+        cam.update();
+
+        batch.setProjectionMatrix(cam.combined);
         batch.begin();
+        renderMap(map);
         renderPlayer(player, deltaTime);
-
         batch.end();
     }
     private void renderPlayer(Player player, float deltaTime) {
@@ -148,8 +166,14 @@ public class Renderer {
             player.getHeight()
         );
     }
-    private void renderMap(Map map) {
-
+    private void renderMap(GameMap map) {
+        batch.draw(
+            map.getTexture(),
+            0f,
+            0f,
+            map.getWorldWidth(),
+            map.getWorldHeight()
+        );
     }
     public Viewport getViewport() {
         return viewport;
@@ -173,5 +197,4 @@ public class Renderer {
         left3.dispose();
         left4.dispose();
     }
-
 }

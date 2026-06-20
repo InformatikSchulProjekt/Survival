@@ -8,6 +8,7 @@ import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 public class GamePlayScreen extends ScreenAdapter {
 
@@ -23,11 +24,12 @@ public class GamePlayScreen extends ScreenAdapter {
     private final Player player = new Player(screenWidth / 2, screenHeight / 2); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
 
     private Vector2 playerMoveDirection = new Vector2();
-
+    private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         // testing für data:
+
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight);
         this.dataLoader = dataLoader;
         player.setPlayerData(dataLoader.getPlayerData("TestMap"));
@@ -80,19 +82,21 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime); //bis jetzt nur PlayerUpdate
-        renderer.render(player,deltaTime);
+        updateLogic(deltaTime,map); //bis jetzt nur PlayerUpdate
+        renderer.render(map,player,deltaTime);
+
     }
 
-    private void updateLogic(float deltaTime)
+    private void updateLogic(float deltaTime,GameMap map)
     {
 
-        player.update(deltaTime);
+        player.update(deltaTime,map);
     }
 
     @Override
     public void dispose()
     {
         renderer.dispose();
+        map.dispose();
     }
 }

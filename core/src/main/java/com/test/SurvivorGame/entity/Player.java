@@ -1,7 +1,9 @@
 package com.test.SurvivorGame.entity;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 public class Player extends GameObject {
     private Direction facingDirection = Direction.DOWN;
@@ -98,6 +100,26 @@ public class Player extends GameObject {
         }
     }//Diese Methode prüft einerseits welche Richtung der Spieler läuft andernseits berechnet sie in welche Richtung er stärker läuft...
 
+
+    //updated mit MapRand
+    public void update(float deltaTime, GameMap map)
+    {
+        move(deltaTime);
+        clampToMap(map);
+    }
+
+    private void clampToMap(GameMap map) {
+        if (map == null) return;
+        float minX = 0f;
+        float minY = 0f;
+        float maxX = map.getWorldWidth() - getWidth();
+        float maxY = map.getWorldHeight() - getHeight();
+
+        float clampedX = MathUtils.clamp(collider.x, minX, Math.max(minX, maxX));
+        float clampedY = MathUtils.clamp(collider.y, minY, Math.max(minY, maxY));
+
+        collider.setPosition(clampedX, clampedY);
+    }
     public enum Direction {
         DOWN,
         UP,
