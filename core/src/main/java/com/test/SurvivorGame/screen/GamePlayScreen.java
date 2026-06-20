@@ -3,7 +3,6 @@ package com.test.SurvivorGame.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.core.Rendering.Renderer;
@@ -20,9 +19,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private DataLoader dataLoader;
 
-    private final Texture playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
 
-    private final Player player = new Player(screenWidth / 2, screenHeight / 2, playerTexture); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
+    private final Player player = new Player(screenWidth / 2, screenHeight / 2); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
 
     private Vector2 playerMoveDirection = new Vector2();
 
@@ -83,7 +81,7 @@ public class GamePlayScreen extends ScreenAdapter {
         processInput();
 
         updateLogic(deltaTime); //bis jetzt nur PlayerUpdate
-        renderer.render(player);
+        renderer.render(player,deltaTime);
     }
 
     private void updateLogic(float deltaTime)
@@ -95,6 +93,6 @@ public class GamePlayScreen extends ScreenAdapter {
     @Override
     public void dispose()
     {
-        playerTexture.dispose();
+        renderer.dispose();
     }
 }

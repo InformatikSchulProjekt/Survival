@@ -32,5 +32,20 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
     }                                                                           // weil hier grad die texture auf die collider-größe gestretched wird, solange man nicht was einbaut aber so is eindeutig simpler
 
     abstract void update(float deltaTime);
+    public float getX() {
+        return collider.x;
+    }
+
+    public float getY() {
+        return collider.y;
+    }
+
+    public float getWidth() {
+        return collider.width;
+    }
+
+    public float getHeight() {
+        return collider.height;
+    }
 }
 
