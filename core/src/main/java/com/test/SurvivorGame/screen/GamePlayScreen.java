@@ -12,16 +12,14 @@ import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
 
-    private final float screenWidth = 16f;
+    public final float screenWidth = 16f;
 
-    private final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
+    public final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
                                             //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
     private final Renderer renderer;
 
     private DataLoader dataLoader;
 
-
-    private final Player player = new Player(screenWidth / 2, screenHeight / 2); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
 
     private World world;
 
@@ -29,13 +27,12 @@ public class GamePlayScreen extends ScreenAdapter {
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
-        this.batch = game.getBatch();
 
-        world = new World(this);
+        world = new World(screenWidth, screenHeight);
         // testing für data:
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight);
         this.dataLoader = dataLoader;
-        world.player.setPlayerData(dataLoader.getPlayerData("TestMap"));
+        world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
     }
 
     @Override
@@ -67,9 +64,9 @@ public class GamePlayScreen extends ScreenAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.T))
         {
             System.out.println();
-            System.out.println(world.player.getLevel()+" Level");
-            world.player.giveXP(1);
-            dataLoader.savePlayerData("TestMap", world.player.getPlayerData());
+            System.out.println(world.getPlayer().getLevel()+" Level");
+            world.getPlayer().giveXP(1);
+            dataLoader.savePlayerData("TestMap", world.getPlayer().getPlayerData());
 
         } // TEST KEY FOR TESTING DATA
 
@@ -77,7 +74,7 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.nor();
         }
-        world.player.updateMoveDirection(playerMoveDirection);
+        world.getPlayer().updateMoveDirection(playerMoveDirection);
     }
 
     @Override
@@ -85,14 +82,15 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime); //bis jetzt nur PlayerUpdate
-        renderer.render(player,deltaTime);
+        updateLogic(deltaTime); //bis jetzt nur PlayerUpdate, dafür er sich bewegt
+
+        renderer.render(world.getPlayer(),deltaTime); //animationen
     }
 
     private void updateLogic(float deltaTime)
     {
 
-        world.player.update(deltaTime);
+        world.getPlayer().update(deltaTime);
     }
 
     @Override

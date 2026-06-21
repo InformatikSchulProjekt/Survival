@@ -7,15 +7,12 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 
 public class World {
-    private GamePlayScreen gamePlayScreen;
 
-    private Texture playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png")); // new Texture() später mit texture loader ykyk
-    public final Player player;
+    private final Player player;
 
-    public World(GamePlayScreen gamePlayScreen)
+    public World(float screenWidth, float screenHeight)
     {
-        this.gamePlayScreen = gamePlayScreen;
-        player = new Player(gamePlayScreen.screenWidth / 2, gamePlayScreen.screenHeight / 2, playerTexture);
+        player = new Player(screenWidth / 2, screenHeight / 2); // wo er reinspawnt
 
     }
 
@@ -29,6 +26,11 @@ public class World {
         //wenn gegner hinzugefügt werden kann man hier die enemy list in player.overlaps durchgehen
     }
 
+    public Player getPlayer()
+    {
+        return player;
+    }
+
     public void render(Batch batch)
     {
         player.draw(batch);
@@ -36,7 +38,7 @@ public class World {
 
     public void dispose()
     {
-        playerTexture.dispose();
+
     }
 
 

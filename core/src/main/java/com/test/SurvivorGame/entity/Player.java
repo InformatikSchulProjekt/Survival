@@ -18,7 +18,7 @@ public class Player extends GameObject {
     private float movementSpeed = 5f; //nicht final, damit items anpassen können
 
     public Player(float x, float y) {
-        super(x, y, PLAYER_SIZE, PLAYER_SIZE * 3);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
+        super(x, y, PLAYER_SIZE *2, PLAYER_SIZE * 3);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
     }
 
     // data handling
