@@ -72,9 +72,19 @@ public class World {
 
         if(!player.isAlive()) // nur für reset-test, bis wir halt wissen was bei tod passiert
         {
-            player.reset(screenWidth / 2, screenHeight / 2);
+            resetWorld();
         }
 
+    }
+
+    private void resetWorld()
+    {
+        enemies.clear();
+
+        spawnTimer = 0;
+        damageTimer = 0;
+
+        player.reset(screenWidth / 2, screenHeight / 2);
     }
 
     private void checkCollisions(float deltaTime) //überprüft collisions mit der overlap methode von GameObjects
