@@ -10,7 +10,6 @@ public class enemy1 extends GameObject {
 
     private static final float ENEMY_SIZE = 1f; //!ACHTUNG! das mit der size müssen wir bald gut machen und nicht wie grad so larifari
 
-    private Texture enemyTexture = new Texture(Gdx.files.internal("Placeholder/enemy1PH.png"));
 
     private Player player;
 
@@ -20,7 +19,7 @@ public class enemy1 extends GameObject {
 
     public enemy1(float x, float y, Player player)
     {
-        super(x, y, ENEMY_SIZE, ENEMY_SIZE);
+        super(x, y, ENEMY_SIZE, ENEMY_SIZE,new Texture(Gdx.files.internal("Placeholder/enemy1PH.png")));
         this.player = player;
     }
 
