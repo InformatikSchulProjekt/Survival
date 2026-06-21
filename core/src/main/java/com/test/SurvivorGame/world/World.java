@@ -4,11 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.enemy.enemy1;
 import com.test.SurvivorGame.screen.GamePlayScreen;
+
+import java.util.ArrayList;
 
 public class World {
 
     private final Player player;
+
+    private ArrayList<enemy1> enemies = new ArrayList<>();
 
     public World(float screenWidth, float screenHeight)
     {
