@@ -3,40 +3,37 @@ package com.test.SurvivorGame.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.Main;
+import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
 
-    public final float screenWidth = 16f;
-    public final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
-                                            //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
+    private final float screenWidth = 16f;
 
+    private final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
+                                            //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
+    private final Renderer renderer;
 
     private DataLoader dataLoader;
 
-    private final Viewport viewport = new FitViewport(screenWidth,screenHeight); // WICHTIG wir müssen entscheiden welches viewport, weil andre mögen evtl. advantages bringen
 
-    private final Batch batch;
+    private final Player player = new Player(screenWidth / 2, screenHeight / 2); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
 
     private World world;
 
     private Vector2 playerMoveDirection = new Vector2();
+
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         this.batch = game.getBatch();
 
         world = new World(this);
         // testing für data:
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight);
         this.dataLoader = dataLoader;
         world.player.setPlayerData(dataLoader.getPlayerData("TestMap"));
     }
@@ -44,7 +41,7 @@ public class GamePlayScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height)
     {
-        viewport.update(width, height, true);   // passt sich der Bildschirmgröße an
+        renderer.resize(width, height);   // passt sich der Bildschirmgröße an
     }
 
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
@@ -88,23 +85,19 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        world.update(deltaTime); //bis jetzt nur PlayerUpdate
-
-        ScreenUtils.clear(Color.BLUE); // cleaner wenn man vor dem Screen den Hintergrund "wiped"
-
-        viewport.apply();   // Ab jetzt gelten die Einstellungen von DIESEM Screen z.b. resize()
-        batch.setProjectionMatrix(viewport.getCamera().combined); // sagt dem SpriteBatch wie er die 2D Welt auf den Bildschirm projizieren soll.
-        batch.begin();
-
-        world.render(batch);
-
-        batch.end();
+        updateLogic(deltaTime); //bis jetzt nur PlayerUpdate
+        renderer.render(player,deltaTime);
     }
 
+    private void updateLogic(float deltaTime)
+    {
+
+        world.player.update(deltaTime);
+    }
 
     @Override
     public void dispose()
     {
-        world.dispose();
+        renderer.dispose();
     }
 }

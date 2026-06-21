@@ -10,8 +10,6 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
     protected final Rectangle collider;
     protected Texture texture;
 
-    public boolean alive;
-
     public GameObject(float x, float y, float w, float h, Texture texture) {
         this.collider =  new Rectangle(x,y,w,h);
         this.texture = texture;
@@ -26,11 +24,6 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         return collider.overlaps(other.collider);
     }
 
-    public void die()
-    {
-        alive = false;
-    }
-
     public void draw(Batch batch)
     {
         if(texture == null) return;
@@ -38,6 +31,21 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         batch.draw(texture, collider.x, collider.y, collider.width, collider.height); // eig wäre besser wenn textur unabhängig von collider-größe gezeichnet wird,
     }                                                                           // weil hier grad die texture auf die collider-größe gestretched wird, solange man nicht was einbaut aber so is eindeutig simpler
 
-    public abstract void update(float deltaTime);
+    abstract void update(float deltaTime);
+    public float getX() {
+        return collider.x;
+    }
+
+    public float getY() {
+        return collider.y;
+    }
+
+    public float getWidth() {
+        return collider.width;
+    }
+
+    public float getHeight() {
+        return collider.height;
+    }
 }
 
