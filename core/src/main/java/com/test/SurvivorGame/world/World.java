@@ -20,10 +20,20 @@ public class World {
 
     private float spawnInterval = 2f;
 
+    private float dmgTaken;
+
+    private float damageTimer = 0f;
+
+    private float damageInterval = 1f;
+
+    float screenWidth, screenHeight; // nur für reset-test
+
     public World(float screenWidth, float screenHeight)
     {
-        player = new Player(screenWidth / 2, screenHeight / 2); // wo er reinspawnt
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight; // nur für reset-test
 
+        player = new Player(screenWidth / 2, screenHeight / 2); // wo er reinspawnt
     }
 
     private void spawnEnemy()
@@ -53,15 +63,43 @@ public class World {
             spawnTimer = 0;
         }
 
-        for(enemy1 enemy : enemies)
+        for(enemy1 enemy : enemies) // enemy1 Update
         {
             enemy.update(deltaTime);
         }
+
+        checkCollisions(deltaTime);
+
+        if(!player.isAlive()) // nur für reset-test, bis wir halt wissen was bei tod passiert
+        {
+            player.reset(screenWidth / 2, screenHeight / 2);
+        }
+
     }
 
-    private void checkCollisions()
+    private void checkCollisions(float deltaTime) //überprüft collisions mit der overlap methode von GameObjects
     {
-        //wenn gegner hinzugefügt werden kann man hier die enemy list in player.overlaps durchgehen
+        damageTimer += deltaTime; //addiert den timer mit der sekunde seit dem letzten frame vergangen ist
+
+        if(damageTimer >= damageInterval) //wenn der timer das interval erreicht:
+        {
+            float dmgTaken = 0;
+
+            for(enemy1 enemy : enemies)
+            {
+                if(player.overlaps(enemy))
+                {
+                    dmgTaken += enemy.getDamagePerSecond();
+                }
+            }
+
+            if(dmgTaken > 0)
+            {
+                player.takeDamage(dmgTaken);
+            }
+
+            damageTimer = 0;
+        }
     }
 
     public Player getPlayer()

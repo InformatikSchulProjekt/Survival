@@ -17,6 +17,8 @@ public class enemy1 extends GameObject {
 
     private float movementSpeed = 2f;
 
+    private float damagePerSecond = 1f;
+
     public enemy1(float x, float y, Player player)
     {
         super(x, y, ENEMY_SIZE, ENEMY_SIZE,new Texture(Gdx.files.internal("Placeholder/enemy1PH.png")));
@@ -29,5 +31,10 @@ public class enemy1 extends GameObject {
         moveDirection = player.getCenter().sub(this.getCenter()).nor().scl(movementSpeed * deltaTime);
 
         collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
+    }
+
+    public float getDamagePerSecond()
+    {
+        return damagePerSecond;
     }
 }
