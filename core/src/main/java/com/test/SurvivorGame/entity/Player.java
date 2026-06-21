@@ -6,7 +6,7 @@ import com.test.SurvivorGame.core.data.PlayerData;
 public class Player extends GameObject {
     private Direction facingDirection = Direction.DOWN;
     private static final float PLAYER_SIZE = 1f; //!!!ACHTUNG!!!! das mit playersize müssen wir bald gut machen und nicht wie grad so larifari
-    private static float maxStartHP = 10; //standard zuweisung für den start des Spieles
+    private float maxStartHP = 10; //standard zuweisung für den start des Spieles
 
     private float currentMaxHP = maxStartHP; //wenn leben durch Items upgegraded werden können muss current skalierbar sein
     private float currentHP = maxStartHP; //current verändert sich, aber ist am start max
@@ -16,6 +16,8 @@ public class Player extends GameObject {
 
     private final Vector2 moveDirection =  new Vector2();
     private float movementSpeed = 5f; //nicht final, damit items anpassen können
+
+    private boolean alive = true;
 
     public Player(float x, float y) {
         super(x, y, PLAYER_SIZE *2, PLAYER_SIZE * 3);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
@@ -57,6 +59,8 @@ public class Player extends GameObject {
 
     public void reset(float x, float y)
     {
+        alive = true;
+
         collider.setPosition(x,y);
 
         currentMaxHP = maxStartHP;
@@ -111,4 +115,34 @@ public class Player extends GameObject {
     public Direction getFacingDirection() {
         return facingDirection;
     }
+
+    public float getCurrentHP()
+    {
+        return currentHP;
+    }
+
+    public void takeDamage(float damage)
+    {
+        currentHP -= damage;
+        System.out.println("Player bekommt schaden: " + damage);
+        System.out.println("Player hat: " + currentHP + " Leben");
+
+        if(currentHP <= 0)
+        {
+            currentHP = 0;
+            die();
+        }
+    }
+
+    private void die()
+    {
+        alive = false;
+    }
+
+    public boolean isAlive()
+    {
+        return alive;
+    }
+
+
 }

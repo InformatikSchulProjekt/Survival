@@ -10,11 +10,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.test.SurvivorGame.entity.enemy.enemy1;
+import com.test.SurvivorGame.world.World;
 
 public class Renderer {
 
     private final Batch batch;
     private final Viewport viewport;
+
+    private final World world;
+
     private final Texture playerTexture;
     private final Texture idle1;
     private final Texture idle2;
@@ -42,9 +47,12 @@ public class Renderer {
     private float playerAnimationTime = 0f;
 
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world) {
         this.batch = batch;
         this.viewport = new FitViewport(screenWidth, screenHeight);
+
+        this.world = world;
+
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
         idle1 = new Texture(Gdx.files.internal("Player/idle 1.png"));
@@ -102,17 +110,25 @@ public class Renderer {
         viewport.update(width, height, true);
     }
 
-    public void render(Player player,float deltaTime) {
+    public void render(World world, float deltaTime) //hab ich jetzt so umgeändert, damit nun auch player aus world beutzt wird
+    {                                                //und dass jetzt auch gegner gerendert werden
         ScreenUtils.clear(Color.BLUE);
 
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
 
         batch.begin();
-        renderPlayer(player, deltaTime);
+
+        renderPlayer(world.getPlayer(), deltaTime);
+
+        for(enemy1 enemy : world.getEnemies())
+        {
+            enemy.draw(batch);
+        }
 
         batch.end();
     }
+
     private void renderPlayer(Player player, float deltaTime) {
         playerAnimationTime += deltaTime;
 

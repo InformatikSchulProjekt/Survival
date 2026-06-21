@@ -3,6 +3,7 @@ package com.test.SurvivorGame.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 
 public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game Object gibt
@@ -31,7 +32,7 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         batch.draw(texture, collider.x, collider.y, collider.width, collider.height); // eig wäre besser wenn textur unabhängig von collider-größe gezeichnet wird,
     }                                                                           // weil hier grad die texture auf die collider-größe gestretched wird, solange man nicht was einbaut aber so is eindeutig simpler
 
-    abstract void update(float deltaTime);
+    public abstract void update(float deltaTime);
     public float getX() {
         return collider.x;
     }
@@ -46,6 +47,13 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
 
     public float getHeight() {
         return collider.height;
+    }
+
+    public Vector2 getCenter()
+    {
+        Vector2 center = new Vector2(collider.x + collider.width / 2, collider.y + collider.height / 2);
+
+        return center;
     }
 }
 

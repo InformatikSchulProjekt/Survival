@@ -30,7 +30,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
         world = new World(screenWidth, screenHeight);
         // testing für data:
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
         this.dataLoader = dataLoader;
         world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
     }
@@ -82,15 +82,14 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime); //bis jetzt nur PlayerUpdate, dafür er sich bewegt
+        updateLogic(deltaTime);
 
-        renderer.render(world.getPlayer(),deltaTime); //animationen
+        renderer.render(world,deltaTime); //animationen
     }
 
     private void updateLogic(float deltaTime)
     {
-
-        world.getPlayer().update(deltaTime);
+        world.update(deltaTime);
     }
 
     @Override
