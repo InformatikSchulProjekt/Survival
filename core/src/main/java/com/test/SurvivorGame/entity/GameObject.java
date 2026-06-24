@@ -2,6 +2,7 @@ package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,6 +20,7 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
     public GameObject(float x, float y, float w, float h) { // alternativer Konstruktor falls es nur ein "Bereichtaster" ist oder sowas in der Art
         this.collider =  new Rectangle(x,y,w,h);
     }
+
 
     public boolean overlaps(GameObject other)
     {
@@ -54,6 +56,16 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         Vector2 center = new Vector2(collider.x + collider.width / 2, collider.y + collider.height / 2);
 
         return center;
+    }
+
+    public void drawCollider(ShapeRenderer shapeRenderer)
+    {
+        shapeRenderer.rect(
+            collider.x,
+            collider.y,
+            collider.width,
+            collider.height
+        );
     }
 }
 

@@ -1,12 +1,10 @@
 package com.test.SurvivorGame.world;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.ability.AttackAbility;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.enemy.enemy1;
-import com.test.SurvivorGame.screen.GamePlayScreen;
+import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 
 import java.util.ArrayList;
 
@@ -14,7 +12,7 @@ public class World {
 
     private final Player player;
 
-    private ArrayList<enemy1> enemies = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private float spawnTimer;
 
@@ -24,9 +22,11 @@ public class World {
 
     private float damageTimer = 0f;
 
-    private float damageInterval = 1f;
+    private float DamageInterval = 0.5f;
 
     float screenWidth, screenHeight; // nur für reset-test
+
+    private ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
 
     public World(float screenWidth, float screenHeight)
     {
@@ -48,7 +48,7 @@ public class World {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new enemy1(x, y, player));
+        enemies.add(new Enemy(x, y, player));
     }
 
     public void update(float deltaTime)
@@ -63,16 +63,36 @@ public class World {
             spawnTimer = 0;
         }
 
-        for(enemy1 enemy : enemies) // enemy1 Update
+        for(int i = enemies.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
         {
+            Enemy enemy = enemies.get(i);
+
             enemy.update(deltaTime);
+
+            if(enemy.isDead())
+            {
+                enemies.remove(i);
+            }
         }
 
-        checkCollisions(deltaTime);
+        checkAbilityCollision(deltaTime);
+        checkPlayerCollisions(deltaTime);
 
         if(!player.isAlive()) // nur für reset-test, bis wir halt wissen was bei tod passiert
         {
             resetWorld();
+        }
+
+        for(int i = abilityObjects.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
+        {
+            AbilityObject abillityObject = abilityObjects.get(i);
+
+            abillityObject.update(deltaTime);
+
+            if(abillityObject.isExpired())
+            {
+                abilityObjects.remove(i);
+            }
         }
 
     }
@@ -87,19 +107,19 @@ public class World {
         player.reset(screenWidth / 2, screenHeight / 2);
     }
 
-    private void checkCollisions(float deltaTime) //überprüft collisions mit der overlap methode von GameObjects
+    private void checkPlayerCollisions(float deltaTime) //überprüft collisions mit der overlap methode von GameObjects
     {
         damageTimer += deltaTime; //addiert den timer mit der sekunde seit dem letzten frame vergangen ist
 
-        if(damageTimer >= damageInterval) //wenn der timer das interval erreicht:
+        if(damageTimer >= DamageInterval) //wenn der timer das interval erreicht:
         {
             float dmgTaken = 0;
 
-            for(enemy1 enemy : enemies)
+            for(Enemy enemy : enemies)
             {
                 if(player.overlaps(enemy))
                 {
-                    dmgTaken += enemy.getDamagePerSecond();
+                    dmgTaken += enemy.getDamage();
                 }
             }
 
@@ -112,12 +132,34 @@ public class World {
         }
     }
 
+    private void checkAbilityCollision(float deltaTime)
+    {
+
+        damageTimer += deltaTime; //addiert den timer mit der sekunde seit dem letzten frame vergangen ist
+
+        if(damageTimer >= AttackAbility.getDamageInterval()) //wenn der timer das SPEZIFISCHE interval erreicht:
+        {
+            for(AbilityObject abilityObject : getAbilityObjects())
+            {
+                for(Enemy enemy : enemies)
+                {
+                    if(abilityObject.overlaps(enemy))
+                    {
+                        enemy.takeDamage(AttackAbility.getDamage());
+                    }
+                }
+            }
+
+            damageTimer = 0;
+        }
+    }
+
     public Player getPlayer()
     {
         return player;
     }
 
-    public ArrayList<enemy1> getEnemies()
+    public ArrayList<Enemy> getEnemies()
     {
         return enemies;
     }
@@ -125,6 +167,16 @@ public class World {
     public void dispose()
     {
 
+    }
+
+    public void addAbillity(AbilityObject abillityObject)
+    {
+        abilityObjects.add(abillityObject);
+    }
+
+    public ArrayList<AbilityObject> getAbilityObjects()
+    {
+        return abilityObjects;
     }
 
 

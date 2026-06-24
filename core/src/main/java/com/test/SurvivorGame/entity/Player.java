@@ -1,7 +1,10 @@
 package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.Vector2;
+import com.test.SurvivorGame.ability.Ability;
 import com.test.SurvivorGame.core.data.PlayerData;
+
+import java.util.ArrayList;
 
 public class Player extends GameObject {
     private Direction facingDirection = Direction.DOWN;
@@ -18,6 +21,8 @@ public class Player extends GameObject {
     private float movementSpeed = 5f; //nicht final, damit items anpassen können
 
     private boolean alive = true;
+
+    private ArrayList<Ability> abilities = new ArrayList<>();
 
     public Player(float x, float y) {
         super(x, y, PLAYER_SIZE *2, PLAYER_SIZE * 3);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
@@ -142,6 +147,21 @@ public class Player extends GameObject {
     public boolean isAlive()
     {
         return alive;
+    }
+
+    public Vector2 getMoveDirection()
+    {
+        return moveDirection;
+    }
+
+    public void addAbility(Ability ability)
+    {
+        abilities.add(ability);
+    }
+
+    public ArrayList<Ability> getAbilities()
+    {
+        return abilities;
     }
 
 

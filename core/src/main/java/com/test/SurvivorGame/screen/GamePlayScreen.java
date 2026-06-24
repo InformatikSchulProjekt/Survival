@@ -3,8 +3,10 @@ package com.test.SurvivorGame.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
+import com.test.SurvivorGame.ability.AttackAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
@@ -20,6 +22,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private DataLoader dataLoader;
 
+    private ShapeRenderer shapeRenderer;
 
     private World world;
 
@@ -29,10 +32,13 @@ public class GamePlayScreen extends ScreenAdapter {
     {
 
         world = new World(screenWidth, screenHeight);
+        shapeRenderer = new ShapeRenderer();
         // testing für data:
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
         this.dataLoader = dataLoader;
         world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
+
+        world.getPlayer().addAbility(new AttackAbility(world.getPlayer(), world)); // ZUM TESTEN!!!!!!!!!!!!!!!
     }
 
     @Override
@@ -75,6 +81,11 @@ public class GamePlayScreen extends ScreenAdapter {
             playerMoveDirection.nor();
         }
         world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
+        {
+            world.getPlayer().getAbilities().get(0).activate(); // SPÄTER WENN INPUT-MANAGER-Klasse DA IST IN ABILITY selbst
+        }
     }
 
     @Override
