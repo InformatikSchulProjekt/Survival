@@ -1,12 +1,9 @@
 package com.test.SurvivorGame.world;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.enemy1;
-import com.test.SurvivorGame.screen.GamePlayScreen;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 import java.util.ArrayList;
 
@@ -51,7 +48,7 @@ public class World {
         enemies.add(new enemy1(x, y, player));
     }
 
-    public void update(float deltaTime)
+    public void update(float deltaTime, GameMap map)
     {
         player.update(deltaTime);
 

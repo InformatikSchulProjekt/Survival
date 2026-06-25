@@ -126,8 +126,8 @@ public class Renderer {
         float mapW = map.getWorldWidth();
         float mapH = map.getWorldHeight();
 
-        float targetX = world.getplayer.getX() + world.getplayer.getWidth() / 2f;
-        float targetY = world.getplayer.getY() + world.getplayer.getHeight() / 2f;
+        float targetX = world.getPlayer().getX() + world.getPlayer().getWidth() / 2f;
+        float targetY = world.getPlayer().getY() + world.getPlayer().getHeight() / 2f;
 
        //das fixiert die kamera zur map sodass man nicht rausschauen kann
         float camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
@@ -139,7 +139,7 @@ public class Renderer {
         batch.begin();
 
         renderMap(map);
-        renderPlayer(world.getplayer, deltaTime);
+        renderPlayer(world.getPlayer(), deltaTime);
 
         renderPlayer(world.getPlayer(), deltaTime);
 
