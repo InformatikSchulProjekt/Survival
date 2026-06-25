@@ -9,6 +9,7 @@ import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
+import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
 
@@ -21,18 +22,19 @@ public class GamePlayScreen extends ScreenAdapter {
     private DataLoader dataLoader;
 
 
-    private final Player player = new Player(screenWidth / 2, screenHeight / 2); //textur wird glaub von links unten gemessen, deshalb isser so weit oben rechts
+    private World world;
 
     private Vector2 playerMoveDirection = new Vector2();
     private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
-        // testing für data:
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight);
+        world = new World(screenWidth, screenHeight);
+        // testing für data:
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
         this.dataLoader = dataLoader;
-        player.setPlayerData(dataLoader.getPlayerData("TestMap"));
+        world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
     }
 
     @Override
@@ -41,7 +43,7 @@ public class GamePlayScreen extends ScreenAdapter {
         renderer.resize(width, height);   // passt sich der Bildschirmgröße an
     }
 
-    private void processInput() // sollte später eigene klasse werde oder? hier nur zum rumtesten ig
+    private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
     {
         playerMoveDirection.setZero(); // damits nicht wächst
         if(Gdx.input.isKeyPressed(Input.Keys.W))
@@ -64,9 +66,9 @@ public class GamePlayScreen extends ScreenAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.T))
         {
             System.out.println();
-            System.out.println(player.getLevel()+" Level");
-            player.giveXP(1);
-            dataLoader.savePlayerData("TestMap", player.getPlayerData());
+            System.out.println(world.getPlayer().getLevel()+" Level");
+            world.getPlayer().giveXP(1);
+            dataLoader.savePlayerData("TestMap", world.getPlayer().getPlayerData());
 
         } // TEST KEY FOR TESTING DATA
 
@@ -74,7 +76,7 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.nor();
         }
-        player.updateMoveDirection(playerMoveDirection);
+        world.getPlayer().updateMoveDirection(playerMoveDirection);
     }
 
     @Override
@@ -82,15 +84,14 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime,map); //bis jetzt nur PlayerUpdate
-        renderer.render(map,player,deltaTime);
+        updateLogic(deltaTime, map);
 
+        renderer.render(map, world,deltaTime); //animationen
     }
 
-    private void updateLogic(float deltaTime,GameMap map)
+    private void updateLogic(float deltaTime, GameMap map)
     {
-
-        player.update(deltaTime,map);
+        world.update(deltaTime, map);
     }
 
     @Override

@@ -10,6 +10,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.test.SurvivorGame.entity.enemy.enemy1;
+import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -17,6 +19,9 @@ public class Renderer {
 
     private final Batch batch;
     private final Viewport viewport;
+
+    private final World world;
+
     private final Texture playerTexture;
     private final Texture idle1;
     private final Texture idle2;
@@ -44,9 +49,11 @@ public class Renderer {
     private float playerAnimationTime = 0f;
 
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
+
+        this.world = world;
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
@@ -97,13 +104,16 @@ public class Renderer {
             new TextureRegion(left4));
         leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
+
+
     }
 
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
 
-    public void render(GameMap map, Player player,float deltaTime) {
+    public void render(GameMap map, World world, float deltaTime) //hab ich jetzt so umgeändert, damit nun auch player aus world beutzt wird
+    {                                                //und dass jetzt auch gegner gerendert werden
         ScreenUtils.clear(Color.BLUE);
 
         //das updated die viewport kamera und sorgt dafür, dass der Spieler verfolgt wird davon
@@ -116,8 +126,8 @@ public class Renderer {
         float mapW = map.getWorldWidth();
         float mapH = map.getWorldHeight();
 
-        float targetX = player.getX() + player.getWidth() / 2f;
-        float targetY = player.getY() + player.getHeight() / 2f;
+        float targetX = world.getplayer.getX() + world.getplayer.getWidth() / 2f;
+        float targetY = world.getplayer.getY() + world.getplayer.getHeight() / 2f;
 
        //das fixiert die kamera zur map sodass man nicht rausschauen kann
         float camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
@@ -127,10 +137,20 @@ public class Renderer {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
+
         renderMap(map);
-        renderPlayer(player, deltaTime);
+        renderPlayer(world.getplayer, deltaTime);
+
+        renderPlayer(world.getPlayer(), deltaTime);
+
+        for(enemy1 enemy : world.getEnemies())
+        {
+            enemy.draw(batch);
+        }
+
         batch.end();
     }
+
     private void renderPlayer(Player player, float deltaTime) {
         playerAnimationTime += deltaTime;
 
@@ -197,4 +217,5 @@ public class Renderer {
         left3.dispose();
         left4.dispose();
     }
+
 }
