@@ -38,7 +38,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.dataLoader = dataLoader;
         world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
 
-        world.getPlayer().addAbility(new AttackAbility(world.getPlayer(), world)); // ZUM TESTEN!!!!!!!!!!!!!!!
+        world.getPlayer().addAbility(new AttackAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
     }
 
     @Override
