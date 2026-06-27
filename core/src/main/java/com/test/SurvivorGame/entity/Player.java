@@ -2,29 +2,35 @@ package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.stat.PlayerStats;
+import com.test.SurvivorGame.stat.StatScope;
+import com.test.SurvivorGame.stat.StatType;
 
 public class Player extends GameObject {
+    private final PlayerStats playerStats = new PlayerStats();
+
     private Direction facingDirection = Direction.DOWN;
-    private static final float PLAYER_SIZE = 1f; //!!!ACHTUNG!!!! das mit playersize müssen wir bald gut machen und nicht wie grad so larifari
-    private static float maxStartHP = 10; //standard zuweisung für den start des Spieles
-
-    private float currentMaxHP = maxStartHP; //wenn leben durch Items upgegraded werden können muss current skalierbar sein
-    private float currentHP = maxStartHP; //current verändert sich, aber ist am start max
-
     private PlayerData playerData;
     private int level = 1;
 
+    private float currentHP;
+
     private final Vector2 moveDirection =  new Vector2();
-    private float movementSpeed = 5f; //nicht final, damit items anpassen können
 
     public Player(float x, float y) {
-        super(x, y, PLAYER_SIZE *2, PLAYER_SIZE * 3);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
+        super(x, y, 2f, 3f); // temporär ist size hardcoded   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
+        currentHP = playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH);
     }
 
     // data handling
     public void setPlayerData(PlayerData playerData) {
         this.playerData = playerData;
         this.level = calcLevel();
+    }
+
+    // statshandling
+    public PlayerStats getPlayerStats() {
+        return playerStats;
     }
 
     public PlayerData getPlayerData() {
@@ -72,8 +78,9 @@ public class Player extends GameObject {
     {
         if(moveDirection.isZero()) return;
 
-        float newX = collider.getX() + moveDirection.x * movementSpeed * deltaTime;
-        float newY = collider.getY() + moveDirection.y * movementSpeed * deltaTime;
+        float speed = playerStats.getStat(StatScope.ALL, StatType.SPEED);
+        float newX = collider.getX() + moveDirection.x * speed * deltaTime;
+        float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
         collider.setPosition(newX, newY);
     }
