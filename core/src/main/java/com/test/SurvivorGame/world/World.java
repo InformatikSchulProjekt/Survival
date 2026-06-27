@@ -2,7 +2,7 @@ package com.test.SurvivorGame.world;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.enemy.enemy1;
+import com.test.SurvivorGame.entity.enemy.Enemy1;
 import com.test.SurvivorGame.world.maps.GameMap;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class World {
 
     private final Player player;
 
-    private ArrayList<enemy1> enemies = new ArrayList<>();
+    private ArrayList<Enemy1> enemies = new ArrayList<>();
 
     private float spawnTimer;
 
@@ -45,7 +45,7 @@ public class World {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new enemy1(x, y, player));
+        enemies.add(new Enemy1(x, y, player));
     }
 
     public void update(float deltaTime, GameMap map)
@@ -60,7 +60,7 @@ public class World {
             spawnTimer = 0;
         }
 
-        for(enemy1 enemy : enemies) // enemy1 Update
+        for(Enemy1 enemy : enemies) // enemy1 Update
         {
             enemy.update(deltaTime);
         }
@@ -92,7 +92,7 @@ public class World {
         {
             float dmgTaken = 0;
 
-            for(enemy1 enemy : enemies)
+            for(Enemy1 enemy : enemies)
             {
                 if(player.overlaps(enemy))
                 {
@@ -114,7 +114,7 @@ public class World {
         return player;
     }
 
-    public ArrayList<enemy1> getEnemies()
+    public ArrayList<Enemy1> getEnemies1()
     {
         return enemies;
     }

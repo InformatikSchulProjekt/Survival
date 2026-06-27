@@ -10,9 +10,9 @@ public class GameMap {
     private final float worldHeight;
 
     public GameMap() {
-        this.texture = new Texture(Gdx.files.internal("Maps/Map(clear).png"));
-        this.worldWidth = 100f;
-        this.worldHeight = 100f;
+        this.texture = new Texture(Gdx.files.internal("Maps/Map(clear1).png"));
+        this.worldWidth = 50f;
+        this.worldHeight = 50f;
     }
 
     public GameMap(String texturePath, float worldWidth, float worldHeight) {
