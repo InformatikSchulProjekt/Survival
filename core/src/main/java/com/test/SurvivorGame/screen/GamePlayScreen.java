@@ -8,6 +8,8 @@ import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 
@@ -22,6 +24,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private World world;
 
     private Vector2 playerMoveDirection = new Vector2();
+    private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
@@ -80,20 +83,20 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime); //bis jetzt nur PlayerUpdate, dafür er sich bewegt
+        updateLogic(deltaTime, map);
 
-        renderer.render(world.getPlayer(),deltaTime); //animationen
+        renderer.render(map, world,deltaTime); //animationen
     }
 
-    private void updateLogic(float deltaTime)
+    private void updateLogic(float deltaTime, GameMap map)
     {
-
-        world.getPlayer().update(deltaTime);
+        world.update(deltaTime, map);
     }
 
     @Override
     public void dispose()
     {
         renderer.dispose();
+        map.dispose();
     }
 }

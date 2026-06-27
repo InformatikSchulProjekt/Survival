@@ -1,29 +1,33 @@
 package com.test.SurvivorGame.entity;
 
+import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.core.PlayerState;
 
-public class Player extends GameObject {
+public class Player extends Entity {
     private PlayerState playerState;
 
-    private Direction facingDirection = Direction.DOWN;
-
-    private final Vector2 moveDirection =  new Vector2();
+    private PlayerData playerData;
 
     public Player(PlayerState playerState) {
         super(playerState.getPlayerData().x, playerState.getPlayerData().y, 2f, 3f);
         this.playerState = playerState;
     }
 
-    @Override
-    public void update(float deltaTime)
-    {
-        move((deltaTime));
+    public void reset(float x, float y) {
+        alive = true;
+        collider.setPosition(x, y);
+
+
+        moveDirection.setZero();
+        isMoving = false;
+        facingDirection = Direction.DOWN;
     }
 
-    public void move(float deltaTime)
-    {
-        if(moveDirection.isZero()) return;
+    public void move(float deltaTime) {
+        if (moveDirection.isZero()) return;
 
         float speed = playerState.getSpeed();
         float newX = collider.getX() + moveDirection.x * speed * deltaTime;
@@ -32,39 +36,36 @@ public class Player extends GameObject {
         collider.setPosition(newX, newY);
     }
 
-//Diese Methode prüft einerseits welche Richtung der Spieler läuft andernseits berechnet sie in welche Richtung er stärker läuft...
-    public void updateMoveDirection(Vector2 moveDirectionUpdate)
-    {
-        moveDirection.set(moveDirectionUpdate);
-        if (moveDirection.isZero()) return;
+    // updated mit MapRand
+    private void clampToMap(GameMap map) {
+        if (map == null) return;
 
-        if (Math.abs(moveDirection.x) > Math.abs(moveDirection.y)) {
-            if (moveDirection.x > 0) {
-                facingDirection = Direction.RIGHT;
-            } else {
-                facingDirection = Direction.LEFT;
-            }
-        } else {
-            if (moveDirection.y > 0) {
-                facingDirection = Direction.UP;
-            } else {
-                facingDirection = Direction.DOWN;
-            }
+        float minX = 0f;
+        float minY = 0f;
+        float maxX = map.getWorldWidth() - getWidth();
+        float maxY = map.getWorldHeight() - getHeight();
+
+        float clampedX = MathUtils.clamp(collider.x, minX, Math.max(minX, maxX));
+        float clampedY = MathUtils.clamp(collider.y, minY, Math.max(minY, maxY));
+
+        collider.setPosition(clampedX, clampedY);
+    }
+
+    @Override
+    public void takeDamage(float damage) {
+        currentHP -= damage;
+        System.out.println("Player bekommt schaden: " + damage);
+        System.out.println("Player hat: " + currentHP + " Leben");
+
+        if (currentHP <= 0) {
+            currentHP = 0;
+            die();
         }
-    }
 
-    public enum Direction {
-        DOWN,
-        UP,
-        LEFT,
-        RIGHT
     }
-
-    public boolean isMoving() {
-        return !moveDirection.isZero();
-    }
-
-    public Direction getFacingDirection() {
-        return facingDirection;
+    @Override
+    public void update(float deltaTime,GameMap map) {
+        move(deltaTime);
+        clampToMap(map);
     }
 }
