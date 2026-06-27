@@ -1,7 +1,6 @@
 package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
 
@@ -64,10 +63,7 @@ public class Player extends Entity {
         facingDirection = Direction.DOWN;
     }
 
-    @Override
-    public void update(float deltaTime) {
-        move(deltaTime);
-    }
+
 
     public void move(float deltaTime) {
         if (moveDirection.isZero()) return;
@@ -81,10 +77,6 @@ public class Player extends Entity {
 
 
     // updated mit MapRand
-    public void update(float deltaTime, GameMap map) {
-        move(deltaTime);
-        clampToMap(map);
-    }
 
     private void clampToMap(GameMap map) {
         if (map == null) return;
@@ -110,5 +102,11 @@ public class Player extends Entity {
             currentHP = 0;
             die();
         }
+
+    }
+    @Override
+    public void update(float deltaTime,GameMap map) {
+        move(deltaTime);
+        clampToMap(map);
     }
 }

@@ -3,6 +3,7 @@ package com.test.SurvivorGame.entity.enemy;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.entity.Entity;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 public class Enemy1 extends Entity {
 
@@ -21,7 +22,7 @@ public class Enemy1 extends Entity {
     }
 
     @Override
-    public void update(float deltaTime)
+    public void update(float deltaTime, GameMap map)
     {
         Vector2 directionToPlayer = player.getCenter().sub(this.getCenter());
 

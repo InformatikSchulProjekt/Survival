@@ -1,15 +1,9 @@
 package com.test.SurvivorGame.entity;
-
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity extends GameObject {
 
     // rendering-relevante eigenschaften
-    protected Animation<TextureRegion> currentAnimation;
-    protected float animationTime = 0f;
     protected Direction facingDirection = Direction.DOWN;
 
     // bewegung
@@ -27,38 +21,7 @@ public abstract class Entity extends GameObject {
     }
 
     // abstrakte Methoden für Subklassen
-    public abstract void update(float deltaTime);
-    //public abstract Animation<TextureRegion> getIdleAnimation();
-    //public abstract Animation<TextureRegion> getMovingAnimation(Direction direction);
 
-    // rendering methoden
-//    public void render(Batch batch, float deltaTime) {
-//        updateAnimationTime(deltaTime);
-//        Animation<TextureRegion> animation = selectAnimation();
-//        TextureRegion frame = animation.getKeyFrame(animationTime);
-//
-//        batch.draw(
-//            frame,
-//            getX(),
-//            getY(),
-//            getWidth(),
-//            getHeight()
-//        );
-//    }
-
-//    protected Animation<TextureRegion> selectAnimation() {
-//        if (!isMoving()) {
-//            return getIdleAnimation();
-//        } else {
-//            return getMovingAnimation(facingDirection);
-//        }
-//    }
-
-    protected void updateAnimationTime(float deltaTime) {
-        animationTime += deltaTime;
-    }
-
-    // getter
     public Direction getFacingDirection() {
         return facingDirection;
     }

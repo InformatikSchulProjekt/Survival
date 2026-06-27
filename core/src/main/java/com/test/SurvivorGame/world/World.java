@@ -50,7 +50,7 @@ public class World {
 
     public void update(float deltaTime, GameMap map)
     {
-        player.update(deltaTime);
+        player.update(deltaTime,map);
 
         spawnTimer += deltaTime;
 
@@ -62,7 +62,7 @@ public class World {
 
         for(Enemy1 enemy : enemies) // enemy1 Update
         {
-            enemy.update(deltaTime);
+            enemy.update(deltaTime,map);
         }
 
         checkCollisions(deltaTime);

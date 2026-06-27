@@ -19,7 +19,6 @@ public class Renderer {
 
     private final Batch batch;
     private final Viewport viewport;
-
     private final World world;
 
     private final Texture playerTexture;
@@ -340,5 +339,4 @@ public class Renderer {
         enemy1left3.dispose();
         enemy1left4.dispose();
     }
-
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 
 public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game Object gibt
@@ -32,7 +33,7 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         batch.draw(texture, collider.x, collider.y, collider.width, collider.height); // eig wäre besser wenn textur unabhängig von collider-größe gezeichnet wird,
     }                                                                           // weil hier grad die texture auf die collider-größe gestretched wird, solange man nicht was einbaut aber so is eindeutig simpler
 
-    public abstract void update(float deltaTime);
+    public abstract void update(float deltaTime, GameMap map);
     public float getX() {
         return collider.x;
     }
