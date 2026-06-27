@@ -196,26 +196,33 @@ public class Renderer {
         float halfW = viewport.getWorldWidth() / 2f;
         float halfH = viewport.getWorldHeight() / 2f;
 
-        float mapW = map.getWorldWidth();
-        float mapH = map.getWorldHeight();
-
         float targetX = world.getPlayer().getX() + world.getPlayer().getWidth() / 2f;
         float targetY = world.getPlayer().getY() + world.getPlayer().getHeight() / 2f;
 
-       //das fixiert die kamera zur map sodass man nicht rausschauen kann
-        float camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
-        float camY = MathUtils.clamp(targetY, Math.min(halfH, mapH/2f), Math.max(halfH, mapH - halfH));
+        float camX = targetX;
+        float camY = targetY;
+
+        if (!map.isInfinite()) {
+            float mapW = map.getWorldWidth();
+            float mapH = map.getWorldHeight();
+
+            //das fixiert die kamera zur map sodass man nicht rausschauen kann
+            camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
+            camY = MathUtils.clamp(targetY, Math.min(halfH, mapH/2f), Math.max(halfH, mapH - halfH));
+        }
+
         cam.position.set(camX, camY, 0f);
         cam.update();
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
 
-        renderMap(map);
+        renderMap(map, cam);
         renderPlayer(world.getPlayer(), deltaTime);
 
+        enemy1AnimationTime += deltaTime;
         for (Enemy1 enemy1 : world.getEnemies1()) {
-            renderEnemy1(enemy1, deltaTime);
+            renderEnemy1(enemy1);
         }
 
 
@@ -257,8 +264,7 @@ public class Renderer {
             player.getHeight()
         );
     }
-    private void renderEnemy1(Enemy1 enemy1, float deltaTime) {
-        enemy1AnimationTime += deltaTime;
+    private void renderEnemy1(Enemy1 enemy1) {
 
         Animation<TextureRegion> animation;
 
@@ -293,14 +299,41 @@ public class Renderer {
         );
     }
 
-    private void renderMap(GameMap map) {
-        batch.draw(
-            map.getTexture(),
-            0f,
-            0f,
-            map.getWorldWidth(),
-            map.getWorldHeight()
-        );
+    private void renderMap(GameMap map, OrthographicCamera cam) {
+        if (!map.isInfinite()) {
+            batch.draw(
+                map.getTexture(),
+                0f,
+                0f,
+                map.getWorldWidth(),
+                map.getWorldHeight()
+            );
+            return;
+        }
+
+        float tileWidth = map.getWorldWidth();
+        float tileHeight = map.getWorldHeight();
+        float left = cam.position.x - viewport.getWorldWidth() / 2f;
+        float right = cam.position.x + viewport.getWorldWidth() / 2f;
+        float bottom = cam.position.y - viewport.getWorldHeight() / 2f;
+        float top = cam.position.y + viewport.getWorldHeight() / 2f;
+
+        int startX = MathUtils.floor(left / tileWidth) - 1;
+        int endX = MathUtils.floor(right / tileWidth) + 1;
+        int startY = MathUtils.floor(bottom / tileHeight) - 1;
+        int endY = MathUtils.floor(top / tileHeight) + 1;
+
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                batch.draw(
+                    map.getTexture(),
+                    x * tileWidth,
+                    y * tileHeight,
+                    tileWidth,
+                    tileHeight
+                );
+            }
+        }
     }
     public Viewport getViewport() {
         return viewport;
