@@ -1,9 +1,7 @@
 package com.test.SurvivorGame.core;
 
 import com.test.SurvivorGame.core.data.PlayerData;
-import com.test.SurvivorGame.stat.PlayerStats;
-import com.test.SurvivorGame.stat.StatScope;
-import com.test.SurvivorGame.stat.StatType;
+import com.test.SurvivorGame.stat.*;
 
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
@@ -81,6 +79,7 @@ public final class PlayerState {
     }
 
     public void giveXP(int xp) {
+        System.out.println("Giving XP: "+xp);
         playerData.xp += xp;
 
         int newLevel = calcLevel();
@@ -93,6 +92,9 @@ public final class PlayerState {
 
     private int calcLevel() {
         int xp = Math.max(0, playerData.xp);
+        // debug:
+        //int result = 1 + (int) Math.sqrt(xp / 5f);
+        //System.out.println("calcLevel result: "+result);
         return 1 + (int) Math.sqrt(xp / 5f);
     }
 }

@@ -8,7 +8,6 @@ import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
@@ -61,15 +60,6 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.x -= 1;
         }
-        // TEST KEY
-//        if(Gdx.input.isKeyJustPressed(Input.Keys.T))
-//        {
-//            System.out.println();
-//            System.out.println(world.getPlayer().getLevel()+" Level");
-//            world.getPlayer().giveXP(1);
-//            dataLoader.savePlayerData("TestMap", world.getPlayer().getPlayerData());
-//
-//        } // TEST KEY FOR TESTING DATA
 
         if(!playerMoveDirection.isZero()) //wenns schräg geht normalisieren, aber wenn sich der Player nicht bewegt wird (x = 0,y = 0) / 0
         {

@@ -3,7 +3,6 @@ package com.test.SurvivorGame.entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
-import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.core.PlayerState;
 
 public class Player extends Entity {
@@ -30,6 +29,7 @@ public class Player extends Entity {
         if (moveDirection.isZero()) return;
 
         float speed = playerState.getSpeed();
+        System.out.println("Player Speed: "+speed);
         float newX = collider.getX() + moveDirection.x * speed * deltaTime;
         float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
@@ -61,6 +61,7 @@ public class Player extends Entity {
             currentHP = 0;
             die();
         }
+
 
     }
     @Override
