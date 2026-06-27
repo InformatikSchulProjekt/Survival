@@ -3,6 +3,7 @@ package com.test.SurvivorGame.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 
@@ -10,9 +11,9 @@ public class World {
 
     private final Player player;
 
-    public World(float screenWidth, float screenHeight)
+    public World(float screenWidth, float screenHeight, PlayerState playerState)
     {
-        player = new Player(screenWidth / 2, screenHeight / 2); // wo er reinspawnt
+        player = new Player(playerState); // wo er reinspawnt
 
     }
 

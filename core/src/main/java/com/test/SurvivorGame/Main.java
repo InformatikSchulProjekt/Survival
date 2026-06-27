@@ -8,7 +8,6 @@ import com.test.SurvivorGame.screen.GamePlayScreen;
 
 public class Main extends Game {
     private Batch batch; // ist so ein sammler für sprites die dann an die GPU gesendet werden
-    private DataLoader dataLoader;
 
     @Override
     public void create() // wird genau einmal aufgerufen, wenn das Spiel startet.
@@ -16,7 +15,7 @@ public class Main extends Game {
         batch = new SpriteBatch(); // ist kurzgesagt ein auf 2d speziallisierte Batch-Art
 
         // Data Handling
-        dataLoader = new DataLoader();
+        DataLoader dataLoader = new DataLoader();
 
 
         setScreen(new GamePlayScreen(this, dataLoader)); //das setzt den Screen den wir nutzen wollen

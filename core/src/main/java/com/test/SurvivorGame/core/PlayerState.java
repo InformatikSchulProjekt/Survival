@@ -8,17 +8,14 @@ import com.test.SurvivorGame.stat.StatType;
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
 
-    private PlayerData playerData;
-    private int level = 1;
+    private final PlayerData playerData;
+    private int level;
     private float currentHP;
 
-    public PlayerState() {
-        currentHP = getMaxHealth();
-    }
-
-    public void setPlayerData(PlayerData playerData) {
+    public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
         this.level = calcLevel();
+        this.currentHP = getMaxHealth();
     }
 
     public PlayerData getPlayerData() {
@@ -49,12 +46,41 @@ public final class PlayerState {
         currentHP = getMaxHealth();
     }
 
-    public void giveXP(int xp) {
-        if (playerData == null) {
-            System.out.println("playerData in PlayerState is NULL !!!!");
-            return;
-        }
+    public void heal(float amount) {
+        currentHP += amount;
 
+        float maxHealth = getMaxHealth();
+        if (currentHP > maxHealth) {
+            currentHP = maxHealth;
+        }
+    }
+
+    public void damage(float amount) {
+        currentHP -= amount;
+
+        if (currentHP < 0f) {
+            currentHP = 0f;
+        }
+    }
+
+    public boolean isDead() {
+        return currentHP <= 0f;
+    }
+
+    public void setPosition(float x, float y) {
+        playerData.x = x;
+        playerData.y = y;
+    }
+
+    public float getX() {
+        return playerData.x;
+    }
+
+    public float getY() {
+        return playerData.y;
+    }
+
+    public void giveXP(int xp) {
         playerData.xp += xp;
 
         int newLevel = calcLevel();
@@ -66,11 +92,7 @@ public final class PlayerState {
     }
 
     private int calcLevel() {
-        if (playerData == null) {
-            System.out.println("playerData in PlayerState is NULL !!!!");
-            return 1;
-        }
-
-        return playerData.xp / 3 + 1;
+        int xp = Math.max(0, playerData.xp);
+        return 1 + (int) Math.sqrt(xp / 5f);
     }
 }
