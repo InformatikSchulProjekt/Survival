@@ -1,7 +1,7 @@
 package com.test.SurvivorGame.world;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.test.SurvivorGame.ability.AttackAbility;
+import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
@@ -137,7 +137,7 @@ public class World {
 
         damageTimer += deltaTime; //addiert den timer mit der sekunde seit dem letzten frame vergangen ist
 
-        if(damageTimer >= AttackAbility.getDamageInterval()) //wenn der timer das SPEZIFISCHE interval erreicht:
+        if(damageTimer >= MeleeAbility.getDamageInterval()) //wenn der timer das SPEZIFISCHE interval erreicht:
         {
             for(AbilityObject abilityObject : getAbilityObjects())
             {
@@ -145,7 +145,7 @@ public class World {
                 {
                     if(abilityObject.overlaps(enemy))
                     {
-                        enemy.takeDamage(AttackAbility.getDamage());
+                        enemy.takeDamage(MeleeAbility.getDamage());
                     }
                 }
             }

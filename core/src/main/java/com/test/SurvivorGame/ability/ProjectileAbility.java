@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.melee.Melee;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
-public class AttackAbility extends Ability {
+public class ProjectileAbility extends Ability{
 
     private final Viewport viewport;
 
@@ -15,28 +15,30 @@ public class AttackAbility extends Ability {
     private float duration = 1f;
     private float effectSize = 2f;
 
+    private float speed = 1f;
+
     private static float damage = 1f;
-    private static float damageInterval = 0.5f; // interfval maye niedriger von der dauer stellen und dmg niederiger. hier wird sonst nur jede halbe sekunde übeprrüft ob es ne halbe sekunde lang overlap ist
 
-    private Texture texture = new Texture(Gdx.files.internal("Placeholder/AttackAbillityPH.png"));
+    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    private Melee melee;
+    private Projectile projectile;
     private Player player;
     private World world;
 
 
-    public AttackAbility(Player player, World world, Viewport viewport)
+    public ProjectileAbility(Player player, World world, Viewport viewport)
     {
         this.player = player;
         this.world = world;
         this.viewport = viewport;
     }
 
+    @Override
     public void activate()
     {
-        melee = new Melee(player.getX(), player.getY(), effectSize, duration, texture, player, viewport);
+        projectile = new Projectile(player.getX(), player.getY(), effectSize, texture, player, viewport, speed);
 
-        world.addAbillity(melee);
+        world.addAbillity(projectile);
     }
 
     public void dispose()
@@ -48,10 +50,4 @@ public class AttackAbility extends Ability {
     {
         return damage;
     }
-
-    public static float getDamageInterval()
-    {
-        return damageInterval;
-    }
-
 }

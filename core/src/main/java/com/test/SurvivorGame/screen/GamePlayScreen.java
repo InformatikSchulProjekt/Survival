@@ -6,10 +6,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
-import com.test.SurvivorGame.ability.AttackAbility;
+import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
@@ -38,7 +37,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.dataLoader = dataLoader;
         world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
 
-        world.getPlayer().addAbility(new AttackAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
+        world.getPlayer().addAbility(new MeleeAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
     }
 
     @Override
