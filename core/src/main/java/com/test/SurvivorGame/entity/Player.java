@@ -34,6 +34,7 @@ public class Player extends Entity {
         float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
         collider.setPosition(newX, newY);
+        playerState.setPosition(newX, newY);
     }
 
     // updated mit MapRand
@@ -49,6 +50,7 @@ public class Player extends Entity {
         float clampedY = MathUtils.clamp(collider.y, minY, Math.max(minY, maxY));
 
         collider.setPosition(clampedX, clampedY);
+        playerState.setPosition(clampedX, clampedY);
     }
 
     @Override

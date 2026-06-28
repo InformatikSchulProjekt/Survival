@@ -13,6 +13,8 @@ import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
+    private DataLoader dataLoader;
+    private PlayerState playerState;
 
     public final float screenWidth = 16f;
 
@@ -28,8 +30,9 @@ public class GamePlayScreen extends ScreenAdapter {
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
+        this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData("TestMap");
-        PlayerState playerState = new PlayerState(playerData);
+        this.playerState = new PlayerState(playerData);
 
         this.world = new World(screenWidth, screenHeight, playerState);
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
@@ -66,6 +69,7 @@ public class GamePlayScreen extends ScreenAdapter {
             playerMoveDirection.nor();
         }
         world.getPlayer().updateMoveDirection(playerMoveDirection);
+        dataLoader.savePlayerData("TestMap", playerState.getPlayerData());
     }
 
     @Override
