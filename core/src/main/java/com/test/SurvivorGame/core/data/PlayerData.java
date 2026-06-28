@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class PlayerData {
     public int xp = 0;
+    public float hp = 10f;
 
     public float x = 0;
     public float y = 0;

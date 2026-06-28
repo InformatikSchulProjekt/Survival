@@ -1,0 +1,16 @@
+package com.test.SurvivorGame.stat;
+
+public enum StatType {
+    MAX_HEALTH,
+    SPEED,
+    HEALING,
+    PLAYER_SIZE,
+    RESISTANCE,
+
+    // Magic:
+    MAGIC_DURATION,
+    MAGIC_DAMAGE,
+    MAGIC_COOLDOWN,
+    MAGIC_SIZE,
+}
+

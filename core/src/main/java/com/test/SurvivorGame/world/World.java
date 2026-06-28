@@ -1,5 +1,9 @@
 package com.test.SurvivorGame.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.test.SurvivorGame.core.PlayerState;
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy1;
@@ -9,7 +13,8 @@ import java.util.ArrayList;
 
 public class World {
 
-    private final Player player;
+    private Player player;
+
 
     private ArrayList<Enemy1> enemies = new ArrayList<>();
 
@@ -25,12 +30,11 @@ public class World {
 
     float screenWidth, screenHeight; // nur für reset-test
 
-    public World(float screenWidth, float screenHeight)
+    public World(float screenWidth, float screenHeight, PlayerState playerState)
     {
+        player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
-
-        player = new Player(screenWidth / 2, screenHeight / 2); // wo er reinspawnt
     }
 
     private void spawnEnemy()
