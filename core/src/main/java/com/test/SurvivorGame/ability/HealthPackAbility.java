@@ -6,6 +6,7 @@ import com.test.SurvivorGame.stat.StatModifier;
 import com.test.SurvivorGame.stat.StatScope;
 import com.test.SurvivorGame.stat.StatType;
 
+// Das hier dient als eine Beispiel Ability.
 public final class HealthPackAbility extends BaseAbility {
     public static final String ID = "health_pack";
 
@@ -21,7 +22,7 @@ public final class HealthPackAbility extends BaseAbility {
 
     @Override
     public int getMaxAmount() {
-        return 3;
+        return 5;
     }
 
     @Override
@@ -32,10 +33,12 @@ public final class HealthPackAbility extends BaseAbility {
             new StatModifier(
                 StatScope.ALL,
                 StatType.MAX_HEALTH,
-                amount * 4f,
+                amount * 3f,
                 ModifierType.FLAT,
                 "ability:" + ID
             )
         );
+        //debug:
+        System.out.println("Applied Ability: "+ ID + " | " + amount);
     }
 }

@@ -1,17 +1,15 @@
 package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
 public class Player extends Entity {
     private PlayerState playerState;
 
-    private PlayerData playerData;
 
     public Player(PlayerState playerState) {
-        super(playerState.getPlayerData().x, playerState.getPlayerData().y, 2f, 3f);
+        super(playerState.getX(), playerState.getY(), 2f, 3f);
         this.playerState = playerState;
     }
 
@@ -23,13 +21,15 @@ public class Player extends Entity {
         moveDirection.setZero();
         isMoving = false;
         facingDirection = Direction.DOWN;
+
+        playerState.resetHealth();
     }
 
     public void move(float deltaTime) {
         if (moveDirection.isZero()) return;
 
         float speed = playerState.getSpeed();
-        System.out.println("Player Speed: "+speed);
+        //debug: System.out.println("Player Speed: "+speed);
         float newX = collider.getX() + moveDirection.x * speed * deltaTime;
         float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
@@ -55,15 +55,12 @@ public class Player extends Entity {
 
     @Override
     public void takeDamage(float damage) {
-        currentHP -= damage;
-        System.out.println("Player bekommt schaden: " + damage);
-        System.out.println("Player hat: " + currentHP + " Leben");
-
-        if (currentHP <= 0) {
-            currentHP = 0;
-            die();
-        }
-
+        if (playerState.damage(damage)) return;
+        //System.out.println("Player bekommt schaden: " + damage);
+        //System.out.println("Player hat: " + currentHP + " Leben");
+        die();
+        //temp:
+        reset(0, 0);
 
     }
     @Override

@@ -69,6 +69,8 @@ public class GamePlayScreen extends ScreenAdapter {
             playerMoveDirection.nor();
         }
         world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+        // temporär um zu saven, weil es noch keine andere Optionen gibt.
         dataLoader.savePlayerData("TestMap", playerState.getPlayerData());
     }
 
