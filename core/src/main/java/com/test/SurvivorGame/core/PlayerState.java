@@ -75,14 +75,28 @@ public final class PlayerState {
 
     // true = survived; false = died;
     public boolean damage(float amount) {
-        playerData.hp -= amount;
+        //if(playerData.hp <= 0) return true; // => Spieler ist bereits Tod
+        if (amount <= 0f) {
+            System.out.println("INVALID DAMAGE! Can't deal negative or 0 damage to player.");
+            return true;
+        }
 
-        // debug:
-        System.out.println(playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH));
+        float resistance = playerStats.getStat(StatScope.ALL, StatType.RESISTANCE);
+        if (resistance < 1f) {
+            System.out.println("INVALID RESISTANCE! Resistance has to be at least 1f.");
+            resistance = 1f;
+        }
+
+        float damageMultiplier = 1f / resistance;
+        float finalDamage = amount * damageMultiplier;
+        playerData.hp -= finalDamage;
+
+        System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
 
         if (playerData.hp < 0f) {
             playerData.hp = 0f;
             // => Player Dead Logic
+            System.out.println("Player died."); // debug
             return false;
         }
         return true;
