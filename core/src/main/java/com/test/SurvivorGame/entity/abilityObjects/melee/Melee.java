@@ -6,14 +6,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.MeleeAbility;
+import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 
 public class Melee extends AbilityObject { //sollte später abstract parent von den Melee sein, grad zum Testen is aber da
 
     private Viewport viewport;
 
     private float deltaDuration;
+    private float damageTimer = 0;
 
     private Player player;
 
@@ -34,6 +38,8 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
         if(isExpired()) return;
 
         deltaDuration -= deltaTime;
+
+        damageTimer += deltaTime;
 
         move();
     }
@@ -60,10 +66,28 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
         collider.setPosition(player.getCenter().x + direction.x * radius - getWidth()/2, player.getCenter().y + direction.y * radius -getHeight()/2);
     }
 
+    @Override
+    public void onHit(Enemy enemy)
+    {
+        if(damageTimer < MeleeAbility.getDamageInterval())
+        {
+            return;
+        }
+
+        enemy.takeDamage(getDamage());
+
+        damageTimer = 0;
+    }
+
     public boolean isExpired()
     {
         return deltaDuration <= 0;
     }
 
+    @Override
+    public float getDamage()
+    {
+        return MeleeAbility.getDamage();
+    }
 
 }

@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.ability.MeleeAbility;
+import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
@@ -38,6 +40,7 @@ public class GamePlayScreen extends ScreenAdapter {
         world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
 
         world.getPlayer().addAbility(new MeleeAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
+        world.getPlayer().addAbility(new ProjectileAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
     }
 
     @Override
@@ -84,6 +87,11 @@ public class GamePlayScreen extends ScreenAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
         {
             world.getPlayer().getAbilities().get(0).activate(); // SPÄTER WENN INPUT-MANAGER-Klasse DA IST IN ABILITY selbst
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
+        {
+            world.getPlayer().getAbilities().get(1).activate();
         }
     }
 

@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 
 public class Projectile extends AbilityObject {
 
@@ -14,12 +16,12 @@ public class Projectile extends AbilityObject {
 
     private Player player;
 
-    private boolean hit;
-
     private Vector3 mouseScreen;
     private Vector2 direction;
 
     private float speed;
+
+    private boolean expired;
 
     public Projectile(float x, float y, float effectSize, Texture texture, Player player, Viewport viewport, float speed)
     {
@@ -47,17 +49,26 @@ public class Projectile extends AbilityObject {
 
     public void move(float deltaTime)
     {
-        collider.setPosition(direction.x - getWidth()/2, direction.y - getHeight()/2);
+        collider.setPosition(collider.getX() + direction.x * speed * deltaTime,collider.getY() + direction.y * speed * deltaTime);
+    }
+
+    @Override
+    public void onHit(Enemy enemy)
+    {
+        enemy.takeDamage(getDamage());
+        expired = true;
     }
 
     @Override
     public boolean isExpired()
     {
-        return hit;
+        return  expired;
     }
 
-    public void setHit(boolean hit)
+    @Override
+    public float getDamage()
     {
-        this.hit = hit;
+        return ProjectileAbility.getDamage();
     }
+
 }

@@ -135,22 +135,15 @@ public class World {
     private void checkAbilityCollision(float deltaTime)
     {
 
-        damageTimer += deltaTime; //addiert den timer mit der sekunde seit dem letzten frame vergangen ist
-
-        if(damageTimer >= MeleeAbility.getDamageInterval()) //wenn der timer das SPEZIFISCHE interval erreicht:
+        for(AbilityObject ability : abilityObjects)
         {
-            for(AbilityObject abilityObject : getAbilityObjects())
+            for(Enemy enemy : enemies)
             {
-                for(Enemy enemy : enemies)
+                if(ability.overlaps(enemy))
                 {
-                    if(abilityObject.overlaps(enemy))
-                    {
-                        enemy.takeDamage(MeleeAbility.getDamage());
-                    }
+                    ability.onHit(enemy);
                 }
             }
-
-            damageTimer = 0;
         }
     }
 
@@ -162,11 +155,6 @@ public class World {
     public ArrayList<Enemy> getEnemies()
     {
         return enemies;
-    }
-
-    public void dispose()
-    {
-
     }
 
     public void addAbillity(AbilityObject abillityObject)

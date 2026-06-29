@@ -2,13 +2,12 @@ package com.test.SurvivorGame.entity.abilityObjects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.entity.GameObject;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 
 public abstract class AbilityObject extends GameObject{
 
     protected float rotation;
-
 
     public AbilityObject(float x, float y, float w, float h, Texture texture) {
         super(x, y, w, h, texture);
@@ -19,6 +18,10 @@ public abstract class AbilityObject extends GameObject{
     }
 
     public abstract boolean isExpired();
+
+    public abstract float getDamage(); //damage aus der ability steuerungs klasse
+
+    public abstract void onHit(Enemy enemy);
 
     @Override
     public void draw(Batch batch)

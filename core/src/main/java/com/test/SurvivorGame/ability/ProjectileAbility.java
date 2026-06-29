@@ -15,7 +15,7 @@ public class ProjectileAbility extends Ability{
     private float duration = 1f;
     private float effectSize = 2f;
 
-    private float speed = 1f;
+    private float speed = 5f;
 
     private static float damage = 1f;
 
