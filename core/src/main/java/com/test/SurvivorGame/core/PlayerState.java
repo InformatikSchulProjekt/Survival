@@ -13,7 +13,6 @@ public final class PlayerState {
 
     private final PlayerData playerData;
     private int level;
-    private float currentHP;
 
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
@@ -44,7 +43,8 @@ public final class PlayerState {
         return level;
     }
 
-    public float getCurrentHP() {
+    // returned currentHP (NICHT MAX_HP)
+    public float getHP() {
         return playerData.hp;
     }
 
@@ -57,7 +57,7 @@ public final class PlayerState {
     }
 
     public void resetHealth() {
-        currentHP = getMaxHealth();
+        playerData.hp = getMaxHealth();
     }
 
     public void heal(float amount) {
@@ -77,21 +77,19 @@ public final class PlayerState {
 
     // true = survived; false = died;
     public boolean damage(float amount) {
-        currentHP -= amount;
+        playerData.hp -= amount;
 
         // debug:
-        System.out.println(currentHP+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH));
+        System.out.println(playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH));
 
-        if (currentHP < 0f) {
-            currentHP = 0f;
+        if (playerData.hp < 0f) {
+            playerData.hp = 0f;
             // => Player Dead Logic
             return false;
         }
         return true;
 
     }
-
-    //public boolean isDead() {return currentHP <= 0f;}
 
     public void setPosition(float x, float y) {
         playerData.x = x;
@@ -153,9 +151,6 @@ public final class PlayerState {
 
     private int calcLevel() {
         int xp = Math.max(0, playerData.xp);
-        // debug:
-        //int result = 1 + (int) Math.sqrt(xp / 5f);
-        //System.out.println("calcLevel result: "+result);
         return 1 + (int) Math.sqrt(xp / 5f);
     }
 }
