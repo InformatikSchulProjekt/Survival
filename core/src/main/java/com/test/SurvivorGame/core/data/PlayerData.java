@@ -19,8 +19,4 @@ public class PlayerData {
         return new Vector2(x, y);
     }
 
-    public void setPosition(Vector2 position) {
-        this.x = position.x;
-        this.y = position.y;
-    }
 }
