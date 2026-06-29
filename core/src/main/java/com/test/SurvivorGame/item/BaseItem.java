@@ -7,8 +7,6 @@ public abstract class BaseItem {
 
     public abstract String getName();
 
-    public abstract int getMaxAmount();
-
     public void onApply(PlayerState playerState) {
         // Wird ausgeführt, wenn das Item neu berechnet/angewendet wird.
         // Leer, weil nicht jedes Item Stats verändert.
