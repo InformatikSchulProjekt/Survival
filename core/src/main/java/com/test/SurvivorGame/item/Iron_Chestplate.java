@@ -1,10 +1,10 @@
 package com.test.SurvivorGame.item;
 
 import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.stat.ModifierType;
-import com.test.SurvivorGame.stat.StatModifier;
-import com.test.SurvivorGame.stat.StatScope;
-import com.test.SurvivorGame.stat.StatType;
+import com.test.SurvivorGame.core.stat.ModifierType;
+import com.test.SurvivorGame.core.stat.StatModifier;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
 
 public final class Iron_Chestplate extends BaseItem {
     public static final String ID = "iron_chestplate";

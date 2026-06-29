@@ -3,9 +3,11 @@ package com.test.SurvivorGame.core;
 import com.test.SurvivorGame.ability.AbilityRegistry;
 import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.item.BaseItem;
 import com.test.SurvivorGame.item.ItemRegistry;
-import com.test.SurvivorGame.stat.*;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.stat;
+package com.test.SurvivorGame.core.stat;
 
 public final class StatModifier {
     private final StatScope scope;
