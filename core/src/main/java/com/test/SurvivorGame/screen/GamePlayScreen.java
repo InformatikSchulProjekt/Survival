@@ -6,14 +6,19 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.world.maps.GameMap;
+import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
+    private DataLoader dataLoader;
+    private PlayerState playerState;
 
     public final float screenWidth = 16f;
 
@@ -28,19 +33,18 @@ public class GamePlayScreen extends ScreenAdapter {
     private World world;
 
     private Vector2 playerMoveDirection = new Vector2();
+    private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
-
-        world = new World(screenWidth, screenHeight);
-        shapeRenderer = new ShapeRenderer();
-        // testing für data:
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
+        // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
         this.dataLoader = dataLoader;
-        world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
+        PlayerData playerData = dataLoader.getPlayerData("TestMap");
+        this.playerState = new PlayerState(playerData);
 
-        world.getPlayer().addAbility(new MeleeAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
-        world.getPlayer().addAbility(new ProjectileAbility(world.getPlayer(), world, renderer.getViewport())); // ZUM TESTEN!!!!!!!!!!!!!!!
+        this.world = new World(screenWidth, screenHeight, playerState);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -68,15 +72,6 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.x -= 1;
         }
-        // TEST KEY
-        if(Gdx.input.isKeyJustPressed(Input.Keys.T))
-        {
-            System.out.println();
-            System.out.println(world.getPlayer().getLevel()+" Level");
-            world.getPlayer().giveXP(1);
-            dataLoader.savePlayerData("TestMap", world.getPlayer().getPlayerData());
-
-        } // TEST KEY FOR TESTING DATA
 
         if(!playerMoveDirection.isZero()) //wenns schräg geht normalisieren, aber wenn sich der Player nicht bewegt wird (x = 0,y = 0) / 0
         {
@@ -93,6 +88,9 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             world.getPlayer().getAbilities().get(1).activate();
         }
+
+        // temporär um zu saven, weil es noch keine andere Optionen gibt.
+        dataLoader.savePlayerData("TestMap", playerState.getPlayerData());
     }
 
     @Override
@@ -100,19 +98,20 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime);
+        updateLogic(deltaTime, map);
 
-        renderer.render(world,deltaTime); //animationen
+        renderer.render(map, world,deltaTime); //animationen
     }
 
-    private void updateLogic(float deltaTime)
+    private void updateLogic(float deltaTime, GameMap map)
     {
-        world.update(deltaTime);
+        world.update(deltaTime, map);
     }
 
     @Override
     public void dispose()
     {
         renderer.dispose();
+        map.dispose();
     }
 }

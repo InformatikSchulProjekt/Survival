@@ -1,15 +1,17 @@
 package com.test.SurvivorGame.world;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 import java.util.ArrayList;
 
 public class World {
 
-    private final Player player;
+    private Player player;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
@@ -27,12 +29,11 @@ public class World {
 
     private ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
 
-    public World(float screenWidth, float screenHeight)
+    public World(float screenWidth, float screenHeight, PlayerState playerState)
     {
+        player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
-
-        player = new Player(screenWidth / 2, screenHeight / 2); // wo er reinspawnt
     }
 
     private void spawnEnemy()
@@ -50,9 +51,9 @@ public class World {
         enemies.add(new Enemy(x, y, player));
     }
 
-    public void update(float deltaTime)
+    public void update(float deltaTime, GameMap map)
     {
-        player.update(deltaTime);
+        player.update(deltaTime,map);
 
         spawnTimer += deltaTime;
 
@@ -66,7 +67,7 @@ public class World {
         {
             Enemy enemy = enemies.get(i);
 
-            enemy.update(deltaTime);
+            enemy.update(deltaTime, map);
 
             if(enemy.isDead())
             {

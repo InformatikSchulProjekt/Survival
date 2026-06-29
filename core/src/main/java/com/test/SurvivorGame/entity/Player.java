@@ -1,168 +1,77 @@
 package com.test.SurvivorGame.entity;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.test.SurvivorGame.ability.Ability;
-import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.world.maps.GameMap;
+import com.test.SurvivorGame.core.PlayerState;
 
-import java.util.ArrayList;
+public class Player extends Entity {
+    private PlayerState playerState;
 
-public class Player extends GameObject {
-    private Direction facingDirection = Direction.DOWN;
-    private static final float PLAYER_SIZE = 1f; //!!!ACHTUNG!!!! das mit playersize müssen wir bald gut machen und nicht wie grad so larifari
-    private float maxStartHP = 10; //standard zuweisung für den start des Spieles
 
-    private float currentMaxHP = maxStartHP; //wenn leben durch Items upgegraded werden können muss current skalierbar sein
-    private float currentHP = maxStartHP; //current verändert sich, aber ist am start max
-
-    private PlayerData playerData;
-    private int level = 1;
-
-    private final Vector2 moveDirection =  new Vector2();
-    private float movementSpeed = 5f; //nicht final, damit items anpassen können
-
-    private boolean alive = true;
-
-    private ArrayList<Ability> abilities = new ArrayList<>();
-
-    public Player(float x, float y) {
-        super(x, y, PLAYER_SIZE *2, PLAYER_SIZE * 3);   // ruft Konstruktor der Oberklasse auf und verwendet die übergebenen texture-daten des com.test.SurvivorGame.entity.Player Konstruktors
+    public Player(PlayerState playerState) {
+        super(playerState.getX(), playerState.getY(), 2f, 3f);
+        this.playerState = playerState;
     }
 
-    // data handling
-    public void setPlayerData(PlayerData playerData) {
-        this.playerData = playerData;
-        this.level = calcLevel();
-    }
-
-    public PlayerData getPlayerData() {
-        return playerData;
-    }
-
-    private int calcLevel() {
-        if (playerData == null) {
-            System.out.println("playerData in Player is NULL !!!!");
-            return 1;
-        }
-
-        return playerData.xp / 3 + 1;
-    }
-
-    public void giveXP(int xp) {
-        playerData.xp += xp;
-        int level = calcLevel();
-        if(level>this.level) {
-            this.level = level;
-            System.out.println("LEVEL UP: "+level);
-            // hier dann level up einleiten
-        }
-    }
-
-    public int getLevel() {
-        return level;
-    }
-    // data handling
-
-    public void reset(float x, float y)
-    {
+    public void reset(float x, float y) {
         alive = true;
+        collider.setPosition(x, y);
 
-        collider.setPosition(x,y);
 
-        currentMaxHP = maxStartHP;
-        currentHP = maxStartHP;
-    }
-    @Override
-    public void update(float deltaTime)
-    {
-        move((deltaTime));
+        moveDirection.setZero();
+        isMoving = false;
+        facingDirection = Direction.DOWN;
+
+        playerState.resetHealth();
     }
 
-    public void move(float deltaTime)
-    {
-        if(moveDirection.isZero()) return;
+    public void move(float deltaTime) {
+        if (moveDirection.isZero()) return;
 
-        float newX = collider.getX() + moveDirection.x * movementSpeed * deltaTime;
-        float newY = collider.getY() + moveDirection.y * movementSpeed * deltaTime;
+        float speed = playerState.getSpeed();
+        //debug: System.out.println("Player Speed: "+speed);
+        float newX = collider.getX() + moveDirection.x * speed * deltaTime;
+        float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
+        playerState.setPosition(newX, newY);
         collider.setPosition(newX, newY);
     }
 
-    public void updateMoveDirection(Vector2 moveDirectionUpdate)
-    {
-        moveDirection.set(moveDirectionUpdate);
-        if (moveDirection.isZero()) return;
+    // updated mit MapRand
+    private void clampToMap(GameMap map) {
+        if (map == null) return;
+        if (map.isInfinite()) return;
 
-        if (Math.abs(moveDirection.x) > Math.abs(moveDirection.y)) {
-            if (moveDirection.x > 0) {
-                facingDirection = Direction.RIGHT;
-            } else {
-                facingDirection = Direction.LEFT;
-            }
-        } else {
-            if (moveDirection.y > 0) {
-                facingDirection = Direction.UP;
-            } else {
-                facingDirection = Direction.DOWN;
-            }
-        }
-    }//Diese Methode prüft einerseits welche Richtung der Spieler läuft andernseits berechnet sie in welche Richtung er stärker läuft...
+        float minX = 0f;
+        float minY = 0f;
+        float maxX = map.getWorldWidth() - getWidth();
+        float maxY = map.getWorldHeight() - getHeight();
 
-    public enum Direction {
-        DOWN,
-        UP,
-        LEFT,
-        RIGHT
-    }
-    public boolean isMoving() {
-        return !moveDirection.isZero();
+        float clampedX = MathUtils.clamp(collider.x, minX, Math.max(minX, maxX));
+        float clampedY = MathUtils.clamp(collider.y, minY, Math.max(minY, maxY));
+
+        collider.setPosition(clampedX, clampedY);
+        playerState.setPosition(clampedX, clampedY);
     }
 
-    public Direction getFacingDirection() {
-        return facingDirection;
+    @Override
+    public void takeDamage(float damage) {
+        if (playerState.damage(damage)) return;
+
+        die();
+        //temp:
+        reset(0, 0);
+
     }
-
-    public float getCurrentHP()
-    {
-        return currentHP;
-    }
-
-    public void takeDamage(float damage)
-    {
-        currentHP -= damage;
-        System.out.println("Player bekommt schaden: " + damage);
-        System.out.println("Player hat: " + currentHP + " Leben");
-
-        if(currentHP <= 0)
-        {
-            currentHP = 0;
-            die();
-        }
-    }
-
-    private void die()
-    {
-        alive = false;
-    }
-
-    public boolean isAlive()
-    {
-        return alive;
+    @Override
+    public void update(float deltaTime,GameMap map) {
+        move(deltaTime);
+        clampToMap(map);
     }
 
     public Vector2 getMoveDirection()
     {
         return moveDirection;
     }
-
-    public void addAbility(Ability ability)
-    {
-        abilities.add(ability);
-    }
-
-    public ArrayList<Ability> getAbilities()
-    {
-        return abilities;
-    }
-
-
 }
