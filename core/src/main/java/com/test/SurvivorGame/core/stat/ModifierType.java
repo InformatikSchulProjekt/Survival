@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.stat;
+package com.test.SurvivorGame.core.stat;
 
 public enum ModifierType {
     FLAT, // flat bedeutet einfach wird addiert also z. B. HP + 10

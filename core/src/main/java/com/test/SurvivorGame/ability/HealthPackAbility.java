@@ -1,10 +1,10 @@
 package com.test.SurvivorGame.ability;
 
 import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.stat.ModifierType;
-import com.test.SurvivorGame.stat.StatModifier;
-import com.test.SurvivorGame.stat.StatScope;
-import com.test.SurvivorGame.stat.StatType;
+import com.test.SurvivorGame.core.stat.ModifierType;
+import com.test.SurvivorGame.core.stat.StatModifier;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
 
 // Das hier dient als eine Beispiel Ability.
 public final class HealthPackAbility extends BaseAbility {
