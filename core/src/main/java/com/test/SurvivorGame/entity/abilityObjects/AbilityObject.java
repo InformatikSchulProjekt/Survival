@@ -17,7 +17,7 @@ public abstract class AbilityObject extends GameObject{
         super(x, y, w, h);
     }
 
-    public abstract boolean isExpired();
+    public abstract boolean getExpired();
 
     public abstract float getDamage(); //damage aus der ability steuerungs klasse
 

@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.MeleeAbility;
-import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
@@ -35,7 +34,8 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
     @Override
     public void update(float deltaTime)
     {
-        if(isExpired()) return;
+        if(deltaTime == 0) ;
+        if(getExpired()) return;
 
         deltaDuration -= deltaTime;
 
@@ -79,7 +79,7 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
         damageTimer = 0;
     }
 
-    public boolean isExpired()
+    public boolean getExpired()
     {
         return deltaDuration <= 0;
     }

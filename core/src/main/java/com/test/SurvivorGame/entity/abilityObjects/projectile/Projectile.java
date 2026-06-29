@@ -13,6 +13,7 @@ import com.test.SurvivorGame.entity.enemy.Enemy;
 public class Projectile extends AbilityObject {
 
     private Viewport viewport;
+    private float deltaDuration;
 
     private Player player;
 
@@ -23,10 +24,11 @@ public class Projectile extends AbilityObject {
 
     private boolean expired;
 
-    public Projectile(float x, float y, float effectSize, Texture texture, Player player, Viewport viewport, float speed)
+    public Projectile(float x, float y, float effectSize, Texture texture, Player player, Viewport viewport, float speed, float duration)
     {
         super(x, y, effectSize, effectSize, texture);
 
+        this.deltaDuration = duration;
         this.player = player;
         this.viewport = viewport;
         this.speed  = speed;
@@ -42,7 +44,10 @@ public class Projectile extends AbilityObject {
     @Override
     public void update(float deltaTime)
     {
-        if(isExpired()) return;
+        if(deltaDuration <= 0) expired = true;
+        if(getExpired()) return;
+
+        deltaDuration -= deltaTime;
 
         move(deltaTime);
     }
@@ -52,6 +57,7 @@ public class Projectile extends AbilityObject {
         collider.setPosition(collider.getX() + direction.x * speed * deltaTime,collider.getY() + direction.y * speed * deltaTime);
     }
 
+
     @Override
     public void onHit(Enemy enemy)
     {
@@ -60,7 +66,7 @@ public class Projectile extends AbilityObject {
     }
 
     @Override
-    public boolean isExpired()
+    public boolean getExpired()
     {
         return  expired;
     }

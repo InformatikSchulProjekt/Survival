@@ -1,7 +1,6 @@
 package com.test.SurvivorGame.world;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
@@ -89,7 +88,7 @@ public class World {
 
             abillityObject.update(deltaTime);
 
-            if(abillityObject.isExpired())
+            if(abillityObject.getExpired())
             {
                 abilityObjects.remove(i);
             }

@@ -12,10 +12,10 @@ public class ProjectileAbility extends Ability{
     private final Viewport viewport;
 
     private float coolDown;
-    private float duration = 1f;
+    private float duration = 4f;
     private float effectSize = 2f;
 
-    private float speed = 5f;
+    private float speed = 6f;
 
     private static float damage = 1f;
 
@@ -36,7 +36,7 @@ public class ProjectileAbility extends Ability{
     @Override
     public void activate()
     {
-        projectile = new Projectile(player.getX(), player.getY(), effectSize, texture, player, viewport, speed);
+        projectile = new Projectile(player.getX(), player.getY(), effectSize, texture, player, viewport, speed, duration);
 
         world.addAbillity(projectile);
     }
