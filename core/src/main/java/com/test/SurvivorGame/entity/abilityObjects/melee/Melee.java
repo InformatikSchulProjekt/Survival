@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.entity.abilityObjects.melee;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -10,6 +11,7 @@ import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 public class Melee extends AbilityObject { //sollte später abstract parent von den Melee sein, grad zum Testen is aber da
 
@@ -31,18 +33,7 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
         this.viewport = viewport;
     }
 
-    @Override
-    public void update(float deltaTime)
-    {
-        if(deltaTime == 0) ;
-        if(getExpired()) return;
 
-        deltaDuration -= deltaTime;
-
-        damageTimer += deltaTime;
-
-        move();
-    }
 
     public void move()
     {
@@ -90,4 +81,16 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
         return MeleeAbility.getDamage();
     }
 
+    @Override
+    public void update(float deltaTime, GameMap map)
+    {
+        if(deltaTime == 0) ;
+        if(getExpired()) return;
+
+        deltaDuration -= deltaTime;
+
+        damageTimer += deltaTime;
+
+        move();
+    }
 }

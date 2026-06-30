@@ -26,8 +26,6 @@ public class GamePlayScreen extends ScreenAdapter {
                                             //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
     private final Renderer renderer;
 
-    private DataLoader dataLoader;
-
     private ShapeRenderer shapeRenderer;
 
     private World world;
@@ -43,7 +41,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.playerState = new PlayerState(playerData);
 
         this.world = new World(screenWidth, screenHeight, playerState);
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
         this.shapeRenderer = new ShapeRenderer();
     }
 
@@ -81,12 +79,12 @@ public class GamePlayScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
         {
-            world.getPlayer().getAbilities().get(0).activate(); // SPÄTER WENN INPUT-MANAGER-Klasse DA IST IN ABILITY selbst
+
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
         {
-            world.getPlayer().getAbilities().get(1).activate();
+
         }
 
         // temporär um zu saven, weil es noch keine andere Optionen gibt.

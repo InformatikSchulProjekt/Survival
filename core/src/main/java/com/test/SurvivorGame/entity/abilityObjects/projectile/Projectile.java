@@ -9,6 +9,7 @@ import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 public class Projectile extends AbilityObject {
 
@@ -42,7 +43,7 @@ public class Projectile extends AbilityObject {
     }
 
     @Override
-    public void update(float deltaTime)
+    public void update(float deltaTime, GameMap map)
     {
         if(deltaDuration <= 0) expired = true;
         if(getExpired()) return;

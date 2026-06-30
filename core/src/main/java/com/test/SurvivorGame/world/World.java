@@ -87,7 +87,7 @@ public class World {
         {
             AbilityObject abillityObject = abilityObjects.get(i);
 
-            abillityObject.update(deltaTime);
+            abillityObject.update(deltaTime, map);
 
             if(abillityObject.getExpired())
             {

@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.test.SurvivorGame.entity.GameObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.world.maps.GameMap;
+
 
 public abstract class AbilityObject extends GameObject{
 

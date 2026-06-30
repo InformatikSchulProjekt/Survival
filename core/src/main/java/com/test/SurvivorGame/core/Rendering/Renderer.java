@@ -12,7 +12,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.test.SurvivorGame.entity.enemy.Enemy1;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -230,8 +229,8 @@ public class Renderer {
         renderPlayer(world.getPlayer(), deltaTime);
 
         enemy1AnimationTime += deltaTime;
-        for (Enemy1 enemy1 : world.getEnemies1()) {
-            renderEnemy1(enemy1);
+        for (Enemy enemy : world.getEnemies()) {
+            renderEnemy(enemy);
         }
 
         for(AbilityObject abilityObject : world.getAbilityObjects())
@@ -300,14 +299,14 @@ public class Renderer {
             player.getHeight()
         );
     }
-    private void renderEnemy1(Enemy1 enemy1) {
+    private void renderEnemy(Enemy enemy) {
 
         Animation<TextureRegion> animation;
 
-        if (!enemy1.isMoving()) {
+        if (!enemy.isMoving()) {
             animation = enemy1idleAnimation;
         } else {
-            switch (enemy1.getFacingDirection()) {
+            switch (enemy.getFacingDirection()) {
                 case UP:
                     animation = enemy1frontAnimation;
                     break;
@@ -328,10 +327,10 @@ public class Renderer {
 
         batch.draw(
             currentFrame,
-            enemy1.getX(),
-            enemy1.getY(),
-            enemy1.getWidth(),
-            enemy1.getHeight()
+            enemy.getX(),
+            enemy.getY(),
+            enemy.getWidth(),
+            enemy.getHeight()
         );
     }
 
