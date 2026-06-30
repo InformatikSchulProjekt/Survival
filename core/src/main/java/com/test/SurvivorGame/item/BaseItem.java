@@ -1,20 +1,29 @@
 package com.test.SurvivorGame.item;
 
-import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatModifier;
+
+import java.util.List;
 
 public abstract class BaseItem {
-    public abstract String getId();
+    public abstract String getID();
 
     public abstract String getName();
 
-    public void onApply(PlayerState playerState) {
-        // Wird ausgeführt, wenn das Item neu berechnet/angewendet wird.
-        // Leer, weil nicht jedes Item Stats verändert.
+    public abstract String getDescription();
+
+    public abstract List<StatModifier> getModifiers();
+
+    public void onApply(PlayerStats playerStats) {
+        onRemove(playerStats);
+
+        for(StatModifier statMod : getModifiers()) {
+            playerStats.addModifier(statMod);
+        }
+        System.out.println("Applied Ability: "+ getID()); // debug
     }
 
-    public void onRemove(PlayerState playerState) {
-        // Entfernt alte Modifier dieser Ability.
-        // Kann von einzelnen Abilities überschrieben werden.
-        playerState.getPlayerStats().removeModifiersFromSource("item:" + getId());
+    public void onRemove(PlayerStats playerStats) {
+        playerStats.removeModifiersFromSource("item:" + getID());
     }
 }
