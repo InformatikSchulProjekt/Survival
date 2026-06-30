@@ -41,4 +41,9 @@ public final class HealthPackAbility extends BaseAbility {
         //debug:
         System.out.println("Applied Ability: "+ ID + " | " + amount);
     }
+
+    @Override
+    public String getDescription() {
+        return "Diese Ability macht dich mehr healthy"; // temporär, da nur ExampleAbility eigentlich
+    }
 }

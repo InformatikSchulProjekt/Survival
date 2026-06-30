@@ -33,4 +33,9 @@ public final class Iron_Chestplate extends BaseItem {
             )
         );
     }
+
+    @Override
+    public String getDescription() {
+        return "Diese Armor macht dich mehr Resistent"; // temporär, da nur ExampleItem eigentlich
+    }
 }

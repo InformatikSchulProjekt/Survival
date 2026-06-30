@@ -9,6 +9,8 @@ public abstract class BaseAbility {
 
     public abstract int getMaxAmount();
 
+    public abstract String getDescription();
+
     public void onApply(PlayerState playerState, int amount) {
         // Wird ausgeführt, wenn die Ability neu berechnet/angewendet wird.
         // Leer, weil nicht jede Ability Stats verändert.
