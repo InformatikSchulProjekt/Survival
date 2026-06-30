@@ -17,18 +17,14 @@ public class Main extends Game {
 
         // Data Handling
         dataLoader = new DataLoader();
-
-
         setScreen(new GamePlayScreen(this, dataLoader)); //das setzt den Screen den wir nutzen wollen
     }
-
     @Override
     public void dispose() // Speicher und GPU-Ressourcen sauber freigeben
     {
         super.dispose();
         batch.dispose();
     }
-
     public Batch getBatch()
     {
         return batch;

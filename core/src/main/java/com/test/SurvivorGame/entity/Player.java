@@ -57,6 +57,7 @@ public class Player extends Entity {
 
         maxHP = maxStartHP;
         currentHP = maxHP;
+        damageFlashTimer = 0f;
 
         moveDirection.setZero();
         isMoving = false;
@@ -96,6 +97,7 @@ public class Player extends Entity {
     @Override
     public void takeDamage(float damage) {
         currentHP -= damage;
+        startDamageFlash();
         System.out.println("Player bekommt schaden: " + damage);
         System.out.println("Player hat: " + currentHP + " Leben");
 
@@ -107,6 +109,7 @@ public class Player extends Entity {
     }
     @Override
     public void update(float deltaTime,GameMap map) {
+        updateDamageFlash(deltaTime);
         move(deltaTime);
         clampToMap(map);
     }
