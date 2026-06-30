@@ -6,7 +6,7 @@ import com.test.SurvivorGame.core.stat.StatModifier;
 import java.util.List;
 
 public abstract class BaseItem {
-    public abstract String getId();
+    public abstract String getID();
 
     public abstract String getName();
 
@@ -20,11 +20,10 @@ public abstract class BaseItem {
         for(StatModifier statMod : getModifiers()) {
             playerStats.addModifier(statMod);
         }
+        System.out.println("Applied Ability: "+ getID()); // debug
     }
 
     public void onRemove(PlayerStats playerStats) {
-        // Entfernt alte Modifier dieser Ability.
-        // Kann von einzelnen Abilities überschrieben werden.
-        playerStats.removeModifiersFromSource("item:" + getId());
+        playerStats.removeModifiersFromSource("item:" + getID());
     }
 }

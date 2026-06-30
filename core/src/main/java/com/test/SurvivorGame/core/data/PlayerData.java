@@ -14,6 +14,8 @@ public class PlayerData {
     public float x = 0;
     public float y = 0;
 
+    public String playerClass = "";
+
     public Map<String, Integer> abilities = new HashMap<>();
     public Set<String> items = new HashSet<>();
 

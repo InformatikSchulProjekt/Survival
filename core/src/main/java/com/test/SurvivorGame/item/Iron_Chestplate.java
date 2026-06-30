@@ -11,7 +11,7 @@ public final class Iron_Chestplate extends BaseItem {
     public static final String ID = "iron_chestplate";
 
     @Override
-    public String getId() {
+    public String getID() {
         return ID;
     }
 

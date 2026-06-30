@@ -15,7 +15,7 @@ public final class ItemRegistry {
     }
 
     private void register(BaseItem item) {
-        items.put(item.getId(), item);
+        items.put(item.getID(), item);
     }
 }
 

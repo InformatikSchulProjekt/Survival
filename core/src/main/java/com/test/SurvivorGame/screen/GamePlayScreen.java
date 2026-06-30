@@ -32,6 +32,7 @@ public class GamePlayScreen extends ScreenAdapter {
         // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData("TestMap");
+        playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
         this.playerState = new PlayerState(playerData);
 
         this.world = new World(screenWidth, screenHeight, playerState);

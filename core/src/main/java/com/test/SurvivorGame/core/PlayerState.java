@@ -8,6 +8,8 @@ import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.item.BaseItem;
 import com.test.SurvivorGame.item.ItemRegistry;
+import com.test.SurvivorGame.player_class.BasePlayerClass;
+import com.test.SurvivorGame.player_class.PlayerClassRegistry;
 
 import java.util.Map;
 
@@ -15,6 +17,7 @@ public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
     private final AbilityRegistry abilityRegistry;
     private final ItemRegistry itemRegistry;
+    private final PlayerClassRegistry playerClassRegistry;
 
     private final PlayerData playerData;
     private int level;
@@ -29,6 +32,8 @@ public final class PlayerState {
         this.itemRegistry = new ItemRegistry();
         registerItems();
 
+        this.playerClassRegistry = new PlayerClassRegistry();
+        registerPlayerClass();
     }
 
     public PlayerData getPlayerData() {
@@ -175,7 +180,7 @@ public final class PlayerState {
             throw new IllegalArgumentException("Unknown ability: " + abilityID);
         }
 
-        ability.onApply(this, amount);
+        ability.onApply(playerStats, amount);
     }
 
     private int calcLevel() {
@@ -213,5 +218,17 @@ public final class PlayerState {
         item.onApply(playerStats);
     }
 
+    private void registerPlayerClass() {
+        BasePlayerClass playerClass = playerClassRegistry.getPlayerClass(playerData.playerClass);
+
+        if (playerClass == null) {
+            if (playerData.playerClass.equals("")) System.out.println("[ERROR]: No class given");
+            throw new IllegalArgumentException("Unknown player class: " + playerData.playerClass);
+        }
+
+        playerClass.onApply(playerStats);
+
+        System.out.println("Registered PlayerClass: " + playerData.playerClass); // debug
+    }
 
 }
