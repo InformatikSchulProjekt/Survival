@@ -1,10 +1,11 @@
 package com.test.SurvivorGame.item;
 
-import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+
+import java.util.List;
 
 public final class Iron_Chestplate extends BaseItem {
     public static final String ID = "iron_chestplate";
@@ -20,10 +21,13 @@ public final class Iron_Chestplate extends BaseItem {
     }
 
     @Override
-    public void onApply(PlayerState playerState) {
-        onRemove(playerState);
+    public String getDescription() {
+        return "Diese Armor macht dich resistenter."; // temporär, da nur ExampleItem eigentlich
+    }
 
-        playerState.getPlayerStats().addModifier(
+    @Override
+    public List<StatModifier> getModifiers() {
+        return List.of(
             new StatModifier(
                 StatScope.ALL,
                 StatType.RESISTANCE,
@@ -32,10 +36,5 @@ public final class Iron_Chestplate extends BaseItem {
                 "item:" + ID
             )
         );
-    }
-
-    @Override
-    public String getDescription() {
-        return "Diese Armor macht dich mehr Resistent"; // temporär, da nur ExampleItem eigentlich
     }
 }

@@ -210,7 +210,7 @@ public final class PlayerState {
             throw new IllegalArgumentException("Unknown item: " + itemId);
         }
 
-        item.onApply(this);
+        item.onApply(playerStats);
     }
 
 
