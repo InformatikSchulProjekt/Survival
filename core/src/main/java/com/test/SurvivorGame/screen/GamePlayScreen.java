@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
+import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.ability.ProjectileAbility;
@@ -31,6 +32,9 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private World world;
 
+    private AbilityService abilityService;
+
+
     private Vector2 playerMoveDirection = new Vector2();
     private final GameMap map = new GameMap();
 
@@ -41,11 +45,13 @@ public class GamePlayScreen extends ScreenAdapter {
         PlayerData playerData = dataLoader.getPlayerData("TestMap");
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
+        playerState = new PlayerState(playerData);
         this.world = new World(screenWidth, screenHeight, playerState);
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
-        this.shapeRenderer = new ShapeRenderer();
 
-        this.playerState = new PlayerState(playerData, world, renderer.getViewport());
+        this.shapeRenderer = new ShapeRenderer();
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
+
+        this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
     }
 
     @Override
@@ -82,12 +88,12 @@ public class GamePlayScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
         {
-            playerState.getAbilityRegistry().activate("melee");
+            abilityService.getAbilityRegistry().activate("melee");
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
         {
-            playerState.getAbilityRegistry().activate("projectile");
+            abilityService.getAbilityRegistry().activate("projectile");
         }
 
         // temporär um zu saven, weil es noch keine andere Optionen gibt.

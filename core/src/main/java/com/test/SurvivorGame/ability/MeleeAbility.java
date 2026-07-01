@@ -3,9 +3,12 @@ package com.test.SurvivorGame.ability;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.melee.Melee;
 import com.test.SurvivorGame.world.World;
+
+import java.util.List;
 
 public class MeleeAbility extends BaseAbility {
 
@@ -57,7 +60,7 @@ public class MeleeAbility extends BaseAbility {
     }
 
     @Override
-    public String getId() {
+    public String getID() {
         return ID;
     }
 
@@ -70,5 +73,16 @@ public class MeleeAbility extends BaseAbility {
     public int getMaxAmount() {
         return 5;
     }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public List<StatModifier> getModifiers(int amount) {
+        return List.of();
+    }
+
 
 }
