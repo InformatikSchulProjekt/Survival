@@ -1,6 +1,8 @@
 package com.test.SurvivorGame.core.Rendering;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -10,16 +12,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.test.SurvivorGame.entity.enemy.Enemy1;
+import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 
 public class Renderer {
 
     private final Batch batch;
     private final Viewport viewport;
+
     private final World world;
+
+    private ShapeRenderer shapeRenderer;
 
     private final Texture playerTexture;
     private final Texture idle2;
@@ -43,6 +49,7 @@ public class Renderer {
     private final Animation<TextureRegion> frontAnimation;
     private final Animation<TextureRegion> rightAnimation;
     private final Animation<TextureRegion> leftAnimation;
+
     private float playerAnimationTime = 0f;
 
     //Ab hier Enemy1
@@ -77,11 +84,12 @@ public class Renderer {
 
 
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
 
         this.world = world;
+        this.shapeRenderer = shapeRenderer; // für debug der collider
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
@@ -221,12 +229,39 @@ public class Renderer {
         renderPlayer(world.getPlayer(), deltaTime);
 
         enemy1AnimationTime += deltaTime;
-        for (Enemy1 enemy1 : world.getEnemies1()) {
-            renderEnemy1(enemy1);
+        for (Enemy enemy : world.getEnemies()) {
+            renderEnemy(enemy);
         }
 
+        for(AbilityObject abilityObject : world.getAbilityObjects())
+        {
+            abilityObject.draw(batch);
+        }
 
         batch.end();
+
+        DBcolliderRenderer();
+    }
+
+    public void DBcolliderRenderer() //für Debug Purpose Collider anzeigen
+    {
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        world.getPlayer().drawCollider(shapeRenderer);
+
+        for(Enemy enemy : world.getEnemies())
+        {
+            enemy.drawCollider(shapeRenderer);
+        }
+
+        for(AbilityObject abilityObject : world.getAbilityObjects())
+        {
+            abilityObject.drawCollider(shapeRenderer);
+        }
+
+        shapeRenderer.end();
     }
 
     private void renderPlayer(Player player, float deltaTime) {
@@ -264,14 +299,14 @@ public class Renderer {
             player.getHeight()
         );
     }
-    private void renderEnemy1(Enemy1 enemy1) {
+    private void renderEnemy(Enemy enemy) {
 
         Animation<TextureRegion> animation;
 
-        if (!enemy1.isMoving()) {
+        if (!enemy.isMoving()) {
             animation = enemy1idleAnimation;
         } else {
-            switch (enemy1.getFacingDirection()) {
+            switch (enemy.getFacingDirection()) {
                 case UP:
                     animation = enemy1frontAnimation;
                     break;
@@ -292,10 +327,10 @@ public class Renderer {
 
         batch.draw(
             currentFrame,
-            enemy1.getX(),
-            enemy1.getY(),
-            enemy1.getWidth(),
-            enemy1.getHeight()
+            enemy.getX(),
+            enemy.getY(),
+            enemy.getWidth(),
+            enemy.getHeight()
         );
     }
 

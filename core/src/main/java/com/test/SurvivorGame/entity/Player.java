@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
@@ -9,7 +10,7 @@ public class Player extends Entity {
 
 
     public Player(PlayerState playerState) {
-        super(playerState.getX(), playerState.getY(), 2f, 3f);
+        super(playerState.getX(), playerState.getY(), 2f, 3f, playerState.getHP(), playerState.getSpeed());
         this.playerState = playerState;
     }
 
@@ -33,8 +34,8 @@ public class Player extends Entity {
         float newX = collider.getX() + moveDirection.x * speed * deltaTime;
         float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
-        collider.setPosition(newX, newY);
         playerState.setPosition(newX, newY);
+        collider.setPosition(newX, newY);
     }
 
     // updated mit MapRand
@@ -57,8 +58,7 @@ public class Player extends Entity {
     @Override
     public void takeDamage(float damage) {
         if (playerState.damage(damage)) return;
-        //System.out.println("Player bekommt schaden: " + damage);
-        //System.out.println("Player hat: " + currentHP + " Leben");
+
         die();
         //temp:
         reset(0, 0);
@@ -68,5 +68,10 @@ public class Player extends Entity {
     public void update(float deltaTime,GameMap map) {
         move(deltaTime);
         clampToMap(map);
+    }
+
+    public Vector2 getMoveDirection()
+    {
+        return moveDirection;
     }
 }

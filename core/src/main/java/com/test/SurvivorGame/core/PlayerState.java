@@ -1,8 +1,10 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.AbilityRegistry;
 import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -15,7 +17,6 @@ import java.util.Map;
 
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
-    private final AbilityRegistry abilityRegistry;
     private final ItemRegistry itemRegistry;
     private final PlayerClassRegistry playerClassRegistry;
 
@@ -25,9 +26,6 @@ public final class PlayerState {
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
         this.level = calcLevel();
-
-        this.abilityRegistry = new AbilityRegistry();
-        registerAbilities();
 
         this.itemRegistry = new ItemRegistry();
         registerItems();
@@ -135,28 +133,6 @@ public final class PlayerState {
         }
     }
 
-    public void unlockAbility(String abilityID) {
-        BaseAbility ability = abilityRegistry.getAbility(abilityID);
-
-        if (ability == null) {
-            throw new IllegalArgumentException("Unknown ability: " + abilityID);
-        }
-
-        int currentAmount = playerData.abilities.getOrDefault(abilityID, 0);
-
-        if (currentAmount >= ability.getMaxAmount()) {
-            throw new IllegalStateException(
-                "Ability already maxed: " + abilityID
-                    + " (" + currentAmount + "/" + ability.getMaxAmount() + ")"
-            );
-        }
-
-        int newAmount = currentAmount + 1;
-        playerData.abilities.put(abilityID, newAmount);
-
-        applyAbility(abilityID, newAmount);
-    }
-
     public void unlockItem(String itemId) {
         BaseItem item = itemRegistry.getItem(itemId);
 
@@ -173,31 +149,9 @@ public final class PlayerState {
         applyItem(itemId);
     }
 
-    private void applyAbility(String abilityID, int amount) {
-        BaseAbility ability = abilityRegistry.getAbility(abilityID);
-
-        if (ability == null) {
-            throw new IllegalArgumentException("Unknown ability: " + abilityID);
-        }
-
-        ability.onApply(playerStats, amount);
-    }
-
     private int calcLevel() {
         int xp = Math.max(0, playerData.xp);
         return 1 + (int) Math.sqrt(xp / 5f);
-    }
-
-    // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
-    private void registerAbilities() {
-        for (Map.Entry<String, Integer> entry : playerData.abilities.entrySet()) {
-            String abilityID = entry.getKey();
-            int amount = entry.getValue();
-
-            applyAbility(abilityID, amount);
-
-            System.out.println("Registered Ability: "+abilityID + " | lvl: " + amount); // debug
-        }
     }
 
     private void registerItems() {

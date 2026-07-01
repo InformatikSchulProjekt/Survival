@@ -8,7 +8,7 @@ public abstract class Entity extends GameObject {
 
     // bewegung
     protected final Vector2 moveDirection = new Vector2();
-    protected float movementSpeed = 5f;
+    protected float movementSpeed;
     protected boolean isMoving = false;
 
     // status
@@ -16,8 +16,13 @@ public abstract class Entity extends GameObject {
     protected float currentHP;
     protected boolean alive = true;
 
-    public Entity(float x, float y, float width, float height) {
-        super(x, y, width, height);
+    public Entity(float x, float y, float width, float height, float maxHP, float movementSpeed)
+    {
+        super(x,y,width,height);
+
+        this.maxHP = maxHP;
+        this.currentHP = maxHP;
+        this.movementSpeed = movementSpeed;
     }
 
     // abstrakte Methoden für Subklassen
