@@ -19,4 +19,6 @@ public abstract class BaseAbility {
         // Kann von einzelnen Abilities überschrieben werden.
         playerState.getPlayerStats().removeModifiersFromSource("ability:" + getId());
     }
+
+    public void activate(){}; // nicht jede ability erzeugt objekte
 }

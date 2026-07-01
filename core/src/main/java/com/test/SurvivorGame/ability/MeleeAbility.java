@@ -7,8 +7,9 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.melee.Melee;
 import com.test.SurvivorGame.world.World;
 
-public class MeleeAbility extends Ability {
+public class MeleeAbility extends BaseAbility {
 
+    public static final String ID = "melee";
     private final Viewport viewport;
 
     private float coolDown;
@@ -25,9 +26,9 @@ public class MeleeAbility extends Ability {
     private World world;
 
 
-    public MeleeAbility(Player player, World world, Viewport viewport)
+    public MeleeAbility(World world, Viewport viewport)
     {
-        this.player = player;
+        this.player = world.getPlayer();
         this.world = world;
         this.viewport = viewport;
     }
@@ -37,7 +38,7 @@ public class MeleeAbility extends Ability {
     {
         melee = new Melee(player.getX(), player.getY(), effectSize, duration, texture, player, viewport);
 
-        world.addAbillity(melee);
+        world.addAbility(melee);
     }
 
     public void dispose()
@@ -53,6 +54,21 @@ public class MeleeAbility extends Ability {
     public static float getDamageInterval()
     {
         return damageInterval;
+    }
+
+    @Override
+    public String getId() {
+        return ID;
+    }
+
+    @Override
+    public String getName() {
+        return "Melee Ability";
+    }
+
+    @Override
+    public int getMaxAmount() {
+        return 5;
     }
 
 }

@@ -7,8 +7,9 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
-public class ProjectileAbility extends Ability{
+public class ProjectileAbility extends BaseAbility{
 
+    public static final String ID = "projectile";
     private final Viewport viewport;
 
     private float coolDown;
@@ -26,9 +27,9 @@ public class ProjectileAbility extends Ability{
     private World world;
 
 
-    public ProjectileAbility(Player player, World world, Viewport viewport)
+    public ProjectileAbility(World world, Viewport viewport)
     {
-        this.player = player;
+        this.player = world.getPlayer();
         this.world = world;
         this.viewport = viewport;
     }
@@ -38,7 +39,7 @@ public class ProjectileAbility extends Ability{
     {
         projectile = new Projectile(player.getX(), player.getY(), effectSize, texture, player, viewport, speed, duration);
 
-        world.addAbillity(projectile);
+        world.addAbility(projectile);
     }
 
     public void dispose()
@@ -49,5 +50,20 @@ public class ProjectileAbility extends Ability{
     public static float getDamage()
     {
         return damage;
+    }
+
+    @Override
+    public String getId() {
+        return ID;
+    }
+
+    @Override
+    public String getName() {
+        return "Projectile Ability";
+    }
+
+    @Override
+    public int getMaxAmount() {
+        return 5;
     }
 }

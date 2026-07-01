@@ -11,6 +11,7 @@ import com.test.SurvivorGame.ability.MeleeAbility;
 import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
@@ -38,11 +39,12 @@ public class GamePlayScreen extends ScreenAdapter {
         // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData("TestMap");
-        this.playerState = new PlayerState(playerData);
 
         this.world = new World(screenWidth, screenHeight, playerState);
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
         this.shapeRenderer = new ShapeRenderer();
+
+        this.playerState = new PlayerState(playerData, world, renderer.getViewport());
     }
 
     @Override
@@ -79,12 +81,12 @@ public class GamePlayScreen extends ScreenAdapter {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
         {
-
+            playerState.getAbilityRegistry().activate("melee");
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
         {
-
+            playerState.getAbilityRegistry().activate("projectile");
         }
 
         // temporär um zu saven, weil es noch keine andere Optionen gibt.

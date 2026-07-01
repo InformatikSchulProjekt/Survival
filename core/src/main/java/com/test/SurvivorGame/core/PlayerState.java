@@ -1,9 +1,12 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.AbilityRegistry;
 import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.stat.*;
+import com.test.SurvivorGame.world.World;
 
 import java.util.Map;
 
@@ -14,11 +17,11 @@ public final class PlayerState {
     private final PlayerData playerData;
     private int level;
 
-    public PlayerState(PlayerData playerData) {
+    public PlayerState(PlayerData playerData, World world, Viewport viewport) {
         this.playerData = playerData;
         this.level = calcLevel();
 
-        this.abilityRegistry = new AbilityRegistry();
+        this.abilityRegistry = new AbilityRegistry(world, viewport); //neuer constructor
 
         // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
         for (Map.Entry<String, Integer> entry : playerData.abilities.entrySet()) {
@@ -153,4 +156,10 @@ public final class PlayerState {
         int xp = Math.max(0, playerData.xp);
         return 1 + (int) Math.sqrt(xp / 5f);
     }
+
+    public AbilityRegistry getAbilityRegistry()
+    {
+        return abilityRegistry;
+    }
+
 }

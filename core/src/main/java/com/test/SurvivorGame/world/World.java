@@ -157,9 +157,9 @@ public class World {
         return enemies;
     }
 
-    public void addAbillity(AbilityObject abillityObject)
+    public void addAbility(AbilityObject abilityObject)
     {
-        abilityObjects.add(abillityObject);
+        abilityObjects.add(abilityObject);
     }
 
     public ArrayList<AbilityObject> getAbilityObjects()
