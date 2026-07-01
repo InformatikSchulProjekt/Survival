@@ -1,17 +1,19 @@
 package com.test.SurvivorGame.ability;
 
 import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.stat.ModifierType;
-import com.test.SurvivorGame.stat.StatModifier;
-import com.test.SurvivorGame.stat.StatScope;
-import com.test.SurvivorGame.stat.StatType;
+import com.test.SurvivorGame.core.stat.ModifierType;
+import com.test.SurvivorGame.core.stat.StatModifier;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
+
+import java.util.List;
 
 // Das hier dient als eine Beispiel Ability.
 public final class HealthPackAbility extends BaseAbility {
     public static final String ID = "health_pack";
 
     @Override
-    public String getId() {
+    public String getID() {
         return ID;
     }
 
@@ -26,10 +28,13 @@ public final class HealthPackAbility extends BaseAbility {
     }
 
     @Override
-    public void onApply(PlayerState playerState, int amount) {
-        onRemove(playerState);
+    public String getDescription() {
+        return "Diese Ability macht dich mehr healthy"; // temporär, da nur ExampleAbility eigentlich
+    }
 
-        playerState.getPlayerStats().addModifier(
+    @Override
+    public List<StatModifier> getModifiers(int amount) {
+        return List.of(
             new StatModifier(
                 StatScope.ALL,
                 StatType.MAX_HEALTH,
@@ -38,7 +43,5 @@ public final class HealthPackAbility extends BaseAbility {
                 "ability:" + ID
             )
         );
-        //debug:
-        System.out.println("Applied Ability: "+ ID + " | " + amount);
     }
 }

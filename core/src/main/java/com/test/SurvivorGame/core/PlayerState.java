@@ -7,12 +7,21 @@ import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.stat.*;
 import com.test.SurvivorGame.world.World;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.item.BaseItem;
+import com.test.SurvivorGame.item.ItemRegistry;
+import com.test.SurvivorGame.player_class.BasePlayerClass;
+import com.test.SurvivorGame.player_class.PlayerClassRegistry;
 
 import java.util.Map;
 
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
     private final AbilityRegistry abilityRegistry;
+    private final ItemRegistry itemRegistry;
+    private final PlayerClassRegistry playerClassRegistry;
 
     private final PlayerData playerData;
     private int level;
@@ -22,16 +31,13 @@ public final class PlayerState {
         this.level = calcLevel();
 
         this.abilityRegistry = new AbilityRegistry(world, viewport); //neuer constructor
+        registerAbilities();
 
-        // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
-        for (Map.Entry<String, Integer> entry : playerData.abilities.entrySet()) {
-            String abilityID = entry.getKey();
-            int amount = entry.getValue();
+        this.itemRegistry = new ItemRegistry();
+        registerItems();
 
-            System.out.println(abilityID + ": " + amount); // debug
-
-            applyAbility(abilityID, amount);
-        }
+        this.playerClassRegistry = new PlayerClassRegistry();
+        registerPlayerClass();
     }
 
     public PlayerData getPlayerData() {
@@ -80,14 +86,28 @@ public final class PlayerState {
 
     // true = survived; false = died;
     public boolean damage(float amount) {
-        playerData.hp -= amount;
+        //if(playerData.hp <= 0) return true; // => Spieler ist bereits Tod
+        if (amount <= 0f) {
+            System.out.println("INVALID DAMAGE! Can't deal negative or 0 damage to player.");
+            return true;
+        }
 
-        // debug:
-        System.out.println(playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH));
+        float resistance = playerStats.getStat(StatScope.ALL, StatType.RESISTANCE);
+        if (resistance < 1f) {
+            System.out.println("INVALID RESISTANCE! Resistance has to be at least 1f.");
+            resistance = 1f;
+        }
+
+        float damageMultiplier = 1f / resistance;
+        float finalDamage = amount * damageMultiplier;
+        playerData.hp -= finalDamage;
+
+        System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
 
         if (playerData.hp < 0f) {
             playerData.hp = 0f;
             // => Player Dead Logic
+            System.out.println("Player died."); // debug
             return false;
         }
         return true;
@@ -119,7 +139,6 @@ public final class PlayerState {
         }
     }
 
-    // abilities:
     public void unlockAbility(String abilityID) {
         BaseAbility ability = abilityRegistry.getAbility(abilityID);
 
@@ -142,6 +161,22 @@ public final class PlayerState {
         applyAbility(abilityID, newAmount);
     }
 
+    public void unlockItem(String itemId) {
+        BaseItem item = itemRegistry.getItem(itemId);
+
+        if (item == null) {
+            throw new IllegalArgumentException("Unknown item: " + itemId);
+        }
+
+        if (playerData.items.contains(itemId)) {
+            throw new IllegalStateException("Item already unlocked: " + itemId);
+        }
+
+        playerData.items.add(itemId);
+
+        applyItem(itemId);
+    }
+
     private void applyAbility(String abilityID, int amount) {
         BaseAbility ability = abilityRegistry.getAbility(abilityID);
 
@@ -149,7 +184,7 @@ public final class PlayerState {
             throw new IllegalArgumentException("Unknown ability: " + abilityID);
         }
 
-        ability.onApply(this, amount);
+        ability.onApply(playerStats, amount);
     }
 
     private int calcLevel() {
@@ -160,6 +195,50 @@ public final class PlayerState {
     public AbilityRegistry getAbilityRegistry()
     {
         return abilityRegistry;
+    }
+
+
+    // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
+    private void registerAbilities() {
+        for (Map.Entry<String, Integer> entry : playerData.abilities.entrySet()) {
+            String abilityID = entry.getKey();
+            int amount = entry.getValue();
+
+            applyAbility(abilityID, amount);
+
+            System.out.println("Registered Ability: "+abilityID + " | lvl: " + amount); // debug
+        }
+    }
+
+    private void registerItems() {
+        for (String itemId : playerData.items) {
+            applyItem(itemId);
+
+            System.out.println("Registered Item: " + itemId); // debug
+        }
+    }
+
+    private void applyItem(String itemId) {
+        BaseItem item = itemRegistry.getItem(itemId);
+
+        if (item == null) {
+            throw new IllegalArgumentException("Unknown item: " + itemId);
+        }
+
+        item.onApply(playerStats);
+    }
+
+    private void registerPlayerClass() {
+        BasePlayerClass playerClass = playerClassRegistry.getPlayerClass(playerData.playerClass);
+
+        if (playerClass == null) {
+            if (playerData.playerClass.equals("")) System.out.println("[ERROR]: No class given");
+            throw new IllegalArgumentException("Unknown player class: " + playerData.playerClass);
+        }
+
+        playerClass.onApply(playerStats);
+
+        System.out.println("Registered PlayerClass: " + playerData.playerClass); // debug
     }
 
 }

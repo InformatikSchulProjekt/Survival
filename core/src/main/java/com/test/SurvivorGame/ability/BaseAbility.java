@@ -1,23 +1,32 @@
 package com.test.SurvivorGame.ability;
 
-import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatModifier;
+
+import java.util.List;
 
 public abstract class BaseAbility {
-    public abstract String getId();
+    public abstract String getID();
 
     public abstract String getName();
 
     public abstract int getMaxAmount();
 
-    public void onApply(PlayerState playerState, int amount) {
-        // Wird ausgeführt, wenn die Ability neu berechnet/angewendet wird.
-        // Leer, weil nicht jede Ability Stats verändert.
+    public abstract String getDescription();
+
+    public abstract List<StatModifier> getModifiers(int amount);
+
+    public void onApply(PlayerStats playerStats, int amount) {
+        onRemove(playerStats);
+
+        for(StatModifier statMod : getModifiers(amount)) {
+            playerStats.addModifier(statMod);
+        }
+        System.out.println("Applied Ability: "+ getID() + " | " + amount); // debug
     }
 
-    public void onRemove(PlayerState playerState) {
-        // Entfernt alte Modifier dieser Ability.
-        // Kann von einzelnen Abilities überschrieben werden.
-        playerState.getPlayerStats().removeModifiersFromSource("ability:" + getId());
+    public void onRemove(PlayerStats playerStats) {
+        playerStats.removeModifiersFromSource("ability:" + getID());
     }
 
     public void activate(){}; // nicht jede ability erzeugt objekte

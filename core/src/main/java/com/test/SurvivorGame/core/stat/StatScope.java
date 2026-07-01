@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.stat;
+package com.test.SurvivorGame.core.stat;
 
 public enum StatScope {
     ALL,

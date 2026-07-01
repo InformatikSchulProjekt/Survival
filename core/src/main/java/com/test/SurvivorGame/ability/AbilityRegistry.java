@@ -22,7 +22,7 @@ public final class AbilityRegistry {
     }
 
     private void register(BaseAbility ability) {
-        abilities.put(ability.getId(), ability);
+        abilities.put(ability.getID(), ability);
     }
 
     public void activate(String abilityId) {
