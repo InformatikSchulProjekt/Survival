@@ -1,6 +1,8 @@
 package com.test.SurvivorGame.core.Rendering;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -10,10 +12,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.test.SurvivorGame.entity.enemy.enemy1;
+import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 
 public class Renderer {
 
@@ -22,8 +25,9 @@ public class Renderer {
 
     private final World world;
 
+    private ShapeRenderer shapeRenderer;
+
     private final Texture playerTexture;
-    private final Texture idle1;
     private final Texture idle2;
     private final Texture idle3;
     private final Texture idle4;
@@ -48,21 +52,51 @@ public class Renderer {
 
     private float playerAnimationTime = 0f;
 
+    //Ab hier Enemy1
+    private float enemy1AnimationTime = 0f;
+    private final Texture enemy1Texture;
+    private final Texture enemy1idle2;
+    private final Texture enemy1idle3;
+    private final Texture enemy1idle4;
+    private final Texture enemy1back1;
+    private final Texture enemy1back2;
+    private final Texture enemy1front1;
+    private final Texture enemy1front2;
+    private final Texture enemy1front3;
+    private final Texture enemy1right1;
+    private final Texture enemy1right2;
+    private final Texture enemy1right3;
+    private final Texture enemy1right4;
+    private final Texture enemy1left1;
+    private final Texture enemy1left2;
+    private final Texture enemy1left3;
+    private final Texture enemy1left4;
+    private final Animation<TextureRegion> enemy1idleAnimation;
+    private final Animation<TextureRegion> enemy1backAnimation;
+    private final Animation<TextureRegion> enemy1frontAnimation;
+    private final Animation<TextureRegion> enemy1rightAnimation;
+    private final Animation<TextureRegion> enemy1leftAnimation;
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world) {
+
+
+
+
+
+
+
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
 
         this.world = world;
+        this.shapeRenderer = shapeRenderer; // für debug der collider
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
-        idle1 = new Texture(Gdx.files.internal("Player/idle 1.png"));
         idle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
         idle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
         idle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
-        idleAnimation = new Animation<>(0.2f,
-            new TextureRegion(idle1),
+        idleAnimation = new Animation<>(0.4f,
             new TextureRegion(idle2),
             new TextureRegion(idle3),
             new TextureRegion(idle4));
@@ -104,6 +138,53 @@ public class Renderer {
             new TextureRegion(left4));
         leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
+        //Enemy1 ab hier
+        this.enemy1Texture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        TextureRegion[][] enemy1frames = TextureRegion.split(enemy1Texture, 64, 64);
+        enemy1idle2 = new Texture(Gdx.files.internal("Enemy1/idle 2.png"));
+        enemy1idle3 = new Texture(Gdx.files.internal("Enemy1/idle 3.png"));
+        enemy1idle4 = new Texture(Gdx.files.internal("Enemy1/idle 4.png"));
+        enemy1idleAnimation = new Animation<>(0.4f,
+            new TextureRegion(enemy1idle2),
+            new TextureRegion(enemy1idle3),
+            new TextureRegion(enemy1idle4));
+        enemy1idleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        enemy1front1 = new Texture(Gdx.files.internal("Enemy1/front 1.png"));
+        enemy1front2 = new Texture(Gdx.files.internal("Enemy1/front 2.png"));
+        enemy1front3 = new Texture(Gdx.files.internal("Enemy1/front 3.png"));
+        enemy1frontAnimation = new Animation<>(0.2f,
+            new TextureRegion(enemy1front1),
+            new TextureRegion(enemy1front2),
+            new TextureRegion(enemy1front3));
+        enemy1frontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        enemy1back1 = new Texture(Gdx.files.internal("Enemy1/back 1.png"));
+        enemy1back2 = new Texture(Gdx.files.internal("Enemy1/back 2.png"));
+        enemy1backAnimation = new Animation<>(0.2f,
+            new TextureRegion(enemy1back1),
+            new TextureRegion(enemy1back2));
+        enemy1backAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        enemy1right1 = new Texture(Gdx.files.internal("Enemy1/right 1.png"));
+        enemy1right2 = new Texture(Gdx.files.internal("Enemy1/right 2.png"));
+        enemy1right3 = new Texture(Gdx.files.internal("Enemy1/right 3.png"));
+        enemy1right4 = new Texture(Gdx.files.internal("Enemy1/right 4.png"));
+        enemy1rightAnimation = new Animation<>(0.2f,
+            new TextureRegion(enemy1right1),
+            new TextureRegion(enemy1right2),
+            new TextureRegion(enemy1right3),
+            new TextureRegion(enemy1right4));
+        enemy1rightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        enemy1left1 = new Texture(Gdx.files.internal("Enemy1/left 1.png"));
+        enemy1left2 = new Texture(Gdx.files.internal("Enemy1/left 2.png"));
+        enemy1left3 = new Texture(Gdx.files.internal("Enemy1/left 3.png"));
+        enemy1left4 = new Texture(Gdx.files.internal("Enemy1/left 4.png"));
+        enemy1leftAnimation = new Animation<>(0.2f,
+            new TextureRegion(enemy1left1),
+            new TextureRegion(enemy1left2),
+            new TextureRegion(enemy1left3),
+            new TextureRegion(enemy1left4));
+        enemy1leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
 
     }
@@ -123,32 +204,64 @@ public class Renderer {
         float halfW = viewport.getWorldWidth() / 2f;
         float halfH = viewport.getWorldHeight() / 2f;
 
-        float mapW = map.getWorldWidth();
-        float mapH = map.getWorldHeight();
-
         float targetX = world.getPlayer().getX() + world.getPlayer().getWidth() / 2f;
         float targetY = world.getPlayer().getY() + world.getPlayer().getHeight() / 2f;
 
-       //das fixiert die kamera zur map sodass man nicht rausschauen kann
-        float camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
-        float camY = MathUtils.clamp(targetY, Math.min(halfH, mapH/2f), Math.max(halfH, mapH - halfH));
+        float camX = targetX;
+        float camY = targetY;
+
+        if (!map.isInfinite()) {
+            float mapW = map.getWorldWidth();
+            float mapH = map.getWorldHeight();
+
+            //das fixiert die kamera zur map sodass man nicht rausschauen kann
+            camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
+            camY = MathUtils.clamp(targetY, Math.min(halfH, mapH/2f), Math.max(halfH, mapH - halfH));
+        }
+
         cam.position.set(camX, camY, 0f);
         cam.update();
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
 
-        renderMap(map);
+        renderMap(map, cam);
         renderPlayer(world.getPlayer(), deltaTime);
 
-        renderPlayer(world.getPlayer(), deltaTime);
+        enemy1AnimationTime += deltaTime;
+        for (Enemy enemy : world.getEnemies()) {
+            renderEnemy(enemy);
+        }
 
-        for(enemy1 enemy : world.getEnemies())
+        for(AbilityObject abilityObject : world.getAbilityObjects())
         {
-            enemy.draw(batch);
+            abilityObject.draw(batch);
         }
 
         batch.end();
+
+        DBcolliderRenderer();
+    }
+
+    public void DBcolliderRenderer() //für Debug Purpose Collider anzeigen
+    {
+        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+        world.getPlayer().drawCollider(shapeRenderer);
+
+        for(Enemy enemy : world.getEnemies())
+        {
+            enemy.drawCollider(shapeRenderer);
+        }
+
+        for(AbilityObject abilityObject : world.getAbilityObjects())
+        {
+            abilityObject.drawCollider(shapeRenderer);
+        }
+
+        shapeRenderer.end();
     }
 
     private void renderPlayer(Player player, float deltaTime) {
@@ -186,20 +299,81 @@ public class Renderer {
             player.getHeight()
         );
     }
-    private void renderMap(GameMap map) {
+    private void renderEnemy(Enemy enemy) {
+
+        Animation<TextureRegion> animation;
+
+        if (!enemy.isMoving()) {
+            animation = enemy1idleAnimation;
+        } else {
+            switch (enemy.getFacingDirection()) {
+                case UP:
+                    animation = enemy1frontAnimation;
+                    break;
+                case LEFT:
+                    animation = enemy1leftAnimation;
+                    break;
+                case RIGHT:
+                    animation = enemy1rightAnimation;
+                    break;
+                case DOWN:
+                default:
+                    animation = enemy1backAnimation;
+                    break;
+            }
+        }
+        TextureRegion currentFrame = animation.getKeyFrame(enemy1AnimationTime);
+
+
         batch.draw(
-            map.getTexture(),
-            0f,
-            0f,
-            map.getWorldWidth(),
-            map.getWorldHeight()
+            currentFrame,
+            enemy.getX(),
+            enemy.getY(),
+            enemy.getWidth(),
+            enemy.getHeight()
         );
+    }
+
+    private void renderMap(GameMap map, OrthographicCamera cam) {
+        if (!map.isInfinite()) {
+            batch.draw(
+                map.getTexture(),
+                0f,
+                0f,
+                map.getWorldWidth(),
+                map.getWorldHeight()
+            );
+            return;
+        }
+
+        float tileWidth = map.getWorldWidth();
+        float tileHeight = map.getWorldHeight();
+        float left = cam.position.x - viewport.getWorldWidth() / 2f;
+        float right = cam.position.x + viewport.getWorldWidth() / 2f;
+        float bottom = cam.position.y - viewport.getWorldHeight() / 2f;
+        float top = cam.position.y + viewport.getWorldHeight() / 2f;
+
+        int startX = MathUtils.floor(left / tileWidth) - 1;
+        int endX = MathUtils.floor(right / tileWidth) + 1;
+        int startY = MathUtils.floor(bottom / tileHeight) - 1;
+        int endY = MathUtils.floor(top / tileHeight) + 1;
+
+        for (int x = startX; x <= endX; x++) {
+            for (int y = startY; y <= endY; y++) {
+                batch.draw(
+                    map.getTexture(),
+                    x * tileWidth,
+                    y * tileHeight,
+                    tileWidth,
+                    tileHeight
+                );
+            }
+        }
     }
     public Viewport getViewport() {
         return viewport;
     }
     public void dispose() {
-        idle1.dispose();
         idle2.dispose();
         idle3.dispose();
         idle4.dispose();
@@ -216,6 +390,21 @@ public class Renderer {
         left2.dispose();
         left3.dispose();
         left4.dispose();
+        enemy1idle2.dispose();
+        enemy1idle3.dispose();
+        enemy1idle4.dispose();
+        enemy1back1.dispose();
+        enemy1back2.dispose();
+        enemy1front1.dispose();
+        enemy1front2.dispose();
+        enemy1front3.dispose();
+        enemy1right1.dispose();
+        enemy1right2.dispose();
+        enemy1right3.dispose();
+        enemy1right4.dispose();
+        enemy1left1.dispose();
+        enemy1left2.dispose();
+        enemy1left3.dispose();
+        enemy1left4.dispose();
     }
-
 }
