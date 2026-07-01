@@ -2,6 +2,7 @@ package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.test.SurvivorGame.core.SoundManager.SoundManager;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
 
@@ -146,9 +147,9 @@ public class Player extends GameObject {
     public void takeDamage(float damage)
     {
         currentHP -= damage;
+        SoundManager.playSound("damaged1.wav");
         System.out.println("Player bekommt schaden: " + damage);
         System.out.println("Player hat: " + currentHP + " Leben");
-
         if(currentHP <= 0)
         {
             currentHP = 0;
