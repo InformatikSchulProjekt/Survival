@@ -1,10 +1,6 @@
 package com.test.SurvivorGame.core;
 
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.AbilityRegistry;
-import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.data.PlayerData;
-import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -12,8 +8,6 @@ import com.test.SurvivorGame.item.BaseItem;
 import com.test.SurvivorGame.item.ItemRegistry;
 import com.test.SurvivorGame.player_class.BasePlayerClass;
 import com.test.SurvivorGame.player_class.PlayerClassRegistry;
-
-import java.util.Map;
 
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
@@ -97,7 +91,7 @@ public final class PlayerState {
         playerData.hp -= finalDamage;
 
         System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
-
+        SoundManager.playSound("damaged1.wav");
         if (playerData.hp < 0f) {
             playerData.hp = 0f;
             // => Player Dead Logic

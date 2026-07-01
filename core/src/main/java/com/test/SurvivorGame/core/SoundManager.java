@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.core.SoundManager;
+package com.test.SurvivorGame.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
