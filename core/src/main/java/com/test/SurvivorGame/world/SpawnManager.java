@@ -30,9 +30,12 @@ public class SpawnManager {
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
+    private int currentWave;
+
     public SpawnManager(Player player)
     {
         this.player = player;
+        currentWave = 1;
     }
 
     public void update(float deltaTime, GameMap map)
@@ -134,6 +137,11 @@ public class SpawnManager {
 
             bossPhaseTriggered = true;
         }
+
+        if(enemies.isEmpty())
+        {
+            startNextWave();
+        }
     }
 
     private boolean endTime()
@@ -160,5 +168,26 @@ public class SpawnManager {
 
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;
+    }
+
+    private void startNextWave()
+    {
+        currentWave++;
+
+        waveTime = 0f;
+        spawnTimer = 0f;
+
+        bossPhaseTriggered = false;
+        state = WaveState.NORMAL;
+
+        increaseDifficulty();
+    }
+
+    private void increaseDifficulty()
+    {
+        startInterval *= 0.9f;
+        endInterval *= 0.95f;
+
+        if(endInterval < 0.15f) endInterval = 0.15f;
     }
 }
