@@ -141,7 +141,7 @@ public class GamePlayScreen extends ScreenAdapter {
             return;
         }
 
-        abilityService.getAbilityRegistry().activate(abilityId);
+        abilityService.activate(abilityId);
     }
 
     // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen

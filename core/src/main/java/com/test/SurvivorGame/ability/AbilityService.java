@@ -63,4 +63,12 @@ public class AbilityService {
     {
         return abilityRegistry;
     }
+
+    public void activate(String abilityId) {
+        BaseAbility ability = abilityRegistry.getAbility(abilityId);
+
+        if (ability != null) {
+            ability.activate();
+        }
+    }
 }

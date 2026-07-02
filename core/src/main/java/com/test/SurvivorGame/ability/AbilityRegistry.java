@@ -33,13 +33,4 @@ public final class AbilityRegistry {
         abilities.put(ability.getID(), ability);
     }
 
-    public void activate(String abilityId) {
-        BaseAbility ability = abilities.get(abilityId);
-
-        if (ability != null) {
-            ability.activate();
-        }
-    }
-
-
 }
