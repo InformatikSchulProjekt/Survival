@@ -38,11 +38,10 @@ public class AbilityService {
 
         // Packt Aktive Abilities in die Ability slot leiste, wenn Platz da
         if (ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
-            for (int i = 0; i < abilitySlots.length; i++) {
-                if (abilitySlots[i] == null || abilitySlots[i].isBlank()) {
-                    abilitySlots[i] = abilityID;
-                    break;
-                }
+            boolean hadFreeSpace = tryPutAbilityIntoFreeSlot(abilityID);
+            // debug:
+            if (!hadFreeSpace) {
+                System.out.println("Ability Bar had no empty slots for new ability: "+abilityID);
             }
         // Applied die Modifier von StatAbilities
         } else if (ability.getAbilityType() == AbilityType.STAT_ABILITY) {
@@ -78,5 +77,18 @@ public class AbilityService {
         if (ability != null) {
             ability.activate();
         }
+    }
+
+    private boolean tryPutAbilityIntoFreeSlot(String abilityID) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        for (int i = 0; i < abilitySlots.length; i++) {
+            if (abilitySlots[i] == null || abilitySlots[i].isBlank()) {
+                abilitySlots[i] = abilityID;
+                return true;
+            }
+        }
+
+        return false;
     }
 }
