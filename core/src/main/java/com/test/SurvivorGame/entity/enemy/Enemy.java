@@ -18,17 +18,31 @@
 
         private Vector2 moveDirection;
 
-        private static float movementSpeed = 2f;
-
-        private static float damage = 1f;
+        private float damage = 1f;
 
         private boolean dead = false;
 
         public Enemy(float x, float y, Player player)
         {
-            super(x, y, ENEMY_SIZE, ENEMY_SIZE, maxStartHP, movementSpeed);
+            super(x, y, ENEMY_SIZE, ENEMY_SIZE, maxStartHP, 2f);
             this.player = player;
         }
+
+        public Enemy(float x, float y, Player player,
+                     float size, float maxHP,
+                     float movementSpeed, float damage) {
+
+            super(x, y, size, size, maxHP, movementSpeed);
+
+            this.player = player;
+
+            this.maxHP = maxHP;
+            this.currentHP = maxHP;
+
+            this.movementSpeed = movementSpeed;
+            this.damage = damage;
+        }
+
 
         public float getDamage()
         {
