@@ -30,6 +30,22 @@
             this.player = player;
         }
 
+        public Enemy(float x, float y, Player player,
+                     float size, float maxHP,
+                     float movementSpeed, float damage) {
+
+            super(x, y, size, size, maxHP, movementSpeed);
+
+            this.player = player;
+
+            this.maxHP = maxHP;
+            this.currentHP = maxHP;
+
+            this.movementSpeed = movementSpeed;
+            this.damage = damage;
+        }
+
+
         public float getDamage()
         {
             return damage;
