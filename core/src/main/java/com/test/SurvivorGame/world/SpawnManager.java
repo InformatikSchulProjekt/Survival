@@ -19,30 +19,55 @@ public class SpawnManager {
     private float endInterval;
     private float currentSpawnInterval = startInterval; // am anfang gesetzter beispiel interval;
 
+    private boolean bossPhaseTriggered = false;
+    private enum WaveState {
+        NORMAL,
+        BOSS
+    }
+    private WaveState state = WaveState.NORMAL;
+
     private Player player;
-    private Enemy enemy;
-    private Boss boss;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
-    public SpawnManager()
+    public SpawnManager(Player player)
     {
-
+        this.player = player;
     }
 
     public void update(float deltaTime, GameMap map)
+    {
+        switch (state)
+        {
+            case NORMAL -> updateNormalWave(deltaTime);
+            case BOSS -> updateBossWave();
+        }
+
+        updateEnemy(deltaTime, map);
+    }
+
+    public void updateNormalWave(float deltaTime)
     {
         waveTime += deltaTime;
         spawnTimer += deltaTime;
 
         currentSpawnInterval = MathUtils.lerp(2.0f, 0.4f, waveTime / waveLifeTime);
 
-        if (spawnTimer >= currentSpawnInterval) {
+        if (spawnTimer >= currentSpawnInterval)
+        {
             spawnEnemy();
             spawnTimer = 0;
         }
 
-        updateEnemy(deltaTime, map);
+    }
+
+    private void updateBossWave()
+    {
+        if(!bossPhaseTriggered)
+        {
+            triggerBossPhase();
+        }
+
     }
 
     private void spawnEnemy()
@@ -90,15 +115,18 @@ public class SpawnManager {
         }
     }
 
-    private void endPhase()
+    private void triggerBossPhase()
     {
-        if(endTime())
+        if(!bossPhaseTriggered && endTime())
         {
             for(int i = 1; i < Boss.getBossWaveCount(); i++)
             {
                 spawnEnemy();
             }
-            spawnBoss();
+            for (int i = 0; i < Boss.getBossCount(); i++)
+            {
+                spawnBoss();
+            }
         }
     }
 
@@ -112,5 +140,18 @@ public class SpawnManager {
         {
             return true;
         }
+    }
+
+    public ArrayList<Enemy> getEnemies()
+    {
+        return enemies;
+    }
+
+    public void resetSpawn()
+    {
+        float waveTime = 0f;
+        float spawnTimer = 0f;
+
+        bossPhaseTriggered = false;
     }
 }
