@@ -33,6 +33,7 @@ public class World {
 
     public void update(float deltaTime, GameMap map)
     {
+        player.update(deltaTime, map);
         spawnManager.update(deltaTime, map);
 
         checkAbilityCollision(deltaTime);
