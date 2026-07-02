@@ -29,6 +29,8 @@ public abstract class BaseAbility {
         System.out.println("Applied Ability: "+ getID() + " | " + amount); // debug
     }
 
+    public abstract AbilityType getAbilityType();
+
     public void onRemove(PlayerStats playerStats) {
         playerStats.removeModifiersFromSource("ability:" + getID());
     }

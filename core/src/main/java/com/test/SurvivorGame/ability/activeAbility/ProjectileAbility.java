@@ -1,16 +1,13 @@
-package com.test.SurvivorGame.ability;
+package com.test.SurvivorGame.ability.activeAbility;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
-import java.util.List;
-
-public class ProjectileAbility extends BaseAbility{
+public class ProjectileAbility extends ActiveAbility {
 
     public static final String ID = "projectile";
     private final Viewport viewport;

@@ -1,16 +1,13 @@
-package com.test.SurvivorGame.ability;
+package com.test.SurvivorGame.ability.activeAbility;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.melee.Melee;
 import com.test.SurvivorGame.world.World;
 
-import java.util.List;
-
-public class MeleeAbility extends BaseAbility {
+public class MeleeAbility extends ActiveAbility {
 
     public static final String ID = "melee";
     private final Viewport viewport;
