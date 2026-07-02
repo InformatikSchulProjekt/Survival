@@ -8,35 +8,26 @@ import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.ability.MeleeAbility;
-import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
-    private DataLoader dataLoader;
-    private PlayerState playerState;
+    private final DataLoader dataLoader;
+    private final PlayerState playerState;
+    private final AbilityService abilityService;
 
     public final float screenWidth = 16f;
-
     public final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
-                                            //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
     private final Renderer renderer;
-
     private ShapeRenderer shapeRenderer;
 
-    private World world;
-
-    private AbilityService abilityService;
-
+    private final World world;
+    private final GameMap map = new GameMap();
 
     private Vector2 playerMoveDirection = new Vector2();
-    private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
