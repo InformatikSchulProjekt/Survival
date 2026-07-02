@@ -70,8 +70,4 @@ public class Player extends Entity {
         clampToMap(map);
     }
 
-    public Vector2 getMoveDirection()
-    {
-        return moveDirection;
-    }
 }
