@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SpawnManager {
 
-    private float waveLifeTime = 120f;
+    private float waveLifeTime = 20f;
     private float waveTime = 0f;    //wieviel Zeit ist seit start der wave vergangen
     private float spawnTimer = 0f;
 
@@ -59,6 +59,11 @@ public class SpawnManager {
             spawnTimer = 0;
         }
 
+        if(endTime())
+        {
+            state = WaveState.BOSS;
+        }
+
     }
 
     private void updateBossWave()
@@ -67,7 +72,6 @@ public class SpawnManager {
         {
             triggerBossPhase();
         }
-
     }
 
     private void spawnEnemy()
@@ -127,6 +131,8 @@ public class SpawnManager {
             {
                 spawnBoss();
             }
+
+            bossPhaseTriggered = true;
         }
     }
 
@@ -149,9 +155,10 @@ public class SpawnManager {
 
     public void resetSpawn()
     {
-        float waveTime = 0f;
-        float spawnTimer = 0f;
+        waveTime = 0f;
+        spawnTimer = 0f;
 
         bossPhaseTriggered = false;
+        state = WaveState.NORMAL;
     }
 }

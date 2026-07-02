@@ -59,10 +59,8 @@ public class Player extends Entity {
         if (playerState.damage(damage)) return;
 
         die();
-        //temp:
-        reset(0, 0);
-
     }
+
     @Override
     public void update(float deltaTime,GameMap map) {
         move(deltaTime);
