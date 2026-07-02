@@ -34,7 +34,20 @@ public class AbilityService {
         int newAmount = currentAmount + 1;
         playerState.getPlayerData().abilities.put(abilityID, newAmount);
 
-        ability.onApply(playerState.getPlayerStats(), newAmount);
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        // Packt Aktive Abilities in die Ability slot leiste, wenn Platz da
+        if (ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
+            for (int i = 0; i < abilitySlots.length; i++) {
+                if (abilitySlots[i] == null || abilitySlots[i].isBlank()) {
+                    abilitySlots[i] = abilityID;
+                    break;
+                }
+            }
+        // Applied die Modifier von StatAbilities
+        } else if (ability.getAbilityType() == AbilityType.STAT_ABILITY) {
+            ability.onApply(playerState.getPlayerStats(), newAmount);
+        }
     }
 
     private void applyAbility(String abilityID, int amount) {
@@ -57,11 +70,6 @@ public class AbilityService {
 
             System.out.println("Registered Ability: "+abilityID + " | lvl: " + amount); // debug
         }
-    }
-
-    public AbilityRegistry getAbilityRegistry()
-    {
-        return abilityRegistry;
     }
 
     public void activate(String abilityId) {
