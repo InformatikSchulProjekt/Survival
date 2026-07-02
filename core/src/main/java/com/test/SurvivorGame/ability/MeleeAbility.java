@@ -69,19 +69,8 @@ public class MeleeAbility extends BaseAbility {
         return "Melee Ability";
     }
 
-    @Override
-    public int getMaxAmount() {
+    @Override public int getMaxAmount() {
         return 5;
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
-    }
-
-    @Override
-    public List<StatModifier> getModifiers(int amount) {
-        return List.of();
     }
 
 

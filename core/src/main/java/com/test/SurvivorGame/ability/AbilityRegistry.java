@@ -1,8 +1,8 @@
 package com.test.SurvivorGame.ability;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
+import com.test.SurvivorGame.ability.statAbility.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,15 @@ public final class AbilityRegistry {
 
 
     public AbilityRegistry(World world, Viewport viewport) {
-        register(new HealthPackAbility());
+        // Stat Abilities:
+        register(new Vitality());
+        register(new SwiftStep());
+        register(new Regeneration());
+        register(new ArcaneEcho());
+        register(new SpellPower());
+        register(new QuickCasting());
+        register(new ExpandingMagic());
+
         register(new MeleeAbility(world, viewport));
         register(new ProjectileAbility(world, viewport));
     }

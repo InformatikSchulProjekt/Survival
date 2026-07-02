@@ -12,9 +12,13 @@ public abstract class BaseAbility {
 
     public abstract int getMaxAmount();
 
-    public abstract String getDescription();
+    public String getDescription(int level) {
+        return "No description set.";
+    }
 
-    public abstract List<StatModifier> getModifiers(int amount);
+    public List<StatModifier> getModifiers(int amount) {
+        return List.of();
+    }
 
     public void onApply(PlayerStats playerStats, int amount) {
         onRemove(playerStats);
