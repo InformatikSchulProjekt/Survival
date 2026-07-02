@@ -11,19 +11,14 @@ import java.util.ArrayList;
 
 public class World {
 
-    private Player player;
+    private final Player player;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private float spawnTimer;
-
-    private float spawnInterval = 2f;
-
-    private float dmgTaken;
-
+    private final float spawnInterval = 2f;
     private float damageTimer = 0f;
-
-    private float DamageInterval = 0.5f;
+    private final float DamageInterval = 0.5f;
 
     float screenWidth, screenHeight; // nur für reset-test
 
