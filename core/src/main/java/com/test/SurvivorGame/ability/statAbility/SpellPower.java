@@ -1,6 +1,5 @@
 package com.test.SurvivorGame.ability.statAbility;
 
-import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.core.stat.StatScope;
@@ -8,7 +7,7 @@ import com.test.SurvivorGame.core.stat.StatType;
 
 import java.util.List;
 
-public final class SpellPower extends BaseAbility {
+public final class SpellPower extends StatAbility {
     public static final String ID = "spell_power";
 
     @Override
