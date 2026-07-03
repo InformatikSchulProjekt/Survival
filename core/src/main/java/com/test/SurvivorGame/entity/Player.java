@@ -3,10 +3,8 @@ package com.test.SurvivorGame.entity;
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
-import com.test.SurvivorGame.core.PlayerState;
 
 public class Player extends Entity {
-    private PlayerState playerState;
     private static final float PLAYER_SIZE = 1f;
     private final float maxStartHP = 10f;
 
@@ -14,11 +12,9 @@ public class Player extends Entity {
     private int level = 1;
 
     public Player(float x, float y) {
-
-        super(playerstate.getX(),playserstate.getY(), PLAYER_SIZE * 2, PLAYER_SIZE * 3);
+        super(x, y, PLAYER_SIZE * 2, PLAYER_SIZE * 3);
         maxHP = maxStartHP;
         currentHP = maxHP;
-        this.playerState = playerState;
     }
 
     // data handling
@@ -59,11 +55,13 @@ public class Player extends Entity {
         alive = true;
         collider.setPosition(x, y);
 
+        maxHP = maxStartHP;
+        currentHP = maxHP;
+        damageFlashTimer = 0f;
+
         moveDirection.setZero();
         isMoving = false;
         facingDirection = Direction.DOWN;
-        damageFlashTimer = 0f;
-        playerState.resetHealth();
     }
 
 
@@ -73,11 +71,8 @@ public class Player extends Entity {
 
         float newX = collider.getX() + moveDirection.x * movementSpeed * deltaTime;
         float newY = collider.getY() + moveDirection.y * movementSpeed * deltaTime;
-        float speed = playerState.getSpeed();
-        //debug: System.out.println("Player Speed: "+speed);
 
         collider.setPosition(newX, newY);
-        playerState.setPosition(newX, newY);
     }
 
 
@@ -97,17 +92,19 @@ public class Player extends Entity {
         float clampedY = MathUtils.clamp(collider.y, minY, Math.max(minY, maxY));
 
         collider.setPosition(clampedX, clampedY);
-        playerState.setPosition(clampedX, clampedY);
     }
 
     @Override
     public void takeDamage(float damage) {
-        if (playerState.damage(damage)) startDamageFlash();return;
-        //System.out.println("Player bekommt schaden: " + damage);
-        //System.out.println("Player hat: " + currentHP + " Leben");
-        die();
-        //temp:
-        reset(0, 0);
+        currentHP -= damage;
+        startDamageFlash();
+        System.out.println("Player bekommt schaden: " + damage);
+        System.out.println("Player hat: " + currentHP + " Leben");
+
+        if (currentHP <= 0) {
+            currentHP = 0;
+            die();
+        }
 
     }
     @Override
