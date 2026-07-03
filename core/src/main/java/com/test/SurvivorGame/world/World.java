@@ -1,6 +1,5 @@
 package com.test.SurvivorGame.world;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
@@ -11,69 +10,31 @@ import java.util.ArrayList;
 
 public class World {
 
-    private Player player;
-
-    private ArrayList<Enemy> enemies = new ArrayList<>();
-
-    private float spawnTimer;
-
-    private float spawnInterval = 2f;
-
-    private float dmgTaken;
+    private final Player player;
 
     private float damageTimer = 0f;
-
-    private float DamageInterval = 0.5f;
+    private final float DamageInterval = 0.5f;
 
     float screenWidth, screenHeight; // nur für reset-test
 
     private ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
+
+    private SpawnManager spawnManager;
 
     public World(float screenWidth, float screenHeight, PlayerState playerState)
     {
         player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
+
+        spawnManager = new SpawnManager(player);
     }
 
-    private void spawnEnemy()
-    {
-        float distance = MathUtils.random(10f, 15f); // zufälliger radius
-
-        float angle = MathUtils.random(0f, 360f); //zufällige richtung
-
-        float x = player.getCenter().x +
-            MathUtils.cosDeg(angle) * distance;
-
-        float y = player.getCenter().y +
-            MathUtils.sinDeg(angle) * distance;
-
-        enemies.add(new Enemy(x, y, player));
-    }
 
     public void update(float deltaTime, GameMap map)
     {
-        player.update(deltaTime,map);
-
-        spawnTimer += deltaTime;
-
-        if(spawnTimer >= spawnInterval)
-        {
-            spawnEnemy();
-            spawnTimer = 0;
-        }
-
-        for(int i = enemies.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
-        {
-            Enemy enemy = enemies.get(i);
-
-            enemy.update(deltaTime, map);
-
-            if(enemy.isDead())
-            {
-                enemies.remove(i);
-            }
-        }
+        player.update(deltaTime, map);
+        spawnManager.update(deltaTime, map);
 
         checkAbilityCollision(deltaTime);
         checkPlayerCollisions(deltaTime);
@@ -99,9 +60,10 @@ public class World {
 
     private void resetWorld()
     {
-        enemies.clear();
+        spawnManager.getEnemies().clear();
 
-        spawnTimer = 0;
+        spawnManager.resetSpawn();
+
         damageTimer = 0;
 
         player.reset(screenWidth / 2, screenHeight / 2);
@@ -115,7 +77,7 @@ public class World {
         {
             float dmgTaken = 0;
 
-            for(Enemy enemy : enemies)
+            for(Enemy enemy : spawnManager.getEnemies())
             {
                 if(player.overlaps(enemy))
                 {
@@ -137,7 +99,7 @@ public class World {
 
         for(AbilityObject ability : abilityObjects)
         {
-            for(Enemy enemy : enemies)
+            for(Enemy enemy : spawnManager.getEnemies())
             {
                 if(ability.overlaps(enemy))
                 {
@@ -147,6 +109,8 @@ public class World {
         }
     }
 
+
+
     public Player getPlayer()
     {
         return player;
@@ -154,7 +118,7 @@ public class World {
 
     public ArrayList<Enemy> getEnemies()
     {
-        return enemies;
+        return spawnManager.getEnemies(); // Fassade für getEnemies()
     }
 
     public void addAbility(AbilityObject abilityObject)

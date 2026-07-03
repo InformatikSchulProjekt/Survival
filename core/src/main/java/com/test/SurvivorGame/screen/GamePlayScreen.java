@@ -8,41 +8,36 @@ import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.ability.MeleeAbility;
-import com.test.SurvivorGame.ability.ProjectileAbility;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
-    private DataLoader dataLoader;
-    private PlayerState playerState;
+    private final DataLoader dataLoader;
+    private final PlayerState playerState;
+    private final AbilityService abilityService;
 
     public final float screenWidth = 16f;
-
     public final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
-                                            //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
     private final Renderer renderer;
+    private final ShapeRenderer shapeRenderer;
 
-    private ShapeRenderer shapeRenderer;
-
-    private World world;
-
-    private AbilityService abilityService;
-
+    private final World world;
+    private final GameMap map = new GameMap();
 
     private Vector2 playerMoveDirection = new Vector2();
-    private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData("TestMap");
+        // bis ability slots gui da:
+        if (playerData.abilitySlots[0] == null || playerData.abilitySlots[0].isBlank()) playerData.abilitySlots[0] = "melee";
+        if (playerData.abilitySlots[1] == null || playerData.abilitySlots[1].isBlank())playerData.abilitySlots[1] = "projectile";
+
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         playerState = new PlayerState(playerData);
@@ -86,14 +81,25 @@ public class GamePlayScreen extends ScreenAdapter {
         }
         world.getPlayer().updateMoveDirection(playerMoveDirection);
 
+        // Ability Keybinds
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
         {
-            abilityService.getAbilityRegistry().activate("melee");
+            activateAbilitySlot(0);
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
         {
-            abilityService.getAbilityRegistry().activate("projectile");
+            activateAbilitySlot(1);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
+        {
+            activateAbilitySlot(2);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))
+        {
+            activateAbilitySlot(3);
         }
 
         // temporär um zu saven, weil es noch keine andere Optionen gibt.
@@ -120,5 +126,43 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         renderer.dispose();
         map.dispose();
+    }
+
+    private void activateAbilitySlot(int slotIndex) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
+        }
+
+        String abilityId = abilitySlots[slotIndex];
+
+        if (abilityId == null || abilityId.isBlank()) {
+            return;
+        }
+
+        abilityService.activate(abilityId);
+    }
+
+    // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen
+    private void swapAbilitySlots(int slot1, int slot2) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        if (slot1 < 0 || slot1 >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slot1);
+        }
+
+        if (slot2 < 0 || slot2 >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slot2);
+        }
+
+        if (slot1 == slot2) {
+            System.out.println("[WARNING]: Tried to swap same slot!");
+            return;
+        }
+
+        String temp = abilitySlots[slot1];
+        abilitySlots[slot1] = abilitySlots[slot2];
+        abilitySlots[slot2] = temp;
     }
 }

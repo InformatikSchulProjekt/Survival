@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.item;
+package com.test.SurvivorGame.ability.statAbility;
 
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
@@ -7,8 +7,8 @@ import com.test.SurvivorGame.core.stat.StatType;
 
 import java.util.List;
 
-public final class Iron_Chestplate extends BaseItem {
-    public static final String ID = "iron_chestplate";
+public final class SwiftStep extends StatAbility {
+    public static final String ID = "swift_step";
 
     @Override
     public String getID() {
@@ -17,24 +17,29 @@ public final class Iron_Chestplate extends BaseItem {
 
     @Override
     public String getName() {
-        return "Iron Chestplate";
+        return "Swift Step";
     }
 
     @Override
-    public String getDescription() {
-        return "Diese Armor macht dich resistenter."; // temporär, da nur ExampleItem eigentlich
+    public int getMaxAmount() {
+        return 4;
     }
 
     @Override
-    public List<StatModifier> getModifiers() {
+    public List<StatModifier> getModifiers(int amount) {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.RESISTANCE,
-                0.20f,
+                StatType.SPEED,
+                amount * 0.1f,
                 ModifierType.PERCENT,
-                "item:" + ID
+                "ability:" + ID
             )
         );
+    }
+
+    @Override
+    public String getDescription(int level) {
+        return "Increase Speed by 10%";
     }
 }

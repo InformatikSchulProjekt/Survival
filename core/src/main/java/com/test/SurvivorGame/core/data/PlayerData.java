@@ -16,13 +16,12 @@ public class PlayerData {
 
     public String playerClass = "";
 
+    public String[] abilitySlots = new String[4];
     public Map<String, Integer> abilities = new HashMap<>();
     public Set<String> items = new HashSet<>();
 
     public Vector2 getPosition() {
         return new Vector2(x, y);
     }
-
-
 
 }

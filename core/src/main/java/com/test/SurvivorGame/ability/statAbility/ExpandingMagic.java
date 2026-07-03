@@ -1,6 +1,5 @@
-package com.test.SurvivorGame.ability;
+package com.test.SurvivorGame.ability.statAbility;
 
-import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.core.stat.StatScope;
@@ -8,9 +7,8 @@ import com.test.SurvivorGame.core.stat.StatType;
 
 import java.util.List;
 
-// Das hier dient als eine Beispiel Ability.
-public final class HealthPackAbility extends BaseAbility {
-    public static final String ID = "health_pack";
+public final class ExpandingMagic extends StatAbility {
+    public static final String ID = "expanding_magic";
 
     @Override
     public String getID() {
@@ -19,17 +17,12 @@ public final class HealthPackAbility extends BaseAbility {
 
     @Override
     public String getName() {
-        return "Health Pack";
+        return "Expanding Magic";
     }
 
     @Override
     public int getMaxAmount() {
-        return 5;
-    }
-
-    @Override
-    public String getDescription() {
-        return "Diese Ability macht dich mehr healthy"; // temporär, da nur ExampleAbility eigentlich
+        return 4;
     }
 
     @Override
@@ -37,11 +30,16 @@ public final class HealthPackAbility extends BaseAbility {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.MAX_HEALTH,
-                amount * 3f,
+                StatType.MAGIC_SIZE,
+                amount * 0.10f,
                 ModifierType.FLAT,
                 "ability:" + ID
             )
         );
+    }
+
+    @Override
+    public String getDescription(int level) {
+        return "Increase Magic Size by 10%";
     }
 }

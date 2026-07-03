@@ -1,6 +1,10 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.AbilityRegistry;
+import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.data.PlayerData;
+import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -8,6 +12,8 @@ import com.test.SurvivorGame.item.BaseItem;
 import com.test.SurvivorGame.item.ItemRegistry;
 import com.test.SurvivorGame.player_class.BasePlayerClass;
 import com.test.SurvivorGame.player_class.PlayerClassRegistry;
+
+import java.util.Map;
 
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
@@ -80,6 +86,12 @@ public final class PlayerState {
             return true;
         }
 
+        if(tryDodge()) {
+            System.out.println("Dodged Attack"); //debug
+            // => Dodge Visuals adden
+            return true; // Spieler ist gedodged.
+        }
+
         float resistance = playerStats.getStat(StatScope.ALL, StatType.RESISTANCE);
         if (resistance < 1f) {
             System.out.println("INVALID RESISTANCE! Resistance has to be at least 1f.");
@@ -91,14 +103,12 @@ public final class PlayerState {
         playerData.hp -= finalDamage;
 
         System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
-        SoundManager.playSound("damaged1.wav");
-        if (playerData.hp < 0f) {
+
+        if (playerData.hp <= 0f) {
             playerData.hp = 0f;
             // => Player Dead Logic
-            System.out.println("Player died.");
-            SoundManager.playSound("deathSound.wav");// debug
+            System.out.println("Player died."); // debug
             return false;
-
         }
         return true;
 
@@ -107,7 +117,6 @@ public final class PlayerState {
     public void setPosition(float x, float y) {
         playerData.x = x;
         playerData.y = y;
-
     }
 
     public float getX() {
@@ -173,13 +182,41 @@ public final class PlayerState {
         BasePlayerClass playerClass = playerClassRegistry.getPlayerClass(playerData.playerClass);
 
         if (playerClass == null) {
-            if (playerData.playerClass.equals("")) System.out.println("[ERROR]: No class given");
+            if (playerData.playerClass.isEmpty()) System.out.println("[ERROR]: No class given");
             throw new IllegalArgumentException("Unknown player class: " + playerData.playerClass);
         }
 
         playerClass.onApply(playerStats);
 
         System.out.println("Registered PlayerClass: " + playerData.playerClass); // debug
+    }
+
+    // true = dodged, false = nicht dodged => damage bekommen
+    private boolean tryDodge() {
+        float dodgeChance = playerStats.getStat(StatScope.ALL, StatType.DODGE_CHANCE);
+
+        dodgeChance = calculateEffectiveDodgeChance(dodgeChance);
+        //System.out.println("Dodge chance: "+dodgeChance); // debug
+
+        if (dodgeChance <= 0f) {
+            return false;
+        }
+
+        return Math.random() < dodgeChance;
+    }
+
+    // man kann damit nie wirklich 90% Dodge Chance erreichen, aber du näherst dich dem an mit allem über dem softcap
+    private float calculateEffectiveDodgeChance(float dodgeChance) {
+        if (dodgeChance <= 0.60f) {
+            return dodgeChance;
+        }
+
+        float softCap = 0.60f;
+        float maxCap = 0.90f;
+
+        float overflow = dodgeChance - softCap;
+
+        return softCap + (maxCap - softCap) * (overflow / (overflow + 1f));
     }
 
 }
