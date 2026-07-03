@@ -185,8 +185,6 @@ public class Renderer {
             new TextureRegion(enemy1left3),
             new TextureRegion(enemy1left4));
         enemy1leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
-
     }
 
     public void resize(int width, int height) {
@@ -290,6 +288,12 @@ public class Renderer {
         }
         TextureRegion currentFrame = animation.getKeyFrame(playerAnimationTime);
 
+        Color oldColor = new Color(batch.getColor());
+        if (player.isDamageFlashing()) {
+            float flashProgress = player.getDamageFlashProgress();
+            float colorFade = 1f - flashProgress;
+            batch.setColor(1f, 0.25f + 0.75f * colorFade, 0.25f + 0.75f * colorFade, 1f);
+        }
 
         batch.draw(
             currentFrame,
@@ -298,6 +302,8 @@ public class Renderer {
             player.getWidth(),
             player.getHeight()
         );
+
+        batch.setColor(oldColor);
     }
     private void renderEnemy(Enemy enemy) {
 

@@ -1,5 +1,5 @@
 package com.test.SurvivorGame.world;
-
+import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
@@ -26,7 +26,6 @@ public class World {
         player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
-
         spawnManager = new SpawnManager(player);
     }
 
