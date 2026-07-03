@@ -31,6 +31,10 @@ public final class AbilityRegistry {
         return abilities.get(abilityId);
     }
 
+    public Iterable<BaseAbility> getAbilities() {
+        return abilities.values();
+    }
+
     private void register(BaseAbility ability) {
         abilities.put(ability.getID(), ability);
     }

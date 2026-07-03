@@ -2,6 +2,7 @@ package com.test.SurvivorGame.ability;
 
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatModifier;
+import com.test.SurvivorGame.core.stat.StatScope;
 
 import java.util.List;
 
@@ -30,6 +31,10 @@ public abstract class BaseAbility {
     }
 
     public abstract AbilityType getAbilityType();
+
+    public StatScope getScope() {
+        return null;
+    }
 
     public void onRemove(PlayerStats playerStats) {
         playerStats.removeModifiersFromSource("ability:" + getID());
