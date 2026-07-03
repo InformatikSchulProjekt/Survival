@@ -14,4 +14,6 @@ public static void playSound(String fileName) {
         Gdx.app.error("SoundManager"," konnte Sound nicht abspielen: "+ fileName);
         }
     }
+
+
 }

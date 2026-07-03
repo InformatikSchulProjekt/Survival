@@ -95,8 +95,10 @@ public final class PlayerState {
         if (playerData.hp < 0f) {
             playerData.hp = 0f;
             // => Player Dead Logic
-            System.out.println("Player died."); // debug
+            System.out.println("Player died.");
+            SoundManager.playSound("deathSound.wav");// debug
             return false;
+
         }
         return true;
 
@@ -105,6 +107,7 @@ public final class PlayerState {
     public void setPosition(float x, float y) {
         playerData.x = x;
         playerData.y = y;
+
     }
 
     public float getX() {

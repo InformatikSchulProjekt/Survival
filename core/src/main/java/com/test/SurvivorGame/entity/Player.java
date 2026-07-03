@@ -1,7 +1,9 @@
 package com.test.SurvivorGame.entity;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
@@ -36,6 +38,7 @@ public class Player extends Entity {
 
         playerState.setPosition(newX, newY);
         collider.setPosition(newX, newY);
+
     }
 
     // updated mit MapRand
