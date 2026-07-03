@@ -1,14 +1,16 @@
-package com.test.SurvivorGame.item;
+package com.test.SurvivorGame.item.items;
 
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.item.BaseItem;
+import com.test.SurvivorGame.item.ItemRarity;
 
 import java.util.List;
 
-public final class ChainmailHauberk extends BaseItem {
-    public static final String ID = "chainmail_hauberk";
+public final class SeraphWings extends BaseItem {
+    public static final String ID = "seraph_wings";
 
     @Override
     public String getID() {
@@ -17,12 +19,17 @@ public final class ChainmailHauberk extends BaseItem {
 
     @Override
     public String getName() {
-        return "Chainmail Hauberk";
+        return "Seraph Wings";
     }
 
     @Override
     public String getDescription() {
-        return "Heavy chainmail armor that makes you harder to kill.";
+        return "Divine wings filled with celestial energy. They grant extreme movement speed and make attacks much harder to land.";
+    }
+
+    @Override
+    public ItemRarity getRarity() {
+        return ItemRarity.LEGENDARY;
     }
 
     @Override
@@ -30,16 +37,16 @@ public final class ChainmailHauberk extends BaseItem {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.RESISTANCE,
-                0.15f,
+                StatType.SPEED,
+                0.50f,
                 ModifierType.PERCENT,
                 "item:" + ID
             ),
             new StatModifier(
                 StatScope.ALL,
-                StatType.SPEED,
-                -0.15f,
-                ModifierType.PERCENT,
+                StatType.DODGE_CHANCE,
+                0.20f,
+                ModifierType.FLAT,
                 "item:" + ID
             )
         );
