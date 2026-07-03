@@ -104,7 +104,7 @@ public final class PlayerState {
 
         System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
 
-        if (playerData.hp < 0f) {
+        if (playerData.hp <= 0f) {
             playerData.hp = 0f;
             // => Player Dead Logic
             System.out.println("Player died."); // debug
