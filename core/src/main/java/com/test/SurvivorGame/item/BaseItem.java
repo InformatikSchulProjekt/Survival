@@ -20,7 +20,7 @@ public abstract class BaseItem {
         for(StatModifier statMod : getModifiers()) {
             playerStats.addModifier(statMod);
         }
-        System.out.println("Applied Ability: "+ getID()); // debug
+        System.out.println("Applied Item: "+ getID()); // debug
     }
 
     public void onRemove(PlayerStats playerStats) {
