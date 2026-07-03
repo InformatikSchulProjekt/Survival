@@ -7,7 +7,7 @@ public final class ItemRegistry {
     private final Map<String, BaseItem> items = new HashMap<>();
 
     public ItemRegistry() {
-        register(new Iron_Chestplate());
+        register(new ChainmailHauberk());
     }
 
     public BaseItem getItem(String itemID) {
