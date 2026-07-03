@@ -3,38 +3,52 @@ package com.test.SurvivorGame.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
+import com.test.SurvivorGame.ability.AbilityService;
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
+import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 
 public class GamePlayScreen extends ScreenAdapter {
+    private final DataLoader dataLoader;
+    private final PlayerState playerState;
+    private final AbilityService abilityService;
 
-    private final float screenWidth = 16f;
-
-    private final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
-                                            //  habs nd so genannt, weil verwirrend sein wird, wenn wir eine map der "world" haben
+    public final float screenWidth = 16f;
+    public final float screenHeight = 9f;  // ACHTUNG! die x und y der Viewport Klasse heißt worldWidth / worldHeight
     private final Renderer renderer;
+    private final ShapeRenderer shapeRenderer;
 
-    private DataLoader dataLoader;
-
-
-    private World world;
+    private final World world;
+    private final GameMap map = new GameMap();
 
     private Vector2 playerMoveDirection = new Vector2();
-    private final GameMap map = new GameMap();
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
-
-        world = new World(screenWidth, screenHeight);
-        // testing für data:
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world);
+        // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
         this.dataLoader = dataLoader;
-        world.getPlayer().setPlayerData(dataLoader.getPlayerData("TestMap"));
+        PlayerData playerData = dataLoader.getPlayerData("TestMap");
+        // bis ability slots gui da:
+        if (playerData.abilitySlots[0] == null || playerData.abilitySlots[0].isBlank()) playerData.abilitySlots[0] = "melee";
+        if (playerData.abilitySlots[1] == null || playerData.abilitySlots[1].isBlank())playerData.abilitySlots[1] = "projectile";
+
+        playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
+
+        this.playerState = new PlayerState(playerData);
+        this.world = new World(screenWidth, screenHeight, playerState);
+
+        this.shapeRenderer = new ShapeRenderer();
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
+
+        this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
+        playerState.setupAbilityService(abilityService);
     }
 
     @Override
@@ -62,21 +76,36 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.x -= 1;
         }
-        // TEST KEY
-        if(Gdx.input.isKeyJustPressed(Input.Keys.T))
-        {
-            System.out.println();
-            System.out.println(world.getPlayer().getLevel()+" Level");
-            world.getPlayer().giveXP(1);
-            dataLoader.savePlayerData("TestMap", world.getPlayer().getPlayerData());
-
-        } // TEST KEY FOR TESTING DATA
 
         if(!playerMoveDirection.isZero()) //wenns schräg geht normalisieren, aber wenn sich der Player nicht bewegt wird (x = 0,y = 0) / 0
         {
             playerMoveDirection.nor();
         }
         world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+        // Ability Keybinds
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
+        {
+            activateAbilitySlot(0);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
+        {
+            activateAbilitySlot(1);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
+        {
+            activateAbilitySlot(2);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))
+        {
+            activateAbilitySlot(3);
+        }
+
+        // temporär um zu saven, weil es noch keine andere Optionen gibt.
+        dataLoader.savePlayerData("TestMap", playerState.getPlayerData());
     }
 
     @Override
@@ -99,5 +128,43 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         renderer.dispose();
         map.dispose();
+    }
+
+    private void activateAbilitySlot(int slotIndex) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
+        }
+
+        String abilityId = abilitySlots[slotIndex];
+
+        if (abilityId == null || abilityId.isBlank()) {
+            return;
+        }
+
+        abilityService.activate(abilityId);
+    }
+
+    // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen
+    private void swapAbilitySlots(int slot1, int slot2) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        if (slot1 < 0 || slot1 >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slot1);
+        }
+
+        if (slot2 < 0 || slot2 >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slot2);
+        }
+
+        if (slot1 == slot2) {
+            System.out.println("[WARNING]: Tried to swap same slot!");
+            return;
+        }
+
+        String temp = abilitySlots[slot1];
+        abilitySlots[slot1] = abilitySlots[slot2];
+        abilitySlots[slot2] = temp;
     }
 }
