@@ -89,4 +89,8 @@ public class AbilityService {
 
         return false;
     }
+
+    public AbilityRegistry getAbilityRegistry() {
+        return this.abilityRegistry;
+    }
 }
