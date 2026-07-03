@@ -2,8 +2,8 @@ package com.test.SurvivorGame.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-
-public class SoundManager {
+import com.badlogic.gdx.Input;
+public class SoundManager  {
 
 public static void playSound(String fileName) {
     try {

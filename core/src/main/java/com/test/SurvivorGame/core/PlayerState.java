@@ -1,5 +1,7 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.AbilityRegistry;
 import com.test.SurvivorGame.ability.BaseAbility;
@@ -101,6 +103,7 @@ public final class PlayerState {
         float damageMultiplier = 1f / resistance;
         float finalDamage = amount * damageMultiplier;
         playerData.hp -= finalDamage;
+        SoundManager.playSound("damaged1.wav");
 
         System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
 

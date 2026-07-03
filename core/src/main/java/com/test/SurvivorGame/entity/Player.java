@@ -59,6 +59,7 @@ public class Player extends Entity {
         if (playerState.damage(damage)) return;
 
         die();
+        SoundManager.playSound("deathSound.wav");
     }
 
     @Override
