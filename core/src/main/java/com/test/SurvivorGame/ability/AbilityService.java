@@ -34,8 +34,6 @@ public class AbilityService {
         int newAmount = currentAmount + 1;
         playerState.getPlayerData().abilities.put(abilityID, newAmount);
 
-        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
-
         // Packt Aktive Abilities in die Ability slot leiste, wenn Platz da
         if (ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
             boolean hadFreeSpace = tryPutAbilityIntoFreeSlot(abilityID);
