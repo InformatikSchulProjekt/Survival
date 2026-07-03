@@ -58,12 +58,17 @@ public class Player extends Entity {
 
     @Override
     public void takeDamage(float damage) {
-        if (playerState.damage(damage)) return;
-        startDamageFlash();
+        float hpBefore = playerState.getHP();
+        boolean survived = playerState.damage(damage);
+        currentHP = playerState.getHP();
 
-        die();
+        if (currentHP < hpBefore) {
+            startDamageFlash();
+        }
 
-
+        if (!survived) {
+            die();
+        }
     }
     @Override
     public void update(float deltaTime,GameMap map) {
