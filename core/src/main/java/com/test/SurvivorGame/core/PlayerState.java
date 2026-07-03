@@ -86,6 +86,12 @@ public final class PlayerState {
             return true;
         }
 
+        if(tryDodge()) {
+            System.out.println("Dodged Attack"); //debug
+            // => Dodge Visuals adden
+            return true; // Spieler ist gedodged.
+        }
+
         float resistance = playerStats.getStat(StatScope.ALL, StatType.RESISTANCE);
         if (resistance < 1f) {
             System.out.println("INVALID RESISTANCE! Resistance has to be at least 1f.");
@@ -176,13 +182,41 @@ public final class PlayerState {
         BasePlayerClass playerClass = playerClassRegistry.getPlayerClass(playerData.playerClass);
 
         if (playerClass == null) {
-            if (playerData.playerClass.equals("")) System.out.println("[ERROR]: No class given");
+            if (playerData.playerClass.isEmpty()) System.out.println("[ERROR]: No class given");
             throw new IllegalArgumentException("Unknown player class: " + playerData.playerClass);
         }
 
         playerClass.onApply(playerStats);
 
         System.out.println("Registered PlayerClass: " + playerData.playerClass); // debug
+    }
+
+    // true = dodged, false = nicht dodged => damage bekommen
+    private boolean tryDodge() {
+        float dodgeChance = playerStats.getStat(StatScope.ALL, StatType.DODGE_CHANCE);
+
+        dodgeChance = calculateEffectiveDodgeChance(dodgeChance);
+        //System.out.println("Dodge chance: "+dodgeChance); // debug
+
+        if (dodgeChance <= 0f) {
+            return false;
+        }
+
+        return Math.random() < dodgeChance;
+    }
+
+    // man kann damit nie wirklich 90% Dodge Chance erreichen, aber du näherst dich dem an mit allem über dem softcap
+    private float calculateEffectiveDodgeChance(float dodgeChance) {
+        if (dodgeChance <= 0.60f) {
+            return dodgeChance;
+        }
+
+        float softCap = 0.60f;
+        float maxCap = 0.90f;
+
+        float overflow = dodgeChance - softCap;
+
+        return softCap + (maxCap - softCap) * (overflow / (overflow + 1f));
     }
 
 }

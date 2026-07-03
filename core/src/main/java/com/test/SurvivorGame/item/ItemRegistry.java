@@ -8,6 +8,7 @@ public final class ItemRegistry {
 
     public ItemRegistry() {
         register(new ChainmailHauberk());
+        register(new RogueScarf());
     }
 
     public BaseItem getItem(String itemID) {
