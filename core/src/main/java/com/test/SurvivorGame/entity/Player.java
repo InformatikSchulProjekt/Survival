@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
