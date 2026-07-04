@@ -25,6 +25,7 @@ public final class AbilityRegistry {
         // Active Abilities:
         register(new MeleeAbility(world, viewport));
         register(new ProjectileAbility(world, viewport));
+        register(new FireballAbility(world, viewport));
     }
 
     public BaseAbility getAbility(String abilityId) {

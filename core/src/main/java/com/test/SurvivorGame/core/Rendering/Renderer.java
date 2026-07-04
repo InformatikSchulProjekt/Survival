@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.Fireball;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -94,6 +95,22 @@ public class Renderer {
     private final Animation<TextureRegion> bossfrontAnimation;
     private final Animation<TextureRegion> bossrightAnimation;
     private final Animation<TextureRegion> bossleftAnimation;
+
+    // Fireball
+    private final Texture fireball0;
+    private final Texture fireball1;
+    private final Texture fireball2;
+    private final Texture fireball3;
+    private final Texture fireball4;
+    private final Texture fireball5;
+    private final Texture fireball6;
+    private final Texture fireball7;
+    private final Texture fireball8;
+    private final Texture fireball9;
+    private final Texture fireball10;
+    private final Texture fireball11;
+    private final Animation<TextureRegion> fireballMovementAnimation;
+    private final Animation<TextureRegion> fireballExplosionAnimation;
 
 
 
@@ -241,6 +258,40 @@ public class Renderer {
             new TextureRegion(bossleft1),
             new TextureRegion(bossleft2));
         bossleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        // Fireball Animation laden
+        fireball0 = new Texture(Gdx.files.internal("Ability/fireball0000.png"));
+        fireball1 = new Texture(Gdx.files.internal("Ability/fireball0001.1.png"));
+        fireball2 = new Texture(Gdx.files.internal("Ability/fireball0001.png"));
+        fireball3 = new Texture(Gdx.files.internal("Ability/fireball0002.png"));
+        fireball4 = new Texture(Gdx.files.internal("Ability/fireball0003.png"));
+        fireball5 = new Texture(Gdx.files.internal("Ability/fireball0004.png"));
+        fireball6 = new Texture(Gdx.files.internal("Ability/fireball0005.png"));
+        fireball7 = new Texture(Gdx.files.internal("Ability/fireball0006.png"));
+        fireball8 = new Texture(Gdx.files.internal("Ability/fireball0007.png"));
+        fireball9 = new Texture(Gdx.files.internal("Ability/fireball0008.png"));
+        fireball10 = new Texture(Gdx.files.internal("Ability/fireball0009.png"));
+        fireball11 = new Texture(Gdx.files.internal("Ability/fireball0010.png"));
+
+        // Movement Animation: 0000-0001
+        fireballMovementAnimation = new Animation<>(0.2f,
+            new TextureRegion(fireball0),
+            new TextureRegion(fireball1),
+            new TextureRegion(fireball2));
+        fireballMovementAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // Explosion Animation: 0002-0010
+        fireballExplosionAnimation = new Animation<>(0.08f,
+            new TextureRegion(fireball3),
+            new TextureRegion(fireball4),
+            new TextureRegion(fireball5),
+            new TextureRegion(fireball6),
+            new TextureRegion(fireball7),
+            new TextureRegion(fireball8),
+            new TextureRegion(fireball9),
+            new TextureRegion(fireball10),
+            new TextureRegion(fireball11));
+        fireballExplosionAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     public void resize(int width, int height) {
@@ -294,7 +345,11 @@ public class Renderer {
 
         for(AbilityObject abilityObject : world.getAbilityObjects())
         {
-            abilityObject.draw(batch);
+            if (abilityObject instanceof Fireball) {
+                renderFireball((Fireball) abilityObject, deltaTime);
+            } else {
+                abilityObject.draw(batch);
+            }
         }
 
         batch.end();
@@ -434,6 +489,30 @@ public class Renderer {
         );
     }
 
+    private void renderFireball(Fireball fireball, float deltaTime) {
+        Animation<TextureRegion> animation;
+
+        if (fireball.hasExploded()) {
+            animation = fireballExplosionAnimation;
+        } else {
+            animation = fireballMovementAnimation;
+        }
+
+        TextureRegion currentFrame = animation.getKeyFrame(fireball.getAnimationTime(), false);
+
+        batch.draw(
+            currentFrame,
+            fireball.getX(),
+            fireball.getY(),
+            fireball.getWidth() / 2,
+            fireball.getHeight() / 2,
+            fireball.getWidth(),
+            fireball.getHeight(),
+            1,
+            1,
+            fireball.getRotation()
+        );
+    }
 
     private void renderMap(GameMap map, OrthographicCamera cam) {
         if (!map.isInfinite()) {
@@ -517,5 +596,16 @@ public class Renderer {
         bossright2.dispose();
         bossleft1.dispose();
         bossleft2.dispose();
+        fireball0.dispose();
+        fireball1.dispose();
+        fireball2.dispose();
+        fireball3.dispose();
+        fireball4.dispose();
+        fireball5.dispose();
+        fireball6.dispose();
+        fireball7.dispose();
+        fireball8.dispose();
+        fireball9.dispose();
+        fireball10.dispose();
     }
 }
