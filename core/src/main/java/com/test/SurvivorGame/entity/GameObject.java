@@ -27,6 +27,11 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         return collider.overlaps(other.collider);
     }
 
+    public Rectangle getCollider()
+    {
+        return collider;
+    }
+
     public void draw(Batch batch)
     {
         if(texture == null) return;
@@ -68,4 +73,3 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         );
     }
 }
-

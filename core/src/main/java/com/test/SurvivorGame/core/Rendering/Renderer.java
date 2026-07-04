@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.Fireball;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -113,6 +114,13 @@ public class Renderer {
     private final Animation<TextureRegion> fireballMovementAnimation;
     private final Animation<TextureRegion> fireballExplosionAnimation;
     private final HUDRenderer hud;
+
+    //FireArrow
+    private final Texture firearrow0;
+    private final Texture firearrow1;
+    private final Texture firearrow2;
+    private final Texture firearrow3;
+    private final Animation<TextureRegion> fireArrowAnimation;
 
 
 
@@ -293,6 +301,20 @@ public class Renderer {
             new TextureRegion(fireball10),
             new TextureRegion(fireball11));
         fireballExplosionAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // Ab hier Fire Arow
+        firearrow0 = new Texture (Gdx.files.internal("Ability/fireArrow1.png"));
+        firearrow1 = new Texture (Gdx.files.internal("Ability/fireArrow2.png"));
+        firearrow2 = new Texture (Gdx.files.internal("Ability/fireArrow3.png"));
+        firearrow3 = new Texture (Gdx.files.internal("Ability/fireArrow4.png"));
+
+        // Ab hier Fire Arrow Animation
+        fireArrowAnimation = new Animation<>(0.08f,
+            new TextureRegion(firearrow0),
+            new TextureRegion(firearrow1),
+            new TextureRegion(firearrow2),
+            new TextureRegion(firearrow3));
+            fireArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     public void resize(int width, int height) {
@@ -349,6 +371,8 @@ public class Renderer {
         {
             if (abilityObject instanceof Fireball) {
                 renderFireball((Fireball) abilityObject, deltaTime);
+            } else if (abilityObject instanceof FireArrowProjectile) {
+                renderFireArrow((FireArrowProjectile) abilityObject, deltaTime);
             } else {
                 abilityObject.draw(batch);
             }
@@ -516,7 +540,7 @@ public class Renderer {
             currentFrame,
             fireball.getX(),
             fireball.getY(),
-            fireball.getWidth() / 2,
+            fireball.getWidth()/2 ,
             fireball.getHeight() / 2,
             fireball.getWidth(),
             fireball.getHeight(),
@@ -525,7 +549,26 @@ public class Renderer {
             fireball.getRotation()
         );
     }
+    private void renderFireArrow(FireArrowProjectile fireArrow, float deltaTime) {
+        Animation<TextureRegion> animation;
 
+            animation = fireArrowAnimation;
+
+        TextureRegion currentFrame = animation.getKeyFrame(fireArrow.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            fireArrow.getX(),
+            fireArrow.getY(),
+            fireArrow.getWidth() / 2,
+            fireArrow.getHeight() / 2,
+            fireArrow.getWidth(),
+            fireArrow.getHeight(),
+            1,
+            1,
+            fireArrow.getRotation()
+        );
+    }
     private void renderMap(GameMap map, OrthographicCamera cam) {
         if (!map.isInfinite()) {
             batch.draw(
