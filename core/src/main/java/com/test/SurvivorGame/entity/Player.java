@@ -2,12 +2,11 @@ package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.SoundManager;
-import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
 public class Player extends Entity {
-    private PlayerState playerState;
+    private final PlayerState playerState;
 
 
     public Player(PlayerState playerState) {

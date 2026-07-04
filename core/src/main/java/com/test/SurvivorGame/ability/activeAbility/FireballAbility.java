@@ -14,7 +14,7 @@ public class FireballAbility extends ActiveAbility{
 
     private float duration = 2f;
     private float effectSize = 3f;
-    private float speed = 8f;
+    private float speed = 6f;
     private float explosionRadius = 2f;
 
     private static float damage = 2f;
