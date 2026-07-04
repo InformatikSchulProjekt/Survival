@@ -21,6 +21,9 @@ public final class PlayerState {
 
     private final PlayerData playerData;
     private int level;
+    private boolean dodgedLastAttack = false;
+    private long dodgeEffectStartTime = 0;
+    private static final long DODGE_EFFECT_DURATION = 300;
 
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
@@ -93,6 +96,8 @@ public final class PlayerState {
         if(tryDodge()) {
             System.out.println("Dodged Attack"); //debug
             // => Dodge Visuals adden
+            dodgedLastAttack=true;
+            dodgeEffectStartTime = System.currentTimeMillis();
             return true; // Spieler ist gedodged.
         }
 
@@ -115,7 +120,9 @@ public final class PlayerState {
             return false;
         }
         return true;
-
+    }
+    public boolean isDodgeEffectActive() {
+        return System.currentTimeMillis() - dodgeEffectStartTime < DODGE_EFFECT_DURATION;
     }
 
     public void setPosition(float x, float y) {

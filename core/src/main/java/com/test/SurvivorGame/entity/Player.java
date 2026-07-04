@@ -70,6 +70,10 @@ public class Player extends Entity {
             die();
         }
     }
+    public PlayerState getPlayerState() {
+        return playerState;
+    }
+
     @Override
     public void update(float deltaTime,GameMap map) {
         updateDamageFlash(deltaTime);
