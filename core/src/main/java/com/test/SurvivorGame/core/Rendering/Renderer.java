@@ -2,10 +2,10 @@ package com.test.SurvivorGame.core.Rendering;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.world.maps.GameMap;
@@ -283,7 +283,7 @@ public class Renderer {
         batch.begin();
 
         renderMap(map, cam);
-        renderPlayer(world.getPlayer(), deltaTime);
+        renderPlayer(world.getPlayer(), world.getPlayer().getPlayerState(), deltaTime);
 
         enemy1AnimationTime += deltaTime;
         for (Enemy enemy : world.getEnemies()) {
@@ -325,7 +325,7 @@ public class Renderer {
         shapeRenderer.end();
     }
 
-    private void renderPlayer(Player player, float deltaTime) {
+    private void renderPlayer(Player player, PlayerState playerState, float deltaTime) {
         playerAnimationTime += deltaTime;
 
         Animation<TextureRegion> animation;
@@ -356,6 +356,9 @@ public class Renderer {
             float flashProgress = player.getDamageFlashProgress();
             float colorFade = 1f - flashProgress;
             batch.setColor(1f, 0.25f + 0.75f * colorFade, 0.25f + 0.75f * colorFade, 1f);
+        }
+        if(playerState.isDodgeEffectActive()){
+            batch.setColor(10f, 10f, 10f, 0.5f);
         }
 
         batch.draw(

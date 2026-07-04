@@ -72,6 +72,9 @@ public class Player extends Entity {
             SoundManager.playSound("deathSound.wav");
         }
     }
+    public PlayerState getPlayerState() {
+        return playerState;
+    }
 
     @Override
     public void update(float deltaTime,GameMap map) {

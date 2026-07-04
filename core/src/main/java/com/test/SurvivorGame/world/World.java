@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class World {
 
     private final Player player;
-
     private float damageTimer = 0f;
     private final float DamageInterval = 0.5f;
 
@@ -131,6 +130,7 @@ public class World {
     {
         return player;
     }
+
 
     public ArrayList<Enemy> getEnemies()
     {
