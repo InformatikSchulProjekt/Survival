@@ -17,6 +17,7 @@
         private Player player;
 
         private Vector2 moveDirection;
+        protected float animationTime = 0f;
 
         private boolean dead = false;
 
@@ -44,6 +45,9 @@
         @Override
         public void update(float deltaTime, GameMap map)
         {
+            // per-entity animation time so each enemy/boss animates independently
+            animationTime += deltaTime;
+
             moveDirection = player.getCenter().sub(this.getCenter()).nor().scl(movementSpeed * deltaTime);
 
             collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
@@ -65,6 +69,11 @@
         public boolean isDead()
         {
             return dead;
+        }
+
+        // animation time access for renderer
+        public float getAnimationTime() {
+            return animationTime;
         }
 
     }

@@ -54,7 +54,6 @@ public class Renderer {
     private float playerAnimationTime = 0f;
 
     //Ab hier Enemy1
-    private float enemy1AnimationTime = 0f;
     private final Texture enemy1Texture;
     private final Texture enemy1idle2;
     private final Texture enemy1idle3;
@@ -79,7 +78,6 @@ public class Renderer {
     private final Animation<TextureRegion> enemy1frontAnimation;
     private final Animation<TextureRegion> enemy1rightAnimation;
     private final Animation<TextureRegion> enemy1leftAnimation;
-    private float bossAnimationTime = 0f;
     private final Texture bossTexture;
     private final Texture bossidle2;
     private final Texture bossidle3;
@@ -243,13 +241,11 @@ public class Renderer {
             new TextureRegion(bossleft1),
             new TextureRegion(bossleft2));
         bossleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
     }
 
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
-
     public void render(GameMap map, World world, float deltaTime) //hab ich jetzt so umgeändert, damit nun auch player aus world beutzt wird
     {                                                //und dass jetzt auch gegner gerendert werden
         ScreenUtils.clear(Color.BLUE);
@@ -285,13 +281,13 @@ public class Renderer {
         renderMap(map, cam);
         renderPlayer(world.getPlayer(), world.getPlayer().getPlayerState(), deltaTime);
 
-        enemy1AnimationTime += deltaTime;
         for (Enemy enemy : world.getEnemies()) {
             renderEnemy(enemy);
         }
-        bossAnimationTime += deltaTime;
-        for (Boss boss : world.getBoss()) {
-            renderBoss(boss);
+        for (Enemy e : world.getEnemies()) {
+            if (e instanceof Boss) {
+                renderBoss((Boss) e);
+            }
         }
 
         for(AbilityObject abilityObject : world.getAbilityObjects())
@@ -307,21 +303,17 @@ public class Renderer {
     public void DBcolliderRenderer() //für Debug Purpose Collider anzeigen
     {
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-
         world.getPlayer().drawCollider(shapeRenderer);
 
         for(Enemy enemy : world.getEnemies())
         {
             enemy.drawCollider(shapeRenderer);
         }
-
         for(AbilityObject abilityObject : world.getAbilityObjects())
         {
             abilityObject.drawCollider(shapeRenderer);
         }
-
         shapeRenderer.end();
     }
 
@@ -394,7 +386,7 @@ public class Renderer {
                     break;
             }
         }
-        TextureRegion currentFrame = animation.getKeyFrame(enemy1AnimationTime);
+        TextureRegion currentFrame = animation.getKeyFrame(enemy.getAnimationTime());
 
 
         batch.draw(
@@ -428,7 +420,7 @@ public class Renderer {
                     break;
             }
         }
-        TextureRegion currentFrame = animation.getKeyFrame(bossAnimationTime);
+        TextureRegion currentFrame = animation.getKeyFrame(boss.getAnimationTime());
 
 
         batch.draw(
