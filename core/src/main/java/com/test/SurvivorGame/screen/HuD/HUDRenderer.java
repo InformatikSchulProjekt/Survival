@@ -12,15 +12,15 @@ import com.test.SurvivorGame.core.PlayerState;
 
 public class HUDRenderer {
 
-    // Batch zeichnet Text, ShapeRenderer zeichnet einfache HUD-Formen.
     private final Batch batch;
     private final ShapeRenderer shapeRenderer;
     private final BitmapFont font;
 
-    // Eigene Kamera, damit HUD-Koordinaten in Bildschirm-Pixeln bleiben.
     private final OrthographicCamera hudCamera = new OrthographicCamera();
 
-    // Feste Abstaende und Groessen fuer die HUD-Elemente.
+    private int lastWidth = -1;
+    private int lastHeight = -1;
+
     private static final float PADDING = 20f;
     private static final float HP_BAR_WIDTH = 220f;
     private static final float HP_BAR_HEIGHT = 22f;
@@ -48,13 +48,24 @@ public class HUDRenderer {
     }
 
     public void resize(int width, int height) {
-        // HUD wird nicht von der Weltkamera beeinflusst und passt sich der Fenstergroesse an.
         hudCamera.setToOrtho(false, width, height);
         hudCamera.update();
+
+        lastWidth = width;
+        lastHeight = height;
     }
 
     public void render(PlayerState playerState, float survivalTimeSeconds) {
-        // Vor dem Zeichnen werden Batch und ShapeRenderer auf die HUD-Kamera umgestellt.
+        int currentWidth = Gdx.graphics.getWidth();
+        int currentHeight = Gdx.graphics.getHeight();
+
+        if (currentWidth != lastWidth || currentHeight != lastHeight) {
+            resize(currentWidth, currentHeight);
+        }
+
+        // wichtig: HUD soll auf dem ganzen Fenster rendern, nicht nur im World-Viewport
+        Gdx.gl.glViewport(0, 0, currentWidth, currentHeight);
+
         hudCamera.update();
         shapeRenderer.setProjectionMatrix(hudCamera.combined);
         batch.setProjectionMatrix(hudCamera.combined);
@@ -73,7 +84,6 @@ public class HUDRenderer {
         float maxHp = playerState.getMaxHealth();
         float ratio = maxHp > 0f ? hp / maxHp : 0f;
 
-        // HP-Leiste oben links.
         float x = PADDING;
         float y = screenHeight - PADDING - HP_BAR_HEIGHT;
 
@@ -87,7 +97,6 @@ public class HUDRenderer {
     }
 
     private void drawXpBar(PlayerState playerState, float screenHeight) {
-        // XP-Leiste sitzt direkt unter der HP-Leiste.
         float x = PADDING;
         float y = screenHeight - PADDING - HP_BAR_HEIGHT - XP_BAR_GAP - XP_BAR_HEIGHT;
 
@@ -100,7 +109,6 @@ public class HUDRenderer {
     }
 
     private void drawBar(float x, float y, float width, float height, float ratio, Color backgroundColor, Color fillColor) {
-        // Sicherheit: Die FÜllung darf nie kuerzer als 0% oder laenger als 100% werden.
         float clampedRatio = MathUtils.clamp(ratio, 0f, 1f);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -117,7 +125,6 @@ public class HUDRenderer {
     }
 
     private void drawSurvivalTimer(float survivalTimeSeconds, float screenWidth, float screenHeight) {
-        // Sekunden werden in mm:ss umgerechnet.
         int totalSeconds = Math.max(0, (int) survivalTimeSeconds);
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
@@ -130,12 +137,10 @@ public class HUDRenderer {
     }
 
     private void drawAbilityBar(String[] abilitySlots, float screenWidth) {
-        // Ohne Slots gibt es unten nichts zu zeichnen.
         if (abilitySlots == null || abilitySlots.length == 0) {
             return;
         }
 
-        // Slots werden als Gruppe unten mittig ausgerichtet.
         int slotCount = abilitySlots.length;
         float totalWidth = slotCount * SLOT_SIZE + (slotCount - 1) * SLOT_GAP;
         float startX = (screenWidth - totalWidth) / 2f;
