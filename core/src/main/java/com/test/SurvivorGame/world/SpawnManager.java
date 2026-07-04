@@ -29,6 +29,7 @@ public class SpawnManager {
     private Player player;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
+    private ArrayList<Boss> boss = new ArrayList<>();
 
     public SpawnManager(Player player)
     {
@@ -151,6 +152,10 @@ public class SpawnManager {
     public ArrayList<Enemy> getEnemies()
     {
         return enemies;
+    }
+    public ArrayList<Boss> getBoss()
+    {
+        return boss;
     }
 
     public void resetSpawn()
