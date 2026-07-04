@@ -1,8 +1,9 @@
 package com.test.SurvivorGame.world;
-
+import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
@@ -26,7 +27,6 @@ public class World {
         player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
-
         spawnManager = new SpawnManager(player);
     }
 
@@ -61,6 +61,7 @@ public class World {
     private void resetWorld()
     {
         spawnManager.getEnemies().clear();
+        spawnManager.getBoss().clear();
 
         spawnManager.resetSpawn();
 
@@ -85,6 +86,14 @@ public class World {
                 }
             }
 
+            for(Boss boss : spawnManager.getBoss())
+            {
+                if(player.overlaps(boss))
+                {
+                    dmgTaken += boss.getDamage();
+                }
+            }
+
             if(dmgTaken > 0)
             {
                 player.takeDamage(dmgTaken);
@@ -96,7 +105,6 @@ public class World {
 
     private void checkAbilityCollision(float deltaTime)
     {
-
         for(AbilityObject ability : abilityObjects)
         {
             for(Enemy enemy : spawnManager.getEnemies())
@@ -104,6 +112,14 @@ public class World {
                 if(ability.overlaps(enemy))
                 {
                     ability.onHit(enemy);
+                }
+            }
+
+            for(Boss boss : spawnManager.getBoss())
+            {
+                if(ability.overlaps(boss))
+                {
+                    ability.onHit(boss);
                 }
             }
         }
@@ -118,7 +134,12 @@ public class World {
 
     public ArrayList<Enemy> getEnemies()
     {
-        return spawnManager.getEnemies(); // Fassade für getEnemies()
+        return spawnManager.getEnemies();
+        // Fassade für getEnemies()
+    }
+    public ArrayList<Boss> getBoss()
+    {
+        return spawnManager.getBoss();
     }
 
     public void addAbility(AbilityObject abilityObject)

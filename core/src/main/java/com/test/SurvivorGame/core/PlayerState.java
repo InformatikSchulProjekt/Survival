@@ -1,12 +1,9 @@
 package com.test.SurvivorGame.core;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.AbilityRegistry;
+import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.data.PlayerData;
-import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -15,12 +12,12 @@ import com.test.SurvivorGame.item.ItemRegistry;
 import com.test.SurvivorGame.player_class.BasePlayerClass;
 import com.test.SurvivorGame.player_class.PlayerClassRegistry;
 
-import java.util.Map;
-
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
     private final ItemRegistry itemRegistry;
     private final PlayerClassRegistry playerClassRegistry;
+    private AbilityService abilityService;
+    private AbilityRegistry abilityRegistry;
 
     private final PlayerData playerData;
     private int level;
@@ -34,6 +31,11 @@ public final class PlayerState {
 
         this.playerClassRegistry = new PlayerClassRegistry();
         registerPlayerClass();
+    }
+
+    public void setupAbilityService(AbilityService abilityService) {
+        this.abilityService = abilityService;
+        this.abilityRegistry = abilityService.getAbilityRegistry();
     }
 
     public PlayerData getPlayerData() {
@@ -135,10 +137,34 @@ public final class PlayerState {
         playerData.xp += xp;
 
         int newLevel = calcLevel();
-        if (newLevel > level) {
-            level = newLevel;
-            System.out.println("LEVEL UP: " + level);
-            // => Level-Up Logic
+        while (newLevel > level) { // => Level-Up Logic
+            // Hier Spiel pausieren.
+            if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
+
+            level++;
+            System.out.println("LEVEL UP: " + level); // debug
+            int optionsCount = 3;
+            String[] abilityOptions = genAbilityOptions(optionsCount);
+
+            // debug:
+            System.out.println("Ability Optionen;");
+            printStringArray(abilityOptions);
+
+            int result = levleUpUI(abilityOptions);
+            abilityService.unlockAbility(abilityOptions[result]);
+
+            // falls penalty davor vorhanden, aufheben
+            playerData.skippedAbilityOptions.remove(abilityOptions[result]);
+
+            // penalty sozusagen für, dass es nicht gepicked wurde
+            abilityOptions[result] = null; // damit nicht auch penalty bekommt
+            for (String abilityID : abilityOptions) {
+                if (abilityID == null) continue;
+
+                // erhöht penalty um 0.5 bzw. wenn keine da, dann setzt auf 0.5
+                float currentPenalty = playerData.skippedAbilityOptions.getOrDefault(abilityID, 0f);
+                playerData.skippedAbilityOptions.put(abilityID, currentPenalty + 0.5f);
+            }
         }
     }
 
@@ -220,6 +246,111 @@ public final class PlayerState {
         float overflow = dodgeChance - softCap;
 
         return softCap + (maxCap - softCap) * (overflow / (overflow + 1f));
+    }
+
+    private String[] genAbilityOptions(int count) {
+        if (abilityRegistry == null) {
+            throw new IllegalStateException("AbilityRegistry has not been set up.");
+        }
+
+        String[] options = new String[count];
+
+        for (int i = 0; i < count; i++) {
+            options[i] = rollAbilityOption(options, i);
+        }
+
+        return options;
+    }
+
+    private String rollAbilityOption(String[] alreadyPicked, int pickedCount) {
+        float totalWeight = 0f;
+
+        for (BaseAbility ability : abilityRegistry.getAbilities()) {
+            if (!canRollAbility(ability, alreadyPicked, pickedCount)) {
+                continue;
+            }
+
+            totalWeight += calculateAbilityWeight(ability);
+        }
+
+        if (totalWeight <= 0f) {
+            throw new IllegalStateException("totalWeight is <= 0");
+        }
+
+        float roll = (float) (Math.random() * totalWeight);
+        float currentWeight = 0f;
+
+        for (BaseAbility ability : abilityRegistry.getAbilities()) {
+            if (!canRollAbility(ability, alreadyPicked, pickedCount)) {
+                continue;
+            }
+
+            currentWeight += calculateAbilityWeight(ability);
+
+            if (roll <= currentWeight) {
+                return ability.getID();
+            }
+        }
+
+        throw new IllegalStateException("rollAbilityOption went wrong.");
+    }
+
+    private boolean canRollAbility(BaseAbility ability, String[] alreadyPicked, int pickedCount) {
+        String abilityID = ability.getID();
+
+        for (int i = 0; i < pickedCount; i++) {
+            if (abilityID.equals(alreadyPicked[i])) {
+                return false;
+            }
+        }
+
+        int currentAmount = playerData.abilities.getOrDefault(abilityID, 0);
+
+        return currentAmount < ability.getMaxAmount();
+    }
+
+    // je höher das Weight desto wahrscheinlicher
+    private float calculateAbilityWeight(BaseAbility ability) {
+        float weight = 1f;
+        String abilityID = ability.getID();
+
+        if (playerData.skippedAbilityOptions.containsKey(abilityID)) {
+            float skippedCount = playerData.skippedAbilityOptions.get(abilityID);
+            weight *= 1f - skippedCount;
+        }
+
+        // Wenn Spieler Ability schon hat, soll er sie öfter wieder bekommen.
+        if (playerData.abilities.containsKey(abilityID)) {
+            weight *= 2f;
+        }
+
+        if (isAbilityPreferredByClass(ability)) {
+            weight *= 1.5f;
+        }
+
+        if (weight < 0) weight = 0;
+        return weight;
+    }
+
+    private boolean isAbilityPreferredByClass(BaseAbility ability) {
+        StatScope abilityScope = ability.getScope();
+        if(abilityScope == null) return false; // Ability ist neutral / hat kein Element
+        return abilityScope == playerClassRegistry.getPlayerClass(playerData.playerClass).getScope();
+        // => Ability hat gleiches Element (Scope) wie Player Klasse
+    }
+
+    private int levleUpUI(String[] abilityOptions) {
+        // Muss von Levin implementiert werden.
+
+        // temporär bis da hin:
+        return 1;
+    }
+
+    // DEBUG:
+    private void printStringArray(String[] array) {
+        for (String str : array) {
+            System.out.println(str);
+        }
     }
 
 }

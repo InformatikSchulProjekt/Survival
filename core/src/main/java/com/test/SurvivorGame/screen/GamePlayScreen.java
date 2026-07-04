@@ -10,6 +10,7 @@ import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
@@ -40,13 +41,14 @@ public class GamePlayScreen extends ScreenAdapter {
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
-        playerState = new PlayerState(playerData);
+        this.playerState = new PlayerState(playerData);
         this.world = new World(screenWidth, screenHeight, playerState);
 
         this.shapeRenderer = new ShapeRenderer();
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
+        playerState.setupAbilityService(abilityService);
     }
 
     @Override
