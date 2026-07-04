@@ -22,7 +22,7 @@ public final class Pyromancer extends BasePlayerClass {
 
     @Override
     public String getDescription() {
-        return "Fire mage ."; // temporär, da keine Ahnung was da rein soll
+        return "A flame-wielding mage who turns raw fire magic into overwhelming destruction. Pyromancers empower fire spells and burn through enemies before they can get close.";
     }
 
 

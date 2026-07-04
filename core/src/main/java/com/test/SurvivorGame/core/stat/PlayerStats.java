@@ -15,6 +15,8 @@ public final class PlayerStats {
         baseStats.put(StatType.RESISTANCE, 1f);
         baseStats.put(StatType.DODGE_CHANCE, 0f);
 
+        baseStats.put(StatType.REVIVES, 1f);
+
         baseStats.put(StatType.MAGIC_DURATION, 1f);
         baseStats.put(StatType.MAGIC_DAMAGE, 1f);
         baseStats.put(StatType.MAGIC_COOLDOWN, 1f);
