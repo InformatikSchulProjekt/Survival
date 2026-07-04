@@ -7,25 +7,18 @@
 
     public class Enemy extends Entity { //sollte später abstract parent von den enemies sein, grad zum Testen is aber da
 
-        private static final float ENEMY_SIZE = 1f;
+        private static float ENEMY_SIZE;
 
-        private static float maxStartHP = 1; //standard zuweisung für den start des Spieles
-
+        private static float maxStartHP; //standard zuweisung für den start des Spieles
         private float currentHP = maxStartHP; //current verändert sich, aber ist am start max
+
+        private float damage;
 
         private Player player;
 
         private Vector2 moveDirection;
 
-        private float damage = 1f;
-
         private boolean dead = false;
-
-        public Enemy(float x, float y, Player player)
-        {
-            super(x, y, ENEMY_SIZE, ENEMY_SIZE, maxStartHP, 2f);
-            this.player = player;
-        }
 
         public Enemy(float x, float y, Player player,
                      float size, float maxHP,
