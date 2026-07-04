@@ -282,7 +282,9 @@ public class Renderer {
         renderPlayer(world.getPlayer(), world.getPlayer().getPlayerState(), deltaTime);
 
         for (Enemy enemy : world.getEnemies()) {
-            renderEnemy(enemy);
+            if (!(enemy instanceof Boss)) {
+                renderEnemy(enemy);
+            }
         }
         for (Enemy e : world.getEnemies()) {
             if (e instanceof Boss) {
