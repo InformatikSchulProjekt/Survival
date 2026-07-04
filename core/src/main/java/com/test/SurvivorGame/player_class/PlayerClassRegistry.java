@@ -8,6 +8,7 @@ public final class PlayerClassRegistry {
 
     public PlayerClassRegistry() {
         register(new Pyromancer());
+        register(new EarthMage());
     }
 
     public BasePlayerClass getPlayerClass(String playerClassId) {

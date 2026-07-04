@@ -65,6 +65,7 @@ public class Player extends Entity {
 
     @Override
     public void update(float deltaTime,GameMap map) {
+        SoundManager.updateFootsteps(!moveDirection.isZero());
         move(deltaTime);
         clampToMap(map);
     }
