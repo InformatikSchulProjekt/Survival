@@ -12,6 +12,27 @@ public final class ItemRegistry {
         register(new ChainmailHauberk());
         register(new RogueScarf());
         register(new SeraphWings());
+        register(new LeatherBoots());
+        register(new ApprenticeRing());
+        register(new SmallHealthCharm());
+        register(new LuckyCoin());
+        register(new WindrunnerGloves());
+        register(new EmberAmulet());
+        register(new MysticHourglass());
+        register(new PhoenixHeart());
+        register(new StormCrown());
+        register(new OceanTear());
+        register(new TitanBelt());
+        register(new CrownOfTheArchmage());
+        register(new ImmortalSoulstone());
+        register(new RabbitsFoot());
+        register(new BloodChalice());
+        register(new CopperCompass());
+        register(new ScholarsPendant());
+        register(new TomeOfPractice());
+        register(new MindCrystal());
+        register(new CrownOfWisdom());
+        register(new PhilosophersStone());
     }
 
     public BaseItem getItem(String itemID) {

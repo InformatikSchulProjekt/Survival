@@ -71,18 +71,17 @@
             System.out.println("Enemy bekommt schaden: " + damage);
             System.out.println("Enemy hat: " + currentHP + " Leben");
 
-            if(currentHP <= 0)
-            {
+            if(currentHP <= 0) { //=> Enemy Tod
                 currentHP = 0;
                 dead = true;
-                // => Enemy Tod?
                 if (shouldSpawnChest(playerState.getPlayerStats())) {
-                    // => Spawn Chest
                     System.out.println("Chest spawned!"); // debug
                     world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
                 }
                 playerState.giveXP(getXPWorth());
+                damage -= currentHP; // => Effektiver Schaden (Wenn 1hp genug war um zu killen z. B. soll dmg net trzm 10 sein
             }
+            playerState.heal(damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
         }
 
         private boolean shouldSpawnChest(PlayerStats playerStats) {
