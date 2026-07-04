@@ -7,6 +7,8 @@
     import com.test.SurvivorGame.core.stat.StatType;
     import com.test.SurvivorGame.entity.Entity;
     import com.test.SurvivorGame.entity.Player;
+    import com.test.SurvivorGame.entity.drops.ChestObject;
+    import com.test.SurvivorGame.entity.drops.ChestType;
     import com.test.SurvivorGame.world.maps.GameMap;
 
     public class Enemy extends Entity { //sollte später abstract parent von den enemies sein, grad zum Testen is aber da
@@ -73,6 +75,8 @@
                 // => Enemy Tod?
                 if (shouldSpawnChest(playerState.getPlayerStats())) {
                     // => Spawn Chest
+                    System.out.println("Chest spawned!"); // debug
+                    new ChestObject(getX(), getY(), player, ChestType.NORMAL);
                 }
                 playerState.giveXP(getXPWorth());
             }
@@ -89,7 +93,8 @@
                 chestChance = 1f;
             }
 
-            return Math.random() < chestChance;
+            return true;
+            //return Math.random() < chestChance;
         }
 
         public boolean isDead()

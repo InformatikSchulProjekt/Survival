@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.entity.drops;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.test.SurvivorGame.entity.GameObject;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
@@ -9,8 +10,8 @@ public abstract class DroppedObject extends GameObject {
     private boolean despawned = false;
     private final Player player;
 
-    public DroppedObject(float x, float y, float w, float h, Player player) {
-        super(x, y, w, h);
+    public DroppedObject(float x, float y, float w, float h, Texture texture, Player player) {
+        super(x, y, w, h, texture);
         this.player = player;
         this.despawnTimer = getDespawnTime();
     }
