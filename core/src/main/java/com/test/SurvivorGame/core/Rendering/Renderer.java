@@ -209,8 +209,8 @@ public class Renderer {
             new TextureRegion(enemy1left5));
         enemy1leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
         //ab hier boss
-        this.bossTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
-        TextureRegion[][] bossframes = TextureRegion.split(playerTexture, 64, 64);
+        this.bossTexture = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
+        TextureRegion[][] bossframes = TextureRegion.split(bossTexture, 64, 64);
         bossidle2 = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
         bossidle3 = new Texture(Gdx.files.internal("Boss/BossIdle2.png"));
         bossidleAnimation = new Animation<>(0.4f,
@@ -236,7 +236,7 @@ public class Renderer {
         bossrightAnimation = new Animation<>(0.2f,
             new TextureRegion(bossright1),
             new TextureRegion(bossright2));
-        rightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        bossrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
         bossleft1 = new Texture(Gdx.files.internal("Boss/Bossleft1.png"));
         bossleft2 = new Texture(Gdx.files.internal("Boss/Bossleft2.png"));
         bossleftAnimation = new Animation<>(0.2f,
@@ -407,25 +407,25 @@ public class Renderer {
         Animation<TextureRegion> animation;
 
         if (!boss.isMoving()) {
-            animation = enemy1idleAnimation;
+            animation = bossidleAnimation;
         } else {
             switch (boss.getFacingDirection()) {
                 case UP:
-                    animation = enemy1frontAnimation;
+                    animation = bossfrontAnimation;
                     break;
                 case LEFT:
-                    animation = enemy1leftAnimation;
+                    animation = bossleftAnimation;
                     break;
                 case RIGHT:
-                    animation = enemy1rightAnimation;
+                    animation = bossrightAnimation;
                     break;
                 case DOWN:
                 default:
-                    animation = enemy1backAnimation;
+                    animation = bossbackAnimation;
                     break;
             }
         }
-        TextureRegion currentFrame = animation.getKeyFrame(enemy1AnimationTime);
+        TextureRegion currentFrame = animation.getKeyFrame(bossAnimationTime);
 
 
         batch.draw(
