@@ -102,7 +102,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new Boss(x, y, player));
+        boss.add(new Boss(x, y, player));
     }
 
     private void updateEnemy(float deltaTime, GameMap map)
@@ -118,6 +118,18 @@ public class SpawnManager {
                 enemies.remove(i);
             }
         }
+
+       for(int i = boss.size() - 1; i >= 0; i--)
+       {
+           Boss b = boss.get(i);
+
+           b.update(deltaTime, map);
+
+           if(b.isDead())
+           {
+               boss.remove(i);
+           }
+       }
     }
 
     private void triggerBossPhase()
