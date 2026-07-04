@@ -11,7 +11,7 @@ public class Player extends Entity {
 
 
     public Player(PlayerState playerState) {
-        super(playerState.getX(), playerState.getY(), 2f, 3f, playerState.getHP(), playerState.getSpeed());
+        super(playerState.getX(), playerState.getY(), 1f, 1.5f, playerState.getHP(), playerState.getSpeed());
         this.playerState = playerState;
     }
 
