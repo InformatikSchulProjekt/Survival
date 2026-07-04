@@ -12,7 +12,7 @@ public final class Aeromancer extends BasePlayerClass {
 
     @Override
     public String getName() {
-        return "Wind mage";
+        return "Aeromancer";
     }
 
     @Override
@@ -22,7 +22,7 @@ public final class Aeromancer extends BasePlayerClass {
 
     @Override
     public String getDescription() {
-        return "Aeromancers empower wind magic."; // temporär, da keine Ahnung was da rein soll
+        return "A storm-touched mage who moves with the wind and strikes before enemies can react. Aeromancers empower wind magic and flow through battle with speed and precision.";
     }
 
 

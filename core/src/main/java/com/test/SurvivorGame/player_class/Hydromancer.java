@@ -12,7 +12,7 @@ public final class Hydromancer extends BasePlayerClass {
 
     @Override
     public String getName() {
-        return "Water mage";
+        return "Hydromancer";
     }
 
     @Override
@@ -22,7 +22,7 @@ public final class Hydromancer extends BasePlayerClass {
 
     @Override
     public String getDescription() {
-        return "A water-bound mage who bends tides."; // temporär, da keine Ahnung was da rein soll
+        return "A water-bound mage who bends tides into protection and recovery. Hydromancers empower water magic and outlast enemies through healing and steady control.";
     }
 
 

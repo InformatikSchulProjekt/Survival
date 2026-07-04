@@ -12,7 +12,7 @@ public final class Geomancer extends BasePlayerClass {
 
     @Override
     public String getName() {
-        return "Earth Mage";
+        return "Geomancer";
     }
 
     @Override
@@ -22,7 +22,7 @@ public final class Geomancer extends BasePlayerClass {
 
     @Override
     public String getDescription() {
-        return "Geomancers empower earth magic."; // temporär, da keine Ahnung was da rein soll
+        return "An earth-forged mage who draws strength from stone and soil. Geomancers empower earth magic and stand firm against even the heaviest attacks.";
     }
 
 
