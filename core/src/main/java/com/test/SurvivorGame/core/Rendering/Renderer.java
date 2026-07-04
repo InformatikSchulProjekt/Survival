@@ -108,6 +108,7 @@ public class Renderer {
     private final Texture fireball8;
     private final Texture fireball9;
     private final Texture fireball10;
+    private final Texture fireball11;
     private final Animation<TextureRegion> fireballMovementAnimation;
     private final Animation<TextureRegion> fireballExplosionAnimation;
 
@@ -260,26 +261,27 @@ public class Renderer {
 
         // Fireball Animation laden
         fireball0 = new Texture(Gdx.files.internal("Ability/fireball0000.png"));
-        fireball1 = new Texture(Gdx.files.internal("Ability/fireball0001.png"));
-        fireball2 = new Texture(Gdx.files.internal("Ability/fireball0002.png"));
-        fireball3 = new Texture(Gdx.files.internal("Ability/fireball0003.png"));
-        fireball4 = new Texture(Gdx.files.internal("Ability/fireball0004.png"));
-        fireball5 = new Texture(Gdx.files.internal("Ability/fireball0005.png"));
-        fireball6 = new Texture(Gdx.files.internal("Ability/fireball0006.png"));
-        fireball7 = new Texture(Gdx.files.internal("Ability/fireball0007.png"));
-        fireball8 = new Texture(Gdx.files.internal("Ability/fireball0008.png"));
-        fireball9 = new Texture(Gdx.files.internal("Ability/fireball0009.png"));
-        fireball10 = new Texture(Gdx.files.internal("Ability/fireball0010.png"));
-        
+        fireball1 = new Texture(Gdx.files.internal("Ability/fireball0001.1.png"));
+        fireball2 = new Texture(Gdx.files.internal("Ability/fireball0001.png"));
+        fireball3 = new Texture(Gdx.files.internal("Ability/fireball0002.png"));
+        fireball4 = new Texture(Gdx.files.internal("Ability/fireball0003.png"));
+        fireball5 = new Texture(Gdx.files.internal("Ability/fireball0004.png"));
+        fireball6 = new Texture(Gdx.files.internal("Ability/fireball0005.png"));
+        fireball7 = new Texture(Gdx.files.internal("Ability/fireball0006.png"));
+        fireball8 = new Texture(Gdx.files.internal("Ability/fireball0007.png"));
+        fireball9 = new Texture(Gdx.files.internal("Ability/fireball0008.png"));
+        fireball10 = new Texture(Gdx.files.internal("Ability/fireball0009.png"));
+        fireball11 = new Texture(Gdx.files.internal("Ability/fireball0010.png"));
+
         // Movement Animation: 0000-0001
-        fireballMovementAnimation = new Animation<>(0.1f,
+        fireballMovementAnimation = new Animation<>(0.2f,
             new TextureRegion(fireball0),
-            new TextureRegion(fireball1));
+            new TextureRegion(fireball1),
+            new TextureRegion(fireball2));
         fireballMovementAnimation.setPlayMode(Animation.PlayMode.NORMAL);
-        
+
         // Explosion Animation: 0002-0010
         fireballExplosionAnimation = new Animation<>(0.08f,
-            new TextureRegion(fireball2),
             new TextureRegion(fireball3),
             new TextureRegion(fireball4),
             new TextureRegion(fireball5),
@@ -287,7 +289,8 @@ public class Renderer {
             new TextureRegion(fireball7),
             new TextureRegion(fireball8),
             new TextureRegion(fireball9),
-            new TextureRegion(fireball10));
+            new TextureRegion(fireball10),
+            new TextureRegion(fireball11));
         fireballExplosionAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
@@ -488,17 +491,14 @@ public class Renderer {
 
     private void renderFireball(Fireball fireball, float deltaTime) {
         Animation<TextureRegion> animation;
-        boolean shouldLoop;
-        
+
         if (fireball.hasExploded()) {
             animation = fireballExplosionAnimation;
-            shouldLoop = true;
         } else {
             animation = fireballMovementAnimation;
-            shouldLoop = false;
         }
-        
-        TextureRegion currentFrame = animation.getKeyFrame(fireball.getAnimationTime(), shouldLoop);
+
+        TextureRegion currentFrame = animation.getKeyFrame(fireball.getAnimationTime(), false);
 
         batch.draw(
             currentFrame,

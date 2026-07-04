@@ -13,8 +13,8 @@ public class Fireball extends Projectile {
     private float explosionDamage;
     private float animationTime = 0f;
     private boolean hasExploded = false;
-    private float explosionDuration = 0.6f;
-    private float timeSinceExplosion = 0f;
+    private float lifetimeCounter = 0f;
+    private float totalLifetime = 3f;
     private boolean expired = false;
 
     public Fireball(float x, float y, float effectSize, Texture texture, Player player,
@@ -22,17 +22,21 @@ public class Fireball extends Projectile {
         super(x, y, effectSize, texture, player, viewport, speed, duration);
         this.explosionRadius = explosionRadius;
         this.explosionDamage = getDamage() * 1.5f;
+        this.totalLifetime = duration;
     }
 
     @Override
     public void update(float deltaTime, GameMap map) {
         animationTime += deltaTime;
+        lifetimeCounter += deltaTime;
+        
+        if (lifetimeCounter >= totalLifetime) {
+            expired = true;
+            return;
+        }
         
         if (hasExploded) {
-            timeSinceExplosion += deltaTime;
-            if (timeSinceExplosion >= explosionDuration) {
-                expired = true;
-            }
+            // Explosion animation is playing, just waiting for lifetime to expire
         } else {
             super.update(deltaTime, map);
         }
@@ -40,18 +44,11 @@ public class Fireball extends Projectile {
 
     @Override
     public void onHit(Enemy enemy) {
-        explode(enemy);
-    }
-
-    private void explode(Enemy hitEnemy) {
-        if (hasExploded) return;
-        
-        hasExploded = true;
-        animationTime = 0f;
-        hitEnemy.takeDamage(explosionDamage);
-
-        // Optional: Schaden an anderen Gegnern in Radius infügen
-        // Hier würde die Logik für weitere Gegner im Explosionsradius gehen
+        if (!hasExploded) {
+            hasExploded = true;
+            animationTime = 0f;
+            enemy.takeDamage(explosionDamage);
+        }
     }
     
     @Override

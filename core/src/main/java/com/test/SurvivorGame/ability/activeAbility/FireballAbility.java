@@ -12,8 +12,7 @@ public class FireballAbility extends ActiveAbility{
     public static final String ID = "fireball";
     private final Viewport viewport;
 
-    private float coolDown;
-    private float duration = 4f;
+    private float duration = 2f;
     private float effectSize = 3f;
     private float speed = 8f;
     private float explosionRadius = 2f;
