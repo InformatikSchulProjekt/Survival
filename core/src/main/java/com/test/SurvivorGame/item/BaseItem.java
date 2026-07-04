@@ -14,13 +14,15 @@ public abstract class BaseItem {
 
     public abstract List<StatModifier> getModifiers();
 
+    public abstract ItemRarity getRarity();
+
     public void onApply(PlayerStats playerStats) {
         onRemove(playerStats);
 
         for(StatModifier statMod : getModifiers()) {
             playerStats.addModifier(statMod);
         }
-        System.out.println("Applied Ability: "+ getID()); // debug
+        System.out.println("Applied Item: "+ getID()); // debug
     }
 
     public void onRemove(PlayerStats playerStats) {

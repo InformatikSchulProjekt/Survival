@@ -6,6 +6,9 @@ public enum StatType {
     HEALING,
     PLAYER_SIZE,
     RESISTANCE,
+    DODGE_CHANCE,
+
+    REVIVES,
 
     // Magic:
     MAGIC_DURATION,

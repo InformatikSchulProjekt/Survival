@@ -1,6 +1,8 @@
 package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.core.SoundManager;
+import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
@@ -16,6 +18,7 @@ public class Player extends Entity {
     public void reset(float x, float y) {
         alive = true;
         collider.setPosition(x, y);
+        damageFlashTimer = 0f;
 
 
         moveDirection.setZero();
@@ -56,13 +59,27 @@ public class Player extends Entity {
 
     @Override
     public void takeDamage(float damage) {
-        if (playerState.damage(damage)) return;
+        float hpBefore = playerState.getHP();
+        boolean survived = playerState.damage(damage);
+        currentHP = playerState.getHP();
 
-        die();
+        if (currentHP < hpBefore) {
+            startDamageFlash();
+        }
+
+        if (!survived) {
+            die();
+            SoundManager.playSound("deathSound.wav");
+        }
+    }
+    public PlayerState getPlayerState() {
+        return playerState;
     }
 
     @Override
     public void update(float deltaTime,GameMap map) {
+        SoundManager.updateFootsteps(!moveDirection.isZero());
+        updateDamageFlash(deltaTime);
         move(deltaTime);
         clampToMap(map);
     }

@@ -11,7 +11,6 @@
 
         private static float maxStartHP = 1; //standard zuweisung für den start des Spieles
 
-        private float currentMaxHP = maxStartHP; //wenn leben durch Items upgegraded werden können muss current skalierbar sein
         private float currentHP = maxStartHP; //current verändert sich, aber ist am start max
 
         private Player player;
