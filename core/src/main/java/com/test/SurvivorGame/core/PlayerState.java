@@ -175,7 +175,14 @@ public final class PlayerState {
             level++;
             System.out.println("LEVEL UP: " + level); // debug
             int optionsCount = 3;
-            String[] abilityOptions = genAbilityOptions(optionsCount);
+
+            String[] abilityOptions;
+            try {
+                abilityOptions = genAbilityOptions(optionsCount);
+            } catch (Exception e) {
+                System.out.println("[ERROR]: "+e.toString());
+                return;
+            }
 
             // debug:
             System.out.println("Ability Optionen;");
