@@ -11,14 +11,8 @@ import java.util.ArrayList;
 
 public class SpawnManager {
 
-    private float waveLifeTime = 20f;
-    private float waveTime = 0f;    //wieviel Zeit ist seit start der wave vergangen
+    private float waveTime = 0f;    // wieviel Zeit ist seit start der wave vergangen
     private float spawnTimer = 0f;
-
-
-    private float startInterval;
-    private float endInterval;
-    private float currentSpawnInterval = startInterval; // am anfang gesetzter beispiel interval;
 
     private boolean bossPhaseTriggered = false;
     private enum WaveState {

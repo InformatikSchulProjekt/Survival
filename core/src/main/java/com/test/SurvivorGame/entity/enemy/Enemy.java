@@ -23,8 +23,8 @@
 
         public Enemy(float x, float y, Player player,
                      float size, float maxHP,
-                     float movementSpeed, float damage) {
-
+                     float movementSpeed, float damage)
+        {
             super(x, y, size, size, maxHP, movementSpeed);
 
             this.player = player;

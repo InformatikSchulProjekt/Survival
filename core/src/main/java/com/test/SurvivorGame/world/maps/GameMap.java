@@ -3,12 +3,15 @@ package com.test.SurvivorGame.world.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.test.SurvivorGame.world.maps.WaveControl.TestSpawnProfile;
 
 public class GameMap {
     private final Texture texture;
     private final float worldWidth;
     private final float worldHeight;
     private final boolean infinite;
+
+    TestSpawnProfile spawnProfile = new TestSpawnProfile();
 
     public GameMap() {
         this.texture = new Texture(Gdx.files.internal("Maps/Map(clear1).png"));
@@ -50,5 +53,10 @@ public class GameMap {
 
     public void dispose() {
         texture.dispose();
+    }
+
+    public TestSpawnProfile getSpawnprofile()
+    {
+        return spawnProfile;
     }
 }
