@@ -28,6 +28,9 @@ public class Wave {
     }
 
     public EnemyType getRandomEnemy() {
+        if (enemies.isEmpty()) {
+            throw new IllegalStateException("Wave enthält keine Gegner!");
+        }
 
         float random = MathUtils.random(100f);
         float sum = 0;
@@ -39,8 +42,8 @@ public class Wave {
                 return entry.getEnemyType();
             }
         }
-
-        return enemies.get(enemies.size() - 1).getEnemyType();
+        System.out.println("WARNING: Enemy spawn is not 100%, it is: " + sum + "%");
+        return enemies.get(enemies.size() - 1).getEnemyType(); // absicherung, falls es insgesamt keine 100% sind, gibt letzten gegner zurück
     }
 
     public float getWaveLifeTime()

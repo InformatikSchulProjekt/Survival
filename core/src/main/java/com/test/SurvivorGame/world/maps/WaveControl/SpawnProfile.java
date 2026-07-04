@@ -19,21 +19,16 @@ public class SpawnProfile {
 
     public void addEnemyToWave(Wave wave, EnemyType enemyType, float percentage)
     {
-        if(!wave.getEnemyList().isEmpty())
-        {
-            float percentageCounter = 0f;
-            for(SpawnEntry spawnEntry : wave.getEnemyList())
-            {
-                percentageCounter += spawnEntry.getChance();
-            }
-            if(percentageCounter <= 100f && percentageCounter > 0f)
-            {
-                wave.addEnemy(new SpawnEntry(enemyType, percentage));
-            }
-            if(percentageCounter > 100f)
-            {
-                System.out.println("PERCENTAGECOUNT TO HIGH FOR ENEMYTYPE :" + enemyType + " in: " + wave);
-            }
+        float percentageCounter = 0f;
+
+        for (SpawnEntry spawnEntry : wave.getEnemyList()) {
+            percentageCounter += spawnEntry.getChance();
+        }
+
+        if (percentageCounter + percentage <= 100f) {
+            wave.addEnemy(new SpawnEntry(enemyType, percentage));
+        } else {
+            System.out.println("Percentage zu hoch!");
         }
     }
 
