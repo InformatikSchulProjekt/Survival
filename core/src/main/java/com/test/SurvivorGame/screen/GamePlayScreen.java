@@ -38,6 +38,7 @@ public class GamePlayScreen extends ScreenAdapter {
         // bis ability slots gui da:
         playerData.abilitySlots[0] = "melee";
         playerData.abilitySlots[1] = "fireball";
+        playerData.abilitySlots[2] = "fire_arrow";
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 

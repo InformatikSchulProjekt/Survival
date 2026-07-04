@@ -19,15 +19,20 @@ public class Projectile extends AbilityObject {
     private Player player;
 
     private Vector3 mouseScreen;
-    private Vector2 direction;
+    protected Vector2 direction;
 
     private float speed;
 
-    private boolean expired;
+    protected boolean expired;
 
     public Projectile(float x, float y, float effectSize, Texture texture, Player player, Viewport viewport, float speed, float duration)
     {
-        super(x, y, effectSize, effectSize, texture);
+        this(x, y, effectSize, effectSize, texture, player, viewport, speed, duration);
+    }
+
+    public Projectile(float x, float y, float width, float height, Texture texture, Player player, Viewport viewport, float speed, float duration)
+    {
+        super(x, y, width, height, texture);
 
         this.deltaDuration = duration;
         this.player = player;
@@ -56,6 +61,11 @@ public class Projectile extends AbilityObject {
     public void move(float deltaTime)
     {
         collider.setPosition(collider.getX() + direction.x * speed * deltaTime,collider.getY() + direction.y * speed * deltaTime);
+    }
+
+    protected void expire()
+    {
+        expired = true;
     }
 
 
