@@ -41,7 +41,7 @@
         }
 
         public int getXPWorth() {
-            return 1000;
+            return 2;
         }
 
         public float getDamage()
