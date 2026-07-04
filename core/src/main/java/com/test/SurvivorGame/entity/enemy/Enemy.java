@@ -1,6 +1,10 @@
     package com.test.SurvivorGame.entity.enemy;
 
     import com.badlogic.gdx.math.Vector2;
+    import com.test.SurvivorGame.core.PlayerState;
+    import com.test.SurvivorGame.core.stat.PlayerStats;
+    import com.test.SurvivorGame.core.stat.StatScope;
+    import com.test.SurvivorGame.core.stat.StatType;
     import com.test.SurvivorGame.entity.Entity;
     import com.test.SurvivorGame.entity.Player;
     import com.test.SurvivorGame.world.maps.GameMap;
@@ -56,7 +60,7 @@
             collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
         }
 
-        public void takeDamage(float damage)
+        public void takeDamage(float damage, PlayerState playerState)
         {
             currentHP -= damage;
             System.out.println("Enemy bekommt schaden: " + damage);
@@ -66,7 +70,25 @@
             {
                 currentHP = 0;
                 dead = true;
+                // => Enemy Tod?
+                if (shouldSpawnChest(playerState.getPlayerStats())) {
+                    // => Spawn Chest
+                }
             }
+        }
+
+        private boolean shouldSpawnChest(PlayerStats playerStats) {
+            float chestChance = playerStats.getStat(StatScope.ALL, StatType.CHEST_CHANCE);
+
+            if (chestChance <= 0f) {
+                return false;
+            }
+
+            if (chestChance > 1f) {
+                chestChance = 1f;
+            }
+
+            return Math.random() < chestChance;
         }
 
         public boolean isDead()

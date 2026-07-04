@@ -2,17 +2,20 @@ package com.test.SurvivorGame.entity;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.SoundManager;
-import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
 public class Player extends Entity {
-    private PlayerState playerState;
+    private final PlayerState playerState;
 
 
     public Player(PlayerState playerState) {
         super(playerState.getX(), playerState.getY(), 2f, 3f, playerState.getHP(), playerState.getSpeed());
         this.playerState = playerState;
+    }
+
+    public PlayerState getPlayerState() {
+        return playerState;
     }
 
     public void reset(float x, float y) {

@@ -8,6 +8,7 @@ public enum StatType {
     RESISTANCE,
     DODGE_CHANCE,
 
+    CHEST_CHANCE,
     REVIVES,
 
     // Magic:
