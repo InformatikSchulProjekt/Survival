@@ -9,6 +9,7 @@
     import com.test.SurvivorGame.entity.Player;
     import com.test.SurvivorGame.entity.drops.ChestObject;
     import com.test.SurvivorGame.entity.drops.ChestType;
+    import com.test.SurvivorGame.world.World;
     import com.test.SurvivorGame.world.maps.GameMap;
 
     public class Enemy extends Entity { //sollte später abstract parent von den enemies sein, grad zum Testen is aber da
@@ -21,19 +22,21 @@
         private float damage;
 
         private Player player;
+        private World world;
 
         private Vector2 moveDirection;
         protected float animationTime = 0f;
 
         private boolean dead = false;
 
-        public Enemy(float x, float y, Player player,
+        public Enemy(float x, float y, World world,
                      float size, float maxHP,
                      float movementSpeed, float damage) {
 
             super(x, y, size, size, maxHP, movementSpeed);
 
-            this.player = player;
+            this.world = world;
+            this.player = world.getPlayer();
 
             this.maxHP = maxHP;
             this.currentHP = maxHP;
@@ -76,7 +79,7 @@
                 if (shouldSpawnChest(playerState.getPlayerStats())) {
                     // => Spawn Chest
                     System.out.println("Chest spawned!"); // debug
-                    new ChestObject(getX(), getY(), player, ChestType.NORMAL);
+                    world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
                 }
                 playerState.giveXP(getXPWorth());
             }
@@ -93,8 +96,7 @@
                 chestChance = 1f;
             }
 
-            return true;
-            //return Math.random() < chestChance;
+            return Math.random() < chestChance;
         }
 
         public boolean isDead()

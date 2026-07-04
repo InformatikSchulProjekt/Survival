@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
@@ -350,6 +351,10 @@ public class Renderer {
             } else {
                 abilityObject.draw(batch);
             }
+        }
+
+        for (DroppedObject drop : world.getDroppedObjects()) {
+            drop.draw(batch);
         }
 
         batch.end();

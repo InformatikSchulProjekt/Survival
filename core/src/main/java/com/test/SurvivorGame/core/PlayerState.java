@@ -221,6 +221,7 @@ public final class PlayerState {
                 itemChoices[i] = item;
             } catch(Exception e) {
                 System.out.println("[ERROR]: "+e.toString());
+                return;
             }
         }
 
