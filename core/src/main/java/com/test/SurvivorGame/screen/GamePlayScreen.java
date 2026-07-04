@@ -42,7 +42,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData);
-        this.world = new World(screenWidth, screenHeight, playerState);
+        this.world = new World(screenWidth, screenHeight, playerState, map);
 
         this.shapeRenderer = new ShapeRenderer();
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);

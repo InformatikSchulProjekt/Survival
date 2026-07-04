@@ -6,6 +6,8 @@ import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.entity.enemy.Slime;
 import com.test.SurvivorGame.world.maps.GameMap;
+import com.test.SurvivorGame.world.maps.WaveControl.EnemyFactory;
+import com.test.SurvivorGame.world.maps.WaveControl.Wave;
 
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ public class SpawnManager {
 
     private float waveTime = 0f;    // wieviel Zeit ist seit start der wave vergangen
     private float spawnTimer = 0f;
+    private float currentSpawnInterval;
 
     private boolean bossPhaseTriggered = false;
     private enum WaveState {
@@ -22,15 +25,21 @@ public class SpawnManager {
     private WaveState state = WaveState.NORMAL;
 
     private Player player;
+    GameMap map;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private int currentWave;
+    private Wave currentWaveReference;
 
-    public SpawnManager(Player player)
+
+    public SpawnManager(Player player, GameMap map)
     {
         this.player = player;
         currentWave = 1;
+        this.map = map;
+
+        this.currentWaveReference = map.getSpawnprofile().getCurrentWave(currentWave);
     }
 
     public void update(float deltaTime, GameMap map)
@@ -49,11 +58,14 @@ public class SpawnManager {
         waveTime += deltaTime;
         spawnTimer += deltaTime;
 
-        currentSpawnInterval = MathUtils.lerp(2.0f, 0.4f, waveTime / waveLifeTime);
+        currentSpawnInterval = MathUtils.lerp(
+            currentWaveReference.getStartInterval(),
+            currentWaveReference.getEndInterval(),
+            waveTime / currentWaveReference.getWaveLifeTime());
 
         if (spawnTimer >= currentSpawnInterval)
         {
-            spawnSlime();
+            spawnEnemy();
             spawnTimer = 0;
         }
 
@@ -61,7 +73,6 @@ public class SpawnManager {
         {
             state = WaveState.BOSS;
         }
-
     }
 
     private void updateBossWave()
@@ -70,9 +81,18 @@ public class SpawnManager {
         {
             triggerBossPhase();
         }
+
+        if(enemies.isEmpty() && map.getSpawnprofile().hasNextWave(currentWave))
+        {
+            startNextWave();
+        }
+        if(enemies.isEmpty() && !map.getSpawnprofile().hasNextWave(currentWave))
+        {
+            System.out.println("No Waves; You Completed"); // Funktion nach abschluss der map
+        }
     }
 
-    private void spawnSlime()
+    private void spawnEnemy()
     {
         float distance = MathUtils.random(10f, 15f); // zufälliger radius
 
@@ -84,7 +104,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new Slime(x, y, player));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, player));
     }
 
     private void spawnBoss()
@@ -99,7 +119,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new Boss(x, y, player));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,player));
     }
 
     private void updateEnemy(float deltaTime, GameMap map)
@@ -123,7 +143,7 @@ public class SpawnManager {
         {
             for(int i = 1; i < Boss.getBossWaveCount(); i++)
             {
-                spawnSlime();
+                spawnEnemy();
             }
             for (int i = 0; i < Boss.getBossCount(); i++)
             {
@@ -132,16 +152,11 @@ public class SpawnManager {
 
             bossPhaseTriggered = true;
         }
-
-        if(enemies.isEmpty())
-        {
-            startNextWave();
-        }
     }
 
     private boolean endTime()
     {
-        if(waveTime < waveLifeTime)
+        if(waveTime < currentWaveReference.getWaveLifeTime())
         {
             return false;
         }
@@ -158,6 +173,8 @@ public class SpawnManager {
 
     public void resetSpawn()
     {
+        currentWave = 1;
+
         waveTime = 0f;
         spawnTimer = 0f;
 
@@ -168,6 +185,7 @@ public class SpawnManager {
     private void startNextWave()
     {
         currentWave++;
+        currentWaveReference = map.getSpawnprofile().getCurrentWave(currentWave);
 
         waveTime = 0f;
         spawnTimer = 0f;
@@ -175,14 +193,6 @@ public class SpawnManager {
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;
 
-        increaseDifficulty();
-    }
 
-    private void increaseDifficulty()
-    {
-        startInterval *= 0.9f;
-        endInterval *= 0.95f;
-
-        if(endInterval < 0.15f) endInterval = 0.15f;
     }
 }

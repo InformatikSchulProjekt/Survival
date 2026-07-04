@@ -6,17 +6,20 @@ import java.util.ArrayList;
 
 public class Wave {
 
-    private float waveTime;
+    private float waveLifeTime;
     private float startInterval;
     private float endInterval;
 
     private ArrayList<SpawnEntry> enemies = new ArrayList<>();
+    private EnemyType bossType;
 
-    public Wave(float waveTime, float startInterval, float endInterval)
+    public Wave(float waveTime, float startInterval, float endInterval, EnemyType bossType)
     {
-        this.waveTime = waveTime;
+        this.waveLifeTime = waveTime;
         this.startInterval = startInterval;
         this.endInterval = endInterval;
+
+        this.bossType = bossType;
     }
 
     public void addEnemy(SpawnEntry spawnEntry)
@@ -40,9 +43,9 @@ public class Wave {
         return enemies.get(enemies.size() - 1).getEnemyType();
     }
 
-    public float getWaveTime()
+    public float getWaveLifeTime()
     {
-        return waveTime;
+        return waveLifeTime;
     }
 
     public float getStartInterval()
@@ -58,5 +61,10 @@ public class Wave {
     public ArrayList<SpawnEntry> getEnemyList()
     {
         return enemies;
+    }
+
+    public EnemyType getBoss()
+    {
+        return bossType;
     }
 }
