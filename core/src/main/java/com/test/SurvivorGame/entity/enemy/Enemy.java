@@ -40,6 +40,9 @@
             this.damage = damage;
         }
 
+        public int getXPWorth() {
+            return 2;
+        }
 
         public float getDamage()
         {
@@ -71,6 +74,7 @@
                 if (shouldSpawnChest(playerState.getPlayerStats())) {
                     // => Spawn Chest
                 }
+                playerState.giveXP(getXPWorth());
             }
         }
 
