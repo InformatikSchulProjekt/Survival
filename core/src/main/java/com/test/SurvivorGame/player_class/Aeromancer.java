@@ -2,8 +2,8 @@ package com.test.SurvivorGame.player_class;
 
 import com.test.SurvivorGame.core.stat.StatScope;
 
-public final class EarthMage extends BasePlayerClass {
-    public static final String ID = "EarthMage";
+public final class Aeromancer extends BasePlayerClass {
+    public static final String ID = "aeromancer";
 
     @Override
     public String getID() {
@@ -12,17 +12,17 @@ public final class EarthMage extends BasePlayerClass {
 
     @Override
     public String getName() {
-        return "EarthMage";
+        return "Wind mage";
     }
 
     @Override
     public StatScope getScope() {
-        return StatScope.Earth;
+        return StatScope.WIND;
     }
 
     @Override
     public String getDescription() {
-        return "Earth mage ."; // temporär, da keine Ahnung was da rein soll
+        return "Aeromancers empower wind magic."; // temporär, da keine Ahnung was da rein soll
     }
 
 

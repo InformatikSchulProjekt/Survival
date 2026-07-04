@@ -2,8 +2,8 @@ package com.test.SurvivorGame.player_class;
 
 import com.test.SurvivorGame.core.stat.StatScope;
 
-public final class WaterMage extends BasePlayerClass {
-    public static final String ID = "Water mage";
+public final class Hydromancer extends BasePlayerClass {
+    public static final String ID = "hydromancer";
 
     @Override
     public String getID() {
@@ -22,7 +22,7 @@ public final class WaterMage extends BasePlayerClass {
 
     @Override
     public String getDescription() {
-        return "Water mage ."; // temporär, da keine Ahnung was da rein soll
+        return "A water-bound mage who bends tides."; // temporär, da keine Ahnung was da rein soll
     }
 
 
