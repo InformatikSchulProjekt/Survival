@@ -61,6 +61,7 @@ public class World {
     private void resetWorld()
     {
         spawnManager.getEnemies().clear();
+        spawnManager.getBoss().clear();
 
         spawnManager.resetSpawn();
 
@@ -85,6 +86,14 @@ public class World {
                 }
             }
 
+            for(Boss boss : spawnManager.getBoss())
+            {
+                if(player.overlaps(boss))
+                {
+                    dmgTaken += boss.getDamage();
+                }
+            }
+
             if(dmgTaken > 0)
             {
                 player.takeDamage(dmgTaken);
@@ -96,7 +105,6 @@ public class World {
 
     private void checkAbilityCollision(float deltaTime)
     {
-
         for(AbilityObject ability : abilityObjects)
         {
             for(Enemy enemy : spawnManager.getEnemies())
@@ -104,6 +112,14 @@ public class World {
                 if(ability.overlaps(enemy))
                 {
                     ability.onHit(enemy);
+                }
+            }
+
+            for(Boss boss : spawnManager.getBoss())
+            {
+                if(ability.overlaps(boss))
+                {
+                    ability.onHit(boss);
                 }
             }
         }
