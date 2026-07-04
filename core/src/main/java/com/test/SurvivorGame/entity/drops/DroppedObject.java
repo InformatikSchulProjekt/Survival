@@ -26,6 +26,7 @@ public abstract class DroppedObject extends GameObject {
     public void update(float deltaTime, GameMap map) {
         if(overlaps(player)) { // => Spieler berührt also sammelt Drop ein
             player.getPlayerState().collectDrop(this);
+            despawned = true;
         }
 
         if (despawned) {

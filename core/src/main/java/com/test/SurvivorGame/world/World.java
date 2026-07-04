@@ -62,12 +62,13 @@ public class World {
             }
         }
 
-        for (DroppedObject drop : droppedObjects) {
+        for (int i = droppedObjects.size() - 1; i >= 0; i--) {
+            DroppedObject drop = droppedObjects.get(i);
 
             drop.update(deltaTime, map);
 
             if (drop.isDespawned()) {
-                droppedObjects.remove(drop);
+                droppedObjects.remove(i);
             }
         }
 
