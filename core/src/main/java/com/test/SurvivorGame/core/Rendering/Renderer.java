@@ -7,7 +7,9 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
+import com.test.SurvivorGame.screen.HuD.HUDRenderer;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -52,7 +54,6 @@ public class Renderer {
     private final Animation<TextureRegion> frontAnimation;
     private final Animation<TextureRegion> rightAnimation;
     private final Animation<TextureRegion> leftAnimation;
-
     private float playerAnimationTime = 0f;
 
     //Ab hier Enemy1
@@ -112,6 +113,7 @@ public class Renderer {
     private final Texture fireball11;
     private final Animation<TextureRegion> fireballMovementAnimation;
     private final Animation<TextureRegion> fireballExplosionAnimation;
+    private final HUDRenderer hud;
 
     //FireArrow
     private final Texture firearrow0;
@@ -123,13 +125,15 @@ public class Renderer {
 
 
 
+
+
     public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
 
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
-
+        this.hud = new HUDRenderer(batch, shapeRenderer);
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
         idle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
@@ -315,6 +319,7 @@ public class Renderer {
 
     public void resize(int width, int height) {
         viewport.update(width, height, true);
+        hud.resize(width, height); //hier etwas für Hud screen dazu
     }
     public void render(GameMap map, World world, float deltaTime) //hab ich jetzt so umgeändert, damit nun auch player aus world beutzt wird
     {                                                //und dass jetzt auch gegner gerendert werden
@@ -373,9 +378,19 @@ public class Renderer {
             }
         }
 
+        for (DroppedObject drop : world.getDroppedObjects()) {
+            drop.draw(batch);
+        }
+
         batch.end();
 
         DBcolliderRenderer();
+        hud.render(
+            world.getPlayer().getPlayerState(),
+            world.getSurvivalTime()
+        );
+
+
     }
 
     public void DBcolliderRenderer() //für Debug Purpose Collider anzeigen
@@ -647,5 +662,6 @@ public class Renderer {
         fireball8.dispose();
         fireball9.dispose();
         fireball10.dispose();
+        hud.dispose();
     }
 }

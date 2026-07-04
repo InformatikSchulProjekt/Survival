@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.ability.AbilityRegistry;
 import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.ability.BaseAbility;
@@ -7,10 +8,16 @@ import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.entity.drops.ChestObject;
+import com.test.SurvivorGame.entity.drops.ChestType;
+import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.item.BaseItem;
+import com.test.SurvivorGame.item.ItemRarity;
 import com.test.SurvivorGame.item.ItemRegistry;
 import com.test.SurvivorGame.player_class.BasePlayerClass;
 import com.test.SurvivorGame.player_class.PlayerClassRegistry;
+
+import java.util.ArrayList;
 
 public final class PlayerState {
     private final PlayerStats playerStats = new PlayerStats();
@@ -52,8 +59,26 @@ public final class PlayerState {
     public int getLevel() {
         return level;
     }
-
+    public int getXP() {
+        return playerData.xp;
+    }
     // returned currentHP (NICHT MAX_HP)
+    public float getXpProgress() {
+        int xpForCurrentLevel = xpRequiredForLevel(level);
+        int xpForNextLevel = xpRequiredForLevel(level + 1);
+
+        int xpIntoLevel = playerData.xp - xpForCurrentLevel;
+        int xpNeededForLevel = xpForNextLevel - xpForCurrentLevel;
+
+        if (xpNeededForLevel <= 0) return 1f; // safety fallback, sollte nicht vorkommen
+
+        return MathUtils.clamp(xpIntoLevel / (float) xpNeededForLevel, 0f, 1f);
+    }
+    // Gleiche Formel wie in calcLevel(), nur umgestellt nach xp. Level 1 braucht 0 XP.
+    private int xpRequiredForLevel(int lvl) {
+        int n = lvl - 1;
+        return 5 * n * n;
+    }
     public float getHP() {
         return playerData.hp;
     }
@@ -169,7 +194,14 @@ public final class PlayerState {
             level++;
             System.out.println("LEVEL UP: " + level); // debug
             int optionsCount = 3;
-            String[] abilityOptions = genAbilityOptions(optionsCount);
+
+            String[] abilityOptions;
+            try {
+                abilityOptions = genAbilityOptions(optionsCount);
+            } catch (Exception e) {
+                System.out.println("[ERROR]: "+e.toString());
+                return;
+            }
 
             // debug:
             System.out.println("Ability Optionen;");
@@ -191,6 +223,109 @@ public final class PlayerState {
                 playerData.skippedAbilityOptions.put(abilityID, currentPenalty + 0.5f);
             }
         }
+    }
+
+    public void collectDrop(DroppedObject drop) {
+        if (drop instanceof ChestObject) { // => Drop ist eine Chest
+            openChest(((ChestObject) drop).getChestType());
+        }
+    }
+
+    private void openChest(ChestType chestType) {
+        BaseItem[] itemChoices = new BaseItem[3];
+
+        for (int i = 0; i < itemChoices.length; i++) {
+            try {
+                BaseItem item = rollChestItem(chestType, itemChoices, i);
+                itemChoices[i] = item;
+            } catch(Exception e) {
+                System.out.println("[ERROR]: "+e.toString());
+                return;
+            }
+        }
+
+        int chosenItemIndex = chestUI(itemChoices); // UI Öffnen für User Input
+
+        unlockItem(itemChoices[chosenItemIndex].getID());
+    }
+
+    private int chestUI(BaseItem[] itemChoices) {
+        // temporär bis UI dafür da:
+        return 0;
+    }
+
+    private BaseItem rollChestItem(ChestType chestType, BaseItem[] alreadyPicked, int pickedCount) {
+        ItemRarity itemRarity;
+
+        if (chestType == ChestType.BOSS) {
+            itemRarity = ItemRarity.LEGENDARY;
+        } else {
+            itemRarity = rollItemRarity();
+        }
+
+        BaseItem[] itemsOfRarity = itemRegistry.getItemsByRarity(itemRarity);
+        ArrayList<BaseItem> possibleItems = new ArrayList<>();
+
+        for (BaseItem item : itemsOfRarity) {
+            if (playerData.items.contains(item.getID())) {
+                continue; // Player hat Item schon
+            }
+            if (isItemAlreadyPicked(item, alreadyPicked, pickedCount)) {
+                continue; // Item ist bereits in Auswahl
+            }
+
+            possibleItems.add(item);
+        }
+
+        if (possibleItems.isEmpty()) {
+            throw new IllegalStateException("No available item found for rarity: " + itemRarity);
+        }
+
+        int randomIndex = getRandomIndex(possibleItems.size());
+        return possibleItems.get(randomIndex);
+    }
+
+    private boolean isItemAlreadyPicked(BaseItem item, BaseItem[] alreadyPicked, int pickedCount) {
+        for (int i = 0; i < pickedCount; i++) {
+            if (alreadyPicked[i] != null && alreadyPicked[i].getID().equals(item.getID())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private int getRandomIndex(int length) {
+        return (int) (Math.random() * length);
+    }
+
+    private ItemRarity rollItemRarity() {
+        float commonWeight = 1f;
+        float rareWeight = 0.25f;
+        float epicWeight = 0.1f;
+        float legendaryWeight = 0.03f;
+
+        float totalWeight = commonWeight + rareWeight + epicWeight + legendaryWeight;
+
+        float roll = (float) (Math.random() * totalWeight); // (float) weil das double ist
+        float currentWeight = 0f;
+
+        currentWeight += commonWeight;
+        if (roll <= currentWeight) {
+            return ItemRarity.COMMON;
+        }
+
+        currentWeight += rareWeight;
+        if (roll <= currentWeight) {
+            return ItemRarity.RARE;
+        }
+
+        currentWeight += epicWeight;
+        if (roll <= currentWeight) {
+            return ItemRarity.EPIC;
+        }
+
+        return ItemRarity.LEGENDARY;
     }
 
     public void unlockItem(String itemId) {
@@ -377,5 +512,4 @@ public final class PlayerState {
             System.out.println(str);
         }
     }
-
 }

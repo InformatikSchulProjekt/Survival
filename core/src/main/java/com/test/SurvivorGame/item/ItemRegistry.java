@@ -21,5 +21,12 @@ public final class ItemRegistry {
     private void register(BaseItem item) {
         items.put(item.getID(), item);
     }
+
+    public BaseItem[] getItemsByRarity(ItemRarity rarity) {
+        return items.values()
+            .stream()
+            .filter(item -> item.getRarity() == rarity)
+            .toArray(BaseItem[]::new);
+    }
 }
 
