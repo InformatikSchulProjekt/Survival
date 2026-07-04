@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.ability.AbilityRegistry;
 import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.ability.BaseAbility;
@@ -52,8 +53,26 @@ public final class PlayerState {
     public int getLevel() {
         return level;
     }
-
+    public int getXP() {
+        return playerData.xp;
+    }
     // returned currentHP (NICHT MAX_HP)
+    public float getXpProgress() {
+        int xpForCurrentLevel = xpRequiredForLevel(level);
+        int xpForNextLevel = xpRequiredForLevel(level + 1);
+
+        int xpIntoLevel = playerData.xp - xpForCurrentLevel;
+        int xpNeededForLevel = xpForNextLevel - xpForCurrentLevel;
+
+        if (xpNeededForLevel <= 0) return 1f; // safety fallback, sollte nicht vorkommen
+
+        return MathUtils.clamp(xpIntoLevel / (float) xpNeededForLevel, 0f, 1f);
+    }
+    // Gleiche Formel wie in calcLevel(), nur umgestellt nach xp. Level 1 braucht 0 XP.
+    private int xpRequiredForLevel(int lvl) {
+        int n = lvl - 1;
+        return 5 * n * n;
+    }
     public float getHP() {
         return playerData.hp;
     }
@@ -377,5 +396,4 @@ public final class PlayerState {
             System.out.println(str);
         }
     }
-
 }

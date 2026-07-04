@@ -15,6 +15,8 @@ public class World {
     private float damageTimer = 0f;
     private final float DamageInterval = 0.5f;
 
+    private float survivalTime = 0f; // wie lange der aktuelle Run schon läuft, für den HUD-Timer
+
     float screenWidth, screenHeight; // nur für reset-test
 
     private ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
@@ -32,6 +34,8 @@ public class World {
 
     public void update(float deltaTime, GameMap map)
     {
+        survivalTime += deltaTime;
+
         player.update(deltaTime, map);
         spawnManager.update(deltaTime, map);
 
@@ -64,6 +68,7 @@ public class World {
         spawnManager.resetSpawn();
 
         damageTimer = 0;
+        survivalTime = 0f;
 
         player.reset(screenWidth / 2, screenHeight / 2);
     }
@@ -111,6 +116,11 @@ public class World {
     public Player getPlayer()
     {
         return player;
+    }
+
+    public float getSurvivalTime()
+    {
+        return survivalTime;
     }
 
     public ArrayList<Enemy> getEnemies()
