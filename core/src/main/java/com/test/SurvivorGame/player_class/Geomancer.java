@@ -17,7 +17,7 @@ public final class Geomancer extends BasePlayerClass {
 
     @Override
     public StatScope getScope() {
-        return StatScope.Earth;
+        return StatScope.EARTH;
     }
 
     @Override

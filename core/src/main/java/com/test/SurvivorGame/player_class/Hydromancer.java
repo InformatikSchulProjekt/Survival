@@ -17,7 +17,7 @@ public final class Hydromancer extends BasePlayerClass {
 
     @Override
     public StatScope getScope() {
-        return StatScope.Water;
+        return StatScope.WATER;
     }
 
     @Override

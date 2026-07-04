@@ -4,6 +4,6 @@ public enum StatScope {
     ALL,
     FIRE,
     WIND,
-    Earth,
-    Water
+    EARTH,
+    WATER
 }

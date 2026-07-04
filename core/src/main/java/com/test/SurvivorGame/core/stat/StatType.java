@@ -10,6 +10,8 @@ public enum StatType {
 
     CHEST_CHANCE,
     REVIVES,
+    LIFE_STEAL,
+    XP_GAIN,
 
     // Magic:
     MAGIC_DURATION,

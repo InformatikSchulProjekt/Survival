@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PlayerData {
-    public int xp = 0;
+    public float xp = 0;
     public float hp = 10f;
 
     public float x = 0;

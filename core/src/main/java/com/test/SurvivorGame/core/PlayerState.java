@@ -59,26 +59,29 @@ public final class PlayerState {
     public int getLevel() {
         return level;
     }
-    public int getXP() {
+
+    public float getXP() {
         return playerData.xp;
     }
-    // returned currentHP (NICHT MAX_HP)
+
     public float getXpProgress() {
         int xpForCurrentLevel = xpRequiredForLevel(level);
         int xpForNextLevel = xpRequiredForLevel(level + 1);
 
-        int xpIntoLevel = playerData.xp - xpForCurrentLevel;
+        int xpIntoLevel = (int) playerData.xp - xpForCurrentLevel;
         int xpNeededForLevel = xpForNextLevel - xpForCurrentLevel;
 
         if (xpNeededForLevel <= 0) return 1f; // safety fallback, sollte nicht vorkommen
 
         return MathUtils.clamp(xpIntoLevel / (float) xpNeededForLevel, 0f, 1f);
     }
+
     // Gleiche Formel wie in calcLevel(), nur umgestellt nach xp. Level 1 braucht 0 XP.
     private int xpRequiredForLevel(int lvl) {
         int n = lvl - 1;
         return 5 * n * n;
     }
+
     public float getHP() {
         return playerData.hp;
     }
@@ -183,8 +186,9 @@ public final class PlayerState {
     }
 
     public void giveXP(int xp) {
-        System.out.println("Giving XP: "+xp);
-        playerData.xp += xp;
+        float actualXP = xp * playerStats.getStat(StatScope.ALL, StatType.XP_GAIN);
+        playerData.xp += actualXP;
+        System.out.println("Gained XP: "+actualXP);
 
         int newLevel = calcLevel();
         while (newLevel > level) { // => Level-Up Logic
@@ -345,7 +349,7 @@ public final class PlayerState {
     }
 
     private int calcLevel() {
-        int xp = Math.max(0, playerData.xp);
+        float xp = Math.max(0, playerData.xp);
         return 1 + (int) Math.sqrt(xp / 5f);
     }
 
