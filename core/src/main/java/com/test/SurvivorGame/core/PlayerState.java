@@ -21,6 +21,9 @@ public final class PlayerState {
 
     private final PlayerData playerData;
     private int level;
+    private boolean dodgedLastAttack = false;
+    private long dodgeEffectStartTime = 0;
+    private static final long DODGE_EFFECT_DURATION = 300;
 
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
@@ -93,6 +96,8 @@ public final class PlayerState {
         if(tryDodge()) {
             System.out.println("Dodged Attack"); //debug
             // => Dodge Visuals adden
+            dodgedLastAttack=true;
+            dodgeEffectStartTime = System.currentTimeMillis();
             return true; // Spieler ist gedodged.
         }
 
@@ -111,12 +116,32 @@ public final class PlayerState {
 
         if (playerData.hp <= 0f) {
             playerData.hp = 0f;
-            // => Player Dead Logic
-            System.out.println("Player died."); // debug
-            return false;
+            // => Player Dead Logic:
+            boolean revived = deathScreen(); // Ergebnis vom UI Spieler Input
+            if (!revived) { //=> Spieler ist nicht revived, also Tod
+                System.out.println("Player died."); // debug
+                return false;
+            } // => Spieler ist revived
+            System.out.println("Player ist revived");
+            playerData.hp = playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH) / 2;
+            // => Spieler kriegt hälfte HP zurück bei Revive
+            playerData.revivesUsed++;
         }
         return true;
+    }
+    public boolean isDodgeEffectActive() {
+        return System.currentTimeMillis() - dodgeEffectStartTime < DODGE_EFFECT_DURATION;
+    }
 
+    // sollte true returnen, wenn der Spieler reviven kann und will. False wenn eben nicht
+    private boolean deathScreen() {
+        boolean playerCanRevive = playerStats.getStat(StatScope.ALL, StatType.REVIVES) > playerData.revivesUsed;
+        //System.out.println("Player can revive: "+playerCanRevive); // debug
+
+        // Hier UI Stuff einfügen
+
+        // temporär, bis UI implementiert:
+        return playerCanRevive;
     }
 
     public void setPosition(float x, float y) {
