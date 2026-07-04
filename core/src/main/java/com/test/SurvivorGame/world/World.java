@@ -26,13 +26,13 @@ public class World {
 
     private SpawnManager spawnManager;
 
-    public World(float screenWidth, float screenHeight, PlayerState playerState)
+    public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap map)
     {
         player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
 
-        spawnManager = new SpawnManager(this);
+        spawnManager = new SpawnManager(this, map);
     }
 
     public void update(float deltaTime, GameMap map)

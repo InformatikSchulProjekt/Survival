@@ -3,6 +3,8 @@ package com.test.SurvivorGame.world.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.test.SurvivorGame.world.maps.WaveControl.EnemyType;
+import com.test.SurvivorGame.world.maps.WaveControl.SpawnProfile;
 
 public class GameMap {
     private final Texture texture;
@@ -10,11 +12,16 @@ public class GameMap {
     private final float worldHeight;
     private final boolean infinite;
 
+    SpawnProfile spawnProfile = new SpawnProfile();
+
     public GameMap() {
         this.texture = new Texture(Gdx.files.internal("Maps/Map(clear1).png"));
         this.worldWidth = 30f;
         this.worldHeight = 30f;
         this.infinite = true;
+
+        spawnProfile.addWave(20f, 2f, 0.4f, EnemyType.BOSS);
+        spawnProfile.addEnemyToWave(spawnProfile.getCurrentWave(1), EnemyType.SLIME, 100);
     }
 
     public GameMap(String texturePath, float worldWidth, float worldHeight) {
@@ -50,5 +57,10 @@ public class GameMap {
 
     public void dispose() {
         texture.dispose();
+    }
+
+    public SpawnProfile getSpawnprofile()
+    {
+        return spawnProfile;
     }
 }

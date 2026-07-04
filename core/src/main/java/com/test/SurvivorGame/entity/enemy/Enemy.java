@@ -31,8 +31,8 @@
 
         public Enemy(float x, float y, World world,
                      float size, float maxHP,
-                     float movementSpeed, float damage) {
-
+                     float movementSpeed, float damage)
+        {
             super(x, y, size, size, maxHP, movementSpeed);
 
             this.world = world;
