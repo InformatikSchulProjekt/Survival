@@ -12,8 +12,8 @@ public class GameMap {
 
     public GameMap() {
         this.texture = new Texture(Gdx.files.internal("Maps/Map(clear1).png"));
-        this.worldWidth = 50f;
-        this.worldHeight = 50f;
+        this.worldWidth = 30f;
+        this.worldHeight = 30f;
         this.infinite = true;
     }
 

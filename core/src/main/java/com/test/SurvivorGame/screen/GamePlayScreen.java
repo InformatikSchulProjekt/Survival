@@ -36,8 +36,8 @@ public class GamePlayScreen extends ScreenAdapter {
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData("TestMap");
         // bis ability slots gui da:
-        if (playerData.abilitySlots[0] == null || playerData.abilitySlots[0].isBlank()) playerData.abilitySlots[0] = "melee";
-        if (playerData.abilitySlots[1] == null || playerData.abilitySlots[1].isBlank())playerData.abilitySlots[1] = "projectile";
+        playerData.abilitySlots[0] = "melee";
+        playerData.abilitySlots[1] = "fireball";
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 

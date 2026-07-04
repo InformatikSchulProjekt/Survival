@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.entity.enemy.Slime;
 import com.test.SurvivorGame.world.maps.GameMap;
 
 import java.util.ArrayList;
@@ -29,11 +30,13 @@ public class SpawnManager {
     private Player player;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
-    private ArrayList<Boss> boss = new ArrayList<>();
+
+    private int currentWave;
 
     public SpawnManager(Player player)
     {
         this.player = player;
+        currentWave = 1;
     }
 
     public void update(float deltaTime, GameMap map)
@@ -56,7 +59,7 @@ public class SpawnManager {
 
         if (spawnTimer >= currentSpawnInterval)
         {
-            spawnEnemy();
+            spawnSlime();
             spawnTimer = 0;
         }
 
@@ -75,7 +78,7 @@ public class SpawnManager {
         }
     }
 
-    private void spawnEnemy()
+    private void spawnSlime()
     {
         float distance = MathUtils.random(10f, 15f); // zufälliger radius
 
@@ -87,7 +90,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new Enemy(x, y, player));
+        enemies.add(new Slime(x, y, player));
     }
 
     private void spawnBoss()
@@ -102,7 +105,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        boss.add(new Boss(x, y, player));
+        enemies.add(new Boss(x, y, player));
     }
 
     private void updateEnemy(float deltaTime, GameMap map)
@@ -118,18 +121,6 @@ public class SpawnManager {
                 enemies.remove(i);
             }
         }
-
-       for(int i = boss.size() - 1; i >= 0; i--)
-       {
-           Boss b = boss.get(i);
-
-           b.update(deltaTime, map);
-
-           if(b.isDead())
-           {
-               boss.remove(i);
-           }
-       }
     }
 
     private void triggerBossPhase()
@@ -138,7 +129,7 @@ public class SpawnManager {
         {
             for(int i = 1; i < Boss.getBossWaveCount(); i++)
             {
-                spawnEnemy();
+                spawnSlime();
             }
             for (int i = 0; i < Boss.getBossCount(); i++)
             {
@@ -146,6 +137,11 @@ public class SpawnManager {
             }
 
             bossPhaseTriggered = true;
+        }
+
+        if(enemies.isEmpty())
+        {
+            startNextWave();
         }
     }
 
@@ -165,10 +161,6 @@ public class SpawnManager {
     {
         return enemies;
     }
-    public ArrayList<Boss> getBoss()
-    {
-        return boss;
-    }
 
     public void resetSpawn()
     {
@@ -177,5 +169,26 @@ public class SpawnManager {
 
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;
+    }
+
+    private void startNextWave()
+    {
+        currentWave++;
+
+        waveTime = 0f;
+        spawnTimer = 0f;
+
+        bossPhaseTriggered = false;
+        state = WaveState.NORMAL;
+
+        increaseDifficulty();
+    }
+
+    private void increaseDifficulty()
+    {
+        startInterval *= 0.9f;
+        endInterval *= 0.95f;
+
+        if(endInterval < 0.15f) endInterval = 0.15f;
     }
 }
