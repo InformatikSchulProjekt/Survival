@@ -3,6 +3,8 @@ package com.test.SurvivorGame.world;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.drops.ChestObject;
+import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
@@ -20,6 +22,7 @@ public class World {
     float screenWidth, screenHeight; // nur für reset-test
 
     private ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
+    private ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
 
     private SpawnManager spawnManager;
 
@@ -29,7 +32,7 @@ public class World {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
 
-        spawnManager = new SpawnManager(player);
+        spawnManager = new SpawnManager(this);
     }
 
     public void update(float deltaTime, GameMap map)
@@ -56,6 +59,16 @@ public class World {
             if(abillityObject.getExpired())
             {
                 abilityObjects.remove(i);
+            }
+        }
+
+        for (int i = droppedObjects.size() - 1; i >= 0; i--) {
+            DroppedObject drop = droppedObjects.get(i);
+
+            drop.update(deltaTime, map);
+
+            if (drop.isDespawned()) {
+                droppedObjects.remove(i);
             }
         }
 
@@ -139,4 +152,11 @@ public class World {
     }
 
 
+    public void addDrop(DroppedObject drop) {
+        droppedObjects.add(drop);
+    }
+
+    public ArrayList<DroppedObject> getDroppedObjects() {
+        return droppedObjects;
+    }
 }

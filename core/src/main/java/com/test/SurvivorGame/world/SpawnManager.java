@@ -28,14 +28,16 @@ public class SpawnManager {
     private WaveState state = WaveState.NORMAL;
 
     private Player player;
+    private World world;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private int currentWave;
 
-    public SpawnManager(Player player)
+    public SpawnManager(World world)
     {
-        this.player = player;
+        this.world = world;
+        this.player = world.getPlayer();
         currentWave = 1;
     }
 
@@ -90,7 +92,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new Slime(x, y, player));
+        enemies.add(new Slime(x, y, world));
     }
 
     private void spawnBoss()
@@ -105,7 +107,7 @@ public class SpawnManager {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(new Boss(x, y, player));
+        enemies.add(new Boss(x, y, world));
     }
 
     private void updateEnemy(float deltaTime, GameMap map)

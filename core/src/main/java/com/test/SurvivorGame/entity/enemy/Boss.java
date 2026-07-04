@@ -1,6 +1,6 @@
 package com.test.SurvivorGame.entity.enemy;
 
-import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.world.World;
 
 public class Boss extends Enemy {
 
@@ -12,8 +12,8 @@ public class Boss extends Enemy {
     private static int bossCount = 1;
     private static int bossWaveCount = 30;
 
-    public Boss(float x, float y, Player player) {
-        super(x, y, player, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE);
+    public Boss(float x, float y, World world) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE);
     }
 
     public static int getBossCount() {
