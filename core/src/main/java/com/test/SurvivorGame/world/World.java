@@ -3,6 +3,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
@@ -117,7 +118,12 @@ public class World {
 
     public ArrayList<Enemy> getEnemies()
     {
-        return spawnManager.getEnemies(); // Fassade für getEnemies()
+        return spawnManager.getEnemies();
+        // Fassade für getEnemies()
+    }
+    public ArrayList<Boss> getBoss()
+    {
+        return spawnManager.getBoss();
     }
 
     public void addAbility(AbilityObject abilityObject)

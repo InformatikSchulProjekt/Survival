@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -67,16 +68,34 @@ public class Renderer {
     private final Texture enemy1right2;
     private final Texture enemy1right3;
     private final Texture enemy1right4;
+    private final Texture enemy1right5;
     private final Texture enemy1left1;
     private final Texture enemy1left2;
     private final Texture enemy1left3;
     private final Texture enemy1left4;
+    private final Texture enemy1left5;
     private final Animation<TextureRegion> enemy1idleAnimation;
     private final Animation<TextureRegion> enemy1backAnimation;
     private final Animation<TextureRegion> enemy1frontAnimation;
     private final Animation<TextureRegion> enemy1rightAnimation;
     private final Animation<TextureRegion> enemy1leftAnimation;
-
+    private float bossAnimationTime = 0f;
+    private final Texture bossTexture;
+    private final Texture bossidle2;
+    private final Texture bossidle3;
+    private final Texture bossback1;
+    private final Texture bossback2;
+    private final Texture bossfront1;
+    private final Texture bossfront2;
+    private final Texture bossright1;
+    private final Texture bossright2;
+    private final Texture bossleft1;
+    private final Texture bossleft2;
+    private final Animation<TextureRegion> bossidleAnimation;
+    private final Animation<TextureRegion> bossbackAnimation;
+    private final Animation<TextureRegion> bossfrontAnimation;
+    private final Animation<TextureRegion> bossrightAnimation;
+    private final Animation<TextureRegion> bossleftAnimation;
 
 
 
@@ -169,22 +188,62 @@ public class Renderer {
         enemy1right2 = new Texture(Gdx.files.internal("Enemy1/right 2.png"));
         enemy1right3 = new Texture(Gdx.files.internal("Enemy1/right 3.png"));
         enemy1right4 = new Texture(Gdx.files.internal("Enemy1/right 4.png"));
+        enemy1right5 = new Texture(Gdx.files.internal("Enemy1/right 5.png"));
         enemy1rightAnimation = new Animation<>(0.2f,
             new TextureRegion(enemy1right1),
             new TextureRegion(enemy1right2),
             new TextureRegion(enemy1right3),
-            new TextureRegion(enemy1right4));
+            new TextureRegion(enemy1right4),
+            new TextureRegion(enemy1right5));
         enemy1rightAnimation.setPlayMode(Animation.PlayMode.LOOP);
         enemy1left1 = new Texture(Gdx.files.internal("Enemy1/left 1.png"));
         enemy1left2 = new Texture(Gdx.files.internal("Enemy1/left 2.png"));
         enemy1left3 = new Texture(Gdx.files.internal("Enemy1/left 3.png"));
         enemy1left4 = new Texture(Gdx.files.internal("Enemy1/left 4.png"));
+        enemy1left5 = new Texture(Gdx.files.internal("Enemy1/left 5.png"));
         enemy1leftAnimation = new Animation<>(0.2f,
             new TextureRegion(enemy1left1),
             new TextureRegion(enemy1left2),
             new TextureRegion(enemy1left3),
-            new TextureRegion(enemy1left4));
+            new TextureRegion(enemy1left4),
+            new TextureRegion(enemy1left5));
         enemy1leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        //ab hier boss
+        this.bossTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        TextureRegion[][] bossframes = TextureRegion.split(playerTexture, 64, 64);
+        bossidle2 = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
+        bossidle3 = new Texture(Gdx.files.internal("Boss/BossIdle2.png"));
+        bossidleAnimation = new Animation<>(0.4f,
+            new TextureRegion(bossidle2),
+            new TextureRegion(bossidle3));
+        bossidleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        bossfront1 = new Texture(Gdx.files.internal("Boss/BossFront1.png"));
+        bossfront2 = new Texture(Gdx.files.internal("Boss/BossFront2.png"));
+        bossfrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossfront1),
+            new TextureRegion(bossfront2));
+        bossfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        bossback1 = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
+        bossback2 = new Texture(Gdx.files.internal("Boss/BossIdle2.png"));
+        bossbackAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossback1),
+            new TextureRegion(bossback2));
+        bossbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        bossright1 = new Texture(Gdx.files.internal("Boss/BossRight1.png"));
+        bossright2 = new Texture(Gdx.files.internal("Boss/BossRight2.png"));
+        bossrightAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossright1),
+            new TextureRegion(bossright2));
+        rightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        bossleft1 = new Texture(Gdx.files.internal("Boss/Bossleft1.png"));
+        bossleft2 = new Texture(Gdx.files.internal("Boss/Bossleft2.png"));
+        bossleftAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossleft1),
+            new TextureRegion(bossleft2));
+        bossleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
     }
 
     public void resize(int width, int height) {
@@ -229,6 +288,10 @@ public class Renderer {
         enemy1AnimationTime += deltaTime;
         for (Enemy enemy : world.getEnemies()) {
             renderEnemy(enemy);
+        }
+        bossAnimationTime += deltaTime;
+        for (Boss boss : world.getBoss()) {
+            renderBoss(boss);
         }
 
         for(AbilityObject abilityObject : world.getAbilityObjects())
@@ -339,6 +402,41 @@ public class Renderer {
             enemy.getHeight()
         );
     }
+    private void renderBoss(Boss boss) {
+
+        Animation<TextureRegion> animation;
+
+        if (!boss.isMoving()) {
+            animation = enemy1idleAnimation;
+        } else {
+            switch (boss.getFacingDirection()) {
+                case UP:
+                    animation = enemy1frontAnimation;
+                    break;
+                case LEFT:
+                    animation = enemy1leftAnimation;
+                    break;
+                case RIGHT:
+                    animation = enemy1rightAnimation;
+                    break;
+                case DOWN:
+                default:
+                    animation = enemy1backAnimation;
+                    break;
+            }
+        }
+        TextureRegion currentFrame = animation.getKeyFrame(enemy1AnimationTime);
+
+
+        batch.draw(
+            currentFrame,
+            boss.getX(),
+            boss.getY(),
+            boss.getWidth(),
+            boss.getHeight()
+        );
+    }
+
 
     private void renderMap(GameMap map, OrthographicCamera cam) {
         if (!map.isInfinite()) {
@@ -412,5 +510,15 @@ public class Renderer {
         enemy1left2.dispose();
         enemy1left3.dispose();
         enemy1left4.dispose();
+        bossidle2.dispose();
+        bossidle3.dispose();
+        bossback1.dispose();
+        bossback2.dispose();
+        bossfront1.dispose();
+        bossfront2.dispose();
+        bossright1.dispose();
+        bossright2.dispose();
+        bossleft1.dispose();
+        bossleft2.dispose();
     }
 }
