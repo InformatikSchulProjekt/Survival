@@ -7,6 +7,8 @@ public enum StatType {
     PLAYER_SIZE,
     RESISTANCE,
     DODGE_CHANCE,
+    CRIT_CHANCE,
+    CRIT_MULTIPLIER,
 
     CHEST_CHANCE,
     REVIVES,
