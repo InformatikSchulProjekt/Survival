@@ -42,7 +42,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.abilitySlots[0] = "melee";
         playerData.abilitySlots[1] = "fireball";
         playerData.abilitySlots[2] = "fire_arrow";
-        playerData.abilitySlots[3] = "water_blast";
+        playerData.abilitySlots[3] = "firestorm";
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 

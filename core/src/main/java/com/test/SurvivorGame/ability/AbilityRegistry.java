@@ -1,7 +1,7 @@
 package com.test.SurvivorGame.ability;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.activeAbility.*;
+import com.test.SurvivorGame.ability.activeAbilty.*;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.ability.statAbility.*;
 
@@ -26,8 +26,9 @@ public final class AbilityRegistry {
         register(new MeleeAbility(world, viewport));
         register(new ProjectileAbility(world, viewport));
         register(new FireballAbility(world, viewport));
-        register(new FireArrow(world, viewport));
+        register(new FireArrowAbility(world, viewport));
         register(new WaterBlast(world,viewport));
+        register(new FireStormAbility(world));
     }
 
     public BaseAbility getAbility(String abilityId) {

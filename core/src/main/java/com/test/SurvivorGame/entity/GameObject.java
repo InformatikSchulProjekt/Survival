@@ -63,6 +63,12 @@ public abstract class GameObject { //abstract weil es ja kein "Ding" namens Game
         return center;
     }
 
+    public void setCenter(Vector2 v2)
+    {
+        collider.x = v2.x - collider.width / 2f;
+        collider.y = v2.y - collider.height / 2f;
+    }
+
     public void drawCollider(ShapeRenderer shapeRenderer)
     {
         shapeRenderer.rect(
