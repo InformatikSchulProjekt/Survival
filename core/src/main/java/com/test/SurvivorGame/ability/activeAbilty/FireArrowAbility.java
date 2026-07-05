@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.activeAbility;
+package com.test.SurvivorGame.ability.activeAbilty;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +10,7 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
 import com.test.SurvivorGame.world.World;
 
-public class FireArrow extends ActiveAbility {
+public class FireArrowAbility extends ActiveAbility {
 
     public static final String ID = "fire_arrow";
 
@@ -29,11 +29,11 @@ public class FireArrow extends ActiveAbility {
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    public FireArrow(World world, Viewport viewport) {
+    public FireArrowAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
         this.viewport = viewport;
-        this.playerStats = player.getPlayerState().getPlayerStats();
+        this.playerStats =  player.getPlayerState().getPlayerStats();
     }
 
     @Override
