@@ -14,6 +14,7 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
+import com.test.SurvivorGame.core.SoundManager;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final DataLoader dataLoader;
@@ -74,6 +75,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
                 // Spieler sofort anhalten
                 playerMoveDirection.setZero();
+                SoundManager.stopFootsteps();
                 world.getPlayer().updateMoveDirection(playerMoveDirection);
 
             }
@@ -147,7 +149,8 @@ public class GamePlayScreen extends ScreenAdapter {
             updateLogic(deltaTime, map);
         }
 
-        renderer.render(map, world,deltaTime); //animationen
+        float renderDeltaTime = state == GameState.PLAYING ? deltaTime : 0f;
+        renderer.render(map, world, renderDeltaTime); //animationen
     }
 
     private void updateLogic(float deltaTime, GameMap map)

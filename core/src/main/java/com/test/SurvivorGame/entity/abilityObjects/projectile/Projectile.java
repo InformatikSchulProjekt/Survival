@@ -69,10 +69,15 @@ public class Projectile extends AbilityObject {
     }
 
 
-    @Override
+
+    protected void damageEnemy(Enemy enemy, float damage)
+    {
+
+        enemy.takeDamage(damage, player.getPlayerState());
+    }
     public void onHit(Enemy enemy)
     {
-        enemy.takeDamage(getDamage(), player.getPlayerState());
+        damageEnemy(enemy, getDamage());
         expired = true;
     }
 
