@@ -26,5 +26,6 @@ public class PlayerData {
     public Vector2 getPosition() {
         return new Vector2(x, y);
     }
+    public String getPlayerClass(){return playerClass;}
 
 }
