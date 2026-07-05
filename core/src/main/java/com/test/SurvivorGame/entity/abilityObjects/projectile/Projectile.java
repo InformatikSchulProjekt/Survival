@@ -15,6 +15,7 @@ public class Projectile extends AbilityObject {
 
     private Viewport viewport;
     private float deltaDuration;
+    private final long cooldown= 1;
 
     private Player player;
 
@@ -45,6 +46,7 @@ public class Projectile extends AbilityObject {
         direction.nor();
         rotation = direction.angleDeg();
         collider.setPosition(player.getCenter().x + direction.x - getWidth()/2, player.getCenter().y + direction.y - getHeight()/2);
+
     }
 
     @Override
