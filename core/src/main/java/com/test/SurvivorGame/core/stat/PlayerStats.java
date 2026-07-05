@@ -14,6 +14,8 @@ public final class PlayerStats {
         baseStats.put(StatType.PLAYER_SIZE, 1f);
         baseStats.put(StatType.RESISTANCE, 1f);
         baseStats.put(StatType.DODGE_CHANCE, 0f);
+        baseStats.put(StatType.CRIT_CHANCE, 0.01f);
+        baseStats.put(StatType.CRIT_MULTIPLIER, 1f);
 
         baseStats.put(StatType.CHEST_CHANCE, 0.01f);
         baseStats.put(StatType.REVIVES, 1f);

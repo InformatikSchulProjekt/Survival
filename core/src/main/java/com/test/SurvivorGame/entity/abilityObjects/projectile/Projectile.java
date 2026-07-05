@@ -73,7 +73,7 @@ public class Projectile extends AbilityObject {
     protected void damageEnemy(Enemy enemy, float damage)
     {
 
-        enemy.takeDamage(damage, player.getPlayerState());
+        enemy.takeDamage(damage);
     }
     public void onHit(Enemy enemy)
     {
