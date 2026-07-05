@@ -1,7 +1,7 @@
 package com.test.SurvivorGame.ability;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.activeAbility.*;
+import com.test.SurvivorGame.ability.activeAbilty.*;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.ability.statAbility.*;
 
