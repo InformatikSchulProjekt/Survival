@@ -1,63 +1,143 @@
 package com.test.SurvivorGame.screen.HuD;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseMenuRenderer {
 
-    private final Batch batch;
     private final ShapeRenderer shapeRenderer;
-    private final BitmapFont font;
     private final OrthographicCamera camera = new OrthographicCamera();
 
-    public PauseMenuRenderer(Batch batch, ShapeRenderer shapeRenderer) {
-        this.batch = batch;
+    private final Stage stage;
+    private final Skin skin;
+
+    // Buttons
+    private final TextButton resumeButton;
+    private final TextButton giveUpButton;
+    private final TextButton settingsButton;
+    private final TextButton inventoryButton;
+    private final TextButton abilitiesButton;
+
+    private Runnable resumeListener;
+
+    public PauseMenuRenderer(ShapeRenderer shapeRenderer) {
+
         this.shapeRenderer = shapeRenderer;
 
-        font = new BitmapFont();
-        font.getData().setScale(2f);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage = new Stage(new ScreenViewport());
+
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+        // Buttons erstellen
+        resumeButton = new TextButton("Resume", skin);
+        giveUpButton = new TextButton("Give Up", skin);
+        settingsButton = new TextButton("Settings", skin);
+        inventoryButton = new TextButton("Inventory", skin);
+        abilitiesButton = new TextButton("Abilities", skin);
+
+        resumeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (resumeListener != null) {
+                    resumeListener.run();
+                }
+            }
+        });
+
+        // Überschrift
+        Label title = new Label("PAUSE", skin);
+
+        // Tabelle für das Layout
+        Table table = new Table();
+        table.setFillParent(true);
+
+        table.add(title).padBottom(30);
+        table.row();
+
+        table.add(resumeButton).width(250).pad(5);
+        table.row();
+
+        table.add(giveUpButton).width(250).pad(5);
+        table.row();
+
+        table.add(settingsButton).width(250).pad(5);
+        table.row();
+
+        table.add(inventoryButton).width(250).pad(5);
+        table.row();
+
+        table.add(abilitiesButton).width(250).pad(5);
+
+        stage.addActor(table);
     }
 
     public void resize(int width, int height) {
         camera.setToOrtho(false, width, height);
-        camera.update();
+        stage.getViewport().update(width, height, true);
     }
 
     public void render() {
 
-        batch.setProjectionMatrix(camera.combined);
+        // Hintergrund abdunkeln
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        float w = camera.viewportWidth;
-        float h = camera.viewportHeight;
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        // dunkler Hintergrund
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0,0,0,0.6f);
-        shapeRenderer.rect(0,0,w,h);
-
-        // Menübox
-        shapeRenderer.setColor(0.2f,0.2f,0.2f,1f);
-        shapeRenderer.rect(w/2-150,h/2-120,300,240);
+        shapeRenderer.setColor(0, 0, 0, 0.6f);
+        shapeRenderer.rect(0, 0, camera.viewportWidth, camera.viewportHeight);
         shapeRenderer.end();
 
-        batch.begin();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
-        font.draw(batch,"PAUSE",0,h/2+70,w, Align.center,false);
-        font.draw(batch,"ESC - Weiter",0,h/2+20,w,Align.center,false);
-        font.draw(batch,"M - Hauptmenü",0,h/2-20,w,Align.center,false);
-        font.draw(batch,"Q - Spiel verlassen",0,h/2-60,w,Align.center,false);
+        stage.act();
+        stage.draw();
+    }
 
-        batch.end();
+    public Stage getStage() {
+        return stage;
+    }
+
+    public TextButton getResumeButton() {
+        return resumeButton;
+    }
+
+    public TextButton getGiveUpButton() {
+        return giveUpButton;
+    }
+
+    public TextButton getSettingsButton() {
+        return settingsButton;
+    }
+
+    public TextButton getInventoryButton() {
+        return inventoryButton;
+    }
+
+    public TextButton getAbilitiesButton() {
+        return abilitiesButton;
+    }
+
+    public void setResumeListener(Runnable listener) {
+        this.resumeListener = listener;
     }
 
     public void dispose() {
-        font.dispose();
+        stage.dispose();
+        skin.dispose();
     }
 }

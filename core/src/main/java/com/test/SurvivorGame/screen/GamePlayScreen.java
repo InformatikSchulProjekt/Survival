@@ -11,6 +11,7 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
@@ -33,6 +34,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private GameState state;
 
+    private final PauseMenuRenderer pauseMenuRenderer;
+
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
@@ -53,7 +56,17 @@ public class GamePlayScreen extends ScreenAdapter {
 
         state = GameState.PLAYING;
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData, state);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData);
+
+        this.pauseMenuRenderer = new PauseMenuRenderer(shapeRenderer);
+
+        pauseMenuRenderer.setResumeListener(new Runnable() {
+            @Override
+            public void run() {
+                state = GameState.PLAYING;
+                Gdx.input.setInputProcessor(null);
+            }
+        });
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);
@@ -76,6 +89,8 @@ public class GamePlayScreen extends ScreenAdapter {
             if (state == GameState.PLAYING)
             {
                 state = GameState.PAUSED;
+
+                Gdx.input.setInputProcessor(pauseMenuRenderer.getStage());
 
                 // Spieler sofort anhalten
                 playerMoveDirection.setZero();
@@ -154,7 +169,11 @@ public class GamePlayScreen extends ScreenAdapter {
         }
 
         float renderDeltaTime = state == GameState.PLAYING ? deltaTime : 0f;
-        renderer.render(map, world, renderDeltaTime); //animationen
+        renderer.render(map, world, renderDeltaTime, state); //animationen
+
+        if (state == GameState.PAUSED) {
+            pauseMenuRenderer.render();
+        }
     }
 
     private void updateLogic(float deltaTime, GameMap map)

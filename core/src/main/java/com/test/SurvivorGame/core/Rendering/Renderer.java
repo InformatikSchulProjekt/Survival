@@ -35,7 +35,6 @@ public class Renderer {
     private ShapeRenderer shapeRenderer;
     private PlayerData playerData;
 
-    private boolean paused = false;
     private GameState gamestate;
 
     private final Texture playerTexture;
@@ -248,17 +247,15 @@ public class Renderer {
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData, GameState gameState) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
 
-        this.gamestate = gameState;
-
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
         this.hud = new HUDRenderer(batch, shapeRenderer);
-        this.pauseMenu = new PauseMenuRenderer(batch, shapeRenderer);
+        this.pauseMenu = new PauseMenuRenderer(shapeRenderer);
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
@@ -692,9 +689,9 @@ public class Renderer {
         hud.resize(width, height); //hier etwas für Hud screen dazu
         pauseMenu.resize(width, height);
     }
-    public void render(GameMap map, World world, float deltaTime)
+    public void render(GameMap map, World world, float deltaTime, GameState gameState)
     {
-        updatePause();
+
         ScreenUtils.clear(Color.BLUE);
 
         //das updated die viewport kamera und sorgt dafür, dass der Spieler verfolgt wird davon
@@ -764,7 +761,7 @@ public class Renderer {
             world.getSurvivalTime()
         );
 
-        if(paused)
+        if(gameState == GameState.PAUSED)
         {
             pauseMenu.render();
         }
@@ -1075,18 +1072,6 @@ public class Renderer {
                     tileHeight
                 );
             }
-        }
-    }
-
-    public void updatePause()
-    {
-        if(gamestate == GameState.PAUSED)
-        {
-            paused = true;
-        }
-        if(gamestate == GameState.PLAYING)
-        {
-            paused = false;
         }
     }
 
