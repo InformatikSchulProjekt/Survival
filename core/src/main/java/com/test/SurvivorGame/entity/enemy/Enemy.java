@@ -72,15 +72,21 @@
         {
             damage = calculateDamageTaken(damage);
             currentHP -= damage;
-            System.out.println("Enemy bekommt schaden: " + damage);
-            System.out.println("Enemy hat: " + currentHP + " Leben");
+            System.out.println("Enemy: " + damage+"dmg | hp: "+currentHP+"/"+maxHP);
 
             if(currentHP <= 0) { //=> Enemy Tod
                 onDeath();
                 damage -= currentHP; // => Echter Schaden (Wenn 1hp genug war um zu killen z. B. soll dmg net trzm 10 sein
             }
+            onDamage(damage);
+        }
+
+        private void onDamage(float damage) {
             // Life steal heal:
-            playerState.heal(damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
+            float heal = damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL);
+            if (heal > 0) {
+                playerState.heal(damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
+            }
         }
 
         private float calculateDamageTaken(float damage) {
