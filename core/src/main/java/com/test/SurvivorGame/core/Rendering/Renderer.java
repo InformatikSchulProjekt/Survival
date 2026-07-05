@@ -872,6 +872,7 @@ public class Renderer {
             }
             currentFrame = animation.getKeyFrame(geomancerAnimationTime);
         }
+            
             Color oldColor = new Color(batch.getColor());
             if (player.isDamageFlashing()) {
                 float flashProgress = player.getDamageFlashProgress();
