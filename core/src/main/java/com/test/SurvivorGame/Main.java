@@ -11,23 +11,28 @@ public class Main extends Game {
     private DataLoader dataLoader;
 
     @Override
-    public void create() // wird genau einmal aufgerufen, wenn das Spiel startet.
-    {
+    public void create() {// wird genau einmal aufgerufen, wenn das Spiel startet.
         batch = new SpriteBatch(); // ist kurzgesagt ein auf 2d speziallisierte Batch-Art
 
         // Data Handling
         dataLoader = new DataLoader();
-        setScreen(new GamePlayScreen(this, dataLoader)); //das setzt den Screen den wir nutzen wollen
+        setScreen(new GamePlayScreen(this, dataLoader, "TestMap")); //das setzt den Screen den wir nutzen wollen
     }
+
     @Override
-    public void dispose() // Speicher und GPU-Ressourcen sauber freigeben
-    {
+    public void dispose() {// Speicher und GPU-Ressourcen sauber freigeben
         super.dispose();
         batch.dispose();
     }
+
     public Batch getBatch()
     {
         return batch;
+    }
+
+    public void gameOver() {
+        // temporär bis GameMenu implementiert:
+        setScreen(new GamePlayScreen(this, dataLoader, "TestMap"));
     }
 }
 
