@@ -50,9 +50,7 @@ public class SoundManager {
             stopFootsteps();
             return;
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-            stopFootsteps();
-        }
+
         playFootstep();
 
     }

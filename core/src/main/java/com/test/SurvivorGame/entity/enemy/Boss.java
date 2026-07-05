@@ -12,8 +12,8 @@ public class Boss extends Enemy {
     private static int bossCount = 1;
     private static int bossWaveCount = 30;
 
-    public Boss(float x, float y, World world) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE);
+    public Boss(float x, float y, World world, float hpMultiplier) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier);
     }
 
     public static int getBossCount() {
