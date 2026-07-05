@@ -30,6 +30,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private Vector2 playerMoveDirection = new Vector2();
 
+    private GameState state;
+
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
         // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
@@ -50,6 +52,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);
+
+        state = GameState.PLAYING;
     }
 
     @Override
@@ -61,6 +65,29 @@ public class GamePlayScreen extends ScreenAdapter {
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
     {
         playerMoveDirection.setZero(); // damits nicht wächst
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        {
+            if (state == GameState.PLAYING)
+            {
+                state = GameState.PAUSED;
+
+                // Spieler sofort anhalten
+                playerMoveDirection.setZero();
+                world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            }
+            else
+            {
+                state = GameState.PLAYING;
+            }
+        }
+
+        if (state == GameState.PAUSED)
+        {
+            return;
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.W))
         {
             playerMoveDirection.y += 1;
@@ -82,6 +109,7 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.nor();
         }
+
         world.getPlayer().updateMoveDirection(playerMoveDirection);
 
         // Ability Keybinds
@@ -114,7 +142,10 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime, map);
+        if(state == GameState.PLAYING)
+        {
+            updateLogic(deltaTime, map);
+        }
 
         renderer.render(map, world,deltaTime); //animationen
     }
