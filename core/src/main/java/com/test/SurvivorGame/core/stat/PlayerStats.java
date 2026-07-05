@@ -65,4 +65,8 @@ public final class PlayerStats {
 
         return (baseValue + flatBonus) * (1f + percentBonus);
     }
+
+    public float getStat(StatType statType) {
+        return getStat(StatScope.ALL, statType);
+    }
 }
