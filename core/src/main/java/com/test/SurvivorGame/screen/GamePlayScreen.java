@@ -50,7 +50,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.world = new World(screenWidth, screenHeight, playerState, map);
 
         this.shapeRenderer = new ShapeRenderer();
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);
