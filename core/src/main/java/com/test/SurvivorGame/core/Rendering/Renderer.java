@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.screen.HuD.HUDRenderer;
@@ -122,6 +123,13 @@ public class Renderer {
     private final Texture firearrow3;
     private final Animation<TextureRegion> fireArrowAnimation;
 
+    //WaterBlast
+    private final Texture waterblast0;
+    private final Texture waterblast1;
+    private final Texture waterblast2;
+    private final Texture waterblast3;
+    private final Texture waterblast4;
+    private final Animation<TextureRegion> waterBlastAnimation;
 
 
 
@@ -315,6 +323,22 @@ public class Renderer {
             new TextureRegion(firearrow2),
             new TextureRegion(firearrow3));
             fireArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // ab hier water blast
+        waterblast0 = new Texture (Gdx.files.internal("Ability/waterBlast1.png"));
+        waterblast1 = new Texture (Gdx.files.internal("Ability/waterBlast2.png"));
+        waterblast2 = new Texture (Gdx.files.internal("Ability/waterBlast3.png"));
+        waterblast3 = new Texture (Gdx.files.internal("Ability/waterBlast4.png"));
+        waterblast4 = new Texture (Gdx.files.internal("Ability/waterBlast5.png"));
+
+        //ab hier water blast animation
+        waterBlastAnimation = new Animation<>(0.08f,
+            new TextureRegion(waterblast0),
+            new TextureRegion(waterblast1),
+            new TextureRegion(waterblast2),
+            new TextureRegion(waterblast3),
+            new TextureRegion(waterblast4));
+        waterBlastAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     public void resize(int width, int height) {
@@ -373,7 +397,9 @@ public class Renderer {
                 renderFireball((Fireball) abilityObject, deltaTime);
             } else if (abilityObject instanceof FireArrowProjectile) {
                 renderFireArrow((FireArrowProjectile) abilityObject, deltaTime);
-            } else {
+            } else if (abilityObject instanceof WaterBlastProjectile) {
+                renderWaterBlast((WaterBlastProjectile) abilityObject, deltaTime);
+            }else {
                 abilityObject.draw(batch);
             }
         }
@@ -567,6 +593,26 @@ public class Renderer {
             1,
             1,
             fireArrow.getRotation()
+        );
+    }
+    private void renderWaterBlast(WaterBlastProjectile waterBlastProjectile, float deltaTime) {
+        Animation<TextureRegion> animation;
+
+        animation = waterBlastAnimation;
+
+        TextureRegion currentFrame = animation.getKeyFrame(waterBlastProjectile.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            waterBlastProjectile.getX(),
+            waterBlastProjectile.getY(),
+            waterBlastProjectile.getWidth() / 2,
+            waterBlastProjectile.getHeight() / 2,
+            waterBlastProjectile.getWidth(),
+            waterBlastProjectile.getHeight(),
+            1,
+            1,
+            waterBlastProjectile.getRotation()
         );
     }
     private void renderMap(GameMap map, OrthographicCamera cam) {
