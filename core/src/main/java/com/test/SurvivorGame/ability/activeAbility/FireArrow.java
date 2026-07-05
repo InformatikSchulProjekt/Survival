@@ -3,6 +3,9 @@ package com.test.SurvivorGame.ability.activeAbility;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
 import com.test.SurvivorGame.world.World;
@@ -14,14 +17,15 @@ public class FireArrow extends ActiveAbility {
     private final Viewport viewport;
     private final Player player;
     private final World world;
+    private final PlayerStats playerStats;
 
-    private float duration = 3f;
-    private float width = 3f;
-    private float height= 0.6f;
-    private float speed = 7f;
-    private int pierce = 3;
-
-    private static float damage = 0.5f;
+    // Ability base Stats
+    private final float baseDuration = 3f;
+    private final float baseWidth = 3f;
+    private final float baseHeight= 0.6f;
+    private final float baseSpeed = 7f;
+    private final int basePierce = 3;
+    private final float baseDamage = 0.5f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
@@ -29,6 +33,7 @@ public class FireArrow extends ActiveAbility {
         this.player = world.getPlayer();
         this.world = world;
         this.viewport = viewport;
+        this.playerStats = player.getPlayerState().getPlayerStats();
     }
 
     @Override
@@ -36,15 +41,15 @@ public class FireArrow extends ActiveAbility {
         FireArrowProjectile fireArrowProjectile = new FireArrowProjectile(
             player.getX(),
             player.getY(),
-            width,
-            height,
+            baseWidth*getSize(),
+            baseHeight*getSize(),
             texture,
             player,
             viewport,
-            speed,
-            duration,
-            damage,
-            pierce
+            getSpeed(),
+            getDuration(),
+            getDamage(),
+            getPierce()
         );
 
         world.addAbility(fireArrowProjectile);
@@ -54,8 +59,37 @@ public class FireArrow extends ActiveAbility {
         texture.dispose();
     }
 
-    public static float getDamage() {
+    public float getDamage() {
+        float damage = baseDamage;
+        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
         return damage;
+    }
+
+    public float getSize() {
+        float size = 1f;
+        size *= playerStats.getStat(StatType.MAGIC_SIZE);
+        size *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_SIZE);
+        return size;
+    }
+
+    public float getSpeed() {
+        float speed = baseSpeed;
+
+        return speed;
+    }
+
+    public float getDuration() {
+        float duration = baseDuration;
+        duration *= playerStats.getStat(StatType.MAGIC_DURATION);
+        duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
+        return duration;
+    }
+
+    public int getPierce() {
+        int pierce = basePierce;
+
+        return pierce;
     }
 
     @Override
