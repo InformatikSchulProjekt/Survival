@@ -42,7 +42,7 @@ public class FireArrowProjectile extends Projectile {
             return;
         }
 
-        enemy.takeDamage(getDamage());
+        damageEnemy(enemy, getDamage());
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
 

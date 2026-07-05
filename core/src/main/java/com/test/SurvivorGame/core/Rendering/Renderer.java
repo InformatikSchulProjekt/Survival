@@ -417,7 +417,7 @@ public class Renderer {
 
         if (!player.isMoving()) {
             animation = idleAnimation;
-        } else {
+        }else {
             switch (player.getFacingDirection()) {
                 case UP:
                     animation = frontAnimation;
