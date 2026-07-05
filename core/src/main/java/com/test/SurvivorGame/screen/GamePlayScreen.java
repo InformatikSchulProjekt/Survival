@@ -14,6 +14,7 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
+import com.test.SurvivorGame.core.SoundManager;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final DataLoader dataLoader;
@@ -29,6 +30,8 @@ public class GamePlayScreen extends ScreenAdapter {
     private final GameMap map = new GameMap();
 
     private Vector2 playerMoveDirection = new Vector2();
+
+    private GameState state;
 
     public GamePlayScreen(Main game, DataLoader dataLoader)
     {
@@ -50,6 +53,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);
+
+        state = GameState.PLAYING;
     }
 
     @Override
@@ -61,6 +66,30 @@ public class GamePlayScreen extends ScreenAdapter {
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
     {
         playerMoveDirection.setZero(); // damits nicht wächst
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        {
+            if (state == GameState.PLAYING)
+            {
+                state = GameState.PAUSED;
+
+                // Spieler sofort anhalten
+                playerMoveDirection.setZero();
+                SoundManager.stopFootsteps();
+                world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            }
+            else
+            {
+                state = GameState.PLAYING;
+            }
+        }
+
+        if (state == GameState.PAUSED)
+        {
+            return;
+        }
+
         if(Gdx.input.isKeyPressed(Input.Keys.W))
         {
             playerMoveDirection.y += 1;
@@ -82,6 +111,7 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             playerMoveDirection.nor();
         }
+
         world.getPlayer().updateMoveDirection(playerMoveDirection);
 
         // Ability Keybinds
@@ -114,9 +144,13 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         processInput();
 
-        updateLogic(deltaTime, map);
+        if(state == GameState.PLAYING)
+        {
+            updateLogic(deltaTime, map);
+        }
 
-        renderer.render(map, world,deltaTime); //animationen
+        float renderDeltaTime = state == GameState.PLAYING ? deltaTime : 0f;
+        renderer.render(map, world, renderDeltaTime); //animationen
     }
 
     private void updateLogic(float deltaTime, GameMap map)
