@@ -31,9 +31,11 @@
 
         public Enemy(float x, float y, World world,
                      float size, float maxHP,
-                     float movementSpeed, float damage)
+                     float movementSpeed, float damage, float hpMultiplier)
         {
-            super(x, y, size, size, maxHP, movementSpeed);
+            super(x, y, size, size, maxHP*hpMultiplier, movementSpeed);
+
+            maxHP *= hpMultiplier;
 
             this.world = world;
             this.player = world.getPlayer();

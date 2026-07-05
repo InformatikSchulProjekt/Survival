@@ -13,6 +13,8 @@ public enum StatType {
     LIFE_STEAL,
     XP_GAIN,
 
+    ENEMY_HP,
+
     // Magic:
     MAGIC_DURATION,
     MAGIC_DAMAGE,

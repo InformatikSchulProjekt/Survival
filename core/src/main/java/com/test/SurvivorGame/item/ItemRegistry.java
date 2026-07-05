@@ -33,6 +33,8 @@ public final class ItemRegistry {
         register(new MindCrystal());
         register(new CrownOfWisdom());
         register(new PhilosophersStone());
+        register(new DoomSigil());
+        register(new Spores());
     }
 
     public BaseItem getItem(String itemID) {
