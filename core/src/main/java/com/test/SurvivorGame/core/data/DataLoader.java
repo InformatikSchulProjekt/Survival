@@ -53,11 +53,29 @@ public class DataLoader {
 
         SaveData loadedSaveData = json.fromJson(SaveData.class, file);
 
-        // Schutz gegen leere oder ungültige Save-Dateien.
+        // Schutz gegen ungültige Save-Dateien.
         if (loadedSaveData == null) {
             return new SaveData();
         }
 
         return loadedSaveData;
+    }
+
+    public GeneralData getGeneralData() {
+        return saveData.generalData;
+    }
+
+    public void saveGeneralData(GeneralData generalData) {
+        saveData.generalData = generalData;
+        saveSaveData();
+    }
+
+    public void saveSurvivalTimeIfBest(String map, int survivalTime) {
+        MapSaveData mapSaveData = getMapSaveData(map);
+
+        if (survivalTime > mapSaveData.bestSurvivalTime) {
+            mapSaveData.bestSurvivalTime = survivalTime;
+            saveSaveData();
+        }
     }
 }
