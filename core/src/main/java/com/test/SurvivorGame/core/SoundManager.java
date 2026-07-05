@@ -1,8 +1,12 @@
 package com.test.SurvivorGame.core;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.test.SurvivorGame.screen.GamePlayScreen;
+import com.test.SurvivorGame.screen.GameState;
 
 public class SoundManager {
 
@@ -46,7 +50,10 @@ public class SoundManager {
             stopFootsteps();
             return;
         }
-
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            stopFootsteps();
+        }
         playFootstep();
+
     }
 }

@@ -29,12 +29,12 @@ public class Fireball extends Projectile {
     public void update(float deltaTime, GameMap map) {
         animationTime += deltaTime;
         lifetimeCounter += deltaTime;
-        
+
         if (lifetimeCounter >= totalLifetime) {
             expired = true;
             return;
         }
-        
+
         if (hasExploded) {
             // Explosion animation is playing, just waiting for lifetime to expire
         } else {
@@ -47,23 +47,23 @@ public class Fireball extends Projectile {
         if (!hasExploded) {
             hasExploded = true;
             animationTime = 0f;
-            enemy.takeDamage(explosionDamage);
+            damageEnemy(enemy, explosionDamage);
         }
     }
-    
+
     @Override
     public boolean getExpired() {
         return expired;
     }
-    
+
     public float getAnimationTime() {
         return animationTime;
     }
-    
+
     public boolean hasExploded() {
         return hasExploded;
     }
-    
+
     public float getExplosionRadius() {
         return explosionRadius;
     }
