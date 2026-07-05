@@ -35,6 +35,14 @@ public final class ItemRegistry {
         register(new PhilosophersStone());
         register(new DoomSigil());
         register(new Spores());
+        register(new SharpeningStone());
+        register(new HuntersKnife());
+        register(new AssassinsDagger());
+        register(new EagleEyeScope());
+        register(new ExecutionersAxe());
+        register(new DuelistsRapier());
+        register(new EyeOfThePredator());
+        register(new DeathsVerdict());
     }
 
     public BaseItem getItem(String itemID) {
