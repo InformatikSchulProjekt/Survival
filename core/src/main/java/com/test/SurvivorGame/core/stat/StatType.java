@@ -7,11 +7,15 @@ public enum StatType {
     PLAYER_SIZE,
     RESISTANCE,
     DODGE_CHANCE,
+    CRIT_CHANCE,
+    CRIT_MULTIPLIER,
 
     CHEST_CHANCE,
     REVIVES,
     LIFE_STEAL,
     XP_GAIN,
+
+    ENEMY_HP,
 
     // Magic:
     MAGIC_DURATION,

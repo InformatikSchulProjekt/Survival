@@ -14,11 +14,15 @@ public final class PlayerStats {
         baseStats.put(StatType.PLAYER_SIZE, 1f);
         baseStats.put(StatType.RESISTANCE, 1f);
         baseStats.put(StatType.DODGE_CHANCE, 0f);
+        baseStats.put(StatType.CRIT_CHANCE, 0.01f);
+        baseStats.put(StatType.CRIT_MULTIPLIER, 1f);
 
         baseStats.put(StatType.CHEST_CHANCE, 0.01f);
         baseStats.put(StatType.REVIVES, 1f);
         baseStats.put(StatType.LIFE_STEAL, 0f);
         baseStats.put(StatType.XP_GAIN, 1f);
+
+        baseStats.put(StatType.ENEMY_HP, 1f);
 
         baseStats.put(StatType.MAGIC_DURATION, 1f);
         baseStats.put(StatType.MAGIC_DAMAGE, 1f);
@@ -60,5 +64,9 @@ public final class PlayerStats {
         }
 
         return (baseValue + flatBonus) * (1f + percentBonus);
+    }
+
+    public float getStat(StatType statType) {
+        return getStat(StatScope.ALL, statType);
     }
 }

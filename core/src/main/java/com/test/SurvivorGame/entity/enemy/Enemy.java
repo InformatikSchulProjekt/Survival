@@ -2,7 +2,6 @@
 
     import com.badlogic.gdx.math.Vector2;
     import com.test.SurvivorGame.core.PlayerState;
-    import com.test.SurvivorGame.core.stat.PlayerStats;
     import com.test.SurvivorGame.core.stat.StatScope;
     import com.test.SurvivorGame.core.stat.StatType;
     import com.test.SurvivorGame.entity.Entity;
@@ -23,6 +22,7 @@
 
         private Player player;
         private World world;
+        private PlayerState playerState;
 
         private Vector2 moveDirection;
         protected float animationTime = 0f;
@@ -31,12 +31,15 @@
 
         public Enemy(float x, float y, World world,
                      float size, float maxHP,
-                     float movementSpeed, float damage)
+                     float movementSpeed, float damage, float hpMultiplier)
         {
-            super(x, y, size, size, maxHP, movementSpeed);
+            super(x, y, size, size, maxHP*hpMultiplier, movementSpeed);
+
+            maxHP *= hpMultiplier;
 
             this.world = world;
             this.player = world.getPlayer();
+            this.playerState = player.getPlayerState();
 
             this.maxHP = maxHP;
             this.currentHP = maxHP;
@@ -65,27 +68,61 @@
             collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
         }
 
-        public void takeDamage(float damage, PlayerState playerState)
+        public void takeDamage(float damage)
         {
+            damage = calculateDamageTaken(damage);
             currentHP -= damage;
-            System.out.println("Enemy bekommt schaden: " + damage);
-            System.out.println("Enemy hat: " + currentHP + " Leben");
+            System.out.println("Enemy: " + damage+"dmg | hp: "+currentHP+"/"+maxHP);
 
             if(currentHP <= 0) { //=> Enemy Tod
-                currentHP = 0;
-                dead = true;
-                if (shouldSpawnChest(playerState.getPlayerStats())) {
-                    System.out.println("Chest spawned!"); // debug
-                    world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
-                }
-                playerState.giveXP(getXPWorth());
-                damage -= currentHP; // => Effektiver Schaden (Wenn 1hp genug war um zu killen z. B. soll dmg net trzm 10 sein
+                onDeath();
+                damage -= currentHP; // => Echter Schaden (Wenn 1hp genug war um zu killen z. B. soll dmg net trzm 10 sein
             }
-            playerState.heal(damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
+            onDamage(damage);
         }
 
-        private boolean shouldSpawnChest(PlayerStats playerStats) {
-            float chestChance = playerStats.getStat(StatScope.ALL, StatType.CHEST_CHANCE);
+        private void onDamage(float damage) {
+            // Life steal heal:
+            float heal = damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL);
+            if (heal > 0) {
+                playerState.heal(damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
+            }
+        }
+
+        private float calculateDamageTaken(float damage) {
+            if (shouldCrit()) {
+                System.out.println("CRIT!"); // debug
+                damage *= 1 + playerState.getPlayerStats().getStat(StatScope.ALL, StatType.CRIT_MULTIPLIER);
+            }
+
+            return damage;
+        }
+
+        private boolean shouldCrit() {
+            float critChance = playerState.getPlayerStats().getStat(StatScope.ALL, StatType.CRIT_CHANCE);
+
+            if (critChance <= 0f) {
+                return false;
+            }
+
+            if (critChance > 1f) {
+                critChance = 1f;
+            }
+
+            return Math.random() < critChance;
+        }
+
+        private void onDeath() {
+            dead = true;
+            if (shouldSpawnChest()) {
+                System.out.println("Chest spawned!"); // debug
+                world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
+            }
+            playerState.giveXP(getXPWorth());
+        }
+
+        private boolean shouldSpawnChest() {
+            float chestChance = playerState.getPlayerStats().getStat(StatScope.ALL, StatType.CHEST_CHANCE);
 
             if (chestChance <= 0f) {
                 return false;

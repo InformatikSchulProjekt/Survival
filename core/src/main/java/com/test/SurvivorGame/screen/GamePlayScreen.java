@@ -42,6 +42,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.abilitySlots[0] = "melee";
         playerData.abilitySlots[1] = "fireball";
         playerData.abilitySlots[2] = "fire_arrow";
+        playerData.abilitySlots[3] = "water_blast";
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
@@ -49,7 +50,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.world = new World(screenWidth, screenHeight, playerState, map);
 
         this.shapeRenderer = new ShapeRenderer();
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);

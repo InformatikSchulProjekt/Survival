@@ -6,7 +6,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.screen.HuD.HUDRenderer;
@@ -27,10 +29,10 @@ public class Renderer {
 
     private final Batch batch;
     private final Viewport viewport;
-
     private final World world;
-
     private ShapeRenderer shapeRenderer;
+    private PlayerData playerData;
+
 
     private final Texture playerTexture;
     private final Texture idle2;
@@ -55,6 +57,117 @@ public class Renderer {
     private final Animation<TextureRegion> rightAnimation;
     private final Animation<TextureRegion> leftAnimation;
     private float playerAnimationTime = 0f;
+    //Ab hier Pyromancer
+    private final Texture pyromancerTexture;
+    private final Texture pyromanceridle2;
+    private final Texture pyromanceridle3;
+    private final Texture pyromanceridle4;
+    private final Texture pyromancerback1;
+    private final Texture pyromancerback2;
+    private final Texture pyromancerfront1;
+    private final Texture pyromancerfront2;
+    private final Texture pyromancerfront3;
+    private final Texture pyromancerright1;
+    private final Texture pyromancerright2;
+    private final Texture pyromancerright3;
+    private final Texture pyromancerright4;
+    private final Texture pyromancerright5;
+    private final Texture pyromancerright6;
+    private final Texture pyromancerright7;
+    private final Texture pyromancerleft1;
+    private final Texture pyromancerleft2;
+    private final Texture pyromancerleft3;
+    private final Texture pyromancerleft4;
+    private final Texture pyromancerleft5;
+    private final Texture pyromancerleft6;
+    private final Texture pyromancerleft7;
+    private final Animation<TextureRegion> pyromanceridleAnimation;
+    private final Animation<TextureRegion> pyromancerbackAnimation;
+    private final Animation<TextureRegion> pyromancerfrontAnimation;
+    private final Animation<TextureRegion> pyromancerrightAnimation;
+    private final Animation<TextureRegion> pyromancerleftAnimation;
+    private float pyromancerAnimationTime = 0f;
+
+    // Ab hier Aeromancer
+    private final Texture aeromancerTexture;
+    private final Texture aeromanceridle2;
+    private final Texture aeromanceridle3;
+    private final Texture aeromanceridle4;
+    private final Texture aeromancerback1;
+    private final Texture aeromancerback2;
+    private final Texture aeromancerfront1;
+    private final Texture aeromancerfront2;
+    private final Texture aeromancerfront3;
+    private final Texture aeromancerright1;
+    private final Texture aeromancerright2;
+    private final Texture aeromancerright3;
+    private final Texture aeromancerright4;
+    private final Texture aeromancerleft1;
+    private final Texture aeromancerleft2;
+    private final Texture aeromancerleft3;
+    private final Texture aeromancerleft4;
+    private float aeromancerAnimationTime = 0f;
+
+    private final Animation<TextureRegion> aeromanceridleAnimation;
+    private final Animation<TextureRegion> aeromancerbackAnimation;
+    private final Animation<TextureRegion> aeromancerfrontAnimation;
+    private final Animation<TextureRegion> aeromancerrightAnimation;
+    private final Animation<TextureRegion> aeromancerleftAnimation;
+
+    // Ab hier Hydromancer
+    private final Texture hydromancerTexture;
+    private final Texture hydromanceridle2;
+    private final Texture hydromanceridle3;
+    private final Texture hydromanceridle4;
+    private final Texture hydromancerback1;
+    private final Texture hydromancerback2;
+    private final Texture hydromancerfront1;
+    private final Texture hydromancerfront2;
+    private final Texture hydromancerfront3;
+    private final Texture hydromancerright1;
+    private final Texture hydromancerright2;
+    private final Texture hydromancerright3;
+    private final Texture hydromancerright4;
+    private final Texture hydromancerleft1;
+    private final Texture hydromancerleft2;
+    private final Texture hydromancerleft3;
+    private final Texture hydromancerleft4;
+    private float hydromancerAnimationTime = 0f;
+
+
+    private final Animation<TextureRegion> hydromanceridleAnimation;
+    private final Animation<TextureRegion> hydromancerbackAnimation;
+    private final Animation<TextureRegion> hydromancerfrontAnimation;
+    private final Animation<TextureRegion> hydromancerrightAnimation;
+    private final Animation<TextureRegion> hydromancerleftAnimation;
+
+
+    // Ab hier Geomancer
+    private final Texture geomancerTexture;
+    private final Texture geomanceridle2;
+    private final Texture geomanceridle3;
+    private final Texture geomanceridle4;
+    private final Texture geomancerback1;
+    private final Texture geomancerback2;
+    private final Texture geomancerfront1;
+    private final Texture geomancerfront2;
+    private final Texture geomancerfront3;
+    private final Texture geomancerright1;
+    private final Texture geomancerright2;
+    private final Texture geomancerright3;
+    private final Texture geomancerright4;
+    private final Texture geomancerleft1;
+    private final Texture geomancerleft2;
+    private final Texture geomancerleft3;
+    private final Texture geomancerleft4;
+    private float geomancerAnimationTime = 0f;
+
+
+    private final Animation<TextureRegion> geomanceridleAnimation;
+    private final Animation<TextureRegion> geomancerbackAnimation;
+    private final Animation<TextureRegion> geomancerfrontAnimation;
+    private final Animation<TextureRegion> geomancerrightAnimation;
+    private final Animation<TextureRegion> geomancerleftAnimation;
 
     //Ab hier Enemy1
     private final Texture enemy1Texture;
@@ -122,14 +235,19 @@ public class Renderer {
     private final Texture firearrow3;
     private final Animation<TextureRegion> fireArrowAnimation;
 
+    //WaterBlast
+    private final Texture waterblast0;
+    private final Texture waterblast1;
+    private final Texture waterblast2;
+    private final Texture waterblast3;
+    private final Texture waterblast4;
+    private final Animation<TextureRegion> waterBlastAnimation;
 
-
-
-
-
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
+        this.playerData = playerData;
+
 
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
@@ -180,6 +298,234 @@ public class Renderer {
             new TextureRegion(left3),
             new TextureRegion(left4));
         leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        //pyromancer ab hier
+        this.pyromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        TextureRegion[][] pyromancerframes = TextureRegion.split(pyromancerTexture, 64, 64);
+        pyromanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
+        pyromanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
+        pyromanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+        pyromanceridleAnimation = new Animation<>(0.4f,
+            new TextureRegion(pyromanceridle2),
+            new TextureRegion(pyromanceridle3),
+            new TextureRegion(pyromanceridle4));
+        pyromanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        pyromancerfront1 = new Texture(Gdx.files.internal("Player/front 1.png"));
+        pyromancerfront2 = new Texture(Gdx.files.internal("Player/front 2.png"));
+        pyromancerfront3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+        pyromancerfrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(pyromancerfront1),
+            new TextureRegion(pyromancerfront2),
+            new TextureRegion(pyromancerfront3));
+        pyromancerfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        pyromancerback1 = new Texture(Gdx.files.internal("Player/back 1.png"));
+        pyromancerback2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+        pyromancerbackAnimation = new Animation<>(0.1f,
+            new TextureRegion(pyromancerback1),
+            new TextureRegion(pyromancerback2));
+        pyromancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        pyromancerright1 = new Texture(Gdx.files.internal("pyromancer/pyromancer1Walk.png"));
+        pyromancerright2 = new Texture(Gdx.files.internal("pyromancer/pyromancer2Walk.png"));
+        pyromancerright3 = new Texture(Gdx.files.internal("pyromancer/pyromancer3Walk.png"));
+        pyromancerright4 = new Texture(Gdx.files.internal("pyromancer/pyromancer4Walk.png"));
+        pyromancerright5 = new Texture(Gdx.files.internal("pyromancer/pyromancer5Walk.png"));
+        pyromancerright6 = new Texture(Gdx.files.internal("pyromancer/pyromancer6Walk.png"));
+        pyromancerright7 = new Texture(Gdx.files.internal("pyromancer/pyromancer7Walk.png"));
+        pyromancerrightAnimation = new Animation<>(0.2f,
+            new TextureRegion(pyromancerright1),
+            new TextureRegion(pyromancerright2),
+            new TextureRegion(pyromancerright3),
+            new TextureRegion(pyromancerright4),
+            new TextureRegion(pyromancerright5),
+            new TextureRegion(pyromancerright6),
+            new TextureRegion(pyromancerright7));
+        pyromancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        pyromancerleft1 = new Texture(Gdx.files.internal("pyromancer/pyromancer1WalkLeft.png"));
+        pyromancerleft2 = new Texture(Gdx.files.internal("pyromancer/pyromancer2WalkLeft.png"));
+        pyromancerleft3 = new Texture(Gdx.files.internal("pyromancer/pyromancer3WalkLeft.png"));
+        pyromancerleft4 = new Texture(Gdx.files.internal("pyromancer/pyromancer4WalkLeft.png"));
+        pyromancerleft5 = new Texture(Gdx.files.internal("pyromancer/pyromancer5WalkLeft.png"));
+        pyromancerleft6 = new Texture(Gdx.files.internal("pyromancer/pyromancer6WalkLeft.png"));
+        pyromancerleft7 = new Texture(Gdx.files.internal("pyromancer/pyromancer7WalkLeft.png"));
+        pyromancerleftAnimation = new Animation<>(0.2f,
+            new TextureRegion(pyromancerleft1),
+            new TextureRegion(pyromancerleft2),
+            new TextureRegion(pyromancerleft3),
+            new TextureRegion(pyromancerleft4),
+            new TextureRegion(pyromancerleft5),
+            new TextureRegion(pyromancerleft6),
+            new TextureRegion(pyromancerleft7));
+        pyromancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        //Ab hier aeromancer
+        // ===================== AEROMANCER =====================
+        this.aeromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+
+        aeromanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
+        aeromanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
+        aeromanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+
+        aeromanceridleAnimation = new Animation<>(0.4f,
+            new TextureRegion(aeromanceridle2),
+            new TextureRegion(aeromanceridle3),
+            new TextureRegion(aeromanceridle4));
+        aeromanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        aeromancerfront1 = new Texture(Gdx.files.internal("Player/front 1.png"));
+        aeromancerfront2 = new Texture(Gdx.files.internal("Player/front 2.png"));
+        aeromancerfront3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+
+        aeromancerfrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(aeromancerfront1),
+            new TextureRegion(aeromancerfront2),
+            new TextureRegion(aeromancerfront3));
+        aeromancerfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        aeromancerback1 = new Texture(Gdx.files.internal("Player/back 1.png"));
+        aeromancerback2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+
+        aeromancerbackAnimation = new Animation<>(0.2f,
+            new TextureRegion(aeromancerback1),
+            new TextureRegion(aeromancerback2));
+        aeromancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        aeromancerright1 = new Texture(Gdx.files.internal("Player/right 1.png"));
+        aeromancerright2 = new Texture(Gdx.files.internal("Player/right 2.png"));
+        aeromancerright3 = new Texture(Gdx.files.internal("Player/right 3.png"));
+        aeromancerright4 = new Texture(Gdx.files.internal("Player/right 4.png"));
+
+        aeromancerrightAnimation = new Animation<>(0.2f,
+            new TextureRegion(aeromancerright1),
+            new TextureRegion(aeromancerright2),
+            new TextureRegion(aeromancerright3),
+            new TextureRegion(aeromancerright4));
+        aeromancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        aeromancerleft1 = new Texture(Gdx.files.internal("Player/left 1.png"));
+        aeromancerleft2 = new Texture(Gdx.files.internal("Player/left 2.png"));
+        aeromancerleft3 = new Texture(Gdx.files.internal("Player/left 3.png"));
+        aeromancerleft4 = new Texture(Gdx.files.internal("Player/left 4.png"));
+
+        aeromancerleftAnimation = new Animation<>(0.2f,
+            new TextureRegion(aeromancerleft1),
+            new TextureRegion(aeromancerleft2),
+            new TextureRegion(aeromancerleft3),
+            new TextureRegion(aeromancerleft4));
+        aeromancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        //hydromancer ab hier
+
+        this.hydromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+
+        hydromanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
+        hydromanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
+        hydromanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+
+        hydromanceridleAnimation = new Animation<>(0.4f,
+            new TextureRegion(hydromanceridle2),
+            new TextureRegion(hydromanceridle3),
+            new TextureRegion(hydromanceridle4));
+        hydromanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        hydromancerfront1 = new Texture(Gdx.files.internal("Player/front 1.png"));
+        hydromancerfront2 = new Texture(Gdx.files.internal("Player/front 2.png"));
+        hydromancerfront3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+
+        hydromancerfrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(hydromancerfront1),
+            new TextureRegion(hydromancerfront2),
+            new TextureRegion(hydromancerfront3));
+        hydromancerfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        hydromancerback1 = new Texture(Gdx.files.internal("Player/back 1.png"));
+        hydromancerback2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+
+        hydromancerbackAnimation = new Animation<>(0.2f,
+            new TextureRegion(hydromancerback1),
+            new TextureRegion(hydromancerback2));
+        hydromancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        hydromancerright1 = new Texture(Gdx.files.internal("Player/right 1.png"));
+        hydromancerright2 = new Texture(Gdx.files.internal("Player/right 2.png"));
+        hydromancerright3 = new Texture(Gdx.files.internal("Player/right 3.png"));
+        hydromancerright4 = new Texture(Gdx.files.internal("Player/right 4.png"));
+
+        hydromancerrightAnimation = new Animation<>(0.2f,
+            new TextureRegion(hydromancerright1),
+            new TextureRegion(hydromancerright2),
+            new TextureRegion(hydromancerright3),
+            new TextureRegion(hydromancerright4));
+        hydromancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        hydromancerleft1 = new Texture(Gdx.files.internal("Player/left 1.png"));
+        hydromancerleft2 = new Texture(Gdx.files.internal("Player/left 2.png"));
+        hydromancerleft3 = new Texture(Gdx.files.internal("Player/left 3.png"));
+        hydromancerleft4 = new Texture(Gdx.files.internal("Player/left 4.png"));
+
+        hydromancerleftAnimation = new Animation<>(0.2f,
+            new TextureRegion(hydromancerleft1),
+            new TextureRegion(hydromancerleft2),
+            new TextureRegion(hydromancerleft3),
+            new TextureRegion(hydromancerleft4));
+        hydromancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        //geomancer ab hier
+
+        this.geomancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+
+        geomanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
+        geomanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
+        geomanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+
+        geomanceridleAnimation = new Animation<>(0.4f,
+            new TextureRegion(geomanceridle2),
+            new TextureRegion(geomanceridle3),
+            new TextureRegion(geomanceridle4));
+        geomanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        geomancerfront1 = new Texture(Gdx.files.internal("Player/front 1.png"));
+        geomancerfront2 = new Texture(Gdx.files.internal("Player/front 2.png"));
+        geomancerfront3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+
+        geomancerfrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(geomancerfront1),
+            new TextureRegion(geomancerfront2),
+            new TextureRegion(geomancerfront3));
+        geomancerfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        geomancerback1 = new Texture(Gdx.files.internal("Player/back 1.png"));
+        geomancerback2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+
+        geomancerbackAnimation = new Animation<>(0.2f,
+            new TextureRegion(geomancerback1),
+            new TextureRegion(geomancerback2));
+        geomancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        geomancerright1 = new Texture(Gdx.files.internal("Player/right 1.png"));
+        geomancerright2 = new Texture(Gdx.files.internal("Player/right 2.png"));
+        geomancerright3 = new Texture(Gdx.files.internal("Player/right 3.png"));
+        geomancerright4 = new Texture(Gdx.files.internal("Player/right 4.png"));
+
+        geomancerrightAnimation = new Animation<>(0.2f,
+            new TextureRegion(geomancerright1),
+            new TextureRegion(geomancerright2),
+            new TextureRegion(geomancerright3),
+            new TextureRegion(geomancerright4));
+        geomancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        geomancerleft1 = new Texture(Gdx.files.internal("Player/left 1.png"));
+        geomancerleft2 = new Texture(Gdx.files.internal("Player/left 2.png"));
+        geomancerleft3 = new Texture(Gdx.files.internal("Player/left 3.png"));
+        geomancerleft4 = new Texture(Gdx.files.internal("Player/left 4.png"));
+
+        geomancerleftAnimation = new Animation<>(0.2f,
+            new TextureRegion(geomancerleft1),
+            new TextureRegion(geomancerleft2),
+            new TextureRegion(geomancerleft3),
+            new TextureRegion(geomancerleft4));
+        geomancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         //Enemy1 ab hier
         this.enemy1Texture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
@@ -315,6 +661,22 @@ public class Renderer {
             new TextureRegion(firearrow2),
             new TextureRegion(firearrow3));
             fireArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // ab hier water blast
+        waterblast0 = new Texture (Gdx.files.internal("Ability/waterBlast1.png"));
+        waterblast1 = new Texture (Gdx.files.internal("Ability/waterBlast2.png"));
+        waterblast2 = new Texture (Gdx.files.internal("Ability/waterBlast3.png"));
+        waterblast3 = new Texture (Gdx.files.internal("Ability/waterBlast4.png"));
+        waterblast4 = new Texture (Gdx.files.internal("Ability/waterBlast5.png"));
+
+        //ab hier water blast animation
+        waterBlastAnimation = new Animation<>(0.08f,
+            new TextureRegion(waterblast0),
+            new TextureRegion(waterblast1),
+            new TextureRegion(waterblast2),
+            new TextureRegion(waterblast3),
+            new TextureRegion(waterblast4));
+        waterBlastAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
     public void resize(int width, int height) {
@@ -373,7 +735,9 @@ public class Renderer {
                 renderFireball((Fireball) abilityObject, deltaTime);
             } else if (abilityObject instanceof FireArrowProjectile) {
                 renderFireArrow((FireArrowProjectile) abilityObject, deltaTime);
-            } else {
+            } else if (abilityObject instanceof WaterBlastProjectile) {
+                renderWaterBlast((WaterBlastProjectile) abilityObject, deltaTime);
+            }else {
                 abilityObject.draw(batch);
             }
         }
@@ -411,51 +775,125 @@ public class Renderer {
     }
 
     private void renderPlayer(Player player, PlayerState playerState, float deltaTime) {
+
         playerAnimationTime += deltaTime;
-
         Animation<TextureRegion> animation;
+        TextureRegion currentFrame;
+        if (playerData.getPlayerClass().equals("pyromancer")) {
+            pyromancerAnimationTime += deltaTime;
+            if (!player.isMoving()) {
+                animation = pyromanceridleAnimation;
+            } else {
+                switch (player.getFacingDirection()) {
+                    case UP:
+                        animation = pyromancerfrontAnimation;
+                        break;
+                    case LEFT:
+                        animation = pyromancerleftAnimation;
+                        break;
+                    case RIGHT:
+                        animation = pyromancerrightAnimation;
+                        break;
+                    case DOWN:
+                    default:
+                        animation = pyromancerbackAnimation;
+                        break;
+                }
 
-        if (!player.isMoving()) {
-            animation = idleAnimation;
-        }else {
-            switch (player.getFacingDirection()) {
-                case UP:
-                    animation = frontAnimation;
-                    break;
-                case LEFT:
-                    animation = leftAnimation;
-                    break;
-                case RIGHT:
-                    animation = rightAnimation;
-                    break;
-                case DOWN:
-                default:
-                    animation = backAnimation;
-                    break;
             }
-        }
-        TextureRegion currentFrame = animation.getKeyFrame(playerAnimationTime);
+            currentFrame = animation.getKeyFrame(pyromancerAnimationTime);
+        } else if (playerData.getPlayerClass().equals("aeromancer")) {
+            aeromancerAnimationTime += deltaTime;
 
-        Color oldColor = new Color(batch.getColor());
-        if (player.isDamageFlashing()) {
-            float flashProgress = player.getDamageFlashProgress();
-            float colorFade = 1f - flashProgress;
-            batch.setColor(1f, 0.25f + 0.75f * colorFade, 0.25f + 0.75f * colorFade, 1f);
+            if (!player.isMoving()) {
+                animation = aeromanceridleAnimation;
+            } else {
+                switch (player.getFacingDirection()) {
+                    case UP:
+                        animation = aeromancerfrontAnimation;
+                        break;
+                    case LEFT:
+                        animation = aeromancerleftAnimation;
+                        break;
+                    case RIGHT:
+                        animation = aeromancerrightAnimation;
+                        break;
+                    case DOWN:
+                    default:
+                        animation = aeromancerbackAnimation;
+                        break;
+                }
+            }
+            currentFrame = animation.getKeyFrame(aeromancerAnimationTime);
+        } else if (playerData.getPlayerClass().equals("hydromancer")) {
+            hydromancerAnimationTime += deltaTime;
+
+            if (!player.isMoving()) {
+                animation = hydromanceridleAnimation;
+            } else {
+                switch (player.getFacingDirection()) {
+                    case UP:
+                        animation = hydromancerfrontAnimation;
+                        break;
+                    case LEFT:
+                        animation = hydromancerleftAnimation;
+                        break;
+                    case RIGHT:
+                        animation = hydromancerrightAnimation;
+                        break;
+                    case DOWN:
+                    default:
+                        animation = hydromancerbackAnimation;
+                        break;
+                }
+            }
+            currentFrame = animation.getKeyFrame(hydromancerAnimationTime);
+        } else {
+            geomancerAnimationTime += deltaTime;
+
+            if (!player.isMoving()) {
+                animation = geomanceridleAnimation;
+            } else {
+                switch (player.getFacingDirection()) {
+                    case UP:
+                        animation = geomancerfrontAnimation;
+                        break;
+                    case LEFT:
+                        animation = geomancerleftAnimation;
+                        break;
+                    case RIGHT:
+                        animation = geomancerrightAnimation;
+                        break;
+                    case DOWN:
+                    default:
+                        animation = geomancerbackAnimation;
+                        break;
+                }
+            }
+            currentFrame = animation.getKeyFrame(geomancerAnimationTime);
         }
-        if(playerState.isDodgeEffectActive()){
-            batch.setColor(10f, 10f, 10f, 0.5f);
+            
+            Color oldColor = new Color(batch.getColor());
+            if (player.isDamageFlashing()) {
+                float flashProgress = player.getDamageFlashProgress();
+                float colorFade = 1f - flashProgress;
+                batch.setColor(1f, 0.25f + 0.75f * colorFade, 0.25f + 0.75f * colorFade, 1f);
+            }
+            if (playerState.isDodgeEffectActive()) {
+                batch.setColor(10f, 10f, 10f, 0.5f);
+            }
+
+            batch.draw(
+                currentFrame,
+                player.getX(),
+                player.getY(),
+                player.getWidth(),
+                player.getHeight()
+            );
+
+            batch.setColor(oldColor);
         }
 
-        batch.draw(
-            currentFrame,
-            player.getX(),
-            player.getY(),
-            player.getWidth(),
-            player.getHeight()
-        );
-
-        batch.setColor(oldColor);
-    }
     private void renderEnemy(Enemy enemy) {
 
         Animation<TextureRegion> animation;
@@ -567,6 +1005,26 @@ public class Renderer {
             1,
             1,
             fireArrow.getRotation()
+        );
+    }
+    private void renderWaterBlast(WaterBlastProjectile waterBlastProjectile, float deltaTime) {
+        Animation<TextureRegion> animation;
+
+        animation = waterBlastAnimation;
+
+        TextureRegion currentFrame = animation.getKeyFrame(waterBlastProjectile.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            waterBlastProjectile.getX(),
+            waterBlastProjectile.getY(),
+            waterBlastProjectile.getWidth() / 2,
+            waterBlastProjectile.getHeight() / 2,
+            waterBlastProjectile.getWidth(),
+            waterBlastProjectile.getHeight(),
+            1,
+            1,
+            waterBlastProjectile.getRotation()
         );
     }
     private void renderMap(GameMap map, OrthographicCamera cam) {
