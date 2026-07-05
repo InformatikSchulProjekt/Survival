@@ -83,7 +83,6 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
     @Override
     public void update(float deltaTime, GameMap map)
     {
-        if(deltaTime == 0) ;
         if(getExpired()) return;
 
         deltaDuration -= deltaTime;
