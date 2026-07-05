@@ -65,7 +65,7 @@ public class Melee extends AbilityObject { //sollte später abstract parent von 
             return;
         }
 
-        enemy.takeDamage(getDamage(), player.getPlayerState());
+        enemy.takeDamage(getDamage());
 
         damageTimer = 0;
     }
