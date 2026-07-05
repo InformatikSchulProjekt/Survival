@@ -19,7 +19,9 @@ public class FireStorm extends AbilityObject{
 
     private Player player;
 
-    public FireStorm(float x, float y, float startSize, float endSize, Texture texture, float duration, World world) {
+    private final float damage;
+
+    public FireStorm(float x, float y, float startSize, float endSize, Texture texture, float duration, World world, float damage) {
         super(x, y, startSize, startSize, texture);
 
         this.startSize = startSize;
@@ -28,6 +30,7 @@ public class FireStorm extends AbilityObject{
         this.duration = duration;
 
         this.player = world.getPlayer();
+        this.damage = damage;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class FireStorm extends AbilityObject{
     @Override
     public float getDamage()
     {
-        return FireStormAbility.getDamage();
+        return damage;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class FireStorm extends AbilityObject{
             return;
         }
 
-        enemy.takeDamage(getDamage(), player.getPlayerState());
+        enemy.takeDamage(getDamage());
 
         damageTimer = 0;
     }
