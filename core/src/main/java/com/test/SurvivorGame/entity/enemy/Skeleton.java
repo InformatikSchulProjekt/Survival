@@ -11,7 +11,7 @@ public class Skeleton extends Enemy{
     private static final float DAMAGE = 1f;
 
 
-    public Skeleton(float x, float y, World world) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE);
+    public Skeleton(float x, float y, World world, float hpMultiplier) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier);
     }
 }
