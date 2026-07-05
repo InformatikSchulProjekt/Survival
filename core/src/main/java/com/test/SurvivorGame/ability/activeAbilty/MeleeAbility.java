@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.activeAbility;
+package com.test.SurvivorGame.ability.activeAbilty;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,11 +41,6 @@ public class MeleeAbility extends ActiveAbility {
         world.addAbility(melee);
     }
 
-    public void dispose()
-    {
-        texture.dispose();
-    }
-
     public static float getDamage()
     {
         return damage;
@@ -54,6 +49,11 @@ public class MeleeAbility extends ActiveAbility {
     public static float getDamageInterval()
     {
         return damageInterval;
+    }
+
+    public void dispose()
+    {
+        texture.dispose();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.activeAbility;
+package com.test.SurvivorGame.ability.activeAbilty;
 
 import com.test.SurvivorGame.ability.AbilityType;
 import com.test.SurvivorGame.ability.BaseAbility;
