@@ -1,7 +1,6 @@
 package com.test.SurvivorGame.entity.abilityObjects.projectile;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
@@ -17,7 +16,7 @@ public class Fireball extends Projectile {
     private float totalLifetime = 3f;
     private boolean expired = false;
 
-    public Fireball(float x, float y, float effectSize, Texture texture, Player player,
+    public Fireball(float x, float y, float effectSize, float v, Texture texture, Player player,
                     Viewport viewport, float speed, float duration, float explosionRadius) {
         super(x, y, effectSize, texture, player, viewport, speed, duration);
         this.explosionRadius = explosionRadius;
