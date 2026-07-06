@@ -8,11 +8,12 @@ import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class FireStorm extends AbilityObject{
+import java.util.HashMap;
+
+public class FireStorm extends AbilityObject {
 
     private float deltaDuration;
     private float duration;
-    private float damageTimer = 0;
 
     private float elapsedTime = 0;
     float startSize, endSize;
@@ -20,6 +21,8 @@ public class FireStorm extends AbilityObject{
     private Player player;
 
     private final float damage;
+
+    private HashMap<Enemy, Float> damageTimers = new HashMap<>();
 
     public FireStorm(float x, float y, float startSize, float endSize, Texture texture, float duration, World world, float damage) {
         super(x, y, startSize, startSize, texture);
@@ -48,14 +51,16 @@ public class FireStorm extends AbilityObject{
     @Override
     public void onHit(Enemy enemy)
     {
-        if(damageTimer < FireStormAbility.getDamageInterval())
+        float timer = damageTimers.getOrDefault(enemy, FireStormAbility.getDamageInterval());
+
+        if(timer < FireStormAbility.getDamageInterval())
         {
             return;
         }
 
         enemy.takeDamage(getDamage());
 
-        damageTimer = 0;
+        damageTimers.put(enemy, 0f);
     }
 
     @Override
@@ -63,9 +68,12 @@ public class FireStorm extends AbilityObject{
     {
         deltaDuration -= deltaTime;
 
-        damageTimer += deltaTime;
-
         collider.setCenter(player.getCenter());
+
+        for(Enemy enemy : damageTimers.keySet())
+        {
+            damageTimers.put(enemy, damageTimers.get(enemy) + deltaTime);
+        }
 
         grow(deltaTime);
     }
