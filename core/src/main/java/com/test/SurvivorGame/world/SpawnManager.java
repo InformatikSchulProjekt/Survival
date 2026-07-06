@@ -40,7 +40,7 @@ public class SpawnManager {
         currentWave = 1;
         this.map = map;
 
-        this.currentWaveReference = map.getSpawnprofile().getCurrentWave(currentWave);
+        this.currentWaveReference = map.getSpawnProfile().getCurrentWave(currentWave);
     }
 
     public void update(float deltaTime, GameMap map)
@@ -83,11 +83,11 @@ public class SpawnManager {
             triggerBossPhase();
         }
 
-        if(enemies.isEmpty() && map.getSpawnprofile().hasNextWave(currentWave))
+        if(enemies.isEmpty() && map.getSpawnProfile().hasNextWave(currentWave))
         {
             startNextWave();
         }
-        if(enemies.isEmpty() && !map.getSpawnprofile().hasNextWave(currentWave))
+        if(enemies.isEmpty() && !map.getSpawnProfile().hasNextWave(currentWave))
         {
             System.out.println("No Waves; You Completed"); // Funktion nach abschluss der map
         }
@@ -186,7 +186,7 @@ public class SpawnManager {
     private void startNextWave()
     {
         currentWave++;
-        currentWaveReference = map.getSpawnprofile().getCurrentWave(currentWave);
+        currentWaveReference = map.getSpawnProfile().getCurrentWave(currentWave);
 
         waveTime = 0f;
         spawnTimer = 0f;
