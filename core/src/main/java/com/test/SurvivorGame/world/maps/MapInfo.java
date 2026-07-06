@@ -1,16 +1,18 @@
 package com.test.SurvivorGame.world.maps;
 
-import com.test.SurvivorGame.core.data.DataLoader;
-
 public class MapInfo {
 
     private final String id;
     private final String displayName;
-    private DataLoader dataLoader;
+    private final String description;
 
-    public MapInfo(String id, String displayName, DataLoader dataloader) {
+    public MapInfo(String id,
+                   String displayName,
+                   String description) {
+
         this.id = id;
         this.displayName = displayName;
+        this.description = description;
     }
 
     public String getId() {
@@ -21,5 +23,7 @@ public class MapInfo {
         return displayName;
     }
 
-
+    public String getDescription() {
+        return description;
+    }
 }
