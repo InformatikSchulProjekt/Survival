@@ -38,17 +38,13 @@ public class World {
     public void update(float deltaTime, GameMap map)
     {
         survivalTime += deltaTime;
+        System.out.println(survivalTime);
 
         player.update(deltaTime, map);
         spawnManager.update(deltaTime, map);
 
         checkAbilityCollision(deltaTime);
         checkPlayerCollisions(deltaTime);
-
-        if(!player.isAlive()) // nur für reset-test, bis wir halt wissen was bei tod passiert
-        {
-            resetWorld();
-        }
 
         for(int i = abilityObjects.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
         {
@@ -72,18 +68,6 @@ public class World {
             }
         }
 
-    }
-
-    private void resetWorld()
-    {
-        spawnManager.getEnemies().clear();
-
-        spawnManager.resetSpawn();
-
-        damageTimer = 0;
-        survivalTime = 0f;
-
-        player.reset(screenWidth / 2, screenHeight / 2);
     }
 
     private void checkPlayerCollisions(float deltaTime) //überprüft collisions mit der overlap methode von GameObjects

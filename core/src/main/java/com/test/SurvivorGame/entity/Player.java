@@ -14,19 +14,6 @@ public class Player extends Entity {
         this.playerState = playerState;
     }
 
-    public void reset(float x, float y) {
-        alive = true;
-        collider.setPosition(x, y);
-        damageFlashTimer = 0f;
-
-
-        moveDirection.setZero();
-        isMoving = false;
-        facingDirection = Direction.DOWN;
-
-        playerState.resetHealth();
-    }
-
     public void move(float deltaTime) {
         if (moveDirection.isZero()) return;
 
@@ -67,7 +54,6 @@ public class Player extends Entity {
         }
 
         if (!survived) {
-            die();
             SoundManager.playSound("deathSound.wav");
         }
     }

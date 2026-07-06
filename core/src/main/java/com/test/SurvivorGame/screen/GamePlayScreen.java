@@ -196,7 +196,9 @@ public class GamePlayScreen extends ScreenAdapter {
     public void render(float deltaTime)
     {
         if (playerState.isGameOver()) {
+            System.out.println("float : " + world.getSurvivalTime());
             int survivalTime = (int) world.getSurvivalTime();
+            System.out.println("int : " + survivalTime);
             dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
             dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
             main.gameOver();
