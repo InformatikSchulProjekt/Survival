@@ -121,6 +121,8 @@ public class SpawnManager {
             MathUtils.sinDeg(angle) * distance;
 
         enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world));
+
+        world.setSurvivalTimePaused(true); // timer stop
     }
 
     private void updateEnemy(float deltaTime, GameMap map)
