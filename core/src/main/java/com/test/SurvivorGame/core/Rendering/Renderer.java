@@ -34,6 +34,7 @@ public class Renderer {
     private final World world;
     private ShapeRenderer shapeRenderer;
     private PlayerData playerData;
+    private PauseMenuRenderer pauseMenu;
 
     private GameState gamestate;
 
@@ -230,7 +231,7 @@ public class Renderer {
     private final Animation<TextureRegion> fireballMovementAnimation;
     private final Animation<TextureRegion> fireballExplosionAnimation;
     private final HUDRenderer hud;
-    private final PauseMenuRenderer pauseMenu;
+
 
     //FireArrow
     private final Texture firearrow0;
@@ -247,7 +248,7 @@ public class Renderer {
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData,PauseMenuRenderer pauseMenu) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
@@ -255,7 +256,7 @@ public class Renderer {
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
         this.hud = new HUDRenderer(batch, shapeRenderer);
-        this.pauseMenu = new PauseMenuRenderer(shapeRenderer, world.getPlayer().getPlayerState());
+        this.pauseMenu = pauseMenu;
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
