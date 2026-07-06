@@ -16,6 +16,7 @@ import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.SoundManager;
+import com.test.SurvivorGame.world.maps.GameMapFactory;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final Main main;
@@ -29,7 +30,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private final ShapeRenderer shapeRenderer;
 
     private final World world;
-    private final GameMap gameMap = new GameMap();
+    private final GameMap gameMap;
 
     private Vector2 playerMoveDirection = new Vector2();
 
@@ -42,6 +43,9 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         this.main = game;
         this.map = map;
+
+        this.gameMap = GameMapFactory.create(map);
+
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData(map);
         // bis ability slots gui da:

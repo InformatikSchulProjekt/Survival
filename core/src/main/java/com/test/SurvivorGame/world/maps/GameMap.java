@@ -1,44 +1,58 @@
 package com.test.SurvivorGame.world.maps;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.test.SurvivorGame.world.maps.WaveControl.EnemyType;
 import com.test.SurvivorGame.world.maps.WaveControl.SpawnProfile;
 
-public class GameMap {
-    private final Texture texture;
-    private final float worldWidth;
-    private final float worldHeight;
-    private final boolean infinite;
+public abstract class GameMap {
 
-    SpawnProfile spawnProfile = new SpawnProfile();
+    private final String id;
+    private final String displayName;
+    private final String description;
 
-    public GameMap() {
-        this.texture = new Texture(Gdx.files.internal("Maps/Map(clear1).png"));
-        this.worldWidth = 30f;
-        this.worldHeight = 30f;
-        this.infinite = true;
+    protected Texture texture;
+    protected float worldWidth;
+    protected float worldHeight;
+    protected boolean infinite;
 
-        spawnProfile.addWave(20f, 2f, 0.4f, EnemyType.BOSS);
-        spawnProfile.addEnemyToWave(spawnProfile.getCurrentWave(1), EnemyType.SLIME, 100);
-    }
+    protected final SpawnProfile spawnProfile = new SpawnProfile();
 
-    public GameMap(String texturePath, float worldWidth, float worldHeight) {
-        this.texture = new Texture(Gdx.files.internal(texturePath));
-        this.worldWidth = worldWidth;
-        this.worldHeight = worldHeight;
-        this.infinite = false;
-    }
+    protected GameMap(
+        String id,
+        String displayName,
+        String description,
+        String texturePath,
+        float worldWidth,
+        float worldHeight,
+        boolean infinite) {
 
-    public GameMap(String texturePath, float worldWidth, float worldHeight, boolean infinite) {
-        this.texture = new Texture(Gdx.files.internal(texturePath));
+        this.id = id;
+        this.displayName = displayName;
+        this.description = description;
+
+        texture = new Texture(Gdx.files.internal(texturePath));
+
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
         this.infinite = infinite;
     }
 
-    // getters for Renderer
+    // ---------- Map Informationen ----------
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    // ---------- Renderer ----------
+
     public Texture getTexture() {
         return texture;
     }
@@ -55,12 +69,15 @@ public class GameMap {
         return infinite;
     }
 
-    public void dispose() {
-        texture.dispose();
+    // ---------- Gameplay ----------
+
+    public SpawnProfile getSpawnProfile() {
+        return spawnProfile;
     }
 
-    public SpawnProfile getSpawnprofile()
-    {
-        return spawnProfile;
+    // ---------- Cleanup ----------
+
+    public void dispose() {
+        texture.dispose();
     }
 }

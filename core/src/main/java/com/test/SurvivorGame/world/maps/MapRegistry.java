@@ -9,13 +9,15 @@ public class MapRegistry {
         new MapInfo(
             "TestMap",
             "Test Map",
-            "The first testing map."
+            "The first testing map.",
+            TestMap.class
         ),
 
         new MapInfo(
-                "SecondMap",
-                    "Second Map",
-                    "Another testing map."
+            "SecondTestMap",
+            "Second Test Map",
+            "second testing map.",
+            SecondTestMap.class
         )
 
     );
