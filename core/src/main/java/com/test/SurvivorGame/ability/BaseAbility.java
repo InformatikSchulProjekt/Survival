@@ -41,7 +41,7 @@ public abstract class BaseAbility {
         playerStats.removeModifiersFromSource("ability:" + getID());
     }
 
-    public void activate(){}; // nicht jede ability erzeugt objekte
+    protected void activate(){}; // nicht jede ability erzeugt objekte
 
 
 }

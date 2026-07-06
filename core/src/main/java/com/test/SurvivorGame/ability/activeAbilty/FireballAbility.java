@@ -36,9 +36,6 @@ public class FireballAbility extends ActiveAbility{
 
     private Fireball fireball;
 
-    private Player player;
-    private World world;
-    private PlayerStats playerStats;
 
     public FireballAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();

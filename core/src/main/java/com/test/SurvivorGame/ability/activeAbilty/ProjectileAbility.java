@@ -39,7 +39,7 @@ public class ProjectileAbility extends ActiveAbility {
     }
 
     @Override
-    public void activate()
+    protected void activate()
     {
         projectile = new Projectile(player.getX(), player.getY(), width, height, texture, player, viewport, speed, duration);
 
