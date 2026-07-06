@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.screen;public enum GameState {
     PAUSED,
     PLAYING,
-    LEVEL_UP
+    LEVEL_UP,
+    CHEST_OPENING
 }
