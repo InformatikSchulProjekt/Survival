@@ -61,12 +61,40 @@ public class GamePlayScreen extends ScreenAdapter {
 
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData);
 
-        this.pauseMenuRenderer = new PauseMenuRenderer(shapeRenderer);
+        this.pauseMenuRenderer = new PauseMenuRenderer(shapeRenderer, playerState);
 
         pauseMenuRenderer.setResumeListener(new Runnable() {
             @Override
             public void run() {
                 state = GameState.PLAYING;
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+        pauseMenuRenderer.setGiveUpListener(new Runnable() {
+            @Override
+            public void run() {
+                playerState.gameOver();
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+        pauseMenuRenderer.setSettingsListener(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("settingsScreen");
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+        pauseMenuRenderer.setInventoryListener(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("inventoryScreen");
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+        pauseMenuRenderer.setAbilitiesListener(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("abilitiesScreen");
                 Gdx.input.setInputProcessor(null);
             }
         });

@@ -522,4 +522,9 @@ public final class PlayerState {
             System.out.println(str);
         }
     }
+
+    public void gameOver()
+    {
+        gameOver = true;
+    }
 }

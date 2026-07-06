@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.test.SurvivorGame.core.PlayerState;
 
 public class PauseMenuRenderer {
 
@@ -29,8 +30,12 @@ public class PauseMenuRenderer {
     private final TextButton abilitiesButton;
 
     private Runnable resumeListener;
+    private Runnable giveUpListener;
+    private Runnable settingsListener;
+    private Runnable inventoryListener;
+    private Runnable abilitiesListener;
 
-    public PauseMenuRenderer(ShapeRenderer shapeRenderer) {
+    public PauseMenuRenderer(ShapeRenderer shapeRenderer, PlayerState playerState) {
 
         this.shapeRenderer = shapeRenderer;
 
@@ -52,6 +57,42 @@ public class PauseMenuRenderer {
             public void clicked(InputEvent event, float x, float y) {
                 if (resumeListener != null) {
                     resumeListener.run();
+                }
+            }
+        });
+
+        giveUpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (giveUpListener != null) {
+                    giveUpListener.run();
+                }
+            }
+        });
+
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (settingsListener != null) {
+                    settingsListener.run();
+                }
+            }
+        });
+
+        inventoryButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (inventoryListener != null) {
+                    inventoryListener.run();
+                }
+            }
+        });
+
+        abilitiesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (abilitiesListener != null) {
+                    abilitiesListener.run();
                 }
             }
         });
@@ -134,6 +175,26 @@ public class PauseMenuRenderer {
 
     public void setResumeListener(Runnable listener) {
         this.resumeListener = listener;
+    }
+
+    public void setGiveUpListener(Runnable listener)
+    {
+        this.giveUpListener = listener;
+    }
+
+    public void setSettingsListener(Runnable listener)
+    {
+        this.settingsListener = listener;
+    }
+
+    public void setInventoryListener(Runnable listener)
+    {
+        this.inventoryListener = listener;
+    }
+
+    public void setAbilitiesListener(Runnable listener)
+    {
+        this.abilitiesListener = listener;
     }
 
     public void dispose() {

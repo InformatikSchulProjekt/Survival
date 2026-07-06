@@ -255,7 +255,7 @@ public class Renderer {
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
         this.hud = new HUDRenderer(batch, shapeRenderer);
-        this.pauseMenu = new PauseMenuRenderer(shapeRenderer);
+        this.pauseMenu = new PauseMenuRenderer(shapeRenderer, world.getPlayer().getPlayerState());
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
