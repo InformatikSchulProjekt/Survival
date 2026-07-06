@@ -24,6 +24,7 @@ public class FireStormAbility extends ActiveAbility{
     private float baseEndSize = 5f;
     private static float baseDamage = 0.5f;
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
 
     public FireStormAbility(World world)
     {
@@ -71,5 +72,18 @@ public class FireStormAbility extends ActiveAbility{
     @Override
     public int getMaxAmount() {
         return 5;
+    }
+
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
+        return cooldown;
+    }
+
+    @Override
+    public float getDuration() {
+        // temp:
+        return baseDuration;
     }
 }
