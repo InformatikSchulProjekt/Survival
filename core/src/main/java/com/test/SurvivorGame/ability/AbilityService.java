@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.ability;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.activeAbilty.ActiveAbility;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.world.World;
 
@@ -69,11 +70,11 @@ public class AbilityService {
         }
     }
 
-    public void activate(String abilityId) {
-        BaseAbility ability = abilityRegistry.getAbility(abilityId);
+    public void activate(String abilityId, float survivalTime) {
+        ActiveAbility ability = (ActiveAbility) abilityRegistry.getAbility(abilityId);
 
         if (ability != null) {
-            ability.activate();
+            ability.tryActivate(survivalTime);
         }
     }
 
