@@ -39,7 +39,7 @@ public class MeleeAbility extends ActiveAbility {
     }
 
     @Override
-    public void activate()
+    protected void activate()
     {
         melee = new Melee(player.getX(), player.getY(), effectSize, duration, texture, player, viewport);
 

@@ -34,7 +34,7 @@ public class FireStormAbility extends ActiveAbility{
     }
 
     @Override
-    public void activate()
+    protected void activate()
     {
         FireStorm fireStorm = new FireStorm(player.getX(), player.getY(), startSize, baseEndSize, texture, baseDuration, world, getDamage());
 

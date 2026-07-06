@@ -13,8 +13,17 @@ import com.test.SurvivorGame.world.World;
 public class FireballAbility extends ActiveAbility{
 
     public static final String ID = "fireball";
-    private final Viewport viewport;
 
+    private final Viewport viewport;
+    private final Player player;
+    private final World world;
+    private final PlayerStats playerStats;
+
+    private final float baseDuration = 3f;
+    private final float baseWidth = 3f;
+    private final float baseHeight= 0.6f;
+    private final float baseSpeed = 7f;
+    private final float baseDamage = 0.5f;
     private float duration = 2f;
     private float effectSize = 3f;
     private float speed = 6f;
@@ -27,9 +36,6 @@ public class FireballAbility extends ActiveAbility{
 
     private Fireball fireball;
 
-    private Player player;
-    private World world;
-    private PlayerStats playerStats;
 
     public FireballAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();
@@ -40,7 +46,18 @@ public class FireballAbility extends ActiveAbility{
 
     @Override
     public void activate() {
-        fireball = new Fireball(player.getX(), player.getY(), effectSize, texture, player, viewport, speed, duration, explosionRadius);
+        fireball = new Fireball(
+            player.getX(),
+            player.getY(),
+            baseWidth*getSize(),
+            baseHeight*getSize(),
+            texture,
+            player,
+            viewport,
+            getSpeed(),
+            getDuration(),
+            getDamage()
+        );
         world.addAbility(fireball);
     }
 
@@ -48,8 +65,28 @@ public class FireballAbility extends ActiveAbility{
         texture.dispose();
     }
 
-    public static float getDamage() {
+    public float getDamage() {
+        float damage = baseDamage;
+        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
         return damage;
+    }
+    public float getSize() {
+        float size = 1f;
+        size *= playerStats.getStat(StatType.MAGIC_SIZE);
+        size *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_SIZE);
+        return size;
+    }
+    public float getSpeed() {
+        float speed = baseSpeed;
+
+        return speed;
+    }
+    public float getDuration() {
+        float duration = baseDuration;
+        duration *= playerStats.getStat(StatType.MAGIC_DURATION);
+        duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
+        return duration;
     }
 
     public float getCooldown() {

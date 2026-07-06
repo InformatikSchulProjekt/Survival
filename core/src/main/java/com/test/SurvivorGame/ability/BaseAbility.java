@@ -26,6 +26,7 @@ public abstract class BaseAbility {
 
         for(StatModifier statMod : getModifiers(amount)) {
             playerStats.addModifier(statMod);
+            getModifiers(amount);
         }
         System.out.println("Applied Ability: "+ getID() + " | " + amount); // debug
     }
@@ -39,4 +40,8 @@ public abstract class BaseAbility {
     public void onRemove(PlayerStats playerStats) {
         playerStats.removeModifiersFromSource("ability:" + getID());
     }
+
+    protected void activate(){}; // nicht jede ability erzeugt objekte
+
+
 }

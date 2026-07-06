@@ -38,7 +38,7 @@ public class WaterBlast extends ActiveAbility {
     }
 
     @Override
-    public void activate() {
+    protected void activate() {
         WaterBlastProjectile waterBlastProjectile = new WaterBlastProjectile(
             player.getX(),
             player.getY(),

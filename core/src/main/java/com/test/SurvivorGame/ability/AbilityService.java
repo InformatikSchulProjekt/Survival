@@ -3,6 +3,7 @@ package com.test.SurvivorGame.ability;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.activeAbilty.ActiveAbility;
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.world.World;
 
 import java.util.Map;
@@ -28,12 +29,14 @@ public class AbilityService {
 
         int currentAmount = playerState.getPlayerData().abilities.getOrDefault(abilityID, 0);
 
+
         if (currentAmount >= ability.getMaxAmount()) {
             throw new IllegalStateException("Ability already maxed");
         }
 
         int newAmount = currentAmount + 1;
         playerState.getPlayerData().abilities.put(abilityID, newAmount);
+
 
         // Packt Aktive Abilities in die Ability slot leiste, wenn Platz da
         if (ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
@@ -45,7 +48,9 @@ public class AbilityService {
         // Applied die Modifier von StatAbilities
         } else if (ability.getAbilityType() == AbilityType.STAT_ABILITY) {
             ability.onApply(playerState.getPlayerStats(), newAmount);
+
         }
+
     }
 
     private void applyAbility(String abilityID, int amount) {
@@ -56,6 +61,7 @@ public class AbilityService {
         }
 
         ability.onApply(playerState.getPlayerStats(), amount);
+
     }
 
     // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
