@@ -18,6 +18,7 @@ import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.SoundManager;
 
 public class GamePlayScreen extends ScreenAdapter {
+    private final Main main;
     private final DataLoader dataLoader;
     private final PlayerState playerState;
     private final AbilityService abilityService;
@@ -28,19 +29,21 @@ public class GamePlayScreen extends ScreenAdapter {
     private final ShapeRenderer shapeRenderer;
 
     private final World world;
-    private final GameMap map = new GameMap();
+    private final GameMap gameMap = new GameMap();
 
     private Vector2 playerMoveDirection = new Vector2();
 
     private GameState state;
+    private final String map;
 
     private final PauseMenuRenderer pauseMenuRenderer;
 
-    public GamePlayScreen(Main game, DataLoader dataLoader)
+    public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
-        // "TestMap" ist obv. temporär da soll dann die ausgewählte Map rein.
+        this.main = game;
+        this.map = map;
         this.dataLoader = dataLoader;
-        PlayerData playerData = dataLoader.getPlayerData("TestMap");
+        PlayerData playerData = dataLoader.getPlayerData(map);
         // bis ability slots gui da:
         playerData.abilitySlots[0] = "melee";
         playerData.abilitySlots[1] = "fireball";
@@ -50,7 +53,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData);
-        this.world = new World(screenWidth, screenHeight, playerState, map);
+        this.world = new World(screenWidth, screenHeight, playerState, gameMap);
 
         this.shapeRenderer = new ShapeRenderer();
 
@@ -161,15 +164,22 @@ public class GamePlayScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime)
     {
+        if (playerState.isGameOver()) {
+            int survivalTime = (int) world.getSurvivalTime();
+            dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
+            dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
+            main.gameOver();
+        }
+
         processInput();
 
         if(state == GameState.PLAYING)
         {
-            updateLogic(deltaTime, map);
+            updateLogic(deltaTime, gameMap);
         }
 
         float renderDeltaTime = state == GameState.PLAYING ? deltaTime : 0f;
-        renderer.render(map, world, renderDeltaTime, state); //animationen
+        renderer.render(gameMap, world, renderDeltaTime, state); //animationen
 
         if (state == GameState.PAUSED) {
             pauseMenuRenderer.render();
@@ -185,7 +195,7 @@ public class GamePlayScreen extends ScreenAdapter {
     public void dispose()
     {
         renderer.dispose();
-        map.dispose();
+        gameMap.dispose();
     }
 
     private void activateAbilitySlot(int slotIndex) {

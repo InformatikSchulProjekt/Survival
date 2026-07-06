@@ -31,6 +31,7 @@ public final class PlayerState {
     private boolean dodgedLastAttack = false;
     private long dodgeEffectStartTime = 0;
     private static final long DODGE_EFFECT_DURATION = 300;
+    private boolean gameOver = false;
 
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
@@ -46,6 +47,10 @@ public final class PlayerState {
     public void setupAbilityService(AbilityService abilityService) {
         this.abilityService = abilityService;
         this.abilityRegistry = abilityService.getAbilityRegistry();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     public PlayerData getPlayerData() {
@@ -148,6 +153,7 @@ public final class PlayerState {
             boolean revived = deathScreen(); // Ergebnis vom UI Spieler Input
             if (!revived) { //=> Spieler ist nicht revived, also Tod
                 System.out.println("Player died."); // debug
+                gameOver = true;
                 return false;
             } // => Spieler ist revived
             System.out.println("Player ist revived");
