@@ -3,12 +3,19 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.AbilityService;
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.core.stat.StatModifier;
+import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
 import com.test.SurvivorGame.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FireArrowAbility extends ActiveAbility {
 
@@ -18,6 +25,7 @@ public class FireArrowAbility extends ActiveAbility {
     private final Player player;
     private final World world;
     private final PlayerStats playerStats;
+    private final  PlayerState playerState;
 
     // Ability base Stats
     private final float baseDuration = 3f;
@@ -34,6 +42,7 @@ public class FireArrowAbility extends ActiveAbility {
         this.world = world;
         this.viewport = viewport;
         this.playerStats =  player.getPlayerState().getPlayerStats();
+        this.playerState = player.getPlayerState();
     }
 
     @Override
@@ -87,8 +96,9 @@ public class FireArrowAbility extends ActiveAbility {
     }
 
     public int getPierce() {
+        int level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
         int pierce = basePierce;
-
+        if (level >= 2) pierce += 2; // wenn die Ability Level 2 erreicht wird pierce um 2 erhöht
         return pierce;
     }
 
@@ -106,4 +116,32 @@ public class FireArrowAbility extends ActiveAbility {
     public int getMaxAmount() {
         return 5;
     }
+
+
+    public List<StatModifier> getModifiers(int amount){
+       int pierce = basePierce;
+        ArrayList<StatModifier> mods = new ArrayList<>();
+        if (amount >= 2){
+            pierce +=2;
+        }
+        // Level 3: +20% fire magic damage, +30% magic duration
+        if (amount >= 3 ) {
+            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_DAMAGE, 0.2f, ModifierType.PERCENT, "ability:" + getID()));
+            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_DURATION, 0.3f, ModifierType.PERCENT, "ability:" + getID()));
+        }
+
+        // Level 4: +30% magic size (cumulated with level 3 rules)
+        if (amount >= 4) {
+            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_SIZE, 0.3f, ModifierType.PERCENT, "ability:" + getID()));
+        }
+
+        // Level 5: increase damage to +70%
+        if (amount >= 5) {
+            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_DAMAGE, 1f, ModifierType.PERCENT, "ability:" + getID()));
+        }
+
+        return mods;
+
+    }
+
 }

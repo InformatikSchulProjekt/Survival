@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.ability;
 
+import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.core.stat.StatScope;
@@ -7,6 +8,8 @@ import com.test.SurvivorGame.core.stat.StatScope;
 import java.util.List;
 
 public abstract class BaseAbility {
+    PlayerState playerState;
+
     public abstract String getID();
 
     public abstract String getName();
@@ -26,6 +29,7 @@ public abstract class BaseAbility {
 
         for(StatModifier statMod : getModifiers(amount)) {
             playerStats.addModifier(statMod);
+            getModifiers(amount);
         }
         System.out.println("Applied Ability: "+ getID() + " | " + amount); // debug
     }
@@ -41,4 +45,6 @@ public abstract class BaseAbility {
     }
 
     public void activate(){}; // nicht jede ability erzeugt objekte
+
+
 }
