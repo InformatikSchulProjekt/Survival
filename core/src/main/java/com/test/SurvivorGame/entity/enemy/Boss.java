@@ -36,4 +36,9 @@ public class Boss extends Enemy {
     {
         return 1f; // 100%
     }
+
+    @Override
+    protected boolean isBoss() {
+        return true;
+    }
 }

@@ -4,12 +4,10 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
-import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 public class World {
@@ -19,7 +17,11 @@ public class World {
     private float damageTimer = 0f;
     private final float DamageInterval = 0.5f;
 
+    private boolean survivalTimePaused = false;
+
     private float survivalTime = 0f; // wie lange der aktuelle Run schon läuft, für den HUD-Timer
+
+    private float passedTime = 0f; // wie viel ECHTE Zeit seit anfang des Runs vergangen ist
 
     float screenWidth, screenHeight; // nur für reset-test
 
@@ -44,8 +46,12 @@ public class World {
 
     public void update(float deltaTime, GameMap map)
     {
-        survivalTime += deltaTime;
-        System.out.println(survivalTime);
+        passedTime += deltaTime;
+
+        if (!survivalTimePaused)
+        {
+            survivalTime += deltaTime;
+        }
 
         player.update(deltaTime, map);
         spawnManager.update(deltaTime, map);
@@ -154,5 +160,19 @@ public class World {
     public void saveGame()
     {
         dataLoader.savePlayerData(map, player.getPlayerState().getPlayerData());
+    }
+
+    public boolean isSurvivalTimePaused()
+    {
+        return survivalTimePaused;
+    }
+
+    public void setSurvivalTimePaused(boolean paused) {
+        this.survivalTimePaused = paused;
+    }
+
+    public float getPassedTime()
+    {
+        return passedTime;
     }
 }
