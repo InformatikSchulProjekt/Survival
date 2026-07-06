@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.world;
 
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
@@ -28,6 +29,7 @@ public class World {
     private ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
 
     private SpawnManager spawnManager;
+    private DataLoader dataLoader;
 
     public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap map)
     {
@@ -168,8 +170,8 @@ public class World {
 
     public void saveGame()
     {
-        dataLoader.savePlayerData(map, player.getPlayerState().getPlayerData());
-    }
+       dataLoader.savePlayerData(map,player.getPlayerState().getPlayerData());
+  }
 
     public boolean isSurvivalTimePaused()
     {
