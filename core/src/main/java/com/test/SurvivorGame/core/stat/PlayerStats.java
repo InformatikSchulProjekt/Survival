@@ -18,7 +18,7 @@ public final class PlayerStats {
         baseStats.put(StatType.CRIT_MULTIPLIER, 1f);
 
         baseStats.put(StatType.CHEST_CHANCE, 0.01f);
-        baseStats.put(StatType.REVIVES, 1f);
+        baseStats.put(StatType.REVIVES, 0f);
         baseStats.put(StatType.LIFE_STEAL, 0f);
         baseStats.put(StatType.XP_GAIN, 1f);
 
@@ -36,10 +36,6 @@ public final class PlayerStats {
 
     public void removeModifiersFromSource(String sourceId) {
         modifiers.removeIf(modifier -> modifier.getSourceId().equals(sourceId));
-    }
-
-    public void clearModifiers() {
-        modifiers.clear();
     }
 
     public float getStat(StatScope scope, StatType statType) {

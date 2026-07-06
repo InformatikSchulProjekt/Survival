@@ -39,6 +39,4 @@ public abstract class BaseAbility {
     public void onRemove(PlayerStats playerStats) {
         playerStats.removeModifiersFromSource("ability:" + getID());
     }
-
-    public void activate(){}; // nicht jede ability erzeugt objekte
 }

@@ -36,7 +36,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private GameState state;
     private final String map;
 
-    private final PauseMenuRenderer pauseMenuRenderer;
+    private final PauseMenuRenderer pauseMenu;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -61,40 +61,40 @@ public class GamePlayScreen extends ScreenAdapter {
         this.shapeRenderer = new ShapeRenderer();
 
         state = GameState.PLAYING;
+        pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData);
 
-        this.pauseMenuRenderer = new PauseMenuRenderer(shapeRenderer, playerState);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu);
 
-        pauseMenuRenderer.setResumeListener(new Runnable() {
+        pauseMenu.setResumeListener(new Runnable() {
             @Override
             public void run() {
                 state = GameState.PLAYING;
                 Gdx.input.setInputProcessor(null);
             }
         });
-        pauseMenuRenderer.setGiveUpListener(new Runnable() {
+        pauseMenu.setGiveUpListener(new Runnable() {
             @Override
             public void run() {
                 playerState.gameOver();
                 Gdx.input.setInputProcessor(null);
             }
         });
-        pauseMenuRenderer.setSettingsListener(new Runnable() {
+        pauseMenu.setSettingsListener(new Runnable() {
             @Override
             public void run() {
                 System.out.println("settingsScreen");
                 Gdx.input.setInputProcessor(null);
             }
         });
-        pauseMenuRenderer.setInventoryListener(new Runnable() {
+        pauseMenu.setInventoryListener(new Runnable() {
             @Override
             public void run() {
                 System.out.println("inventoryScreen");
                 Gdx.input.setInputProcessor(null);
             }
         });
-        pauseMenuRenderer.setAbilitiesListener(new Runnable() {
+        pauseMenu.setAbilitiesListener(new Runnable() {
             @Override
             public void run() {
                 System.out.println("abilitiesScreen");
@@ -124,7 +124,7 @@ public class GamePlayScreen extends ScreenAdapter {
             {
                 state = GameState.PAUSED;
 
-                Gdx.input.setInputProcessor(pauseMenuRenderer.getStage());
+                Gdx.input.setInputProcessor(pauseMenu.getStage());
 
                 // Spieler sofort anhalten
                 playerMoveDirection.setZero();
@@ -215,7 +215,7 @@ public class GamePlayScreen extends ScreenAdapter {
         renderer.render(gameMap, world, renderDeltaTime, state); //animationen
 
         if (state == GameState.PAUSED) {
-            pauseMenuRenderer.render();
+            pauseMenu.render();
         }
     }
 
@@ -244,7 +244,7 @@ public class GamePlayScreen extends ScreenAdapter {
             return;
         }
 
-        abilityService.activate(abilityId);
+        abilityService.activate(abilityId, world.getSurvivalTime());
     }
 
     // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen
