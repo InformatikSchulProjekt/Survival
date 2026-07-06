@@ -24,12 +24,14 @@ public class PauseMenuRenderer {
 
     // Buttons
     private final TextButton resumeButton;
+    private final TextButton saveButton;
     private final TextButton giveUpButton;
     private final TextButton settingsButton;
     private final TextButton inventoryButton;
     private final TextButton abilitiesButton;
 
     private Runnable resumeListener;
+    private Runnable saveListener;
     private Runnable giveUpListener;
     private Runnable settingsListener;
     private Runnable inventoryListener;
@@ -47,6 +49,7 @@ public class PauseMenuRenderer {
 
         // Buttons erstellen
         resumeButton = new TextButton("Resume", skin);
+        saveButton = new TextButton("Save", skin);
         giveUpButton = new TextButton("Give Up", skin);
         settingsButton = new TextButton("Settings", skin);
         inventoryButton = new TextButton("Inventory", skin);
@@ -57,6 +60,15 @@ public class PauseMenuRenderer {
             public void clicked(InputEvent event, float x, float y) {
                 if (resumeListener != null) {
                     resumeListener.run();
+                }
+            }
+        });
+
+        saveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (saveListener != null) {
+                    saveListener.run();
                 }
             }
         });
@@ -110,6 +122,9 @@ public class PauseMenuRenderer {
         table.add(resumeButton).width(250).pad(5);
         table.row();
 
+        table.add(saveButton).width(250).pad(5);
+        table.row();
+
         table.add(giveUpButton).width(250).pad(5);
         table.row();
 
@@ -157,6 +172,10 @@ public class PauseMenuRenderer {
         return resumeButton;
     }
 
+    public TextButton getSaveButtonButton() {
+        return saveButton;
+    }
+
     public TextButton getGiveUpButton() {
         return giveUpButton;
     }
@@ -175,6 +194,10 @@ public class PauseMenuRenderer {
 
     public void setResumeListener(Runnable listener) {
         this.resumeListener = listener;
+    }
+
+    public void setSaveListener(Runnable listener) {
+        this.saveListener = listener;
     }
 
     public void setGiveUpListener(Runnable listener)

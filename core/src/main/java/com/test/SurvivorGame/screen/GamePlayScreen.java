@@ -56,7 +56,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData);
-        this.world = new World(screenWidth, screenHeight, playerState, gameMap);
+        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader);
 
         this.shapeRenderer = new ShapeRenderer();
 
@@ -71,6 +71,12 @@ public class GamePlayScreen extends ScreenAdapter {
             public void run() {
                 state = GameState.PLAYING;
                 Gdx.input.setInputProcessor(null);
+            }
+        });
+        pauseMenu.setSaveListener(new Runnable() {
+            @Override
+            public void run() {
+                dataLoader.savePlayerData(map, playerState.getPlayerData());
             }
         });
         pauseMenu.setGiveUpListener(new Runnable() {
@@ -188,8 +194,6 @@ public class GamePlayScreen extends ScreenAdapter {
             activateAbilitySlot(3);
         }
 
-        // temporär um zu saven, weil es noch keine andere Optionen gibt.
-        dataLoader.savePlayerData("TestMap", playerState.getPlayerData());
     }
 
     @Override
