@@ -249,7 +249,7 @@ public class GamePlayScreen extends ScreenAdapter {
             return;
         }
 
-        abilityService.activate(abilityId, world.getSurvivalTime());
+        abilityService.activate(abilityId, world.getPassedTime());
     }
 
     // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen

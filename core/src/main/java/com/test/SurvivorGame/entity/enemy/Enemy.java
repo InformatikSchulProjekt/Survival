@@ -112,13 +112,17 @@
             return Math.random() < critChance;
         }
 
-        private void onDeath() {
+        protected void onDeath() {
             dead = true;
 
             if (shouldSpawnChest())
             {
                 System.out.println("Chest spawned!");
                 world.addDrop(new ChestObject(getX(), getY(), player, getChestType()));
+            }
+
+            if (isBoss()) {
+                world.setSurvivalTimePaused(false);
             }
 
             playerState.giveXP(getXPWorth());
@@ -151,6 +155,10 @@
                 StatScope.ALL,
                 StatType.CHEST_CHANCE
             );
+        }
+
+        protected boolean isBoss() {
+            return false;
         }
 
     }
