@@ -33,6 +33,10 @@ public final class PlayerState {
     private static final long DODGE_EFFECT_DURATION = 300;
     private boolean gameOver = false;
 
+    private boolean awaitingLevelUpChoice = false;
+    private String[] pendingAbilityOptions = null;
+    private int pendingLevelUps = 0;
+
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
         this.level = calcLevel();
@@ -47,6 +51,10 @@ public final class PlayerState {
     public void setupAbilityService(AbilityService abilityService) {
         this.abilityService = abilityService;
         this.abilityRegistry = abilityService.getAbilityRegistry();
+    }
+
+    public AbilityRegistry getAbilityRegistry() {
+        return abilityRegistry;
     }
 
     public boolean isGameOver() {
@@ -197,42 +205,73 @@ public final class PlayerState {
         System.out.println("Gained XP: "+actualXP);
 
         int newLevel = calcLevel();
-        while (newLevel > level) { // => Level-Up Logic
-            // Hier Spiel pausieren.
-            if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
+        if (newLevel > level) {
+            pendingLevelUps += (newLevel - level);
+            level = newLevel;
 
-            level++;
-            System.out.println("LEVEL UP: " + level); // debug
-            int optionsCount = 3;
-
-            String[] abilityOptions;
-            try {
-                abilityOptions = genAbilityOptions(optionsCount);
-            } catch (Exception e) {
-                System.out.println("[ERROR]: "+e.toString());
-                return;
-            }
-
-            // debug:
-            System.out.println("Ability Optionen;");
-            printStringArray(abilityOptions);
-
-            int result = levleUpUI(abilityOptions);
-            abilityService.unlockAbility(abilityOptions[result]);
-
-            // falls penalty davor vorhanden, aufheben
-            playerData.skippedAbilityOptions.remove(abilityOptions[result]);
-
-            // penalty sozusagen für, dass es nicht gepicked wurde
-            abilityOptions[result] = null; // damit nicht auch penalty bekommt
-            for (String abilityID : abilityOptions) {
-                if (abilityID == null) continue;
-
-                // erhöht penalty um 0.5 bzw. wenn keine da, dann setzt auf 0.5
-                float currentPenalty = playerData.skippedAbilityOptions.getOrDefault(abilityID, 0f);
-                playerData.skippedAbilityOptions.put(abilityID, currentPenalty + 0.5f);
-            }
+            startNextLevelUpIfNeeded();
         }
+    }
+
+    // Bereitet die nächste Level-Up-Auswahl vor (falls noch welche ausstehen und
+    // gerade keine andere Auswahl offen ist). Die UI liest awaitingLevelUpChoice()
+    // und pendingAbilityOptions aus und ruft nach Auswahl chooseAbilityOption(index) auf.
+    private void startNextLevelUpIfNeeded() {
+        if (awaitingLevelUpChoice) return; // es läuft schon eine Auswahl
+        if (pendingLevelUps <= 0) return;
+
+        if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
+
+        int optionsCount = 3;
+        String[] abilityOptions;
+        try {
+            abilityOptions = genAbilityOptions(optionsCount);
+        } catch (Exception e) {
+            System.out.println("[ERROR]: "+e.toString());
+            pendingLevelUps = 0; // damit es nicht endlos wieder versucht wird
+            return;
+        }
+
+        // debug:
+        System.out.println("Ability Optionen;");
+        printStringArray(abilityOptions);
+
+        pendingAbilityOptions = abilityOptions;
+        awaitingLevelUpChoice = true;
+    }
+
+    public boolean isAwaitingLevelUpChoice() {
+        return awaitingLevelUpChoice;
+    }
+
+    public String[] getPendingAbilityOptions() {
+        return pendingAbilityOptions;
+    }
+
+    // Wird von der Level-Up UI aufgerufen, sobald der Spieler eine Karte gewählt hat.
+    public void chooseAbilityOption(int result) {
+        if (!awaitingLevelUpChoice || pendingAbilityOptions == null) return;
+
+        abilityService.unlockAbility(pendingAbilityOptions[result]);
+
+        // falls penalty davor vorhanden, aufheben
+        playerData.skippedAbilityOptions.remove(pendingAbilityOptions[result]);
+
+        // penalty sozusagen für, dass es nicht gepicked wurde
+        pendingAbilityOptions[result] = null; // damit nicht auch penalty bekommt
+        for (String abilityID : pendingAbilityOptions) {
+            if (abilityID == null) continue;
+
+            // erhöht penalty um 0.5 bzw. wenn keine da, dann setzt auf 0.5
+            float currentPenalty = playerData.skippedAbilityOptions.getOrDefault(abilityID, 0f);
+            playerData.skippedAbilityOptions.put(abilityID, currentPenalty + 0.5f);
+        }
+
+        pendingAbilityOptions = null;
+        awaitingLevelUpChoice = false;
+        pendingLevelUps = Math.max(0, pendingLevelUps - 1);
+
+        startNextLevelUpIfNeeded(); // falls z.B. 2 Level auf einmal aufgestiegen wurde
     }
 
     public void collectDrop(DroppedObject drop) {
@@ -507,13 +546,6 @@ public final class PlayerState {
         if(abilityScope == null) return false; // Ability ist neutral / hat kein Element
         return abilityScope == playerClassRegistry.getPlayerClass(playerData.playerClass).getScope();
         // => Ability hat gleiches Element (Scope) wie Player Klasse
-    }
-
-    private int levleUpUI(String[] abilityOptions) {
-        // Muss von Levin implementiert werden.
-
-        // temporär bis da hin:
-        return 1;
     }
 
     // DEBUG:

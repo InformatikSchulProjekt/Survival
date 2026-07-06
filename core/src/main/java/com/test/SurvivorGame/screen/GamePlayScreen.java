@@ -11,11 +11,14 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
+import com.test.SurvivorGame.screen.HuD.LevelUpUI;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.world.maps.MapRegistry;
+
+import java.util.function.IntConsumer;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final Main main;
@@ -37,6 +40,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private final String map;
 
     private final PauseMenuRenderer pauseMenu;
+    private final LevelUpUI levelUpUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -62,9 +66,10 @@ public class GamePlayScreen extends ScreenAdapter {
 
         state = GameState.PLAYING;
         pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
+        levelUpUI = new LevelUpUI(shapeRenderer);
 
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI);
 
         pauseMenu.setResumeListener(new Runnable() {
             @Override
@@ -111,6 +116,23 @@ public class GamePlayScreen extends ScreenAdapter {
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);
 
+        levelUpUI.setAbilityRegistry(abilityService.getAbilityRegistry());
+        levelUpUI.setPlayerState(playerState);
+        levelUpUI.setOptionChosenListener(new IntConsumer() {
+            @Override
+            public void accept(int optionIndex) {
+                playerState.chooseAbilityOption(optionIndex);
+
+                if (!playerState.isAwaitingLevelUpChoice()) {
+                    // keine weitere Auswahl offen => zurück ins Spiel
+                    state = GameState.PLAYING;
+                    Gdx.input.setInputProcessor(null);
+                } else {
+                    // z.B. 2 Level auf einmal aufgestiegen => nächste Karten zeigen
+                    levelUpUI.showOptions(playerState.getPendingAbilityOptions());
+                }
+            }
+        });
 
     }
 
@@ -122,6 +144,11 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
     {
+        if (state == GameState.LEVEL_UP)
+        {
+            return; // Eingaben laufen während der Level-Up-Auswahl über die Stage der LevelUpUI
+        }
+
         playerMoveDirection.setZero(); // damits nicht wächst
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
@@ -207,6 +234,19 @@ public class GamePlayScreen extends ScreenAdapter {
             dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
             dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
             main.gameOver();
+        }
+
+        if (state != GameState.LEVEL_UP && playerState.isAwaitingLevelUpChoice())
+        {
+            // Level-Up-Auswahl steht an: Spiel anhalten und Karten anzeigen
+            state = GameState.LEVEL_UP;
+
+            playerMoveDirection.setZero();
+            SoundManager.stopFootsteps();
+            world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            levelUpUI.showOptions(playerState.getPendingAbilityOptions());
+            Gdx.input.setInputProcessor(levelUpUI.getStage());
         }
 
         processInput();
