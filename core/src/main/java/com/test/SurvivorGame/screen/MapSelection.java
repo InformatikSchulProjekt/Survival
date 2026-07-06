@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.core.data.MapSaveData;
-import com.test.SurvivorGame.world.maps.MapInfo;
+import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.maps.MapRegistry;
 
 public class MapSelection extends ScreenAdapter {
@@ -48,7 +48,7 @@ public class MapSelection extends ScreenAdapter {
 
         Table mapTable = new Table();
 
-        for (MapInfo map : MapRegistry.getMaps()) {
+        for (GameMap map : MapRegistry.getMaps()) {
 
             MapSaveData save = dataLoader.getMapSaveData(map.getId());
 

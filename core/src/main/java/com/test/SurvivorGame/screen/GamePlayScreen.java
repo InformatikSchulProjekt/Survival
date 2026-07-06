@@ -10,13 +10,12 @@ import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.SoundManager;
-import com.test.SurvivorGame.world.maps.GameMapFactory;
+import com.test.SurvivorGame.world.maps.MapRegistry;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final Main main;
@@ -44,7 +43,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.main = game;
         this.map = map;
 
-        this.gameMap = GameMapFactory.create(map);
+        this.gameMap = MapRegistry.getMap(map);
 
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData(map);

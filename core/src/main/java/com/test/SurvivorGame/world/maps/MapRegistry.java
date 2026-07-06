@@ -4,25 +4,24 @@ import java.util.List;
 
 public class MapRegistry {
 
-    private static final List<MapInfo> MAPS = List.of(
-
-        new MapInfo(
-            "TestMap",
-            "Test Map",
-            "The first testing map.",
-            TestMap.class
-        ),
-
-        new MapInfo(
-            "SecondTestMap",
-            "Second Test Map",
-            "second testing map.",
-            SecondTestMap.class
-        )
-
+    private static final List<GameMap> MAPS = List.of(
+        new TestMap(),
+        new SecondTestMap()
     );
 
-    public static List<MapInfo> getMaps() {
+    public static List<GameMap> getMaps() {
         return MAPS;
+    }
+
+    public static GameMap getMap(String id) {
+
+        for (GameMap map : MAPS) {
+
+            if (map.getId().equals(id)) {
+                return map;
+            }
+        }
+
+        throw new IllegalArgumentException("Unknown map: " + id);
     }
 }
