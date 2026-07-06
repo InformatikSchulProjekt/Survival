@@ -24,16 +24,27 @@ public class FireballAbility extends ActiveAbility{
     private final float baseHeight= 0.6f;
     private final float baseSpeed = 7f;
     private final float baseDamage = 0.5f;
+    private float duration = 2f;
+    private float effectSize = 3f;
+    private float speed = 6f;
+    private float explosionRadius = 2f;
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
+
+    private static float damage = 2f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     private Fireball fireball;
 
+    private Player player;
+    private World world;
+    private PlayerStats playerStats;
+
     public FireballAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
+        this.playerStats = player.getPlayerState().getPlayerStats();
         this.viewport = viewport;
-        this.playerStats =  player.getPlayerState().getPlayerStats();
     }
 
     @Override
@@ -79,6 +90,13 @@ public class FireballAbility extends ActiveAbility{
         duration *= playerStats.getStat(StatType.MAGIC_DURATION);
         duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
         return duration;
+    }
+
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
+        return cooldown;
     }
 
     @Override
