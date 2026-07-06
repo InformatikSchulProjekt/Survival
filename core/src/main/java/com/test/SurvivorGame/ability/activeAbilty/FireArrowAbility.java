@@ -34,6 +34,7 @@ public class FireArrowAbility extends ActiveAbility {
     private final float baseSpeed = 7f;
     private final int basePierce = 3;
     private final float baseDamage = 0.5f;
+    private final float baseCooldown = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
@@ -56,7 +57,7 @@ public class FireArrowAbility extends ActiveAbility {
             player,
             viewport,
             getSpeed(),
-            getDuration(),
+            baseDuration,
             getDamage(),
             getPierce()
         );
@@ -88,18 +89,18 @@ public class FireArrowAbility extends ActiveAbility {
         return speed;
     }
 
-    public float getDuration() {
-        float duration = baseDuration;
-        duration *= playerStats.getStat(StatType.MAGIC_DURATION);
-        duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
-        return duration;
-    }
-
     public int getPierce() {
         int level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
         int pierce = basePierce;
         if (level >= 2) pierce += 2; // wenn die Ability Level 2 erreicht wird pierce um 2 erhöht
         return pierce;
+    }
+
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
+        return cooldown;
     }
 
     @Override

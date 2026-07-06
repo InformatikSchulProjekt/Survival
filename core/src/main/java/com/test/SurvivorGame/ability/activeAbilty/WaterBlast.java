@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.activeAbilty.ActiveAbility;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.world.World;
@@ -15,11 +18,13 @@ public class WaterBlast extends ActiveAbility {
     private final Viewport viewport;
     private final Player player;
     private final World world;
+    private final PlayerStats playerStats;
 
     private float duration = 3f;
     private float width = 2f;
     private float height= 1f;
     private float speed = 7f;
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
 
     private static float damage = 0.5f;
 
@@ -28,6 +33,7 @@ public class WaterBlast extends ActiveAbility {
     public WaterBlast(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
+        this.playerStats = player.getPlayerState().getPlayerStats();
         this.viewport = viewport;
     }
 
@@ -70,5 +76,12 @@ public class WaterBlast extends ActiveAbility {
     @Override
     public int getMaxAmount() {
         return 5;
+    }
+
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
+        return cooldown;
     }
 }

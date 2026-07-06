@@ -11,7 +11,9 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
+import com.test.SurvivorGame.screen.GameState;
 import com.test.SurvivorGame.screen.HuD.HUDRenderer;
+import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,7 +34,9 @@ public class Renderer {
     private final World world;
     private ShapeRenderer shapeRenderer;
     private PlayerData playerData;
+    private PauseMenuRenderer pauseMenu;
 
+    private GameState gamestate;
 
     private final Texture playerTexture;
     private final Texture idle2;
@@ -228,6 +232,7 @@ public class Renderer {
     private final Animation<TextureRegion> fireballExplosionAnimation;
     private final HUDRenderer hud;
 
+
     //FireArrow
     private final Texture firearrow0;
     private final Texture firearrow1;
@@ -243,15 +248,16 @@ public class Renderer {
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData,PauseMenuRenderer pauseMenu) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
 
-
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
         this.hud = new HUDRenderer(batch, shapeRenderer);
+        this.pauseMenu = pauseMenu;
+
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
         idle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
@@ -682,9 +688,11 @@ public class Renderer {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
         hud.resize(width, height); //hier etwas für Hud screen dazu
+        pauseMenu.resize(width, height);
     }
-    public void render(GameMap map, World world, float deltaTime) //hab ich jetzt so umgeändert, damit nun auch player aus world beutzt wird
-    {                                                //und dass jetzt auch gegner gerendert werden
+    public void render(GameMap map, World world, float deltaTime, GameState gameState)
+    {
+
         ScreenUtils.clear(Color.BLUE);
 
         //das updated die viewport kamera und sorgt dafür, dass der Spieler verfolgt wird davon
@@ -754,6 +762,10 @@ public class Renderer {
             world.getSurvivalTime()
         );
 
+        if(gameState == GameState.PAUSED)
+        {
+            pauseMenu.render();
+        }
 
     }
 
@@ -872,7 +884,7 @@ public class Renderer {
             }
             currentFrame = animation.getKeyFrame(geomancerAnimationTime);
         }
-            
+
             Color oldColor = new Color(batch.getColor());
             if (player.isDamageFlashing()) {
                 float flashProgress = player.getDamageFlashProgress();
@@ -1063,9 +1075,11 @@ public class Renderer {
             }
         }
     }
+
     public Viewport getViewport() {
         return viewport;
     }
+
     public void dispose() {
         idle2.dispose();
         idle3.dispose();

@@ -1,6 +1,5 @@
 package com.test.SurvivorGame.ability;
 
-import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatModifier;
 import com.test.SurvivorGame.core.stat.StatScope;
@@ -8,8 +7,6 @@ import com.test.SurvivorGame.core.stat.StatScope;
 import java.util.List;
 
 public abstract class BaseAbility {
-    PlayerState playerState;
-
     public abstract String getID();
 
     public abstract String getName();
