@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.screen.GamePlayScreen;
+import com.test.SurvivorGame.screen.TitleScreen;
 
 public class Main extends Game {
     private Batch batch; // ist so ein sammler für sprites die dann an die GPU gesendet werden
@@ -16,7 +17,7 @@ public class Main extends Game {
 
         // Data Handling
         dataLoader = new DataLoader();
-        setScreen(new GamePlayScreen(this, dataLoader, "TestMap")); //das setzt den Screen den wir nutzen wollen
+        setScreen(new TitleScreen(this, dataLoader));
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Main extends Game {
 
     public void gameOver() {
         // temporär bis GameMenu implementiert:
-        setScreen(new GamePlayScreen(this, dataLoader, "TestMap"));
+        setScreen(new TitleScreen(this, dataLoader));
     }
 }
 
