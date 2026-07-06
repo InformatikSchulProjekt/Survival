@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.world;
 
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.drops.ChestObject;
@@ -8,6 +9,7 @@ import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 public class World {
@@ -26,13 +28,18 @@ public class World {
 
     private SpawnManager spawnManager;
 
-    public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap map)
+    private String map;
+    private DataLoader dataLoader;
+
+    public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap gameMap, String map, DataLoader dataLoader)
     {
         player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
 
-        spawnManager = new SpawnManager(this, map);
+        spawnManager = new SpawnManager(this, gameMap);
+        this.map = map;
+        this.dataLoader = dataLoader;
     }
 
     public void update(float deltaTime, GameMap map)
@@ -142,5 +149,10 @@ public class World {
 
     public ArrayList<DroppedObject> getDroppedObjects() {
         return droppedObjects;
+    }
+
+    public void saveGame()
+    {
+        dataLoader.savePlayerData(map, player.getPlayerState().getPlayerData());
     }
 }
