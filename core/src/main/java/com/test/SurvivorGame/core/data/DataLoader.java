@@ -76,6 +76,10 @@ public class DataLoader {
         if (survivalTime > mapSaveData.bestSurvivalTime) {
             mapSaveData.bestSurvivalTime = survivalTime;
             saveSaveData();
+            System.out.println("NEUE BEST SURVIVAL TIME:" + survivalTime);
+        }
+        else {
+            System.out.println("NICHT GEUPDATED");
         }
     }
 }

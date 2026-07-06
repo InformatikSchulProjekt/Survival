@@ -82,18 +82,10 @@ public abstract class Entity extends GameObject {
     public void takeDamage(float damage) {
         currentHP -= damage;
         startDamageFlash();
-        if (currentHP <= 0) {
-            currentHP = 0;
-            die();
-        }
     }
 
     public void heal(float amount) {
         currentHP = Math.min(currentHP + amount, maxHP);
-    }
-
-    protected void die() {
-        alive = false;
     }
 
     protected void startDamageFlash() {

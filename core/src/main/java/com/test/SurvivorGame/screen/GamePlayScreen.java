@@ -10,12 +10,12 @@ import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.SoundManager;
+import com.test.SurvivorGame.world.maps.MapRegistry;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final Main main;
@@ -29,7 +29,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private final ShapeRenderer shapeRenderer;
 
     private final World world;
-    private final GameMap gameMap = new GameMap();
+    private final GameMap gameMap;
 
     private Vector2 playerMoveDirection = new Vector2();
 
@@ -42,6 +42,9 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         this.main = game;
         this.map = map;
+
+        this.gameMap = MapRegistry.getMap(map);
+
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData(map);
         // bis ability slots gui da:
@@ -193,7 +196,10 @@ public class GamePlayScreen extends ScreenAdapter {
     public void render(float deltaTime)
     {
         if (playerState.isGameOver()) {
+            state = GameState.PAUSED;
+
             int survivalTime = (int) world.getSurvivalTime();
+
             dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
             dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
             main.gameOver();
