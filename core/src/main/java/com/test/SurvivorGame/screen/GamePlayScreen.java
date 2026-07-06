@@ -31,13 +31,15 @@ public class GamePlayScreen extends ScreenAdapter {
     private final World world;
     private final GameMap gameMap;
 
+    private final DeathScreen deathScreen;
+    private float finalSurvivalTime = 0f;
+
     private Vector2 playerMoveDirection = new Vector2();
 
     private GameState state;
     private final String map;
 
     private final PauseMenuRenderer pauseMenu;
-
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
         this.main = game;
@@ -56,7 +58,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData);
-        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader);
+        this.world = new World(screenWidth, screenHeight, playerState, gameMap);
 
         this.shapeRenderer = new ShapeRenderer();
 
@@ -110,6 +112,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         playerState.setupAbilityService(abilityService);
+        this.deathScreen = new DeathScreen(game.getBatch(), shapeRenderer);
 
 
     }
@@ -117,7 +120,8 @@ public class GamePlayScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height)
     {
-        renderer.resize(width, height);   // passt sich der Bildschirmgröße an
+        renderer.resize(width, height);// passt sich der Bildschirmgröße an
+        deathScreen.resize(width, height);
     }
 
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
@@ -200,13 +204,16 @@ public class GamePlayScreen extends ScreenAdapter {
     public void render(float deltaTime)
     {
         if (playerState.isGameOver()) {
-            state = GameState.PAUSED;
-
-            int survivalTime = (int) world.getSurvivalTime();
-
-            dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
+            // Spiel einfrieren und Death Screen anzeigen, statt sofort neu zu starten
+            finalSurvivalTime = world.getSurvivalTime();
+            dataLoader.saveSurvivalTimeIfBest(map, (int) finalSurvivalTime);
             dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
-            main.gameOver();
+
+            playerMoveDirection.setZero();
+            SoundManager.stopFootsteps();
+            world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            state = GameState.DEAD;
         }
 
         processInput();
@@ -222,6 +229,21 @@ public class GamePlayScreen extends ScreenAdapter {
         if (state == GameState.PAUSED) {
             pauseMenu.render();
         }
+        if (state == GameState.DEAD)
+        {
+            deathScreen.render(finalSurvivalTime);
+        }
+    }
+    private void processDeathInput()
+    {
+        boolean restartRequested = Gdx.input.isKeyJustPressed(Input.Keys.ENTER)
+            || Gdx.input.isKeyJustPressed(Input.Keys.R)
+            || deathScreen.isRestartClicked();
+
+        if (restartRequested)
+        {
+            main.gameOver();
+        }
     }
 
     private void updateLogic(float deltaTime, GameMap map)
@@ -234,6 +256,7 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         renderer.dispose();
         gameMap.dispose();
+        deathScreen.dispose();
     }
 
     private void activateAbilitySlot(int slotIndex) {
@@ -274,3 +297,4 @@ public class GamePlayScreen extends ScreenAdapter {
         abilitySlots[slot2] = temp;
     }
 }
+

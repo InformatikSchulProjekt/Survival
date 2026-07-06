@@ -84,7 +84,7 @@ public class SpawnManager {
 
         if(enemies.isEmpty() && gameMap.getSpawnProfile().hasNextWave(currentWave))
         {
-            world.saveGame();
+
             startNextWave();
         }
         if(enemies.isEmpty() && !gameMap.getSpawnProfile().hasNextWave(currentWave))

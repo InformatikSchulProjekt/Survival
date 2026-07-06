@@ -1,7 +1,6 @@
 package com.test.SurvivorGame.world;
 
 import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.drops.ChestObject;
@@ -9,7 +8,6 @@ import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 public class World {
@@ -28,30 +26,27 @@ public class World {
 
     private SpawnManager spawnManager;
 
-    private String map;
-    private DataLoader dataLoader;
-
-    public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap gameMap, String map, DataLoader dataLoader)
+    public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap map)
     {
         player = new Player(playerState); // wo er reinspawnt
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
 
-        spawnManager = new SpawnManager(this, gameMap);
-        this.map = map;
-        this.dataLoader = dataLoader;
+        spawnManager = new SpawnManager(this, map);
     }
 
     public void update(float deltaTime, GameMap map)
     {
         survivalTime += deltaTime;
-        System.out.println(survivalTime);
 
         player.update(deltaTime, map);
         spawnManager.update(deltaTime, map);
 
         checkAbilityCollision(deltaTime);
         checkPlayerCollisions(deltaTime);
+
+        // Reset passiert jetzt nicht mehr automatisch hier: der DeathScreen (screen.GamePlayScreen/Main)
+        // übernimmt das Einfrieren + den Neustart, damit survivalTime bis zur Anzeige erhalten bleibt.
 
         for(int i = abilityObjects.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
         {
@@ -74,6 +69,18 @@ public class World {
                 droppedObjects.remove(i);
             }
         }
+
+    }
+
+    private void resetWorld()
+    {
+        spawnManager.getEnemies().clear();
+
+        spawnManager.resetSpawn();
+
+        damageTimer = 0;
+        survivalTime = 0f;
+
 
     }
 
@@ -149,10 +156,5 @@ public class World {
 
     public ArrayList<DroppedObject> getDroppedObjects() {
         return droppedObjects;
-    }
-
-    public void saveGame()
-    {
-        dataLoader.savePlayerData(map, player.getPlayerState().getPlayerData());
     }
 }
