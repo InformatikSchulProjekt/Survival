@@ -114,25 +114,22 @@
 
         private void onDeath() {
             dead = true;
-            if (shouldSpawnChest()) {
-                System.out.println("Chest spawned!"); // debug
-                world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
+
+            if (shouldSpawnChest())
+            {
+                System.out.println("Chest spawned!");
+                world.addDrop(new ChestObject(getX(), getY(), player, getChestType()));
             }
+
             playerState.giveXP(getXPWorth());
         }
 
         private boolean shouldSpawnChest() {
-            float chestChance = playerState.getPlayerStats().getStat(StatScope.ALL, StatType.CHEST_CHANCE);
+            float chance = getChestChance();
 
-            if (chestChance <= 0f) {
-                return false;
-            }
+            chance = Math.max(0f, Math.min(1f, chance));
 
-            if (chestChance > 1f) {
-                chestChance = 1f;
-            }
-
-            return Math.random() < chestChance;
+            return Math.random() < chance;
         }
 
         public boolean isDead()
@@ -143,6 +140,17 @@
         // animation time access for renderer
         public float getAnimationTime() {
             return animationTime;
+        }
+
+        protected ChestType getChestType() {
+            return ChestType.NORMAL;
+        }
+
+        protected float getChestChance() {
+            return playerState.getPlayerStats().getStat(
+                StatScope.ALL,
+                StatType.CHEST_CHANCE
+            );
         }
 
     }

@@ -1,5 +1,6 @@
 package com.test.SurvivorGame.entity.enemy;
 
+import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.world.World;
 
 public class Boss extends Enemy {
@@ -22,5 +23,17 @@ public class Boss extends Enemy {
 
     public static int getBossWaveCount() {
         return bossWaveCount;
+    }
+
+    @Override
+    protected ChestType getChestType()
+    {
+        return ChestType.BOSS;
+    }
+
+    @Override
+    protected float getChestChance()
+    {
+        return 1f; // 100%
     }
 }
