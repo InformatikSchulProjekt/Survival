@@ -17,7 +17,7 @@ public class FireStormAbility extends ActiveAbility{
     private final World world;
     private final PlayerStats playerStats;
 
-    private static float damageInterval = 0.1f;
+    private static float damageInterval = 0.01f;
     // Ability base Stats
     private float baseDuration = 1f;
     private float startSize = 0f;
