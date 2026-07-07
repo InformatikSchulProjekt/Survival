@@ -39,7 +39,7 @@ public class ChestUI {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        Label title = new Label("TRUHE GEFUNDEN!", skin);
+        Label title = new Label("Chest found!", skin);
 
         cardTable = new Table();
 
