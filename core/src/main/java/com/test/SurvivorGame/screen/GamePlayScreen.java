@@ -157,6 +157,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     public void gameOver(boolean restart) {
         state = GameState.PAUSED;
+        SoundManager.playSound("gameOver.wav");
 
         saveSurvivalTime();
         dataLoader.clearPlayerData(map);
