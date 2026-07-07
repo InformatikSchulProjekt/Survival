@@ -17,7 +17,7 @@ public final class PlayerStats {
         baseStats.put(StatType.CRIT_CHANCE, 0.01f);
         baseStats.put(StatType.CRIT_MULTIPLIER, 1f);
 
-        baseStats.put(StatType.CHEST_CHANCE, 1f);
+        baseStats.put(StatType.CHEST_CHANCE, 0.01f);
         baseStats.put(StatType.REVIVES, 0f);
         baseStats.put(StatType.LIFE_STEAL, 0f);
         baseStats.put(StatType.XP_GAIN, 1f);
