@@ -37,7 +37,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private Vector2 playerMoveDirection = new Vector2();
 
-    private GameState state;
+    private GameState state = GameState.PLAYING;
     private final String map;
 
     private final PauseMenuRenderer pauseMenu;
@@ -66,14 +66,21 @@ public class GamePlayScreen extends ScreenAdapter {
 
         this.shapeRenderer = new ShapeRenderer();
 
-        state = GameState.PLAYING;
         pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
         levelUpUI = new LevelUpUI(shapeRenderer);
         chestUI = new ChestUI(shapeRenderer);
 
-
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI);
 
+        this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
+        playerState.setupAbilityService(abilityService);
+
+        setupPauseMenu();
+        setupLevelUpUI();
+        setupChestUI();
+    }
+
+    private void setupPauseMenu() {
         pauseMenu.setResumeListener(new Runnable() {
             @Override
             public void run() {
@@ -115,10 +122,9 @@ public class GamePlayScreen extends ScreenAdapter {
                 Gdx.input.setInputProcessor(null);
             }
         });
+    }
 
-        this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
-        playerState.setupAbilityService(abilityService);
-
+    private void setupLevelUpUI() {
         levelUpUI.setAbilityRegistry(abilityService.getAbilityRegistry());
         levelUpUI.setPlayerState(playerState);
         levelUpUI.setOptionChosenListener(new IntConsumer() {
@@ -136,7 +142,9 @@ public class GamePlayScreen extends ScreenAdapter {
                 }
             }
         });
+    }
 
+    private void setupChestUI() {
         chestUI.setOptionChosenListener(new IntConsumer() {
             @Override
             public void accept(int optionIndex) {
@@ -146,7 +154,6 @@ public class GamePlayScreen extends ScreenAdapter {
                 Gdx.input.setInputProcessor(null);
             }
         });
-
     }
 
     public void gameOver(boolean restart) {
