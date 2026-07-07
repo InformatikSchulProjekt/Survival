@@ -52,7 +52,7 @@ public final class TitanBelt extends BaseItem {
             new StatModifier(
                 StatScope.ALL,
                 StatType.SPEED,
-                -0.8f,
+                -0.08f,
                 ModifierType.PERCENT,
                 "item:" + ID
             )

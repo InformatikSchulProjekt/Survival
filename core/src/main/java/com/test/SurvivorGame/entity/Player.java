@@ -18,7 +18,7 @@ public class Player extends Entity {
         if (moveDirection.isZero()) return;
 
         float speed = playerState.getSpeed();
-        //debug: System.out.println("Player Speed: "+speed);
+        //System.out.println("Player Speed: " + speed);
         float newX = collider.getX() + moveDirection.x * speed * deltaTime;
         float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 
@@ -45,19 +45,13 @@ public class Player extends Entity {
 
     @Override
     public void takeDamage(float damage) {
-        float hpBefore = playerState.getHP();
-        boolean survived = playerState.damage(damage);
-        currentHP = playerState.getHP();
+        float damageTaken = playerState.damage(damage);
 
-        if (currentHP < hpBefore) {
+        if (damageTaken > 0) {
             startDamageFlash();
         }
-
-        if (!survived) {
-            SoundManager.playSound("deathSound.wav");
-            SoundManager.stopFootsteps();
-        }
     }
+
     public PlayerState getPlayerState() {
         return playerState;
     }
