@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.screen;
+package com.test.SurvivorGame.screen.HuD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,11 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Align;
 
-/**
- * Overlay, das angezeigt wird wenn der Spieler stirbt (ähnlich dem Minecraft-Death-Screen).
- * Rendert über dem eingefrorenen Spiel und bietet einen Neustart-Button an.
- * Läuft komplett eigenständig auf ShapeRenderer/Batch, wie der HUDRenderer.
- */
+
 public class DeathScreen {
 
     private final Batch batch;

@@ -10,6 +10,7 @@ import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.screen.HuD.DeathScreen;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
