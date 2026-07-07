@@ -18,7 +18,7 @@ public class Player extends Entity {
         if (moveDirection.isZero()) return;
 
         float speed = playerState.getSpeed();
-        //debug: System.out.println("Player Speed: "+speed);
+        //System.out.println("Player Speed: " + speed);
         float newX = collider.getX() + moveDirection.x * speed * deltaTime;
         float newY = collider.getY() + moveDirection.y * speed * deltaTime;
 

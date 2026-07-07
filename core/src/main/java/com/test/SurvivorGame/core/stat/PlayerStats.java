@@ -17,7 +17,7 @@ public final class PlayerStats {
         baseStats.put(StatType.CRIT_CHANCE, 0.01f);
         baseStats.put(StatType.CRIT_MULTIPLIER, 1f);
 
-        baseStats.put(StatType.CHEST_CHANCE, 0.01f);
+        baseStats.put(StatType.CHEST_CHANCE, 1f);
         baseStats.put(StatType.REVIVES, 0f);
         baseStats.put(StatType.LIFE_STEAL, 0f);
         baseStats.put(StatType.XP_GAIN, 1f);
@@ -54,11 +54,13 @@ public final class PlayerStats {
 
             if (modifier.getModifierType() == ModifierType.FLAT) {
                 flatBonus += modifier.getValue();
+                //System.out.println("Applied FLAT: +" + modifier.getValue() + " from "+modifier.getSourceId());
             } else if (modifier.getModifierType() == ModifierType.PERCENT) {
                 percentBonus += modifier.getValue();
+                //System.out.println("Applied PERCENT: +" + modifier.getValue() + " from "+modifier.getSourceId());
             }
         }
-
+        //System.out.println("TOTAL: "+(baseValue + flatBonus) * (1f + percentBonus));
         return (baseValue + flatBonus) * (1f + percentBonus);
     }
 
