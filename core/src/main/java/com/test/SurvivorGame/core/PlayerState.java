@@ -150,6 +150,7 @@ public final class PlayerState {
 
             boolean playerCanRevive = playerStats.getStat(StatScope.ALL, StatType.REVIVES) > playerData.revivesUsed;
             if (!playerCanRevive) {
+                SoundManager.stopFootsteps();
                 gamePlayScreen.pauseGame();
                 // => HIER eigentlich Deathscreen einfügen.
                 gamePlayScreen.gameOver(); // true mitgeben, um direkt zu restarten ohne Menu
