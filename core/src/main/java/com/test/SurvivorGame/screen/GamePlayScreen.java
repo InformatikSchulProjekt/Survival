@@ -12,6 +12,7 @@ import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
 import com.test.SurvivorGame.screen.HuD.LevelUpUI;
+import com.test.SurvivorGame.screen.HuD.ChestUI;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
@@ -41,6 +42,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private final PauseMenuRenderer pauseMenu;
     private final LevelUpUI levelUpUI;
+    private final ChestUI chestUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -67,9 +69,10 @@ public class GamePlayScreen extends ScreenAdapter {
         state = GameState.PLAYING;
         pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
         levelUpUI = new LevelUpUI(shapeRenderer);
+        chestUI = new ChestUI(shapeRenderer);
 
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI);
 
         pauseMenu.setResumeListener(new Runnable() {
             @Override
@@ -134,6 +137,16 @@ public class GamePlayScreen extends ScreenAdapter {
             }
         });
 
+        chestUI.setOptionChosenListener(new IntConsumer() {
+            @Override
+            public void accept(int optionIndex) {
+                playerState.chooseChestItem(optionIndex);
+
+                state = GameState.PLAYING;
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+
     }
 
     @Override
@@ -144,9 +157,9 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
     {
-        if (state == GameState.LEVEL_UP)
+        if (state == GameState.LEVEL_UP || state == GameState.CHEST_OPENING)
         {
-            return; // Eingaben laufen während der Level-Up-Auswahl über die Stage der LevelUpUI
+            return; // Eingaben laufen während der Auswahl über die Stage der jeweiligen UI
         }
 
         playerMoveDirection.setZero(); // damits nicht wächst
@@ -236,7 +249,7 @@ public class GamePlayScreen extends ScreenAdapter {
             main.gameOver();
         }
 
-        if (state != GameState.LEVEL_UP && playerState.isAwaitingLevelUpChoice())
+        if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingLevelUpChoice())
         {
             // Level-Up-Auswahl steht an: Spiel anhalten und Karten anzeigen
             state = GameState.LEVEL_UP;
@@ -247,6 +260,18 @@ public class GamePlayScreen extends ScreenAdapter {
 
             levelUpUI.showOptions(playerState.getPendingAbilityOptions());
             Gdx.input.setInputProcessor(levelUpUI.getStage());
+        }
+        else if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingChestChoice())
+        {
+            // Chest wurde geöffnet: Spiel anhalten und Item-Karten anzeigen
+            state = GameState.CHEST_OPENING;
+
+            playerMoveDirection.setZero();
+            SoundManager.stopFootsteps();
+            world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            chestUI.showOptions(playerState.getPendingChestItems());
+            Gdx.input.setInputProcessor(chestUI.getStage());
         }
 
         processInput();

@@ -37,6 +37,9 @@ public final class PlayerState {
     private String[] pendingAbilityOptions = null;
     private int pendingLevelUps = 0;
 
+    private boolean awaitingChestChoice = false;
+    private BaseItem[] pendingChestItems = null;
+
     public PlayerState(PlayerData playerData) {
         this.playerData = playerData;
         this.level = calcLevel();
@@ -281,6 +284,8 @@ public final class PlayerState {
     }
 
     private void openChest(ChestType chestType) {
+        if (awaitingChestChoice) return; // es ist schon eine Chest-Auswahl offen
+
         BaseItem[] itemChoices = new BaseItem[3];
 
         for (int i = 0; i < itemChoices.length; i++) {
@@ -293,14 +298,26 @@ public final class PlayerState {
             }
         }
 
-        int chosenItemIndex = chestUI(itemChoices); // UI Öffnen für User Input
-
-        unlockItem(itemChoices[chosenItemIndex].getID());
+        pendingChestItems = itemChoices;
+        awaitingChestChoice = true;
     }
 
-    private int chestUI(BaseItem[] itemChoices) {
-        // temporär bis UI dafür da:
-        return 0;
+    public boolean isAwaitingChestChoice() {
+        return awaitingChestChoice;
+    }
+
+    public BaseItem[] getPendingChestItems() {
+        return pendingChestItems;
+    }
+
+    // Wird von der Chest UI aufgerufen, sobald der Spieler ein Item gewählt hat.
+    public void chooseChestItem(int result) {
+        if (!awaitingChestChoice || pendingChestItems == null) return;
+
+        unlockItem(pendingChestItems[result].getID());
+
+        pendingChestItems = null;
+        awaitingChestChoice = false;
     }
 
     private BaseItem rollChestItem(ChestType chestType, BaseItem[] alreadyPicked, int pickedCount) {
