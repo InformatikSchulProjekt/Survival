@@ -8,7 +8,7 @@ public class DataLoader {
     private static final String SAVE_FILE = "save/save_data.json";
 
     private final Json json;
-    private SaveData saveData;
+    private final SaveData saveData;
 
     public DataLoader() {
         this.json = new Json();
