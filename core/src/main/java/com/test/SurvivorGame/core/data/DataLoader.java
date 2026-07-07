@@ -18,15 +18,6 @@ public class DataLoader {
         this.saveData = loadSaveData();
     }
 
-    public PlayerData getPlayerData(String map) {
-        return getMapSaveData(map).playerData;
-    }
-
-    public void savePlayerData(String map, PlayerData playerData) {
-        getMapSaveData(map).playerData = playerData;
-        saveSaveData();
-    }
-
     public MapSaveData getMapSaveData(String map) {
         // Erstellt automatisch einen neuen Map-Save, falls noch keiner existiert.
         if (!saveData.maps.containsKey(map)) {
@@ -76,10 +67,28 @@ public class DataLoader {
         if (survivalTime > mapSaveData.bestSurvivalTime) {
             mapSaveData.bestSurvivalTime = survivalTime;
             saveSaveData();
-            System.out.println("NEUE BEST SURVIVAL TIME:" + survivalTime);
+            System.out.println("NEUE BEST SURVIVAL TIME:" + survivalTime); // debug
         }
-        else {
-            System.out.println("NICHT GEUPDATED");
+    }
+
+    public PlayerData getPlayerData(String map) {
+        PlayerData playerData = getMapSaveData(map).playerData;
+        if (playerData == null) { // => PlayerData war leer.
+            playerData = new PlayerData();
         }
+        return playerData;
+    }
+
+    public void savePlayerData(String map, PlayerData playerData) {
+        getMapSaveData(map).playerData = playerData;
+        saveSaveData();
+    }
+
+    public void clearPlayerData(String map) {
+        savePlayerData(map, null);
+    }
+
+    public boolean hasPlayerData(String map) {
+        return getMapSaveData(map).playerData != null;
     }
 }
