@@ -61,7 +61,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
-        this.playerState = new PlayerState(playerData);
+        this.playerState = new PlayerState(playerData, this);
         this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader);
 
         this.shapeRenderer = new ShapeRenderer();
@@ -90,7 +90,7 @@ public class GamePlayScreen extends ScreenAdapter {
         pauseMenu.setGiveUpListener(new Runnable() {
             @Override
             public void run() {
-                playerState.gameOver();
+                gameOver();
                 Gdx.input.setInputProcessor(null);
             }
         });
@@ -147,6 +147,27 @@ public class GamePlayScreen extends ScreenAdapter {
             }
         });
 
+    }
+
+    public void gameOver(boolean restart) {
+        state = GameState.PAUSED;
+
+        saveSurvivalTime();
+        dataLoader.clearPlayerData(map);
+        main.gameOver(restart, map);
+    }
+
+    public void gameOver() {
+        gameOver(false);
+    }
+
+    public void saveSurvivalTime() {
+        int survivalTime = (int) world.getSurvivalTime();
+        dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
+    }
+
+    public void pauseGame() {
+        state = GameState.PAUSED;
     }
 
     @Override
@@ -239,15 +260,6 @@ public class GamePlayScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime)
     {
-        if (playerState.isGameOver()) {
-            state = GameState.PAUSED;
-
-            int survivalTime = (int) world.getSurvivalTime();
-
-            dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
-            dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
-            main.gameOver();
-        }
 
         if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingLevelUpChoice())
         {

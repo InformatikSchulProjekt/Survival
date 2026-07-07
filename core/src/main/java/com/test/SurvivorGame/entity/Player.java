@@ -45,18 +45,13 @@ public class Player extends Entity {
 
     @Override
     public void takeDamage(float damage) {
-        float hpBefore = playerState.getHP();
-        boolean survived = playerState.damage(damage);
-        currentHP = playerState.getHP();
+        float damageTaken = playerState.damage(damage);
 
-        if (currentHP < hpBefore) {
+        if (damageTaken > 0) {
             startDamageFlash();
         }
-
-        if (!survived) {
-            SoundManager.playSound("deathSound.wav");
-        }
     }
+
     public PlayerState getPlayerState() {
         return playerState;
     }
