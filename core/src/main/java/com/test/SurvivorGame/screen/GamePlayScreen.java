@@ -98,7 +98,6 @@ public class GamePlayScreen extends ScreenAdapter {
             @Override
             public void run() {
                 gameOver();
-                Gdx.input.setInputProcessor(null);
             }
         });
         pauseMenu.setSettingsListener(new Runnable() {
