@@ -55,6 +55,7 @@ public class Player extends Entity {
 
         if (!survived) {
             SoundManager.playSound("deathSound.wav");
+            SoundManager.stopFootsteps();
         }
     }
     public PlayerState getPlayerState() {

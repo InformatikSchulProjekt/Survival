@@ -162,6 +162,7 @@ public final class PlayerState {
             if (!revived) { //=> Spieler ist nicht revived, also Tod
                 System.out.println("Player died."); // debug
                 gameOver = true;
+                SoundManager.playSound("gameOver.wav");
                 return false;
             } // => Spieler ist revived
             System.out.println("Player ist revived");
@@ -558,5 +559,7 @@ public final class PlayerState {
     public void gameOver()
     {
         gameOver = true;
+        SoundManager.playSound("gameOver.Wav");
+
     }
 }
