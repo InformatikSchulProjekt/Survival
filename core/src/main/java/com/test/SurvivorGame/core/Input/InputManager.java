@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.screen.GameState;
 import com.test.SurvivorGame.world.World;
 
 public class InputManager {
@@ -25,9 +26,12 @@ public class InputManager {
         this.keyBindings = keyBindings;
     }
 
-    public void update(float passedTime) {
+    public boolean processInput()
+    {
         handleMovement();
-        handleAbilities(passedTime);
+        handleAbilities();
+
+        return Gdx.input.isKeyJustPressed(keyBindings.getKey(Action.PAUSE));
     }
 
     private void handleMovement() {
@@ -61,7 +65,7 @@ public class InputManager {
         world.getPlayer().updateMoveDirection(moveDirection);
     }
 
-    private void handleAbilities(float passedTime) {
+    private void handleAbilities() {
 
         if (Gdx.input.isKeyJustPressed(keyBindings.getKey(Action.ABILITY_1)))
         {

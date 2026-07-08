@@ -33,6 +33,7 @@ public class SettingsUI {
     private Action waitingForKey;
 
     private Runnable backListener;
+    private Runnable resetListener;
 
 
     public SettingsUI(KeyBindings keyBindings, ShapeRenderer shapeRenderer) {
@@ -43,7 +44,7 @@ public class SettingsUI {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         this.shapeRenderer = shapeRenderer;
-
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Table table = new Table();
         table.setFillParent(true);
 
@@ -73,8 +74,22 @@ public class SettingsUI {
             }
         });
 
+        TextButton resetButton = new TextButton("Reset Keys", skin);
+
+        resetButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                if (resetListener != null) {
+                    resetListener.run();
+                }
+            }
+        });
+
         table.row().padTop(20);
-        table.add(backButton).width(220);
+
+        table.add(resetButton).width(220).padRight(10);
+        table.add(backButton).width(220).padLeft(10);
     }
 
     private void addKeyButton(Table table, String text, Action action) {
@@ -128,7 +143,7 @@ public class SettingsUI {
 
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0, 0, 0, 0.6f);
+        shapeRenderer.setColor(0, 0, 0, 0.85f);
         shapeRenderer.rect(0, 0, camera.viewportWidth, camera.viewportHeight);
         shapeRenderer.end();
 
@@ -146,9 +161,25 @@ public class SettingsUI {
         this.backListener = backListener;
     }
 
+    public void setResetListener(Runnable resetListener) {
+        this.resetListener = resetListener;
+    }
+
     public void dispose() {
         stage.dispose();
         skin.dispose();
+    }
+
+    public void resize(int width, int height) {
+        camera.setToOrtho(false, width, height);
+        stage.getViewport().update(width, height, true);
+    }
+
+    public void refreshButtons() {
+        for (Action action : Action.values()) {
+            keyButtons.get(action)
+                .setText(Input.Keys.toString(keyBindings.getKey(action)));
+        }
     }
 
 

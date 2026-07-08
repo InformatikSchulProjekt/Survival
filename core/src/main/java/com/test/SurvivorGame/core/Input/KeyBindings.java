@@ -7,7 +7,9 @@ import java.util.Map;
 
 public class KeyBindings {
 
-    private final Map<Action, Integer> bindings = new HashMap<>();
+    private  Map<Action, Integer> bindings = new HashMap<>();
+
+    private final Map<Action, Integer> standardBindings;
 
     public KeyBindings() {
 
@@ -22,6 +24,8 @@ public class KeyBindings {
         bindings.put(Action.ABILITY_4, Input.Keys.NUM_4);
 
         bindings.put(Action.PAUSE, Input.Keys.ESCAPE);
+
+        standardBindings = new HashMap<>(bindings);
     }
 
     public int getKey(Action action) {
@@ -30,5 +34,11 @@ public class KeyBindings {
 
     public void setKey(Action action, int key) {
         bindings.put(action, key);
+    }
+
+    public void resetKeys()
+    {
+        bindings.clear();
+        bindings.putAll(standardBindings);
     }
 }

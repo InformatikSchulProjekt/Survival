@@ -80,7 +80,7 @@ public class GamePlayScreen extends ScreenAdapter {
         chestUI = new ChestUI(shapeRenderer);
         settingsUI = new SettingsUI(keyBindings, shapeRenderer);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
 
@@ -126,14 +126,12 @@ public class GamePlayScreen extends ScreenAdapter {
             @Override
             public void run() {
                 System.out.println("inventoryScreen");
-                Gdx.input.setInputProcessor(null);
             }
         });
         pauseMenu.setAbilitiesListener(new Runnable() {
             @Override
             public void run() {
                 System.out.println("abilitiesScreen");
-                Gdx.input.setInputProcessor(null);
             }
         });
     }
@@ -205,7 +203,7 @@ public class GamePlayScreen extends ScreenAdapter {
         renderer.resize(width, height);   // passt sich der Bildschirmgröße an
     }
 
-    private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
+    private void processInput()
     {
         if (state == GameState.LEVEL_UP
             || state == GameState.CHEST_OPENING
@@ -213,80 +211,11 @@ public class GamePlayScreen extends ScreenAdapter {
             return;
         }
 
-
-
-        playerMoveDirection.setZero(); // damits nicht wächst
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        if (inputManager.processInput())
         {
-            if (state == GameState.PLAYING)
-            {
-                state = GameState.PAUSED;
-
-                Gdx.input.setInputProcessor(pauseMenu.getStage());
-
-                // Spieler sofort anhalten
-                playerMoveDirection.setZero();
-                SoundManager.stopFootsteps();
-                world.getPlayer().updateMoveDirection(playerMoveDirection);
-
-            }
-            else
-            {
-                state = GameState.PLAYING;
-            }
+            state = GameState.PAUSED;
+            Gdx.input.setInputProcessor(pauseMenu.getStage());
         }
-
-        if (state == GameState.PAUSED)
-        {
-            return;
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.W))
-        {
-            playerMoveDirection.y += 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S))
-        {
-            playerMoveDirection.y -= 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D))
-        {
-            playerMoveDirection.x += 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A))
-        {
-            playerMoveDirection.x -= 1;
-        }
-
-        if(!playerMoveDirection.isZero()) //wenns schräg geht normalisieren, aber wenn sich der Player nicht bewegt wird (x = 0,y = 0) / 0
-        {
-            playerMoveDirection.nor();
-        }
-
-        world.getPlayer().updateMoveDirection(playerMoveDirection);
-
-        // Ability Keybinds
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
-        {
-            activateAbilitySlot(0);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
-        {
-            activateAbilitySlot(1);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
-        {
-            activateAbilitySlot(2);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))
-        {
-            activateAbilitySlot(3);
-        }
-
     }
 
     @Override
@@ -358,21 +287,6 @@ public class GamePlayScreen extends ScreenAdapter {
         gameMap.dispose();
     }
 
-    private void  activateAbilitySlot(int slotIndex) {
-        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
-
-        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
-            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
-        }
-
-        String abilityId = abilitySlots[slotIndex];
-
-        if (abilityId == null || abilityId.isBlank()) {
-            return;
-        }
-
-        abilityService.activate(abilityId, world.getPassedTime());
-    }
 
     // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen
     private void swapAbilitySlots(int slot1, int slot2) {
