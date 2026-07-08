@@ -34,19 +34,29 @@ public class InputManager {
         moveDirection.setZero();
 
         if (Gdx.input.isKeyPressed(keyBindings.getKey(Action.MOVE_UP)))
+        {
             moveDirection.y++;
+        }
 
         if (Gdx.input.isKeyPressed(keyBindings.getKey(Action.MOVE_DOWN)))
+        {
             moveDirection.y--;
+        }
 
         if (Gdx.input.isKeyPressed(keyBindings.getKey(Action.MOVE_LEFT)))
+        {
             moveDirection.x--;
+        }
 
         if (Gdx.input.isKeyPressed(keyBindings.getKey(Action.MOVE_RIGHT)))
+        {
             moveDirection.x++;
+        }
 
         if (!moveDirection.isZero())
+        {
             moveDirection.nor();
+        }
 
         world.getPlayer().updateMoveDirection(moveDirection);
     }
@@ -54,27 +64,39 @@ public class InputManager {
     private void handleAbilities(float passedTime) {
 
         if (Gdx.input.isKeyJustPressed(keyBindings.getKey(Action.ABILITY_1)))
-            activateSlot(0, passedTime);
+        {
+            activateAbilitySlot(0);
+        }
 
         if (Gdx.input.isKeyJustPressed(keyBindings.getKey(Action.ABILITY_2)))
-            activateSlot(1, passedTime);
+        {
+            activateAbilitySlot(1);
+        }
 
         if (Gdx.input.isKeyJustPressed(keyBindings.getKey(Action.ABILITY_3)))
-            activateSlot(2, passedTime);
+        {
+            activateAbilitySlot(2);
+        }
 
         if (Gdx.input.isKeyJustPressed(keyBindings.getKey(Action.ABILITY_4)))
-            activateSlot(3, passedTime);
+        {
+            activateAbilitySlot(3);
+        }
     }
 
-    private void activateSlot(int slot, float passedTime) {
+    private void  activateAbilitySlot(int slotIndex) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
 
-        String ability = playerState.getPlayerData().abilitySlots[slot];
+        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
+        }
 
-        if (ability == null || ability.isBlank())
-        {
+        String abilityId = abilitySlots[slotIndex];
+
+        if (abilityId == null || abilityId.isBlank()) {
             return;
         }
 
-        abilityService.activate(ability, passedTime);
+        abilityService.activate(abilityId, world.getPassedTime());
     }
 }
