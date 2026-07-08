@@ -84,7 +84,7 @@ public class Wave extends ActiveAbility {
 
     @Override
     public String getName() {
-        return "Water Blast";
+        return "Wave";
     }
 
     @Override
