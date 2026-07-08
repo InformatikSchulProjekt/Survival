@@ -12,10 +12,7 @@ import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjecti
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.screen.GameState;
-import com.test.SurvivorGame.screen.HuD.HUDRenderer;
-import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
-import com.test.SurvivorGame.screen.HuD.LevelUpUI;
-import com.test.SurvivorGame.screen.HuD.ChestUI;
+import com.test.SurvivorGame.screen.HuD.*;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,6 +36,7 @@ public class Renderer {
     private PauseMenuRenderer pauseMenu;
     private LevelUpUI levelUpUI;
     private ChestUI chestUI;
+    private SettingsUI settingsUI;
 
     private GameState gamestate;
 
@@ -356,7 +354,16 @@ public class Renderer {
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData,PauseMenuRenderer pauseMenu, LevelUpUI levelUpUI, ChestUI chestUI) {
+    public Renderer(Batch batch,
+                    float screenWidth,
+                    float screenHeight,
+                    World world,
+                    ShapeRenderer shapeRenderer,
+                    PlayerData playerData,
+                    PauseMenuRenderer pauseMenu,
+                    LevelUpUI levelUpUI,
+                    ChestUI chestUI,
+                    SettingsUI settingsUI) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
@@ -367,6 +374,7 @@ public class Renderer {
         this.pauseMenu = pauseMenu;
         this.levelUpUI = levelUpUI;
         this.chestUI = chestUI;
+        this.settingsUI = settingsUI;
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
@@ -980,6 +988,7 @@ public class Renderer {
         pauseMenu.resize(width, height);
         levelUpUI.resize(width, height);
         chestUI.resize(width, height);
+        settingsUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
     {
