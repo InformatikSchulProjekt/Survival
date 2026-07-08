@@ -10,7 +10,7 @@ public final class PlayerStats {
     public PlayerStats() {
         baseStats.put(StatType.MAX_HEALTH, 10f);
         baseStats.put(StatType.SPEED, 5f);
-        baseStats.put(StatType.HEALING, 0.1f);
+        baseStats.put(StatType.HEALING, 0.05f);
         baseStats.put(StatType.PLAYER_SIZE, 1f);
         baseStats.put(StatType.RESISTANCE, 1f);
         baseStats.put(StatType.DODGE_CHANCE, 0f);
