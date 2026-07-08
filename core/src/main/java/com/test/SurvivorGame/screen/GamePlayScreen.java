@@ -169,9 +169,19 @@ public class GamePlayScreen extends ScreenAdapter {
     }
 
     private void setupSettingsUI() {
-        settingsUI.setBackListener(() -> {
-            state = GameState.PAUSED;
-            Gdx.input.setInputProcessor(pauseMenu.getStage());
+        settingsUI.setBackListener(new Runnable() {
+            @Override
+            public void run() {
+                state = GameState.PAUSED;
+                Gdx.input.setInputProcessor(pauseMenu.getStage());
+            }
+        });
+        settingsUI.setResetListener(new Runnable() {
+            @Override
+            public void run() {
+                keyBindings.resetKeys();
+                settingsUI.refreshButtons();
+            }
         });
     }
 
