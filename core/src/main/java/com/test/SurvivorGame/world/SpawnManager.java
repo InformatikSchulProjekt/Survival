@@ -1,13 +1,14 @@
 package com.test.SurvivorGame.world;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
-import com.test.SurvivorGame.world.maps.WaveControl.EnemyFactory;
-import com.test.SurvivorGame.world.maps.WaveControl.Wave;
+import com.test.SurvivorGame.world.WaveControl.EnemyFactory;
+import com.test.SurvivorGame.world.WaveControl.Wave;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class SpawnManager {
     }
     private WaveState state = WaveState.NORMAL;
 
+    private final PlayerData playerData;
     private final Player player;
     private final World world;
     private final GameMap gameMap;
@@ -31,18 +33,17 @@ public class SpawnManager {
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
-    private int currentWave;
     private Wave currentWaveReference;
 
     public SpawnManager(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
     {
         this.world = world;
         this.player = world.getPlayer();
+        this.playerData = player.getPlayerState().getPlayerData();
         this.gamePlayScreen = gamePlayScreen;
-        currentWave = 1;
         this.gameMap = gameMap;
 
-        this.currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(currentWave);
+        this.currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
     }
 
     public void update(float deltaTime, GameMap map)
@@ -85,14 +86,10 @@ public class SpawnManager {
             triggerBossPhase();
         }
 
-        if(enemies.isEmpty() && gameMap.getSpawnProfile().hasNextWave(currentWave))
+        if(enemies.isEmpty() && gameMap.getSpawnProfile().hasNextWave(playerData.wave))
         {
             world.saveGame();
             startNextWave();
-        }
-        if(enemies.isEmpty() && !gameMap.getSpawnProfile().hasNextWave(currentWave))
-        {
-            gamePlayScreen.showGameFinishedUI();
         }
     }
 
@@ -162,14 +159,7 @@ public class SpawnManager {
 
     private boolean endTime()
     {
-        if(waveTime < currentWaveReference.getWaveLifeTime())
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return !(waveTime < currentWaveReference.getWaveLifeTime());
     }
 
     public ArrayList<Enemy> getEnemies()
@@ -177,28 +167,18 @@ public class SpawnManager {
         return enemies;
     }
 
-    public void resetSpawn()
-    {
-        currentWave = 1;
-
-        waveTime = 0f;
-        spawnTimer = 0f;
-
-        bossPhaseTriggered = false;
-        state = WaveState.NORMAL;
-    }
-
     private void startNextWave()
     {
-        currentWave++;
-        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(currentWave);
+        if (playerData.wave == gameMap.getMaxWaves()) {
+            gamePlayScreen.showGameFinishedUI();
+        }
+        playerData.wave++;
+        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
 
         waveTime = 0f;
         spawnTimer = 0f;
 
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;
-
-
     }
 }
