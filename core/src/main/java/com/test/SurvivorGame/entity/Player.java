@@ -1,6 +1,5 @@
 package com.test.SurvivorGame.entity;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
@@ -26,22 +25,6 @@ public class Player extends Entity {
         collider.setPosition(newX, newY);
     }
 
-    // updated mit MapRand
-    private void clampToMap(GameMap map) {
-        if (map == null) return;
-
-        float minX = 0f;
-        float minY = 0f;
-        float maxX = map.getWorldWidth() - getWidth();
-        float maxY = map.getWorldHeight() - getHeight();
-
-        float clampedX = MathUtils.clamp(collider.x, minX, Math.max(minX, maxX));
-        float clampedY = MathUtils.clamp(collider.y, minY, Math.max(minY, maxY));
-
-        collider.setPosition(clampedX, clampedY);
-        playerState.setPosition(clampedX, clampedY);
-    }
-
     @Override
     public void takeDamage(float damage) {
         float damageTaken = playerState.damage(damage);
@@ -60,7 +43,6 @@ public class Player extends Entity {
         SoundManager.updateFootsteps(!moveDirection.isZero());
         updateDamageFlash(deltaTime);
         move(deltaTime);
-        clampToMap(map);
     }
 
 }
