@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.world.maps.WaveControl;
+package com.test.SurvivorGame.world.WaveControl;
 
 public class SpawnEntry {
 

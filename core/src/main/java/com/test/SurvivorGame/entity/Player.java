@@ -29,7 +29,6 @@ public class Player extends Entity {
     // updated mit MapRand
     private void clampToMap(GameMap map) {
         if (map == null) return;
-        if (map.isInfinite()) return;
 
         float minX = 0f;
         float minY = 0f;

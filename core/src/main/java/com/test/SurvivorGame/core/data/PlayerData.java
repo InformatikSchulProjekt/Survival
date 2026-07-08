@@ -14,6 +14,8 @@ public class PlayerData {
     public float x = 0;
     public float y = 0;
 
+    public int wave = 1;
+
     public int revivesUsed = 0;
 
     public String playerClass = "";

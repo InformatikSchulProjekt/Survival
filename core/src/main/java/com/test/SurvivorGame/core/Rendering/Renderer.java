@@ -716,15 +716,6 @@ public class Renderer {
         float camX = targetX;
         float camY = targetY;
 
-        if (!map.isInfinite()) {
-            float mapW = map.getWorldWidth();
-            float mapH = map.getWorldHeight();
-
-            //das fixiert die kamera zur map sodass man nicht rausschauen kann
-            camX = MathUtils.clamp(targetX, Math.min(halfW, mapW/2f), Math.max(halfW, mapW - halfW));
-            camY = MathUtils.clamp(targetY, Math.min(halfH, mapH/2f), Math.max(halfH, mapH - halfH));
-        }
-
         cam.position.set(camX, camY, 0f);
         cam.update();
 
@@ -1056,17 +1047,6 @@ public class Renderer {
         );
     }
     private void renderMap(GameMap map, OrthographicCamera cam) {
-        if (!map.isInfinite()) {
-            batch.draw(
-                map.getTexture(),
-                0f,
-                0f,
-                map.getWorldWidth(),
-                map.getWorldHeight()
-            );
-            return;
-        }
-
         float tileWidth = map.getWorldWidth();
         float tileHeight = map.getWorldHeight();
         float left = cam.position.x - viewport.getWorldWidth() / 2f;

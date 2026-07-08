@@ -1,6 +1,8 @@
 package com.test.SurvivorGame.world.maps;
 
-import com.test.SurvivorGame.world.maps.WaveControl.EnemyType;
+import com.test.SurvivorGame.world.WaveControl.EnemyType;
+
+import java.util.ArrayList;
 
 public class SecondTestMap extends GameMap {
 
@@ -12,8 +14,7 @@ public class SecondTestMap extends GameMap {
             "The second testing map.",
             "Maps/Map(clear1).png",
             30,
-            30,
-            true
+            30
         );
 
         spawnProfile.addWave(
@@ -28,6 +29,19 @@ public class SecondTestMap extends GameMap {
             EnemyType.SKELETON,
             100
         );
+    }
+
+    @Override
+    public int getMaxWaves() {
+        return 3;
+    }
+
+    @Override
+    public ArrayList<EnemyType> getEnemyTypes() {
+        ArrayList<EnemyType> enemyTypes = new ArrayList<>();
+        enemyTypes.add(EnemyType.SLIME);
+
+        return enemyTypes;
     }
 }
 
