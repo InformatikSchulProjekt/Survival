@@ -2,6 +2,7 @@ package com.test.SurvivorGame.world;
 
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
@@ -25,13 +26,14 @@ public class World {
 
     float screenWidth, screenHeight; // nur für reset-test
 
-    private ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
-    private ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
+    private final ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
+    private final ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
 
-    private SpawnManager spawnManager;
+    private final SpawnManager spawnManager;
 
-    private String map;
-    private DataLoader dataLoader;
+    private final String map;
+    private final DataLoader dataLoader;
+    private final PlayerState playerState;
 
     public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap gameMap, String map, DataLoader dataLoader)
     {
@@ -42,11 +44,15 @@ public class World {
         spawnManager = new SpawnManager(this, gameMap);
         this.map = map;
         this.dataLoader = dataLoader;
+        this.playerState = playerState;
     }
 
     public void update(float deltaTime, GameMap map)
     {
         passedTime += deltaTime;
+
+        // Passive Health Regen:
+        playerState.heal(deltaTime*playerState.getPlayerStats().getStat(StatType.HEALING));
 
         if (!survivalTimePaused)
         {

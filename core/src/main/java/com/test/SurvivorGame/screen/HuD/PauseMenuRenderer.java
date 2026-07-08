@@ -146,7 +146,6 @@ public class PauseMenuRenderer {
 
     public void render() {
 
-        // Hintergrund abdunkeln
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glEnable(GL20.GL_BLEND);
