@@ -31,6 +31,7 @@ public final class AbilityRegistry {
         register(new FireStormAbility(world));
         register(new WaterArrowAbility(world, viewport));
         register(new SmallHeal(world, viewport));
+        register(new Wave(world, viewport));
     }
 
     public BaseAbility getAbility(String abilityId) {
