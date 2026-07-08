@@ -9,6 +9,9 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
+import com.test.SurvivorGame.entity.drops.ChestObject;
+import com.test.SurvivorGame.entity.drops.ChestState;
+import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.screen.GameState;
@@ -65,7 +68,7 @@ public class Renderer {
     private final Animation<TextureRegion> rightAnimation;
     private final Animation<TextureRegion> leftAnimation;
     private float playerAnimationTime = 0f;
-    //Ab hier Pyromancer
+    //Ab hier mancer
     private final Texture pyromancerTexture;
     private final Texture pyromanceridle2;
     private final Texture pyromanceridle3;
@@ -109,8 +112,6 @@ public class Renderer {
     private final Animation<TextureRegion> pyromancerleftAnimation;
     private float pyromancerAnimationTime = 0f;
 
-
-    // ===================== AEROMANCER =====================
     private final Texture aeromancerTexture;
     private final Texture aeromanceridle2;
     private final Texture aeromanceridle3;
@@ -188,8 +189,6 @@ public class Renderer {
     private final Animation<TextureRegion> aeromancerrightAnimation;
     private final Animation<TextureRegion> aeromancerleftAnimation;
 
-
-    // ===================== HYDROMANCER =====================
     private final Texture hydromancerTexture;
     private final Texture hydromanceridle2;
     private final Texture hydromanceridle3;
@@ -235,8 +234,6 @@ public class Renderer {
     private final Animation<TextureRegion> hydromancerrightAnimation;
     private final Animation<TextureRegion> hydromancerleftAnimation;
 
-
-    // ===================== GEOMANCER =====================
     private final Texture geomancerTexture;
     private final Texture geomanceridle2;
     private final Texture geomanceridle3;
@@ -356,6 +353,27 @@ public class Renderer {
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
 
+    //Chest
+    private final Texture normalChestTexture;
+    private final Texture normalChest1;
+    private final Texture normalChest2;
+    private final Texture normalChest3;
+    private final Texture normalChest4;
+    private final Texture normalChest5;
+    private final Animation<TextureRegion> normalChestClosedAnimation;
+    private final Animation<TextureRegion> normalChestOpeningAnimation;
+    private final Animation<TextureRegion> normalChestOpenedAnimation;
+    //legendaryChest
+    private final Texture legendaryChestTexture;
+    private final Texture legendaryChest1;
+    private final Texture legendaryChest2;
+    private final Texture legendaryChest3;
+    private final Texture legendaryChest4;
+    private final Texture legendaryChest5;
+    private final Animation<TextureRegion> legendaryChestOpenedAnimation;
+    private final Animation<TextureRegion> legendaryChestOpeningAnimation;
+    private final Animation<TextureRegion> legendaryChestClosedAnimation;
+
     public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData,PauseMenuRenderer pauseMenu, LevelUpUI levelUpUI, ChestUI chestUI) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
@@ -368,6 +386,52 @@ public class Renderer {
         this.levelUpUI = levelUpUI;
         this.chestUI = chestUI;
 
+        this.normalChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        TextureRegion[][] normalChestframes = TextureRegion.split(normalChestTexture, 64, 64);
+        normalChest1 = new Texture(Gdx.files.internal("Chest/chest1.png"));
+        normalChestClosedAnimation = new Animation<>(0.4f,
+            new TextureRegion(normalChest1));
+        normalChestClosedAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        normalChest2 = new Texture(Gdx.files.internal("Chest/chest2.png"));
+        normalChest3 = new Texture(Gdx.files.internal("Chest/chest3.png"));
+        normalChest4 = new Texture(Gdx.files.internal("Chest/chest4.png"));
+        normalChest5 = new Texture(Gdx.files.internal("Chest/chest5.png"));
+        normalChestOpeningAnimation = new Animation<>(0.2f,
+            new TextureRegion(normalChest2),
+            new TextureRegion(normalChest3),
+            new TextureRegion(normalChest4),
+            new TextureRegion(normalChest5));
+        normalChestOpeningAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+        normalChestOpenedAnimation = new Animation<>(0.4f,
+            new TextureRegion(normalChest5));
+        normalChestOpenedAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+
+        //LegendaryChest
+        this.legendaryChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        TextureRegion[][] legendaryChestframes = TextureRegion.split(legendaryChestTexture, 64, 64);
+        legendaryChest1 = new Texture(Gdx.files.internal("Chest/BossChest1.png"));
+        legendaryChestClosedAnimation = new Animation<>(0.4f,
+            new TextureRegion(legendaryChest1));
+        normalChestClosedAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        legendaryChest2 = new Texture(Gdx.files.internal("Chest/BossChest2.png"));
+        legendaryChest3 = new Texture(Gdx.files.internal("Chest/BossChest3.png"));
+        legendaryChest4 = new Texture(Gdx.files.internal("Chest/BossChest4.png"));
+        legendaryChest5 = new Texture(Gdx.files.internal("Chest/BossChest5.png"));
+        legendaryChestOpeningAnimation = new Animation<>(0.2f,
+            new TextureRegion(legendaryChest2),
+            new TextureRegion(legendaryChest3),
+            new TextureRegion(legendaryChest4),
+            new TextureRegion(legendaryChest5));
+        legendaryChestOpeningAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        legendaryChestOpenedAnimation = new Animation<>(0.4f,
+            new TextureRegion(legendaryChest5));
+        legendaryChestOpenedAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+//old Player ...
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
         idle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
@@ -1027,6 +1091,14 @@ public class Renderer {
                 renderBoss((Boss) e);
             }
         }
+        for (DroppedObject drop : world.getDroppedObjects()) {
+
+            if (drop instanceof ChestObject chest) {
+                renderChest(chest);
+            } else {
+                drop.draw(batch);
+            }
+        }
 
         for(AbilityObject abilityObject : world.getAbilityObjects())
         {
@@ -1041,9 +1113,7 @@ public class Renderer {
             }
         }
 
-        for (DroppedObject drop : world.getDroppedObjects()) {
-            drop.draw(batch);
-        }
+
 
         batch.end();
 
@@ -1273,7 +1343,46 @@ public class Renderer {
             boss.getHeight()
         );
     }
+    private void renderChest(ChestObject chest) {
 
+        Animation<TextureRegion> animation = null;
+
+        if (chest.getChestType() == ChestType.NORMAL) {
+            switch (chest.getState()) {
+                case CLOSED:
+                    animation = normalChestClosedAnimation;
+                    break;
+                case OPENING:
+                    animation = normalChestOpeningAnimation;
+                    break;
+                case OPENED:
+                    animation = normalChestOpenedAnimation;
+                    break;
+            }
+        } else {
+            switch (chest.getState()) {
+                case CLOSED:
+                    animation = legendaryChestClosedAnimation;
+                    break;
+                case OPENING:
+                    animation = legendaryChestOpeningAnimation;
+                    break;
+                case OPENED:
+                    animation = legendaryChestOpenedAnimation;
+                    break;
+            }
+        }
+
+        TextureRegion currentFrame = animation.getKeyFrame(chest.getAnimationTime(), false);
+
+        batch.draw(
+            currentFrame,
+            chest.getX(),
+            chest.getY(),
+            chest.getWidth(),
+            chest.getHeight()
+        );
+    }
     private void renderFireball(Fireball fireball, float deltaTime) {
         Animation<TextureRegion> animation;
 
@@ -1596,5 +1705,16 @@ public class Renderer {
         hud.dispose();
         levelUpUI.dispose();
         chestUI.dispose();
+        normalChest1.dispose();
+        normalChest2.dispose();
+        normalChest3.dispose();
+        normalChest4.dispose();
+        normalChest5.dispose();
+        legendaryChest1.dispose();
+        legendaryChest2.dispose();
+        legendaryChest3.dispose();
+        legendaryChest4.dispose();
+        legendaryChest5.dispose();
+
     }
 }
