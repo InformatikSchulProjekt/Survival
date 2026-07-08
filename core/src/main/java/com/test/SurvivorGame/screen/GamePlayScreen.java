@@ -11,11 +11,15 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
+import com.test.SurvivorGame.screen.HuD.LevelUpUI;
+import com.test.SurvivorGame.screen.HuD.ChestUI;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.world.maps.MapRegistry;
+
+import java.util.function.IntConsumer;
 
 public class GamePlayScreen extends ScreenAdapter {
     private final Main main;
@@ -33,10 +37,12 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private Vector2 playerMoveDirection = new Vector2();
 
-    private GameState state;
+    private GameState state = GameState.PLAYING;
     private final String map;
 
     private final PauseMenuRenderer pauseMenu;
+    private final LevelUpUI levelUpUI;
+    private final ChestUI chestUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -48,24 +54,33 @@ public class GamePlayScreen extends ScreenAdapter {
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData(map);
         // bis ability slots gui da:
-        playerData.abilitySlots[0] = "melee";
+        playerData.abilitySlots[0] = "small_heal";
         playerData.abilitySlots[1] = "fireball";
         playerData.abilitySlots[2] = "fire_arrow";
         playerData.abilitySlots[3] = "firestorm";
 
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
-        this.playerState = new PlayerState(playerData);
-        this.world = new World(screenWidth, screenHeight, playerState, gameMap);
+        this.playerState = new PlayerState(playerData, this);
+        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader);
 
         this.shapeRenderer = new ShapeRenderer();
 
-        state = GameState.PLAYING;
         pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
+        levelUpUI = new LevelUpUI(shapeRenderer);
+        chestUI = new ChestUI(shapeRenderer);
 
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu);
+        this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
+        playerState.setupAbilityService(abilityService);
 
+        setupPauseMenu();
+        setupLevelUpUI();
+        setupChestUI();
+    }
+
+    private void setupPauseMenu() {
         pauseMenu.setResumeListener(new Runnable() {
             @Override
             public void run() {
@@ -73,11 +88,16 @@ public class GamePlayScreen extends ScreenAdapter {
                 Gdx.input.setInputProcessor(null);
             }
         });
+        pauseMenu.setSaveListener(new Runnable() {
+            @Override
+            public void run() {
+                dataLoader.savePlayerData(map, playerState.getPlayerData());
+            }
+        });
         pauseMenu.setGiveUpListener(new Runnable() {
             @Override
             public void run() {
-                playerState.gameOver();
-                Gdx.input.setInputProcessor(null);
+                gameOver();
             }
         });
         pauseMenu.setSettingsListener(new Runnable() {
@@ -101,11 +121,60 @@ public class GamePlayScreen extends ScreenAdapter {
                 Gdx.input.setInputProcessor(null);
             }
         });
+    }
 
-        this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
-        playerState.setupAbilityService(abilityService);
+    private void setupLevelUpUI() {
+        levelUpUI.setAbilityRegistry(abilityService.getAbilityRegistry());
+        levelUpUI.setPlayerState(playerState);
+        levelUpUI.setOptionChosenListener(new IntConsumer() {
+            @Override
+            public void accept(int optionIndex) {
+                playerState.chooseAbilityOption(optionIndex);
 
+                if (!playerState.isAwaitingLevelUpChoice()) {
+                    // keine weitere Auswahl offen => zurück ins Spiel
+                    state = GameState.PLAYING;
+                    Gdx.input.setInputProcessor(null);
+                } else {
+                    // z.B. 2 Level auf einmal aufgestiegen => nächste Karten zeigen
+                    levelUpUI.showOptions(playerState.getPendingAbilityOptions());
+                }
+            }
+        });
+    }
 
+    private void setupChestUI() {
+        chestUI.setOptionChosenListener(new IntConsumer() {
+            @Override
+            public void accept(int optionIndex) {
+                playerState.chooseChestItem(optionIndex);
+
+                state = GameState.PLAYING;
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+    }
+
+    public void gameOver(boolean restart) {
+        state = GameState.PAUSED;
+        SoundManager.playSound("gameOver.wav");
+
+        saveSurvivalTime();
+        dataLoader.clearPlayerData(map);
+        main.gameOver(restart, map);
+    }
+
+    public void gameOver() {
+        gameOver(false);
+    }
+
+    public void saveSurvivalTime() {
+        int survivalTime = (int) world.getSurvivalTime();
+        dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
+    }
+
+    public void pauseGame() {
+        state = GameState.PAUSED;
     }
 
     @Override
@@ -116,6 +185,11 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
     {
+        if (state == GameState.LEVEL_UP || state == GameState.CHEST_OPENING)
+        {
+            return; // Eingaben laufen während der Auswahl über die Stage der jeweiligen UI
+        }
+
         playerMoveDirection.setZero(); // damits nicht wächst
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
@@ -188,21 +262,35 @@ public class GamePlayScreen extends ScreenAdapter {
             activateAbilitySlot(3);
         }
 
-        // temporär um zu saven, weil es noch keine andere Optionen gibt.
-        dataLoader.savePlayerData("TestMap", playerState.getPlayerData());
     }
 
     @Override
     public void render(float deltaTime)
     {
-        if (playerState.isGameOver()) {
-            state = GameState.PAUSED;
 
-            int survivalTime = (int) world.getSurvivalTime();
+        if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingLevelUpChoice())
+        {
+            // Level-Up-Auswahl steht an: Spiel anhalten und Karten anzeigen
+            state = GameState.LEVEL_UP;
 
-            dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
-            dataLoader.savePlayerData(map, new PlayerData()); // resetet PlayerData für Map
-            main.gameOver();
+            playerMoveDirection.setZero();
+            SoundManager.stopFootsteps();
+            world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            levelUpUI.showOptions(playerState.getPendingAbilityOptions());
+            Gdx.input.setInputProcessor(levelUpUI.getStage());
+        }
+        else if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingChestChoice())
+        {
+            // Chest wurde geöffnet: Spiel anhalten und Item-Karten anzeigen
+            state = GameState.CHEST_OPENING;
+
+            playerMoveDirection.setZero();
+            SoundManager.stopFootsteps();
+            world.getPlayer().updateMoveDirection(playerMoveDirection);
+
+            chestUI.showOptions(playerState.getPendingChestItems());
+            Gdx.input.setInputProcessor(chestUI.getStage());
         }
 
         processInput();
@@ -245,7 +333,7 @@ public class GamePlayScreen extends ScreenAdapter {
             return;
         }
 
-        abilityService.activate(abilityId, world.getSurvivalTime());
+        abilityService.activate(abilityId, world.getPassedTime());
     }
 
     // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen

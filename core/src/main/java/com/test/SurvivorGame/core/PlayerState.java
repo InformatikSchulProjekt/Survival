@@ -16,6 +16,7 @@ import com.test.SurvivorGame.item.ItemRarity;
 import com.test.SurvivorGame.item.ItemRegistry;
 import com.test.SurvivorGame.player_class.BasePlayerClass;
 import com.test.SurvivorGame.player_class.PlayerClassRegistry;
+import com.test.SurvivorGame.screen.GamePlayScreen;
 
 import java.util.ArrayList;
 
@@ -25,16 +26,24 @@ public final class PlayerState {
     private final PlayerClassRegistry playerClassRegistry;
     private AbilityService abilityService;
     private AbilityRegistry abilityRegistry;
-
     private final PlayerData playerData;
+    private final GamePlayScreen gamePlayScreen;
+
     private int level;
-    private boolean dodgedLastAttack = false;
+
     private long dodgeEffectStartTime = 0;
     private static final long DODGE_EFFECT_DURATION = 300;
-    private boolean gameOver = false;
 
-    public PlayerState(PlayerData playerData) {
+    private boolean awaitingLevelUpChoice = false;
+    private String[] pendingAbilityOptions = null;
+    private int pendingLevelUps = 0;
+
+    private boolean awaitingChestChoice = false;
+    private BaseItem[] pendingChestItems = null;
+
+    public PlayerState(PlayerData playerData, GamePlayScreen gamePlayScreen) {
         this.playerData = playerData;
+        this.gamePlayScreen = gamePlayScreen;
         this.level = calcLevel();
 
         this.itemRegistry = new ItemRegistry();
@@ -49,10 +58,6 @@ public final class PlayerState {
         this.abilityRegistry = abilityService.getAbilityRegistry();
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
     public PlayerData getPlayerData() {
         return playerData;
     }
@@ -63,10 +68,6 @@ public final class PlayerState {
 
     public int getLevel() {
         return level;
-    }
-
-    public float getXP() {
-        return playerData.xp;
     }
 
     public float getXpProgress() {
@@ -118,20 +119,17 @@ public final class PlayerState {
         playerData.hp = hp;
     }
 
-    // true = survived; false = died;
-    public boolean damage(float amount) {
-        //if(playerData.hp <= 0) return true; // => Spieler ist bereits Tod
+    // Methode, die gecalled wird, wenn Spieler Schaden bekommt.
+    public float damage(float amount) {
         if (amount <= 0f) {
             System.out.println("INVALID DAMAGE! Can't deal negative or 0 damage to player.");
-            return true;
+            return 0f;
         }
 
         if(tryDodge()) {
             System.out.println("Dodged Attack"); //debug
-            // => Dodge Visuals adden
-            dodgedLastAttack=true;
-            dodgeEffectStartTime = System.currentTimeMillis();
-            return true; // Spieler ist gedodged.
+            dodgeEffectStartTime = System.currentTimeMillis(); // dodge visuals
+            return 0f;
         }
 
         float resistance = playerStats.getStat(StatScope.ALL, StatType.RESISTANCE);
@@ -148,34 +146,27 @@ public final class PlayerState {
         System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
 
         if (playerData.hp <= 0f) {
-            playerData.hp = 0f;
-            // => Player Dead Logic:
-            boolean revived = deathScreen(); // Ergebnis vom UI Spieler Input
-            if (!revived) { //=> Spieler ist nicht revived, also Tod
-                System.out.println("Player died."); // debug
-                gameOver = true;
-                return false;
-            } // => Spieler ist revived
-            System.out.println("Player ist revived");
-            playerData.hp = playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH) / 2;
-            // => Spieler kriegt hälfte HP zurück bei Revive
-            playerData.revivesUsed++;
+            SoundManager.playSound("deathSound.wav");
+
+            boolean playerCanRevive = playerStats.getStat(StatScope.ALL, StatType.REVIVES) > playerData.revivesUsed;
+            if (!playerCanRevive) {
+                SoundManager.stopFootsteps();
+                gamePlayScreen.pauseGame();
+                // => HIER eigentlich Deathscreen einfügen.
+                gamePlayScreen.gameOver(); // true mitgeben, um direkt zu restarten ohne Menu
+            }
+            else {
+                System.out.println("Player ist revived");
+                playerData.hp = playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH) / 2;
+                // => Spieler kriegt hälfte HP zurück bei Revive
+                playerData.revivesUsed++;
+            }
         }
-        return true;
+        return finalDamage;
     }
+
     public boolean isDodgeEffectActive() {
         return System.currentTimeMillis() - dodgeEffectStartTime < DODGE_EFFECT_DURATION;
-    }
-
-    // sollte true returnen, wenn der Spieler reviven kann und will. False wenn eben nicht
-    private boolean deathScreen() {
-        boolean playerCanRevive = playerStats.getStat(StatScope.ALL, StatType.REVIVES) > playerData.revivesUsed;
-        //System.out.println("Player can revive: "+playerCanRevive); // debug
-
-        // Hier UI Stuff einfügen
-
-        // temporär, bis UI implementiert:
-        return playerCanRevive;
     }
 
     public void setPosition(float x, float y) {
@@ -197,42 +188,69 @@ public final class PlayerState {
         System.out.println("Gained XP: "+actualXP);
 
         int newLevel = calcLevel();
-        while (newLevel > level) { // => Level-Up Logic
-            // Hier Spiel pausieren.
-            if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
+        if (newLevel > level) {
+            pendingLevelUps += (newLevel - level);
+            level = newLevel;
 
-            level++;
-            System.out.println("LEVEL UP: " + level); // debug
-            int optionsCount = 3;
-
-            String[] abilityOptions;
-            try {
-                abilityOptions = genAbilityOptions(optionsCount);
-            } catch (Exception e) {
-                System.out.println("[ERROR]: "+e.toString());
-                return;
-            }
-
-            // debug:
-            System.out.println("Ability Optionen;");
-            printStringArray(abilityOptions);
-
-            int result = levleUpUI(abilityOptions);
-            abilityService.unlockAbility(abilityOptions[result]);
-
-            // falls penalty davor vorhanden, aufheben
-            playerData.skippedAbilityOptions.remove(abilityOptions[result]);
-
-            // penalty sozusagen für, dass es nicht gepicked wurde
-            abilityOptions[result] = null; // damit nicht auch penalty bekommt
-            for (String abilityID : abilityOptions) {
-                if (abilityID == null) continue;
-
-                // erhöht penalty um 0.5 bzw. wenn keine da, dann setzt auf 0.5
-                float currentPenalty = playerData.skippedAbilityOptions.getOrDefault(abilityID, 0f);
-                playerData.skippedAbilityOptions.put(abilityID, currentPenalty + 0.5f);
-            }
+            startNextLevelUpIfNeeded();
         }
+    }
+
+    // Bereitet die nächste Level-Up-Auswahl vor (falls noch welche ausstehen und
+    // gerade keine andere Auswahl offen ist). Die UI liest awaitingLevelUpChoice()
+    // und pendingAbilityOptions aus und ruft nach Auswahl chooseAbilityOption(index) auf.
+    private void startNextLevelUpIfNeeded() {
+        if (awaitingLevelUpChoice) return; // es läuft schon eine Auswahl
+        if (pendingLevelUps <= 0) return;
+
+        if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
+
+        int optionsCount = 3;
+        String[] abilityOptions;
+        try {
+            abilityOptions = genAbilityOptions(optionsCount);
+        } catch (Exception e) {
+            System.out.println("[ERROR]: "+e.toString());
+            pendingLevelUps = 0; // damit es nicht endlos wieder versucht wird
+            return;
+        }
+
+        pendingAbilityOptions = abilityOptions;
+        awaitingLevelUpChoice = true;
+    }
+
+    public boolean isAwaitingLevelUpChoice() {
+        return awaitingLevelUpChoice;
+    }
+
+    public String[] getPendingAbilityOptions() {
+        return pendingAbilityOptions;
+    }
+
+    // Wird von der Level-Up UI aufgerufen, sobald der Spieler eine Karte gewählt hat.
+    public void chooseAbilityOption(int result) {
+        if (!awaitingLevelUpChoice || pendingAbilityOptions == null) return;
+
+        abilityService.unlockAbility(pendingAbilityOptions[result]);
+
+        // falls penalty davor vorhanden, aufheben
+        playerData.skippedAbilityOptions.remove(pendingAbilityOptions[result]);
+
+        // penalty sozusagen für, dass es nicht gepicked wurde
+        pendingAbilityOptions[result] = null; // damit nicht auch penalty bekommt
+        for (String abilityID : pendingAbilityOptions) {
+            if (abilityID == null) continue;
+
+            // erhöht penalty um 0.5 bzw. wenn keine da, dann setzt auf 0.5
+            float currentPenalty = playerData.skippedAbilityOptions.getOrDefault(abilityID, 0f);
+            playerData.skippedAbilityOptions.put(abilityID, currentPenalty + 0.5f);
+        }
+
+        pendingAbilityOptions = null;
+        awaitingLevelUpChoice = false;
+        pendingLevelUps = Math.max(0, pendingLevelUps - 1);
+
+        startNextLevelUpIfNeeded(); // falls z.B. 2 Level auf einmal aufgestiegen wurde
     }
 
     public void collectDrop(DroppedObject drop) {
@@ -242,6 +260,8 @@ public final class PlayerState {
     }
 
     private void openChest(ChestType chestType) {
+        if (awaitingChestChoice) return; // es ist schon eine Chest-Auswahl offen
+
         BaseItem[] itemChoices = new BaseItem[3];
 
         for (int i = 0; i < itemChoices.length; i++) {
@@ -254,14 +274,26 @@ public final class PlayerState {
             }
         }
 
-        int chosenItemIndex = chestUI(itemChoices); // UI Öffnen für User Input
-
-        unlockItem(itemChoices[chosenItemIndex].getID());
+        pendingChestItems = itemChoices;
+        awaitingChestChoice = true;
     }
 
-    private int chestUI(BaseItem[] itemChoices) {
-        // temporär bis UI dafür da:
-        return 0;
+    public boolean isAwaitingChestChoice() {
+        return awaitingChestChoice;
+    }
+
+    public BaseItem[] getPendingChestItems() {
+        return pendingChestItems;
+    }
+
+    // Wird von der Chest UI aufgerufen, sobald der Spieler ein Item gewählt hat.
+    public void chooseChestItem(int result) {
+        if (!awaitingChestChoice || pendingChestItems == null) return;
+
+        unlockItem(pendingChestItems[result].getID());
+
+        pendingChestItems = null;
+        awaitingChestChoice = false;
     }
 
     private BaseItem rollChestItem(ChestType chestType, BaseItem[] alreadyPicked, int pickedCount) {
@@ -390,7 +422,7 @@ public final class PlayerState {
         System.out.println("Registered PlayerClass: " + playerData.playerClass); // debug
     }
 
-    // true = dodged, false = nicht dodged => damage bekommen
+    // true = dodged, false = nicht dodged
     private boolean tryDodge() {
         float dodgeChance = playerStats.getStat(StatScope.ALL, StatType.DODGE_CHANCE);
 
@@ -484,6 +516,8 @@ public final class PlayerState {
         float weight = 1f;
         String abilityID = ability.getID();
 
+        // Wenn abilities geskipped werden (also man die Chance hat sie zu nehmen, aber sich dagegen entscheidet,
+        // werden sie erstmal weniger oft angezeigt.
         if (playerData.skippedAbilityOptions.containsKey(abilityID)) {
             float skippedCount = playerData.skippedAbilityOptions.get(abilityID);
             weight *= 1f - skippedCount;
@@ -507,24 +541,5 @@ public final class PlayerState {
         if(abilityScope == null) return false; // Ability ist neutral / hat kein Element
         return abilityScope == playerClassRegistry.getPlayerClass(playerData.playerClass).getScope();
         // => Ability hat gleiches Element (Scope) wie Player Klasse
-    }
-
-    private int levleUpUI(String[] abilityOptions) {
-        // Muss von Levin implementiert werden.
-
-        // temporär bis da hin:
-        return 1;
-    }
-
-    // DEBUG:
-    private void printStringArray(String[] array) {
-        for (String str : array) {
-            System.out.println(str);
-        }
-    }
-
-    public void gameOver()
-    {
-        gameOver = true;
     }
 }

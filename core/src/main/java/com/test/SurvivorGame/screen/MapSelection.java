@@ -61,7 +61,6 @@ public class MapSelection extends ScreenAdapter {
             Label description = new Label(map.getDescription(), skin);
             description.setWrap(true);
             description.setAlignment(Align.center);
-            System.out.println("BEST TIME IN MAP SELECTION: " + save.bestSurvivalTime);
             Label bestTime = new Label(
                 "Best Survival Time: " + formatTime(save.bestSurvivalTime),
                 skin

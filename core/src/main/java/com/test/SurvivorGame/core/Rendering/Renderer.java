@@ -14,6 +14,8 @@ import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.screen.GameState;
 import com.test.SurvivorGame.screen.HuD.HUDRenderer;
 import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
+import com.test.SurvivorGame.screen.HuD.LevelUpUI;
+import com.test.SurvivorGame.screen.HuD.ChestUI;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,6 +37,8 @@ public class Renderer {
     private ShapeRenderer shapeRenderer;
     private PlayerData playerData;
     private PauseMenuRenderer pauseMenu;
+    private LevelUpUI levelUpUI;
+    private ChestUI chestUI;
 
     private GameState gamestate;
 
@@ -352,7 +356,7 @@ public class Renderer {
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
 
-    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData,PauseMenuRenderer pauseMenu) {
+    public Renderer(Batch batch, float screenWidth, float screenHeight, World world, ShapeRenderer shapeRenderer,PlayerData playerData,PauseMenuRenderer pauseMenu, LevelUpUI levelUpUI, ChestUI chestUI) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
@@ -361,6 +365,8 @@ public class Renderer {
         this.shapeRenderer = shapeRenderer; // für debug der collider
         this.hud = new HUDRenderer(batch, shapeRenderer);
         this.pauseMenu = pauseMenu;
+        this.levelUpUI = levelUpUI;
+        this.chestUI = chestUI;
 
         this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
@@ -949,7 +955,7 @@ public class Renderer {
             new TextureRegion(firearrow1),
             new TextureRegion(firearrow2),
             new TextureRegion(firearrow3));
-            fireArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+        fireArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 
         // ab hier water blast
         waterblast0 = new Texture (Gdx.files.internal("Ability/waterBlast1.png"));
@@ -972,6 +978,8 @@ public class Renderer {
         viewport.update(width, height, true);
         hud.resize(width, height); //hier etwas für Hud screen dazu
         pauseMenu.resize(width, height);
+        levelUpUI.resize(width, height);
+        chestUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
     {
@@ -1048,6 +1056,14 @@ public class Renderer {
         if(gameState == GameState.PAUSED)
         {
             pauseMenu.render();
+        }
+        else if (gameState == GameState.LEVEL_UP)
+        {
+            levelUpUI.render();
+        }
+        else if (gameState == GameState.CHEST_OPENING)
+        {
+            chestUI.render();
         }
 
     }
@@ -1168,26 +1184,26 @@ public class Renderer {
             currentFrame = animation.getKeyFrame(geomancerAnimationTime);
         }
 
-            Color oldColor = new Color(batch.getColor());
-            if (player.isDamageFlashing()) {
-                float flashProgress = player.getDamageFlashProgress();
-                float colorFade = 1f - flashProgress;
-                batch.setColor(1f, 0.25f + 0.75f * colorFade, 0.25f + 0.75f * colorFade, 1f);
-            }
-            if (playerState.isDodgeEffectActive()) {
-                batch.setColor(10f, 10f, 10f, 0.5f);
-            }
-
-            batch.draw(
-                currentFrame,
-                player.getX(),
-                player.getY(),
-                player.getWidth(),
-                player.getHeight()
-            );
-
-            batch.setColor(oldColor);
+        Color oldColor = new Color(batch.getColor());
+        if (player.isDamageFlashing()) {
+            float flashProgress = player.getDamageFlashProgress();
+            float colorFade = 1f - flashProgress;
+            batch.setColor(1f, 0.25f + 0.75f * colorFade, 0.25f + 0.75f * colorFade, 1f);
         }
+        if (playerState.isDodgeEffectActive()) {
+            batch.setColor(10f, 10f, 10f, 0.5f);
+        }
+
+        batch.draw(
+            currentFrame,
+            player.getX(),
+            player.getY(),
+            player.getWidth(),
+            player.getHeight()
+        );
+
+        batch.setColor(oldColor);
+    }
 
     private void renderEnemy(Enemy enemy) {
 
@@ -1285,7 +1301,7 @@ public class Renderer {
     private void renderFireArrow(FireArrowProjectile fireArrow, float deltaTime) {
         Animation<TextureRegion> animation;
 
-            animation = fireArrowAnimation;
+        animation = fireArrowAnimation;
 
         TextureRegion currentFrame = animation.getKeyFrame(fireArrow.getAnimationTime());
 
@@ -1418,5 +1434,7 @@ public class Renderer {
         fireball9.dispose();
         fireball10.dispose();
         hud.dispose();
+        levelUpUI.dispose();
+        chestUI.dispose();
     }
 }

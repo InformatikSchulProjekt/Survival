@@ -31,8 +31,11 @@ public class Main extends Game {
         return batch;
     }
 
-    public void gameOver() {
-        // temporär bis GameMenu implementiert:
+    public void gameOver(boolean restart,String map) {
+        if (restart) {
+            setScreen(new GamePlayScreen(this, dataLoader, map));
+            return;
+        }
         setScreen(new TitleScreen(this, dataLoader));
     }
 }

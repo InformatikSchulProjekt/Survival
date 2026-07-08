@@ -54,11 +54,13 @@ public final class PlayerStats {
 
             if (modifier.getModifierType() == ModifierType.FLAT) {
                 flatBonus += modifier.getValue();
+                //System.out.println("Applied FLAT: +" + modifier.getValue() + " from "+modifier.getSourceId());
             } else if (modifier.getModifierType() == ModifierType.PERCENT) {
                 percentBonus += modifier.getValue();
+                //System.out.println("Applied PERCENT: +" + modifier.getValue() + " from "+modifier.getSourceId());
             }
         }
-
+        //System.out.println("TOTAL: "+(baseValue + flatBonus) * (1f + percentBonus));
         return (baseValue + flatBonus) * (1f + percentBonus);
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
-import com.test.SurvivorGame.entity.enemy.Slime;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.maps.WaveControl.EnemyFactory;
 import com.test.SurvivorGame.world.maps.WaveControl.Wave;
@@ -26,21 +25,21 @@ public class SpawnManager {
 
     private Player player;
     private World world;
-    GameMap map;
+    GameMap gameMap;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private int currentWave;
     private Wave currentWaveReference;
 
-    public SpawnManager(World world, GameMap map)
+    public SpawnManager(World world, GameMap gameMap)
     {
         this.world = world;
         this.player = world.getPlayer();
         currentWave = 1;
-        this.map = map;
+        this.gameMap = gameMap;
 
-        this.currentWaveReference = map.getSpawnProfile().getCurrentWave(currentWave);
+        this.currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(currentWave);
     }
 
     public void update(float deltaTime, GameMap map)
@@ -83,11 +82,12 @@ public class SpawnManager {
             triggerBossPhase();
         }
 
-        if(enemies.isEmpty() && map.getSpawnProfile().hasNextWave(currentWave))
+        if(enemies.isEmpty() && gameMap.getSpawnProfile().hasNextWave(currentWave))
         {
+            world.saveGame();
             startNextWave();
         }
-        if(enemies.isEmpty() && !map.getSpawnProfile().hasNextWave(currentWave))
+        if(enemies.isEmpty() && !gameMap.getSpawnProfile().hasNextWave(currentWave))
         {
             System.out.println("No Waves; You Completed"); // Funktion nach abschluss der map
         }
@@ -121,6 +121,8 @@ public class SpawnManager {
             MathUtils.sinDeg(angle) * distance;
 
         enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world));
+
+        world.setSurvivalTimePaused(true); // timer stop
     }
 
     private void updateEnemy(float deltaTime, GameMap map)
@@ -186,7 +188,7 @@ public class SpawnManager {
     private void startNextWave()
     {
         currentWave++;
-        currentWaveReference = map.getSpawnProfile().getCurrentWave(currentWave);
+        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(currentWave);
 
         waveTime = 0f;
         spawnTimer = 0f;

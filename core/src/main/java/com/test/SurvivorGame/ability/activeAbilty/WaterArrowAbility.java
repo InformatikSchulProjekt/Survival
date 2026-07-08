@@ -8,50 +8,44 @@ import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.Fireball;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterArrowProjectile;
 import com.test.SurvivorGame.world.World;
 
-public class FireballAbility extends ActiveAbility {
+public class WaterArrowAbility extends ActiveAbility {
 
-    public static final String ID = "fireball";
+    public static final String ID = "water_arrow";
 
     private final Viewport viewport;
     private final Player player;
     private final World world;
     private final PlayerStats playerStats;
     private final PlayerState playerState;
-    private final int level;
+    private int level;
 
+    // Ability base Stats
     private final float baseDuration = 3f;
     private final float baseWidth = 3f;
     private final float baseHeight = 0.6f;
     private final float baseSpeed = 7f;
+    private final int basePierce = 3;
     private final float baseDamage = 0.5f;
-    private float duration = 2f;
-    private float effectSize = 3f;
-    private float speed = 6f;
-    private float explosionRadius = 2f;
-    private float baseCooldown = 1f; // müsst ihr noch anpassen
-
-    private static float damage = 2f;
+    private final float baseCooldown = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    private Fireball fireball;
-
-
-    public FireballAbility(World world, Viewport viewport) {
+    public WaterArrowAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
+        this.viewport = viewport;
         this.playerStats = player.getPlayerState().getPlayerStats();
         this.playerState = player.getPlayerState();
-        this.viewport = viewport;
         this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
     }
 
     @Override
-    public void activate() {
-        fireball = new Fireball(
+    protected void activate() {
+        WaterArrowProjectile waterArrowProjectile = new WaterArrowProjectile(
             player.getX(),
             player.getY(),
             baseWidth * getSize(),
@@ -60,10 +54,12 @@ public class FireballAbility extends ActiveAbility {
             player,
             viewport,
             getSpeed(),
-            getDuration(),
-            getDamage()
+            baseDuration,
+            getDamage(),
+            getPierce()
         );
-        world.addAbility(fireball);
+
+        world.addAbility(waterArrowProjectile);
     }
 
     public void dispose() {
@@ -73,23 +69,22 @@ public class FireballAbility extends ActiveAbility {
     public float getDamage() {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
-        damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
-        if (level >= 2){
-            damage = 1.15f;        }
-        if (level==5){
+        damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
+        if (level >= 2) {
+            damage = 1.1f;
+        }
+        if (level >= 5) {
             damage = 1.15f;
         }
         return damage;
+
     }
 
     public float getSize() {
         float size = 1f;
         size *= playerStats.getStat(StatType.MAGIC_SIZE);
-        size *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_SIZE);
-        if(level >= 3){
-            size *= 1.05f;
-        }
-        if(level == 5){
+        size *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_SIZE);
+        if (level >= 5) {
             size *= 1.05f;
         }
         return size;
@@ -103,19 +98,25 @@ public class FireballAbility extends ActiveAbility {
 
     public float getDuration() {
         float duration = baseDuration;
-        duration *= playerStats.getStat(StatType.MAGIC_DURATION);
-        duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
+        if (level >= 4) {
+            duration *= 2;
+        }
         return duration;
+    }
+
+    public int getPierce() {
+        int level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        int pierce = basePierce;
+        if (level >= 3) pierce += 3; // wenn die Ability Level 3 erreicht wird pierce um 2 erhöht
+        return pierce;
     }
 
     public float getCooldown() {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
-        if (level>=4){
-            cooldown *= 0.95f;
-        }
+        cooldown *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_COOLDOWN);
         return cooldown;
+
     }
 
     @Override
@@ -125,7 +126,7 @@ public class FireballAbility extends ActiveAbility {
 
     @Override
     public String getName() {
-        return "Fireball Ability";
+        return "Water Arrow";
     }
 
     @Override
@@ -137,17 +138,18 @@ public class FireballAbility extends ActiveAbility {
     public String getDescription(int level) {
         switch (level) {
             case 1:
-                return "Shoots a fireball that explodes on impact";
+                return "Shoots a water arrow that explodes on impact";
             case 2:
-                return "Fireball damage increased by 15%";
+                return "Water arrow damage increased by 10%";
             case 3:
-                return "Fireball size increases by 5%";
+                return "Water arrow pierce increases by 3";
             case 4:
-                return "Cooldown decreased by 5%";
+                return "Duration increased";
             case 5:
                 return "Size increased by 5% and damage increased by 15%";
             default:
                 return "No description available";
         }
     }
+
 }
