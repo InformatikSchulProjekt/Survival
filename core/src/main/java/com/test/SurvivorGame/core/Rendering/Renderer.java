@@ -71,16 +71,23 @@ public class Renderer {
     private final Texture pyromancerback3;
     private final Texture pyromancerback4;
     private final Texture pyromancerback5;
+
     private final Texture pyromancerfront1;
     private final Texture pyromancerfront2;
     private final Texture pyromancerfront3;
     private final Texture pyromancerfront4;
     private final Texture pyromancerfront5;
+
     private final Texture pyromancerright1;
     private final Texture pyromancerright2;
     private final Texture pyromancerright3;
     private final Texture pyromancerright4;
     private final Texture pyromancerright5;
+    private final Texture pyromancerright6;
+    private final Texture pyromancerright7;
+    private final Texture pyromancerright8;
+    private final Texture pyromancerright9;
+
     private final Texture pyromancerleft1;
     private final Texture pyromancerleft2;
     private final Texture pyromancerleft3;
@@ -88,6 +95,9 @@ public class Renderer {
     private final Texture pyromancerleft5;
     private final Texture pyromancerleft6;
     private final Texture pyromancerleft7;
+    private final Texture pyromancerleft8;
+    private final Texture pyromancerleft9;
+
     private final Animation<TextureRegion> pyromanceridleAnimation;
     private final Animation<TextureRegion> pyromancerbackAnimation;
     private final Animation<TextureRegion> pyromancerfrontAnimation;
@@ -95,24 +105,77 @@ public class Renderer {
     private final Animation<TextureRegion> pyromancerleftAnimation;
     private float pyromancerAnimationTime = 0f;
 
-    // Ab hier Aeromancer
+
+    // ===================== AEROMANCER =====================
     private final Texture aeromancerTexture;
     private final Texture aeromanceridle2;
     private final Texture aeromanceridle3;
     private final Texture aeromanceridle4;
+
     private final Texture aeromancerback1;
     private final Texture aeromancerback2;
+    private final Texture aeromancerback3;
+    private final Texture aeromancerback4;
+    private final Texture aeromancerback5;
+
     private final Texture aeromancerfront1;
     private final Texture aeromancerfront2;
     private final Texture aeromancerfront3;
+    private final Texture aeromancerfront4;
+    private final Texture aeromancerfront5;
+
     private final Texture aeromancerright1;
     private final Texture aeromancerright2;
     private final Texture aeromancerright3;
     private final Texture aeromancerright4;
+    private final Texture aeromancerright5;
+    private final Texture aeromancerright6;
+    private final Texture aeromancerright7;
+    private final Texture aeromancerright8;
+    private final Texture aeromancerright9;
+    private final Texture aeromancerright10;
+    private final Texture aeromancerright11;
+    private final Texture aeromancerright12;
+    private final Texture aeromancerright13;
+    private final Texture aeromancerright14;
+    private final Texture aeromancerright15;
+    private final Texture aeromancerright16;
+    private final Texture aeromancerright17;
+    private final Texture aeromancerright18;
+    private final Texture aeromancerright19;
+    private final Texture aeromancerright20;
+    private final Texture aeromancerright21;
+    private final Texture aeromancerright22;
+    private final Texture aeromancerright23;
+    private final Texture aeromancerright24;
+    private final Texture aeromancerright25;
+
     private final Texture aeromancerleft1;
     private final Texture aeromancerleft2;
     private final Texture aeromancerleft3;
     private final Texture aeromancerleft4;
+    private final Texture aeromancerleft5;
+    private final Texture aeromancerleft6;
+    private final Texture aeromancerleft7;
+    private final Texture aeromancerleft8;
+    private final Texture aeromancerleft9;
+    private final Texture aeromancerleft10;
+    private final Texture aeromancerleft11;
+    private final Texture aeromancerleft12;
+    private final Texture aeromancerleft13;
+    private final Texture aeromancerleft14;
+    private final Texture aeromancerleft15;
+    private final Texture aeromancerleft16;
+    private final Texture aeromancerleft17;
+    private final Texture aeromancerleft18;
+    private final Texture aeromancerleft19;
+    private final Texture aeromancerleft20;
+    private final Texture aeromancerleft21;
+    private final Texture aeromancerleft22;
+    private final Texture aeromancerleft23;
+    private final Texture aeromancerleft24;
+    private final Texture aeromancerleft25;
+
     private float aeromancerAnimationTime = 0f;
 
     private final Animation<TextureRegion> aeromanceridleAnimation;
@@ -121,11 +184,13 @@ public class Renderer {
     private final Animation<TextureRegion> aeromancerrightAnimation;
     private final Animation<TextureRegion> aeromancerleftAnimation;
 
-    // Ab hier Hydromancer
+
+    // ===================== HYDROMANCER =====================
     private final Texture hydromancerTexture;
     private final Texture hydromanceridle2;
     private final Texture hydromanceridle3;
     private final Texture hydromanceridle4;
+
     private final Texture hydromancerback1;
     private final Texture hydromancerback2;
     private final Texture hydromancerback3;
@@ -137,6 +202,7 @@ public class Renderer {
     private final Texture hydromancerfront3;
     private final Texture hydromancerfront4;
     private final Texture hydromancerfront5;
+
     private final Texture hydromancerright1;
     private final Texture hydromancerright2;
     private final Texture hydromancerright3;
@@ -146,7 +212,6 @@ public class Renderer {
     private final Texture hydromancerright7;
     private final Texture hydromancerright8;
     private final Texture hydromancerright9;
-
 
     private final Texture hydromancerleft1;
     private final Texture hydromancerleft2;
@@ -160,7 +225,6 @@ public class Renderer {
 
     private float hydromancerAnimationTime = 0f;
 
-
     private final Animation<TextureRegion> hydromanceridleAnimation;
     private final Animation<TextureRegion> hydromancerbackAnimation;
     private final Animation<TextureRegion> hydromancerfrontAnimation;
@@ -168,33 +232,51 @@ public class Renderer {
     private final Animation<TextureRegion> hydromancerleftAnimation;
 
 
-    // Ab hier Geomancer
+    // ===================== GEOMANCER =====================
     private final Texture geomancerTexture;
     private final Texture geomanceridle2;
     private final Texture geomanceridle3;
     private final Texture geomanceridle4;
+
     private final Texture geomancerback1;
     private final Texture geomancerback2;
+    private final Texture geomancerback3;
+    private final Texture geomancerback4;
+    private final Texture geomancerback5;
+
     private final Texture geomancerfront1;
     private final Texture geomancerfront2;
     private final Texture geomancerfront3;
+    private final Texture geomancerfront4;
+    private final Texture geomancerfront5;
+
     private final Texture geomancerright1;
     private final Texture geomancerright2;
     private final Texture geomancerright3;
     private final Texture geomancerright4;
+    private final Texture geomancerright5;
+    private final Texture geomancerright6;
+    private final Texture geomancerright7;
+    private final Texture geomancerright8;
+    private final Texture geomancerright9;
+
     private final Texture geomancerleft1;
     private final Texture geomancerleft2;
     private final Texture geomancerleft3;
     private final Texture geomancerleft4;
-    private float geomancerAnimationTime = 0f;
+    private final Texture geomancerleft5;
+    private final Texture geomancerleft6;
+    private final Texture geomancerleft7;
+    private final Texture geomancerleft8;
+    private final Texture geomancerleft9;
 
+    private float geomancerAnimationTime = 0f;
 
     private final Animation<TextureRegion> geomanceridleAnimation;
     private final Animation<TextureRegion> geomancerbackAnimation;
     private final Animation<TextureRegion> geomancerfrontAnimation;
     private final Animation<TextureRegion> geomancerrightAnimation;
     private final Animation<TextureRegion> geomancerleftAnimation;
-
     //Ab hier Enemy1
     private final Texture enemy1Texture;
     private final Texture enemy1idle2;
@@ -326,24 +408,23 @@ public class Renderer {
             new TextureRegion(left3),
             new TextureRegion(left4));
         leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
         //pyromancer ab hier
         this.pyromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
-        TextureRegion[][] pyromancerframes = TextureRegion.split(pyromancerTexture, 64, 64);
-        pyromanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
-        pyromanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
-        pyromanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+        pyromanceridle2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
+        pyromanceridle3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
+        pyromanceridle4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
         pyromanceridleAnimation = new Animation<>(0.4f,
             new TextureRegion(pyromanceridle2),
             new TextureRegion(pyromanceridle3),
             new TextureRegion(pyromanceridle4));
         pyromanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        pyromancerfront1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c1.png"));
-        pyromancerfront2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c2.png"));
-        pyromancerfront3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c3.png"));
-        pyromancerfront4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c4.png"));
-        pyromancerfront5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c5.png"));
+        pyromancerfront1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c2.png"));
+        pyromancerfront2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c3.png"));
+        pyromancerfront3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c4.png"));
+        pyromancerfront4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c5.png"));
+        pyromancerfront5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r1_c2.png"));
+
         pyromancerfrontAnimation = new Animation<>(0.2f,
             new TextureRegion(pyromancerfront1),
             new TextureRegion(pyromancerfront2),
@@ -357,49 +438,67 @@ public class Renderer {
         pyromancerback3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c3.png"));
         pyromancerback4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c4.png"));
         pyromancerback5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c5.png"));
-        pyromancerbackAnimation = new Animation<>(0.1f,
+
+        pyromancerbackAnimation = new Animation<>(0.2f,
             new TextureRegion(pyromancerback1),
             new TextureRegion(pyromancerback2),
             new TextureRegion(pyromancerback3),
             new TextureRegion(pyromancerback4),
             new TextureRegion(pyromancerback5));
         pyromancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        pyromancerright1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerright2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c10.png"));
-        pyromancerright3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerright4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c10.png"));
-        pyromancerright5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerrightAnimation = new Animation<>(0.2f,
+
+        pyromancerright1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r1_c1.png"));
+        pyromancerright2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r1_c2.png"));
+        pyromancerright3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r1_c3.png"));
+        pyromancerright4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r1_c4.png"));
+        pyromancerright5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r2_c1.png"));
+        pyromancerright6 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r2_c2.png"));
+        pyromancerright7 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r2_c3.png"));
+        pyromancerright8 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r2_c4.png"));
+        pyromancerright9 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Right/sprite_r2_c5.png"));
+
+        pyromancerrightAnimation = new Animation<>(0.08f,
             new TextureRegion(pyromancerright1),
             new TextureRegion(pyromancerright2),
             new TextureRegion(pyromancerright3),
             new TextureRegion(pyromancerright4),
-            new TextureRegion(pyromancerright5));
+            new TextureRegion(pyromancerright5),
+            new TextureRegion(pyromancerright6),
+            new TextureRegion(pyromancerright7),
+            new TextureRegion(pyromancerright8),
+            new TextureRegion(pyromancerright9));
         pyromancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        pyromancerleft1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleft2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleft3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleft4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleft5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleft6 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleft7 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r2_c9.png"));
-        pyromancerleftAnimation = new Animation<>(0.2f,
+
+        pyromancerleft1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r1_c1.png"));
+        pyromancerleft2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r1_c2.png"));
+        pyromancerleft3 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r1_c3.png"));
+        pyromancerleft4 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r1_c4.png"));
+        pyromancerleft5 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r2_c1.png"));
+        pyromancerleft6 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r2_c2.png"));
+        pyromancerleft7 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r2_c3.png"));
+        pyromancerleft8 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r2_c4.png"));
+        pyromancerleft9 = new Texture(Gdx.files.internal("Mancer/Pyromancer/Left/sprite_r2_c5.png"));
+
+
+        pyromancerleftAnimation = new Animation<>(0.08f,
             new TextureRegion(pyromancerleft1),
             new TextureRegion(pyromancerleft2),
             new TextureRegion(pyromancerleft3),
             new TextureRegion(pyromancerleft4),
             new TextureRegion(pyromancerleft5),
             new TextureRegion(pyromancerleft6),
-            new TextureRegion(pyromancerleft7));
+            new TextureRegion(pyromancerleft7),
+            new TextureRegion(pyromancerleft8),
+            new TextureRegion(pyromancerleft9));
         pyromancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         //Ab hier aeromancer
         // ===================== AEROMANCER =====================
         this.aeromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
 
-        aeromanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
-        aeromanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
-        aeromanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+        aeromanceridle2 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c1.png"));
+        aeromanceridle3 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c1.png"));
+        aeromanceridle4 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c1.png"));
 
         aeromanceridleAnimation = new Animation<>(0.4f,
             new TextureRegion(aeromanceridle2),
@@ -407,55 +506,149 @@ public class Renderer {
             new TextureRegion(aeromanceridle4));
         aeromanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        aeromancerfront1 = new Texture(Gdx.files.internal("Player/front 1.png"));
-        aeromancerfront2 = new Texture(Gdx.files.internal("Player/front 2.png"));
-        aeromancerfront3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+        aeromancerfront1 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r1_c2.png"));
+        aeromancerfront2 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r1_c3.png"));
+        aeromancerfront3 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r1_c4.png"));
+        aeromancerfront4 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r1_c5.png"));
+        aeromancerfront5 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r1_c2.png"));
 
         aeromancerfrontAnimation = new Animation<>(0.2f,
             new TextureRegion(aeromancerfront1),
             new TextureRegion(aeromancerfront2),
-            new TextureRegion(aeromancerfront3));
+            new TextureRegion(aeromancerfront3),
+            new TextureRegion(aeromancerfront4),
+            new TextureRegion(aeromancerfront5));
         aeromancerfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        aeromancerback1 = new Texture(Gdx.files.internal("Player/back 1.png"));
-        aeromancerback2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+        aeromancerback1 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c1.png"));
+        aeromancerback2 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c2.png"));
+        aeromancerback3 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c3.png"));
+        aeromancerback4 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c4.png"));
+        aeromancerback5 = new Texture(Gdx.files.internal("Mancer/Aeromancer/sprite_r4_c5.png"));
 
         aeromancerbackAnimation = new Animation<>(0.2f,
             new TextureRegion(aeromancerback1),
-            new TextureRegion(aeromancerback2));
+            new TextureRegion(aeromancerback2),
+            new TextureRegion(aeromancerback3),
+            new TextureRegion(aeromancerback4),
+            new TextureRegion(aeromancerback5));
         aeromancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        aeromancerright1 = new Texture(Gdx.files.internal("Player/right 1.png"));
-        aeromancerright2 = new Texture(Gdx.files.internal("Player/right 2.png"));
-        aeromancerright3 = new Texture(Gdx.files.internal("Player/right 3.png"));
-        aeromancerright4 = new Texture(Gdx.files.internal("Player/right 4.png"));
+        aeromancerright1 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r1_c1.png"));
+        aeromancerright2 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r1_c2.png"));
+        aeromancerright3 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r1_c3.png"));
+        aeromancerright4 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r1_c4.png"));
+        aeromancerright5 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r1_c5.png"));
+        aeromancerright6 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r2_c1.png"));
+        aeromancerright7 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r2_c2.png"));
+        aeromancerright8 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r2_c3.png"));
+        aeromancerright9 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r2_c4.png"));
+        aeromancerright10 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r2_c5.png"));
+        aeromancerright11 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r3_c1.png"));
+        aeromancerright12 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r3_c2.png"));
+        aeromancerright13 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r3_c3.png"));
+        aeromancerright14 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r3_c4.png"));
+        aeromancerright15 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r3_c5.png"));
+        aeromancerright16 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r4_c1.png"));
+        aeromancerright17 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r4_c2.png"));
+        aeromancerright18 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r4_c3.png"));
+        aeromancerright19 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r4_c4.png"));
+        aeromancerright20 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r4_c5.png"));
+        aeromancerright21 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r5_c1.png"));
+        aeromancerright22 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r5_c2.png"));
+        aeromancerright23 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r5_c3.png"));
+        aeromancerright24 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r5_c4.png"));
+        aeromancerright25 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Right/sprite_r5_c5.png"));
 
-        aeromancerrightAnimation = new Animation<>(0.2f,
+        aeromancerrightAnimation = new Animation<>(0.06f,
             new TextureRegion(aeromancerright1),
             new TextureRegion(aeromancerright2),
             new TextureRegion(aeromancerright3),
-            new TextureRegion(aeromancerright4));
+            new TextureRegion(aeromancerright4),
+            new TextureRegion(aeromancerright5),
+            new TextureRegion(aeromancerright6),
+            new TextureRegion(aeromancerright7),
+            new TextureRegion(aeromancerright8),
+            new TextureRegion(aeromancerright9),
+            new TextureRegion(aeromancerright10),
+            new TextureRegion(aeromancerright11),
+            new TextureRegion(aeromancerright12),
+            new TextureRegion(aeromancerright13),
+            new TextureRegion(aeromancerright14),
+            new TextureRegion(aeromancerright15),
+            new TextureRegion(aeromancerright16),
+            new TextureRegion(aeromancerright17),
+            new TextureRegion(aeromancerright18),
+            new TextureRegion(aeromancerright19),
+            new TextureRegion(aeromancerright20),
+            new TextureRegion(aeromancerright21),
+            new TextureRegion(aeromancerright22),
+            new TextureRegion(aeromancerright23),
+            new TextureRegion(aeromancerright24),
+            new TextureRegion(aeromancerright25));
         aeromancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        aeromancerleft1 = new Texture(Gdx.files.internal("Player/left 1.png"));
-        aeromancerleft2 = new Texture(Gdx.files.internal("Player/left 2.png"));
-        aeromancerleft3 = new Texture(Gdx.files.internal("Player/left 3.png"));
-        aeromancerleft4 = new Texture(Gdx.files.internal("Player/left 4.png"));
+        aeromancerleft1 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r1_c1.png"));
+        aeromancerleft2 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r1_c2.png"));
+        aeromancerleft3 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r1_c3.png"));
+        aeromancerleft4 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r1_c4.png"));
+        aeromancerleft5 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r1_c5.png"));
+        aeromancerleft6 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r2_c1.png"));
+        aeromancerleft7 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r2_c2.png"));
+        aeromancerleft8 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r2_c3.png"));
+        aeromancerleft9 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r2_c4.png"));
+        aeromancerleft10 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r2_c5.png"));
+        aeromancerleft11 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r3_c1.png"));
+        aeromancerleft12 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r3_c2.png"));
+        aeromancerleft13 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r3_c3.png"));
+        aeromancerleft14 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r3_c4.png"));
+        aeromancerleft15 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r3_c5.png"));
+        aeromancerleft16 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r4_c1.png"));
+        aeromancerleft17 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r4_c2.png"));
+        aeromancerleft18 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r4_c3.png"));
+        aeromancerleft19 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r4_c4.png"));
+        aeromancerleft20 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r4_c5.png"));
+        aeromancerleft21 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r5_c1.png"));
+        aeromancerleft22 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r5_c2.png"));
+        aeromancerleft23 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r5_c3.png"));
+        aeromancerleft24 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r5_c4.png"));
+        aeromancerleft25 = new Texture(Gdx.files.internal("Mancer/Aeromancer/Left/sprite_r5_c5.png"));
 
-        aeromancerleftAnimation = new Animation<>(0.2f,
+        aeromancerleftAnimation = new Animation<>(0.06f,
             new TextureRegion(aeromancerleft1),
             new TextureRegion(aeromancerleft2),
             new TextureRegion(aeromancerleft3),
-            new TextureRegion(aeromancerleft4));
+            new TextureRegion(aeromancerleft4),
+            new TextureRegion(aeromancerleft5),
+            new TextureRegion(aeromancerleft6),
+            new TextureRegion(aeromancerleft7),
+            new TextureRegion(aeromancerleft8),
+            new TextureRegion(aeromancerleft9),
+            new TextureRegion(aeromancerleft10),
+            new TextureRegion(aeromancerleft11),
+            new TextureRegion(aeromancerleft12),
+            new TextureRegion(aeromancerleft13),
+            new TextureRegion(aeromancerleft14),
+            new TextureRegion(aeromancerleft15),
+            new TextureRegion(aeromancerleft16),
+            new TextureRegion(aeromancerleft17),
+            new TextureRegion(aeromancerleft18),
+            new TextureRegion(aeromancerleft19),
+            new TextureRegion(aeromancerleft20),
+            new TextureRegion(aeromancerleft21),
+            new TextureRegion(aeromancerleft22),
+            new TextureRegion(aeromancerleft23),
+            new TextureRegion(aeromancerleft24),
+            new TextureRegion(aeromancerleft25));
         aeromancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         //hydromancer ab hier
 
         this.hydromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
 
-        hydromanceridle2 = new Texture(Gdx.files.internal("Mancer/Aquamancer/sprite_r1_c2.png"));
-        hydromanceridle3 = new Texture(Gdx.files.internal("Mancer/Aquamancer/sprite_r1_c2.png"));
-        hydromanceridle4 = new Texture(Gdx.files.internal("Mancer/Aquamancer/sprite_r1_c2.png"));
+        hydromanceridle2 = new Texture(Gdx.files.internal("Mancer/Aquamancer/sprite_r4_c1.png"));
+        hydromanceridle3 = new Texture(Gdx.files.internal("Mancer/Aquamancer/sprite_r4_c1.png"));
+        hydromanceridle4 = new Texture(Gdx.files.internal("Mancer/Aquamancer/sprite_r4_c1.png"));
 
         hydromanceridleAnimation = new Animation<>(0.4f,
             new TextureRegion(hydromanceridle2),
@@ -525,7 +718,7 @@ public class Renderer {
         hydromancerleft8 = new Texture(Gdx.files.internal("Mancer/Aquamancer/Left/sprite_r2_c4.png"));
         hydromancerleft9 = new Texture(Gdx.files.internal("Mancer/Aquamancer/Left/sprite_r2_c5.png"));
 
-        hydromancerleftAnimation = new Animation<>(0.2f,
+        hydromancerleftAnimation = new Animation<>(0.08f,
             new TextureRegion(hydromancerleft1),
             new TextureRegion(hydromancerleft2),
             new TextureRegion(hydromancerleft3),
@@ -541,9 +734,9 @@ public class Renderer {
 
         this.geomancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
 
-        geomanceridle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
-        geomanceridle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
-        geomanceridle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+        geomanceridle2 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c1.png"));
+        geomanceridle3 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c1.png"));
+        geomanceridle4 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c1.png"));
 
         geomanceridleAnimation = new Animation<>(0.4f,
             new TextureRegion(geomanceridle2),
@@ -551,46 +744,76 @@ public class Renderer {
             new TextureRegion(geomanceridle4));
         geomanceridleAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        geomancerfront1 = new Texture(Gdx.files.internal("Player/front 1.png"));
-        geomancerfront2 = new Texture(Gdx.files.internal("Player/front 2.png"));
-        geomancerfront3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+        geomancerfront1 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r1_c2.png"));
+        geomancerfront2 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r1_c3.png"));
+        geomancerfront3 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r1_c4.png"));
+        geomancerfront4 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r1_c5.png"));
+        geomancerfront5 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r1_c2.png"));
 
         geomancerfrontAnimation = new Animation<>(0.2f,
             new TextureRegion(geomancerfront1),
             new TextureRegion(geomancerfront2),
-            new TextureRegion(geomancerfront3));
+            new TextureRegion(geomancerfront3),
+            new TextureRegion(geomancerfront4),
+            new TextureRegion(geomancerfront5));
         geomancerfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        geomancerback1 = new Texture(Gdx.files.internal("Player/back 1.png"));
-        geomancerback2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+        geomancerback1 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c1.png"));
+        geomancerback2 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c2.png"));
+        geomancerback3 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c3.png"));
+        geomancerback4 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c4.png"));
+        geomancerback5 = new Texture(Gdx.files.internal("Mancer/Geomancer/sprite_r4_c5.png"));
 
         geomancerbackAnimation = new Animation<>(0.2f,
             new TextureRegion(geomancerback1),
-            new TextureRegion(geomancerback2));
+            new TextureRegion(geomancerback2),
+            new TextureRegion(geomancerback3),
+            new TextureRegion(geomancerback4),
+            new TextureRegion(geomancerback5));
         geomancerbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        geomancerright1 = new Texture(Gdx.files.internal("Player/right 1.png"));
-        geomancerright2 = new Texture(Gdx.files.internal("Player/right 2.png"));
-        geomancerright3 = new Texture(Gdx.files.internal("Player/right 3.png"));
-        geomancerright4 = new Texture(Gdx.files.internal("Player/right 4.png"));
+        geomancerright1 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r1_c1.png"));
+        geomancerright2 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r1_c2.png"));
+        geomancerright3 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r1_c3.png"));
+        geomancerright4 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r1_c4.png"));
+        geomancerright5 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r2_c1.png"));
+        geomancerright6 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r2_c2.png"));
+        geomancerright7 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r2_c3.png"));
+        geomancerright8 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r2_c4.png"));
+        geomancerright9 = new Texture(Gdx.files.internal("Mancer/Geomancer/Right/sprite_r2_c5.png"));
 
-        geomancerrightAnimation = new Animation<>(0.2f,
+        geomancerrightAnimation = new Animation<>(0.08f,
             new TextureRegion(geomancerright1),
             new TextureRegion(geomancerright2),
             new TextureRegion(geomancerright3),
-            new TextureRegion(geomancerright4));
+            new TextureRegion(geomancerright4),
+            new TextureRegion(geomancerright5),
+            new TextureRegion(geomancerright6),
+            new TextureRegion(geomancerright7),
+            new TextureRegion(geomancerright8),
+            new TextureRegion(geomancerright9));
         geomancerrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        geomancerleft1 = new Texture(Gdx.files.internal("Player/left 1.png"));
-        geomancerleft2 = new Texture(Gdx.files.internal("Player/left 2.png"));
-        geomancerleft3 = new Texture(Gdx.files.internal("Player/left 3.png"));
-        geomancerleft4 = new Texture(Gdx.files.internal("Player/left 4.png"));
+        geomancerleft1 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r1_c1.png"));
+        geomancerleft2 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r1_c2.png"));
+        geomancerleft3 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r1_c3.png"));
+        geomancerleft4 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r1_c4.png"));
+        geomancerleft5 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r2_c1.png"));
+        geomancerleft6 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r2_c2.png"));
+        geomancerleft7 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r2_c3.png"));
+        geomancerleft8 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r2_c4.png"));
+        geomancerleft9 = new Texture(Gdx.files.internal("Mancer/Geomancer/Left/sprite_r2_c5.png"));
 
-        geomancerleftAnimation = new Animation<>(0.2f,
+        geomancerleftAnimation = new Animation<>(0.08f,
             new TextureRegion(geomancerleft1),
             new TextureRegion(geomancerleft2),
             new TextureRegion(geomancerleft3),
-            new TextureRegion(geomancerleft4));
+            new TextureRegion(geomancerleft4),
+            new TextureRegion(geomancerleft5),
+            new TextureRegion(geomancerleft6),
+            new TextureRegion(geomancerleft7),
+            new TextureRegion(geomancerleft8),
+            new TextureRegion(geomancerleft9));
         geomancerleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         //Enemy1 ab hier

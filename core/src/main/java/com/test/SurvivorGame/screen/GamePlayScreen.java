@@ -53,7 +53,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.abilitySlots[2] = "fire_arrow";
         playerData.abilitySlots[3] = "firestorm";
 
-        playerData.playerClass = "hydromancer"; // temporär bis Klasse picken logic da.
+        playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData);
         this.world = new World(screenWidth, screenHeight, playerState, gameMap);
