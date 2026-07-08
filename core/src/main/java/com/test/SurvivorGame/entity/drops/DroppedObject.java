@@ -39,4 +39,10 @@ public abstract class DroppedObject extends GameObject {
             despawned = true;
         }
     }
+    protected void setDespawned(boolean despawned) {
+        this.despawned = despawned;
+    }
+    public Player getPlayer() {
+        return player;
+    }
 }
