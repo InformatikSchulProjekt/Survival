@@ -44,4 +44,5 @@ public abstract class BaseAbility {
     protected void activate(){}; // nicht jede ability erzeugt objekte
 
 
+
 }
