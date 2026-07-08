@@ -24,9 +24,9 @@ public class SpawnManager {
     }
     private WaveState state = WaveState.NORMAL;
 
-    private Player player;
-    private World world;
-    private PlayerData playerData;
+    private final Player player;
+    private final World world;
+    private final PlayerData playerData;
     GameMap gameMap;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
@@ -40,7 +40,7 @@ public class SpawnManager {
         this.playerData = player.getPlayerState().getPlayerData();
         this.gameMap = gameMap;
 
-        this.currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
+        setNewCurrentWave();
     }
 
     public void update(float deltaTime, GameMap map)
@@ -172,15 +172,36 @@ public class SpawnManager {
     {
         if (playerData.wave == gameMap.getMaxWaves()) {
             // => Map Completion screen anzeigen. + screen pausieren
-            return;
         }
         playerData.wave++;
-        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
+
+        setNewCurrentWave();
 
         waveTime = 0f;
         spawnTimer = 0f;
 
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;
+    }
+
+    private void setNewCurrentWave() {
+        if (isInfiniteMode()) {
+            setNewInfiniteWave();
+        } else {
+            setNewNormalWave();
+        }
+    }
+
+    private void setNewNormalWave() {
+        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
+    }
+
+    // TODO!
+    private void setNewInfiniteWave() {
+        System.out.println("INFINITE WAVE SETUP NOT IMPLEMENTED!");
+    }
+
+    private boolean isInfiniteMode() {
+        return playerData.wave >= gameMap.getMaxWaves();
     }
 }
