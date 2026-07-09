@@ -23,14 +23,14 @@ public class PauseMenuUI {
 
     // Buttons
     private final TextButton resumeButton;
-    private final TextButton saveButton;
+    private final TextButton backToMenuButton;
     private final TextButton giveUpButton;
     private final TextButton settingsButton;
     private final TextButton inventoryButton;
     private final TextButton abilitiesButton;
 
     private Runnable resumeListener;
-    private Runnable saveListener;
+    private Runnable backToMenuListener;
     private Runnable giveUpListener;
     private Runnable settingsListener;
     private Runnable inventoryListener;
@@ -48,7 +48,7 @@ public class PauseMenuUI {
 
         // Buttons erstellen
         resumeButton = new TextButton("Resume", skin);
-        saveButton = new TextButton("Save", skin);
+        backToMenuButton = new TextButton("Back to Menu", skin);
         giveUpButton = new TextButton("Give Up", skin);
         settingsButton = new TextButton("Settings", skin);
         inventoryButton = new TextButton("Inventory", skin);
@@ -63,11 +63,11 @@ public class PauseMenuUI {
             }
         });
 
-        saveButton.addListener(new ClickListener() {
+        backToMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (saveListener != null) {
-                    saveListener.run();
+                if (backToMenuListener != null) {
+                    backToMenuListener.run();
                 }
             }
         });
@@ -121,7 +121,7 @@ public class PauseMenuUI {
         table.add(resumeButton).width(250).pad(5);
         table.row();
 
-        table.add(saveButton).width(250).pad(5);
+        table.add(backToMenuButton).width(250).pad(5);
         table.row();
 
         table.add(giveUpButton).width(250).pad(5);
@@ -170,8 +170,8 @@ public class PauseMenuUI {
         this.resumeListener = listener;
     }
 
-    public void setSaveListener(Runnable listener) {
-        this.saveListener = listener;
+    public void setBackToMenuListener(Runnable listener) {
+        this.backToMenuListener = listener;
     }
 
     public void setGiveUpListener(Runnable listener)

@@ -62,8 +62,6 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.abilitySlots[2] = "fire_arrow";
         playerData.abilitySlots[3] = "firestorm";
 
-        playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
-
         this.playerState = new PlayerState(playerData, this);
         this.world = new World(playerState, gameMap, map, dataLoader, this);
 
@@ -96,10 +94,10 @@ public class GamePlayScreen extends ScreenAdapter {
                 Gdx.input.setInputProcessor(null);
             }
         });
-        pauseMenu.setSaveListener(new Runnable() {
+        pauseMenu.setBackToMenuListener(new Runnable() {
             @Override
             public void run() {
-                dataLoader.savePlayerData(map, playerState.getPlayerData());
+                backToMenuWithoutSaving();
             }
         });
         pauseMenu.setGiveUpListener(new Runnable() {
@@ -202,6 +200,12 @@ public class GamePlayScreen extends ScreenAdapter {
         saveSurvivalTime();
         dataLoader.clearPlayerData(map);
         main.gameOver(restart, map);
+    }
+
+    private void backToMenuWithoutSaving() {
+        state = GameState.PAUSED;
+
+        main.setScreen(new TitleScreen(main, dataLoader));
     }
 
     // wird gecalled wenn Spiel verloren
