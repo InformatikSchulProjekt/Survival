@@ -57,7 +57,7 @@ public class GamePlayScreen extends ScreenAdapter {
         this.dataLoader = dataLoader;
         PlayerData playerData = dataLoader.getPlayerData(map);
         // bis ability slots gui da:
-        playerData.abilitySlots[0] = "wind_cutter";
+        playerData.abilitySlots[0] = "wind_bullet";
         playerData.abilitySlots[1] = "fireball";
         playerData.abilitySlots[2] = "fire_arrow";
         playerData.abilitySlots[3] = "firestorm";

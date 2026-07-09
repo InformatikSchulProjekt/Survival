@@ -25,7 +25,7 @@ public class FireStormAbility extends ActiveAbility {
     private float baseDuration = 1f;
     private float startSize = 0f;
     private float baseEndSize = 4f;
-    private static float baseDamage = 0.4f;
+    private static float baseDamage = 0.5f;
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 

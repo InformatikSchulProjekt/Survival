@@ -26,12 +26,10 @@ public class WindCutter extends ActiveAbility {
     private float duration = 3f;
     private float baseWidth = 3f;
     private float height= 0.7f;
-    private float speed = 7f;
+    private float speed = 6f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
-    private float delayedSpawnTimer = 10f;
-    private boolean secondCutterSpawned = false;
 
-    private static float baseDamage = 0.5f;
+    private static float baseDamage = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
@@ -42,7 +40,7 @@ public class WindCutter extends ActiveAbility {
         this.viewport = viewport;
         this.playerState = player.getPlayerState();
         this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
-        this.delayedSpawnTimer = 1f;
+
     }
 
     @Override
@@ -73,7 +71,7 @@ public class WindCutter extends ActiveAbility {
     public float getDamage() {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
-        damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_DAMAGE);
         if(level >= 2){
             damage *= 1.1f;
         }
@@ -101,7 +99,7 @@ public class WindCutter extends ActiveAbility {
     public float getCooldown() {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_COOLDOWN);
         if(level >= 3){
             cooldown *= 0.95f;
         }
@@ -123,9 +121,9 @@ public class WindCutter extends ActiveAbility {
             case 1:
                 return "creates a blade of wind that cuts the enemy";
             case 2:
-                return "Wave damage increased by 10%";
+                return "Wind cutter damage increased by 10%";
             case 3:
-                return "Water blast cooldown decreased by 5%";
+                return "Wind cutter blast cooldown decreased by 5%";
             case 4:
                 return "Width increased by 25%";
             case 5:
@@ -133,6 +131,5 @@ public class WindCutter extends ActiveAbility {
             default:
                 return "No description available";
         }
-        //reichweite noch einbauen morgen
     }
 }

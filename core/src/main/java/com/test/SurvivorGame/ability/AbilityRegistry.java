@@ -34,6 +34,7 @@ public final class AbilityRegistry {
         register(new SmallHeal(world, viewport));
         register(new Wave(world, viewport));
         register(new WindCutter(world, viewport));
+        register(new WindBullet(world, viewport));
     }
 
     public BaseAbility getAbility(String abilityId) {

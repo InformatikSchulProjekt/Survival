@@ -26,10 +26,10 @@ public class WaterBlast extends ActiveAbility {
     private float duration = 3f;
     private float baseWidth = 2f;
     private float height= 1f;
-    private float speed = 7f;
+    private float speed = 5f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private float baseDamage = 0.6f;
+    private float baseDamage = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 

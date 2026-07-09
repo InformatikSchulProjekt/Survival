@@ -27,10 +27,10 @@ public class RockBlast extends ActiveAbility {
     private float duration = 3f;
     private float baseWidth = 2f;
     private float height= 1f;
-    private float speed = 7f;
+    private float speed = 5f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private float baseDamage = 1f;
+    private float baseDamage = 1.5f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 

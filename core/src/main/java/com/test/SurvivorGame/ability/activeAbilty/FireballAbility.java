@@ -25,7 +25,7 @@ public class FireballAbility extends ActiveAbility {
     private final float baseDuration = 3f;
     private final float baseWidth = 3f;
     private final float baseHeight = 0.6f;
-    private final float baseSpeed = 7f;
+    private final float baseSpeed = 5f;
     private final float baseDamage = 0.5f;
     private float duration = 2f;
     private float effectSize = 3f;
@@ -33,7 +33,7 @@ public class FireballAbility extends ActiveAbility {
     private float explosionRadius = 2f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private static float damage = 2f;
+    private static float damage = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 

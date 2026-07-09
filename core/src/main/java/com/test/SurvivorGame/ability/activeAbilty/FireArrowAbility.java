@@ -32,9 +32,9 @@ public class FireArrowAbility extends ActiveAbility {
     private final float baseDuration = 3f;
     private final float baseWidth = 3f;
     private final float baseHeight= 0.6f;
-    private final float baseSpeed = 7f;
+    private final float baseSpeed = 6f;
     private final int basePierce = 3;
-    private final float baseDamage = 0.5f;
+    private final float baseDamage = 0.75f;
     private final float baseCooldown = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
