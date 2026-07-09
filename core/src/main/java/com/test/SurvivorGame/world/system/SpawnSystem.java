@@ -223,9 +223,6 @@ public class SpawnSystem {
 
     private void startNextWave()
     {
-        if (playerData.wave == gameMap.getMaxWaves()) {
-            gamePlayScreen.showGameFinishedUI();
-        }
         playerData.wave++;
 
         setNewCurrentWave();
