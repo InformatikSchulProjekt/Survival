@@ -1,30 +1,32 @@
 package com.test.SurvivorGame.world.wave;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.world.maps.GameMap;
+
+import java.util.ArrayList;
 
 public class InfiniteWaveGenerator {
 
-    private static float infiniteWaveCount = 0;
 
-    public static Wave generate(GameMap gameMap) {
+    public static Wave generate(GameMap gameMap, int infiniteWaveCount) {
 
-        infiniteWaveCount++;
+        ArrayList<EnemyType> bossTypes = gameMap.getMapsettings().getBossTypes();
+        EnemyType endBoss = bossTypes.get(MathUtils.random(bossTypes.size() - 1));
 
-        Wave finalWave = gameMap.getFinalWave();
-
+        Wave templateWave = gameMap.getFinalWave();
 
         Wave newWave = new Wave(
             gameMap.getMapsettings().getWaveTime(),
             gameMap.getMapsettings().getStartInterval(),
             gameMap.getMapsettings().getEndInterval(),
-            EnemyType.BOSS // muss man noch randomizen
+            endBoss
         );
 
-        newWave.setBossSpawnChance(
-            Math.min(50f, infiniteWaveCount * 2f)
-        );
+        newWave.setBossTypes(gameMap.getMapsettings().getBossTypes()); //für random-Boss encounters während der normalen wave phase
 
-        for (SpawnEntry entry : finalWave.getEnemyList())
+        newWave.setBossSpawnChance(Math.min(50f, infiniteWaveCount * 2f));
+
+        for (SpawnEntry entry : templateWave.getEnemyList())
         {
             newWave.addEnemy(
                 new SpawnEntry(

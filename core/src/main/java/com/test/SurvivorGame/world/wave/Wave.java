@@ -3,6 +3,7 @@ package com.test.SurvivorGame.world.wave;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Wave {
 
@@ -89,5 +90,10 @@ public class Wave {
 
     public EnemyType getRandomBoss() {
         return bossTypes.get(MathUtils.random(bossTypes.size() - 1));
+    }
+
+    public void setBossTypes(List<EnemyType> bossTypes)
+    {
+        this.bossTypes = new ArrayList<>(bossTypes);
     }
 }
