@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.maps.WaveControl.EnemyFactory;
 import com.test.SurvivorGame.world.maps.WaveControl.Wave;
@@ -23,19 +24,21 @@ public class SpawnManager {
     }
     private WaveState state = WaveState.NORMAL;
 
-    private Player player;
-    private World world;
-    GameMap gameMap;
+    private final Player player;
+    private final World world;
+    private final GameMap gameMap;
+    private final GamePlayScreen gamePlayScreen;
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private int currentWave;
     private Wave currentWaveReference;
 
-    public SpawnManager(World world, GameMap gameMap)
+    public SpawnManager(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
     {
         this.world = world;
         this.player = world.getPlayer();
+        this.gamePlayScreen = gamePlayScreen;
         currentWave = 1;
         this.gameMap = gameMap;
 
@@ -89,7 +92,7 @@ public class SpawnManager {
         }
         if(enemies.isEmpty() && !gameMap.getSpawnProfile().hasNextWave(currentWave))
         {
-            System.out.println("No Waves; You Completed"); // Funktion nach abschluss der map
+            gamePlayScreen.showGameFinishedUI();
         }
     }
 

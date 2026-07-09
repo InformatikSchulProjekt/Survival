@@ -10,7 +10,6 @@ import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.entity.drops.ChestObject;
-import com.test.SurvivorGame.entity.drops.ChestState;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
@@ -34,14 +33,13 @@ public class Renderer {
     private final Batch batch;
     private final Viewport viewport;
     private final World world;
-    private ShapeRenderer shapeRenderer;
-    private PlayerData playerData;
-    private PauseMenuRenderer pauseMenu;
-    private LevelUpUI levelUpUI;
-    private ChestUI chestUI;
-    private SettingsUI settingsUI;
-
-    private GameState gamestate;
+    private final ShapeRenderer shapeRenderer;
+    private final PlayerData playerData;
+    private final PauseMenuUI pauseMenu;
+    private final LevelUpUI levelUpUI;
+    private final ChestUI chestUI;
+    private final SettingsUI settingsUI;
+    private final MapFinishedUI mapFinishedUI;
 
     private final Texture playerTexture;
     private final Texture idle2;
@@ -378,10 +376,10 @@ public class Renderer {
                     World world,
                     ShapeRenderer shapeRenderer,
                     PlayerData playerData,
-                    PauseMenuRenderer pauseMenu,
+                    PauseMenuUI pauseMenu,
                     LevelUpUI levelUpUI,
                     ChestUI chestUI,
-                    SettingsUI settingsUI) {
+                    SettingsUI settingsUI, MapFinishedUI mapFinishedUI) {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
@@ -393,6 +391,7 @@ public class Renderer {
         this.levelUpUI = levelUpUI;
         this.chestUI = chestUI;
         this.settingsUI = settingsUI;
+        this.mapFinishedUI = mapFinishedUI;
 
         this.normalChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] normalChestframes = TextureRegion.split(normalChestTexture, 64, 64);
@@ -1053,6 +1052,7 @@ public class Renderer {
         levelUpUI.resize(width, height);
         chestUI.resize(width, height);
         settingsUI.resize(width, height);
+        mapFinishedUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
     {

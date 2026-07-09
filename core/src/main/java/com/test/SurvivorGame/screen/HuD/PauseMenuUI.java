@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.test.SurvivorGame.core.PlayerState;
 
-public class PauseMenuRenderer {
+public class PauseMenuUI {
 
     private final ShapeRenderer shapeRenderer;
     private final OrthographicCamera camera = new OrthographicCamera();
@@ -37,7 +37,7 @@ public class PauseMenuRenderer {
     private Runnable inventoryListener;
     private Runnable abilitiesListener;
 
-    public PauseMenuRenderer(ShapeRenderer shapeRenderer, PlayerState playerState) {
+    public PauseMenuUI(ShapeRenderer shapeRenderer) {
 
         this.shapeRenderer = shapeRenderer;
 
@@ -165,30 +165,6 @@ public class PauseMenuRenderer {
 
     public Stage getStage() {
         return stage;
-    }
-
-    public TextButton getResumeButton() {
-        return resumeButton;
-    }
-
-    public TextButton getSaveButtonButton() {
-        return saveButton;
-    }
-
-    public TextButton getGiveUpButton() {
-        return giveUpButton;
-    }
-
-    public TextButton getSettingsButton() {
-        return settingsButton;
-    }
-
-    public TextButton getInventoryButton() {
-        return inventoryButton;
-    }
-
-    public TextButton getAbilitiesButton() {
-        return abilitiesButton;
     }
 
     public void setResumeListener(Runnable listener) {

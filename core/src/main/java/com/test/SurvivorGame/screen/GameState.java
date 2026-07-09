@@ -3,5 +3,6 @@ package com.test.SurvivorGame.screen;public enum GameState {
     PLAYING,
     LEVEL_UP,
     CHEST_OPENING,
-    SETTINGS
+    SETTINGS,
+    MAP_FINISHED
 }
