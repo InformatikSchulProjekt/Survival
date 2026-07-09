@@ -7,18 +7,22 @@ import com.test.SurvivorGame.entity.Player;
 import java.util.List;
 
 public class CollisionSystem {
+    private final Player player;
 
     private float damageTimer = 0f;
     private static final float DAMAGE_INTERVAL = 0.5f;
 
+    public CollisionSystem(Player player) {
+        this.player = player;
+    }
+
     public void checkCollisions(
         float deltaTime,
-        Player player,
         List<Enemy> enemies,
         List<AbilityObject> abilityObjects
     ) {
         checkAbilityEnemyCollisions(abilityObjects, enemies);
-        checkPlayerEnemyCollisions(deltaTime, player, enemies);
+        checkPlayerEnemyCollisions(deltaTime, enemies);
     }
 
     private void checkAbilityEnemyCollisions(List<AbilityObject> abilities, List<Enemy> enemies) {
@@ -31,7 +35,7 @@ public class CollisionSystem {
         }
     }
 
-    private void checkPlayerEnemyCollisions(float deltaTime, Player player, List<Enemy> enemies) {
+    private void checkPlayerEnemyCollisions(float deltaTime, List<Enemy> enemies) {
         damageTimer += deltaTime;
 
         if (damageTimer >= DAMAGE_INTERVAL) {

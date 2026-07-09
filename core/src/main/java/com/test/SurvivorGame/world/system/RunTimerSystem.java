@@ -1,10 +1,16 @@
 package com.test.SurvivorGame.world.system;
 
-public class RunTimerSystem {
+import com.test.SurvivorGame.core.data.PlayerData;
 
+public class RunTimerSystem {
     private boolean survivalTimePaused = false;
-    private float survivalTime = 0f; // Vergangene Survivaltime, die im HUD angezeigt wird
-    private float passedTime = 0f; // Echte vergangene Zeit
+    private float survivalTime; // Vergangene Survivaltime, die im HUD angezeigt wird
+    private float passedTime; // Echte vergangene Zeit
+
+    public RunTimerSystem(PlayerData playerData) {
+        survivalTime = playerData.wave * 120f;
+        passedTime = survivalTime;
+    }
 
     public void update(float deltaTime) {
         passedTime += deltaTime;

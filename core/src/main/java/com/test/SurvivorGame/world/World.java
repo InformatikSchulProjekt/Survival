@@ -11,16 +11,15 @@ import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.system.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class World {
     private final Player player;
     private final SpawnSystem spawnSystem;
     private final AbilitySystem abilitySystem = new AbilitySystem();
-    private final CollisionSystem collisionSystem = new CollisionSystem();
+    private final CollisionSystem collisionSystem;
     private final DropSystem dropSystem = new DropSystem();
-    private final RunTimerSystem runTimerSystem = new RunTimerSystem();
+    private final RunTimerSystem runTimerSystem;
 
     private final String map;
     private final DataLoader dataLoader;
@@ -29,13 +28,14 @@ public class World {
 
     public World(PlayerState playerState, GameMap gameMap,
                  String map, DataLoader dataLoader, GamePlayScreen gamePlayScreen) {
-        player = new Player(playerState);
-
         this.map = map;
         this.gameMap = gameMap;
         this.dataLoader = dataLoader;
         this.playerState = playerState;
 
+        player = new Player(playerState);
+        collisionSystem = new CollisionSystem(player);
+        runTimerSystem = new RunTimerSystem(playerState.getPlayerData());
         spawnSystem = new SpawnSystem(this, gameMap, gamePlayScreen);
     }
 
@@ -49,7 +49,7 @@ public class World {
         runTimerSystem.update(deltaTime);
         abilitySystem.update(deltaTime, gameMap);
         dropSystem.update(deltaTime, gameMap);
-        collisionSystem.checkCollisions(deltaTime, player, getEnemies(), getAbilityObjects());
+        collisionSystem.checkCollisions(deltaTime, getEnemies(), getAbilityObjects());
     }
 
     public Player getPlayer() {
