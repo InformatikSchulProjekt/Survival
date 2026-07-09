@@ -1,8 +1,7 @@
-package com.test.SurvivorGame.world.maps.WaveControl;
+package com.test.SurvivorGame.world.WaveControl;
 
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.entity.enemy.Skeleton;

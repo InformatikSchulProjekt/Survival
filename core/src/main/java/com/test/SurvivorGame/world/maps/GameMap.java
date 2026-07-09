@@ -2,7 +2,10 @@ package com.test.SurvivorGame.world.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.test.SurvivorGame.world.maps.WaveControl.SpawnProfile;
+import com.test.SurvivorGame.world.WaveControl.EnemyType;
+import com.test.SurvivorGame.world.WaveControl.SpawnProfile;
+
+import java.util.ArrayList;
 
 public abstract class GameMap {
 
@@ -13,7 +16,6 @@ public abstract class GameMap {
     protected Texture texture;
     protected float worldWidth;
     protected float worldHeight;
-    protected boolean infinite;
 
     protected final SpawnProfile spawnProfile = new SpawnProfile();
 
@@ -23,8 +25,7 @@ public abstract class GameMap {
         String description,
         String texturePath,
         float worldWidth,
-        float worldHeight,
-        boolean infinite) {
+        float worldHeight) {
 
         this.id = id;
         this.displayName = displayName;
@@ -34,7 +35,6 @@ public abstract class GameMap {
 
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
-        this.infinite = infinite;
     }
 
     // ---------- Map Informationen ----------
@@ -51,6 +51,11 @@ public abstract class GameMap {
         return description;
     }
 
+    public abstract ArrayList<EnemyType> getEnemyTypes();
+
+    // returned die Anzahl an Waves die man besiegen muss, um die Map zu completen
+    public abstract int getMaxWaves();
+
     // ---------- Renderer ----------
 
     public Texture getTexture() {
@@ -63,10 +68,6 @@ public abstract class GameMap {
 
     public float getWorldHeight() {
         return worldHeight;
-    }
-
-    public boolean isInfinite() {
-        return infinite;
     }
 
     // ---------- Gameplay ----------
