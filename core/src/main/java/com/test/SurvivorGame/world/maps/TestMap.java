@@ -1,10 +1,24 @@
 package com.test.SurvivorGame.world.maps;
 
 import com.test.SurvivorGame.world.wave.EnemyType;
+import com.test.SurvivorGame.world.wave.MapSettings;
+import com.test.SurvivorGame.world.wave.Wave;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TestMap extends GameMap {
+
+    private final MapSettings mapSettings =
+        new MapSettings(
+            new ArrayList<>(List.of(
+                EnemyType.BOSS
+                //Hier eig noch mehr verschiedene Boss-Arten, wenn wir welche haben
+            )),
+            10f, //gemeinsam überlegen wie wavetime hardcoded sein soll und co.
+            1.5f,
+            0.3f
+        );
 
     public TestMap() {
 
@@ -29,18 +43,23 @@ public class TestMap extends GameMap {
             EnemyType.SLIME,
             100
         );
+
+
     }
 
     @Override
     public int getMaxWaves() {
-        return 2;
+        return 1;
     }
 
     @Override
-    public ArrayList<EnemyType> getEnemyTypes() {
-        ArrayList<EnemyType> enemyTypes = new ArrayList<>();
-        enemyTypes.add(EnemyType.SLIME);
-
-        return enemyTypes;
+    public MapSettings getMapsettings() {
+        return mapSettings;
     }
+
+    public Wave getFinalWave()
+    {
+        return spawnProfile.getCurrentWave(getMaxWaves());
+    }
+
 }

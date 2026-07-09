@@ -9,6 +9,8 @@ import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.wave.EnemyFactory;
+import com.test.SurvivorGame.world.wave.EnemyType;
+import com.test.SurvivorGame.world.wave.InfiniteWaveGenerator;
 import com.test.SurvivorGame.world.wave.Wave;
 
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public class SpawnSystem {
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
     private Wave currentWaveReference;
+
+    private int infiniteWaveCount = 0;
+    private float enemyHpScale = 1f;
 
     public SpawnSystem(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
     {
@@ -87,10 +92,17 @@ public class SpawnSystem {
             triggerBossPhase();
         }
 
-        if(enemies.isEmpty() && gameMap.getSpawnProfile().hasNextWave(playerData.wave))
-        {
+        if (enemies.isEmpty()) {
+
             world.saveGame();
-            startNextWave();
+
+            if (!isInfiniteMode() && gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
+                startNextWave();
+            }
+
+            else if (isInfiniteMode()) {
+                startNextWave();
+            }
         }
     }
 
@@ -106,7 +118,19 @@ public class SpawnSystem {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world));
+        // für infinite mode
+        if (MathUtils.random(100f) < currentWaveReference.getBossSpawnChance()) {
+
+            EnemyType boss =
+                currentWaveReference.getRandomBoss();
+
+            enemies.add(
+                EnemyFactory.createEnemy(boss, x, y, world, enemyHpScale)
+            );
+            return;
+        }
+
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world, enemyHpScale));
     }
 
     private void spawnBoss()
@@ -121,7 +145,7 @@ public class SpawnSystem {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world, enemyHpScale));
 
         world.setSurvivalTimePaused(true); // timer stop
     }
@@ -196,10 +220,12 @@ public class SpawnSystem {
         currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
     }
 
-    // TODO!
     private void setNewInfiniteWave() {
-        System.out.println("INFINITE WAVE SETUP NOT IMPLEMENTED!");
-        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(1); // damit game net crashed
+        infiniteWaveCount++;
+
+        enemyHpScale *= 1.15f; // um 15% erhöht
+
+        currentWaveReference = InfiniteWaveGenerator.generate(gameMap, infiniteWaveCount);
     }
 
     private boolean isInfiniteMode() {
