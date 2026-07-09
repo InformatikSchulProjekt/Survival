@@ -3,6 +3,8 @@ package com.test.SurvivorGame.world.system;
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.drops.ChestObject;
+import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
@@ -61,6 +63,7 @@ public class SpawnSystem {
         }
 
         updateEnemy(deltaTime, map);
+
     }
 
     public void updateNormalWave(float deltaTime)
@@ -96,14 +99,23 @@ public class SpawnSystem {
 
             world.saveGame();
 
-            if (!isInfiniteMode() && gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
-                startNextWave();
-            }
+            float distance = MathUtils.random(3f, 5f); // zufälliger radius
+            float angle = MathUtils.random(0f, 360f); //zufällige richtung
 
-            else if (isInfiniteMode()) {
+            float x = player.getCenter().x +
+                MathUtils.cosDeg(angle) * distance;
+
+            float y = player.getCenter().y +
+                MathUtils.sinDeg(angle) * distance;
+
+            world.addDrop(new ChestObject(x, y, player, ChestType.BOSS));
+
+            if (isInfiniteMode() || gameMap.getSpawnProfile().hasNextWave(playerData.wave))
+            {
                 startNextWave();
             }
         }
+
     }
 
     private void spawnEnemy()
@@ -229,6 +241,6 @@ public class SpawnSystem {
     }
 
     private boolean isInfiniteMode() {
-        return playerData.wave >= gameMap.getMaxWaves();
+        return playerData.wave > gameMap.getMaxWaves();
     }
 }
