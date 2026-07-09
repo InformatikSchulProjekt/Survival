@@ -43,6 +43,8 @@ public class SpawnSystem {
     private int infiniteWaveCount = 0;
     private float enemyHpScale = 1f;
 
+    private boolean bossChestSpawned = false;
+
     public SpawnSystem(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
     {
         this.world = world;
@@ -99,16 +101,11 @@ public class SpawnSystem {
 
             world.saveGame();
 
-            float distance = MathUtils.random(3f, 5f); // zufälliger radius
-            float angle = MathUtils.random(0f, 360f); //zufällige richtung
-
-            float x = player.getCenter().x +
-                MathUtils.cosDeg(angle) * distance;
-
-            float y = player.getCenter().y +
-                MathUtils.sinDeg(angle) * distance;
-
-            world.addDrop(new ChestObject(x, y, player, ChestType.BOSS));
+            if(!bossChestSpawned)
+            {
+                spawnBossChest();
+                bossChestSpawned = true;
+            }
 
             if (isInfiniteMode() || gameMap.getSpawnProfile().hasNextWave(playerData.wave))
             {
@@ -194,9 +191,24 @@ public class SpawnSystem {
         }
     }
 
+
     private boolean endTime()
     {
         return !(waveTime < currentWaveReference.getWaveLifeTime());
+    }
+
+    private void spawnBossChest()
+    {
+        float distance = MathUtils.random(2f, 4f);
+        float angle = MathUtils.random(0f, 360f);
+
+        float x = player.getCenter().x +
+            MathUtils.cosDeg(angle) * distance;
+
+        float y = player.getCenter().y +
+            MathUtils.sinDeg(angle) * distance;
+
+        world.addDrop(new ChestObject(x, y, player, ChestType.BOSS));
     }
 
     public ArrayList<Enemy> getEnemies()
@@ -215,6 +227,9 @@ public class SpawnSystem {
 
         waveTime = 0f;
         spawnTimer = 0f;
+
+        bossChestSpawned = false;
+        world.setSurvivalTimePaused(false);
 
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;

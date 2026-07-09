@@ -538,4 +538,8 @@ public final class PlayerState {
         return abilityScope == playerClassRegistry.getPlayerClass(playerData.playerClass).getScope();
         // => Ability hat gleiches Element (Scope) wie Player Klasse
     }
+
+    public ItemRegistry getItemRegistry() {
+        return itemRegistry;
+    }
 }

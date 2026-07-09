@@ -132,10 +132,6 @@
                 world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
             }
 
-            if (isBoss()) {
-                world.setSurvivalTimePaused(false);
-            }
-
             playerState.giveXP(getXPWorth());
         }
 
