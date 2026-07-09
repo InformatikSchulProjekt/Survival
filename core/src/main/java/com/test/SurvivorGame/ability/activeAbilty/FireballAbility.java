@@ -23,8 +23,8 @@ public class FireballAbility extends ActiveAbility {
     private final int level;
 
     private final float baseDuration = 3f;
-    private final float baseWidth = 3f;
-    private final float baseHeight = 0.6f;
+    private final float baseWidth = 2f;
+    private final float baseHeight = 0.4f;
     private final float baseSpeed = 5f;
     private final float baseDamage = 0.5f;
     private float duration = 2f;
