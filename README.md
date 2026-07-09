@@ -31,3 +31,8 @@ Useful Gradle tasks and flags:
 
 Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
 For example, `core:clean` removes `build` folder only from the `core` project.
+
+# Informatik Projekt
+
+## Secrets
+Um die Secret Klasse zu finden, muss man einfach ganz oft Klassen auswählen und mit einer Chance von 3% kriegt man die SECRET Klasse!
