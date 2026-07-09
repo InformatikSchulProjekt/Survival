@@ -28,10 +28,6 @@ public class RunTimerSystem {
         return passedTime;
     }
 
-    public boolean isSurvivalTimePaused() {
-        return survivalTimePaused;
-    }
-
     public void setSurvivalTimePaused(boolean paused) {
         this.survivalTimePaused = paused;
     }
