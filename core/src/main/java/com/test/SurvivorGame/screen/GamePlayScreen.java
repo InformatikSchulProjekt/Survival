@@ -11,10 +11,7 @@ import com.test.SurvivorGame.core.Input.InputManager;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
-import com.test.SurvivorGame.screen.HuD.LevelUpUI;
-import com.test.SurvivorGame.screen.HuD.ChestUI;
-import com.test.SurvivorGame.screen.HuD.SettingsUI;
+import com.test.SurvivorGame.screen.HuD.*;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
@@ -44,10 +41,11 @@ public class GamePlayScreen extends ScreenAdapter {
 
     private final InputManager inputManager;
 
-    private final PauseMenuRenderer pauseMenu;
+    private final PauseMenuUI pauseMenu;
     private final LevelUpUI levelUpUI;
     private final ChestUI chestUI;
     private final SettingsUI settingsUI;
+    private final MapFinishedUI mapFinishedUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -67,16 +65,17 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData, this);
-        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader);
+        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader, this);
 
         this.shapeRenderer = new ShapeRenderer();
 
-        pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
+        pauseMenu = new PauseMenuUI(shapeRenderer);
         levelUpUI = new LevelUpUI(shapeRenderer);
         chestUI = new ChestUI(shapeRenderer);
         settingsUI = new SettingsUI(dataLoader, shapeRenderer);
+        mapFinishedUI = new MapFinishedUI(shapeRenderer);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, mapFinishedUI);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
 
@@ -88,6 +87,7 @@ public class GamePlayScreen extends ScreenAdapter {
         setupLevelUpUI();
         setupChestUI();
         setupSettingsUI();
+        setupMapFinishedUI();
     }
 
     private void setupPauseMenu() {
@@ -180,13 +180,36 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
-    public void gameOver(boolean restart) {
+    private void setupMapFinishedUI() {
+        mapFinishedUI.setBackToMenuListener(new Runnable() {
+            @Override
+            public void run() {
+                gameDone(false);
+            }
+        });
+
+        mapFinishedUI.setKeepPlayingListener(new Runnable() {
+            @Override
+            public void run() {
+                state = GameState.PLAYING;
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+    }
+
+    // Wird gecalled wenn game vorbei
+    private void gameDone(boolean restart) {
         state = GameState.PAUSED;
-        SoundManager.playSound("gameOver.wav");
 
         saveSurvivalTime();
         dataLoader.clearPlayerData(map);
         main.gameOver(restart, map);
+    }
+
+    // wird gecalled wenn Spiel verloren
+    public void gameOver(boolean restart) {
+        SoundManager.playSound("gameOver.wav");
+        gameDone(restart);
     }
 
     public void gameOver() {
@@ -202,6 +225,11 @@ public class GamePlayScreen extends ScreenAdapter {
         state = GameState.PAUSED;
     }
 
+    public void showGameFinishedUI() {
+        state = GameState.MAP_FINISHED;
+        Gdx.input.setInputProcessor(mapFinishedUI.getStage());
+    }
+
     @Override
     public void resize(int width, int height)
     {
@@ -212,7 +240,9 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         if (state == GameState.LEVEL_UP
             || state == GameState.CHEST_OPENING
-            || state == GameState.SETTINGS) {
+            || state == GameState.SETTINGS
+            || state == GameState.MAP_FINISHED
+        ) {
             return;
         }
 
@@ -269,6 +299,10 @@ public class GamePlayScreen extends ScreenAdapter {
 
             case SETTINGS:
                 settingsUI.render();
+                break;
+
+            case MAP_FINISHED:
+                mapFinishedUI.render();
                 break;
         }
         if (state == GameState.SETTINGS &&
