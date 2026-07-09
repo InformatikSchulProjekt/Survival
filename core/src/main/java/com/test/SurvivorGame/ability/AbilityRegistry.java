@@ -23,8 +23,6 @@ public final class AbilityRegistry {
         register(new ExpandingMagic());
 
         // Active Abilities:
-        register(new MeleeAbility(world, viewport));
-        register(new ProjectileAbility(world, viewport));
         register(new FireballAbility(world, viewport));
         register(new FireArrowAbility(world, viewport));
         register(new WaterBlast(world,viewport));
@@ -35,6 +33,7 @@ public final class AbilityRegistry {
         register(new Wave(world, viewport));
         register(new WindCutter(world, viewport));
         register(new WindBullet(world, viewport));
+        register(new RockBlast(world, viewport));
     }
 
     public BaseAbility getAbility(String abilityId) {

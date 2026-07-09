@@ -21,6 +21,11 @@ public final class Aeromancer extends BasePlayerClass {
     }
 
     @Override
+    public String getStartAbility() {
+        return "wind_bullet";
+    }
+
+    @Override
     public String getDescription() {
         return "A storm-touched mage who moves with the wind and strikes before enemies can react. Aeromancers empower wind magic and flow through battle with speed and precision.";
     }

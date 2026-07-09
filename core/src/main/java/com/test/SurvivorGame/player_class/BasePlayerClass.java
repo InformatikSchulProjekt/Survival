@@ -55,5 +55,5 @@ public abstract class BasePlayerClass {
         System.out.println("Applied Class: "+ getID()); // debug
     }
 
-
+    public abstract String getStartAbility();
 }

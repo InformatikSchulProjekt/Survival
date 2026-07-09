@@ -21,6 +21,11 @@ public final class Hydromancer extends BasePlayerClass {
     }
 
     @Override
+    public String getStartAbility() {
+        return "water_blast";
+    }
+
+    @Override
     public String getDescription() {
         return "A water-bound mage who bends tides into protection and recovery. Hydromancers empower water magic and outlast enemies through healing and steady control.";
     }
