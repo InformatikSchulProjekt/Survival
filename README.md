@@ -6,7 +6,7 @@ Es empfielt sich, das folgende Tutorial zu lesen, bevor man beginnt zu spielen.
 ## Tutorial
 In `Overrun - Survive the Hordes` kämpfst du jede Sekunde um dein Überleben. Es werden dauerhaft verschiedenste Gegner um dich herumspawnen.
 Alle 2 Minuten beginnt eine sogenannte Bosswave und ein Boss spawned. Wenn du die Bosswave überlebst, wirst du mit einer Bosschest belohnt, die dir `legendary` Items gibt!
-Im Spiel bewegst du dich wie Gewohnt mit `WASD`. Mit `ESC` kannst du ins Pause Menu gelangen, wo du die Settings und weiteres im Spiel erreichen kannst.
+Im Spiel bewegst du dich wie Gewohnt mit `W` `A` `S` `D` . Mit `ESC` kannst du ins Pause Menu gelangen, wo du die Settings und weiteres im Spiel erreichen kannst.
 Die Aktiven Abilities, die du freischaltest, kannst du, wenn auf deinen Abilityslots ausgewählt, mit `1` `2` `3` und `4` benutzen. (Alle Keybinds können in den `Settings` customized werden!)
 Viel mehr Informationen werden dir nun auch nicht mehr helfen, also spiel einfach `Overrun - Survive the Hordes` und hab Spaß!
 
