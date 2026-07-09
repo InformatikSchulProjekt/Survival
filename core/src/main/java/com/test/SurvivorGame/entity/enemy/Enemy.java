@@ -26,6 +26,8 @@
 
         private Vector2 moveDirection;
         protected float animationTime = 0f;
+        private float originalMovementSpeed;
+        private float slowTimer = 2f;
 
         private boolean dead = false;
 
@@ -56,6 +58,11 @@
         {
             return damage;
         }
+        public void applySlow(float speedMultiplier, float duration) {
+            originalMovementSpeed = movementSpeed;  // Save original
+            movementSpeed = originalMovementSpeed * 0.8f;
+            slowTimer = duration;
+        }
 
         @Override
         public void update(float deltaTime, GameMap map)
@@ -66,6 +73,9 @@
             moveDirection = player.getCenter().sub(this.getCenter()).nor().scl(movementSpeed * deltaTime);
 
             collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
+            if (slowTimer <= 0) {
+                movementSpeed = originalMovementSpeed;  // Restore when done
+            }
         }
 
         public void takeDamage(float damage)
@@ -80,6 +90,7 @@
             }
             onDamage(damage);
         }
+
 
         private void onDamage(float damage) {
             // Life steal heal:

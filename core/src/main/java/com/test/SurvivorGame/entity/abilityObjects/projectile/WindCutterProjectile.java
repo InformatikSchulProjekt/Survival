@@ -2,26 +2,26 @@ package com.test.SurvivorGame.entity.abilityObjects.projectile;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.activeAbilty.WindCutter;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class WaveProjectile extends Projectile {
+public class WindCutterProjectile extends Projectile {
 
     private final float damage;
-    private final float maxDistance = 10f;
 
     private Enemy lastHitEnemy;
     private float sameEnemyHitLock = 0f;
     private float animationTime = 0f;
-    private float distanceTraveled;
-    private float speed;
 
-    public WaveProjectile(float x, float y, float width, float height, Texture texture, Player player,
-                          Viewport viewport, float speed, float duration, float damage) {
+
+
+    public WindCutterProjectile(float x, float y, float width, float height, Texture texture, Player player,
+                                Viewport viewport, float speed, float duration, float damage) {
         super(x, y, width, height, texture, player, viewport, speed, duration);
         this.damage = damage;
-        this.speed  = speed;
 
 
     }
@@ -33,10 +33,6 @@ public class WaveProjectile extends Projectile {
 
         if (sameEnemyHitLock > 0) {
             sameEnemyHitLock -= deltaTime;
-        }
-        distanceTraveled += speed * deltaTime;
-        if (distanceTraveled >= maxDistance) {
-            expire();
         }
     }
 
@@ -53,8 +49,9 @@ public class WaveProjectile extends Projectile {
         damageEnemy(enemy, getDamage());
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
-    }
+        expire();
 
+    }
 
     @Override
     public float getDamage() {

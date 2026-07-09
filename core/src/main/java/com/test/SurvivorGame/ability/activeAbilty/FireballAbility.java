@@ -75,9 +75,9 @@ public class FireballAbility extends ActiveAbility {
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
         if (level >= 2){
-            damage = 1.15f;        }
+            damage *= 1.15f;        }
         if (level==5){
-            damage = 1.15f;
+            damage *= 1.15f;
         }
         return damage;
     }

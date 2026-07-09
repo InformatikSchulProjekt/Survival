@@ -29,9 +29,11 @@ public final class AbilityRegistry {
         register(new FireArrowAbility(world, viewport));
         register(new WaterBlast(world,viewport));
         register(new FireStormAbility(world));
+        register(new EarthQuake(world));
         register(new WaterArrowAbility(world, viewport));
         register(new SmallHeal(world, viewport));
         register(new Wave(world, viewport));
+        register(new WindCutter(world, viewport));
     }
 
     public BaseAbility getAbility(String abilityId) {
