@@ -7,7 +7,7 @@ import com.test.SurvivorGame.world.wave.Wave;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecondTestMap extends GameMap {
+public class DarkFrontier extends GameMap {
 
     private final MapSettings mapSettings =
         new MapSettings(
@@ -20,12 +20,12 @@ public class SecondTestMap extends GameMap {
             0.3f
         );
 
-    public SecondTestMap() {
+    public DarkFrontier() {
 
         super(
-            "SecondTestMap",
-            "Second Test Map",
-            "The second testing map.",
+            "dark_frontier",
+            "Dark Frontier",
+            "A corrupted borderland where skeletons rise from the dark.",
             "Maps/Map(clear1).png",
             30,
             30

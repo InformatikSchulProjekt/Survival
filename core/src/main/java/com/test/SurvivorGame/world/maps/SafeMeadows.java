@@ -7,7 +7,7 @@ import com.test.SurvivorGame.world.wave.Wave;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestMap extends GameMap {
+public class SafeMeadows extends GameMap {
 
     private final MapSettings mapSettings =
         new MapSettings(
@@ -20,12 +20,12 @@ public class TestMap extends GameMap {
             0.3f
         );
 
-    public TestMap() {
+    public SafeMeadows() {
 
         super(
-            "TestMap",
-            "Test Map",
-            "The first testing map.",
+            "safe_meadows",
+            "Safe Meadows",
+            "A calm training ground hiding its first real threat.",
             "Maps/Map(clear2).png",
             30,
             30
