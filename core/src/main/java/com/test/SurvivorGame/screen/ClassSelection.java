@@ -101,7 +101,7 @@ public class ClassSelection extends ScreenAdapter {
 
     private void selectClass(String classId) {
         // Easter egg:
-        boolean shouldBeMerz = Math.random() < 0.9;
+        boolean shouldBeMerz = Math.random() < 0.03;
         if (shouldBeMerz) classId = "merzmancer";
 
         System.out.println("Selected class: " + classId);
