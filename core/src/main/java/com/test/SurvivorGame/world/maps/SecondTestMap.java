@@ -27,8 +27,8 @@ public class SecondTestMap extends GameMap {
             "Second Test Map",
             "The second testing map.",
             "Maps/Map(clear1).png",
-            30,
-            30
+            10,
+            20
         );
 
         spawnProfile.addWave(

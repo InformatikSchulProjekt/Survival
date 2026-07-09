@@ -27,7 +27,7 @@ public class TestMap extends GameMap {
             "Test Map",
             "The first testing map.",
             "Maps/Map(clear2).png",
-            30,
+            20,
             30
         );
 

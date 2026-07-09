@@ -1,11 +1,13 @@
 package com.test.SurvivorGame.entity;
 
 import com.test.SurvivorGame.core.SoundManager;
+import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
 public class Player extends Entity {
     private final PlayerState playerState;
+
 
 
     public Player(PlayerState playerState) {
@@ -27,6 +29,7 @@ public class Player extends Entity {
 
     @Override
     public void takeDamage(float damage) {
+
         float damageTaken = playerState.damage(damage);
 
         if (damageTaken > 0) {

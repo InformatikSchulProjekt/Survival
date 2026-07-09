@@ -167,7 +167,7 @@ public class SpawnSystem {
 
             enemy.update(deltaTime, map);
 
-            if(enemy.isDead())
+            if(enemy.isRemovable())
             {
                 enemies.remove(i);
             }

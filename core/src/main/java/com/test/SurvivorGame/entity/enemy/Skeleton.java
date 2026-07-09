@@ -12,6 +12,6 @@ public class Skeleton extends Enemy{
 
 
     public Skeleton(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier);
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier,EnemyType.SKELETON);
     }
 }
