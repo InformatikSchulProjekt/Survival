@@ -56,6 +56,12 @@ public final class PlayerState {
     public void setupAbilityService(AbilityService abilityService) {
         this.abilityService = abilityService;
         this.abilityRegistry = abilityService.getAbilityRegistry();
+
+        if(playerData.abilities.isEmpty()) {
+            verifyAbilityService();
+
+            abilityService.unlockAbility(getPlayerClass().getStartAbility());
+        }
     }
 
     public PlayerData getPlayerData() {
@@ -199,7 +205,7 @@ public final class PlayerState {
         if (awaitingLevelUpChoice) return; // es läuft schon eine Auswahl
         if (pendingLevelUps <= 0) return;
 
-        if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
+        verifyAbilityService();
 
         int optionsCount = 3;
         String[] abilityOptions;
@@ -405,13 +411,18 @@ public final class PlayerState {
         item.onApply(playerStats);
     }
 
-    private void registerPlayerClass() {
+    private BasePlayerClass getPlayerClass() {
         BasePlayerClass playerClass = playerClassRegistry.getPlayerClass(playerData.playerClass);
 
         if (playerClass == null) {
             if (playerData.playerClass.isEmpty()) System.out.println("[ERROR]: No class given");
             throw new IllegalArgumentException("Unknown player class: " + playerData.playerClass);
         }
+        return playerClass;
+    }
+
+    private void registerPlayerClass() {
+        BasePlayerClass playerClass = getPlayerClass();
 
         playerClass.onApply(playerStats);
 
@@ -537,6 +548,10 @@ public final class PlayerState {
         if(abilityScope == null) return false; // Ability ist neutral / hat kein Element
         return abilityScope == playerClassRegistry.getPlayerClass(playerData.playerClass).getScope();
         // => Ability hat gleiches Element (Scope) wie Player Klasse
+    }
+
+    private void verifyAbilityService() {
+        if (abilityService == null) throw new IllegalStateException("AbilityService not initialized.");
     }
 
     public ItemRegistry getItemRegistry() {
