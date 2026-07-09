@@ -69,7 +69,7 @@ public class Wave extends ActiveAbility {
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
         if(level >= 2){
-            damage *= 1.1f;
+            damage *= 1.25f;
         }
         if(level ==5){
             damage *= 1.15f;
@@ -97,7 +97,7 @@ public class Wave extends ActiveAbility {
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_COOLDOWN);
         if(level >= 3){
-            cooldown *= 0.95f;
+            cooldown *= 0.9f;
         }
         return cooldown;
     }
@@ -117,9 +117,9 @@ public class Wave extends ActiveAbility {
             case 1:
                 return "creates a wave that deals damage";
             case 2:
-                return "Wave damage increased by 10%";
+                return "Wave damage increased by 25%";
             case 3:
-                return "Water blast cooldown decreased by 5%";
+                return "Water blast cooldown decreased by 10%";
             case 4:
                 return "Width increased by 25%";
             case 5:

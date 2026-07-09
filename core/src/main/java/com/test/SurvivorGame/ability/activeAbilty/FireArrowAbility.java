@@ -102,7 +102,7 @@ public class FireArrowAbility extends ActiveAbility {
     public float getDuration(){
         float duration = baseDuration;
         if(level >= 4){
-            duration *= 2;
+            duration *= 2f;
         }
         return duration;
     }
@@ -147,7 +147,7 @@ public class FireArrowAbility extends ActiveAbility {
             case 3:
                 return "Fire arrow pierce increases by 2";
             case 4:
-                return"Duration increased" ;
+                return"Duration doubled" ;
             case 5:
                 return "Size increased by 5% and damage increased by 15%";
             default:

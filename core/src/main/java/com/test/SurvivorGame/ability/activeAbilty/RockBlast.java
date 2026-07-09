@@ -73,7 +73,7 @@ public class RockBlast extends ActiveAbility {
             damage *= 1.1f;
         }
         if(level ==5){
-            damage *= 1.25f;
+            damage *= 1.3f;
         }
         return damage;
     }
@@ -118,7 +118,7 @@ public class RockBlast extends ActiveAbility {
             case 4:
                 return "cooldown reduced by 15%";
             case 5:
-                return "Damage increased by 25%";
+                return "Damage increased by 30%";
             default:
                 return "No description available";
         }

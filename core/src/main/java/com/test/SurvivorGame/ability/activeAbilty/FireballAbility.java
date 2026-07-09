@@ -113,7 +113,7 @@ public class FireballAbility extends ActiveAbility {
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
         if (level>=4){
-            cooldown *= 0.95f;
+            cooldown *= 0.85f;
         }
         return cooldown;
     }
@@ -143,7 +143,7 @@ public class FireballAbility extends ActiveAbility {
             case 3:
                 return "Fireball size increases by 5%";
             case 4:
-                return "Cooldown decreased by 5%";
+                return "Cooldown decreased by 15%";
             case 5:
                 return "Size increased by 5% and damage increased by 15%";
             default:

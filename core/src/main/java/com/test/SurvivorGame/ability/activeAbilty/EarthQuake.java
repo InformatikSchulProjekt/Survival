@@ -93,7 +93,7 @@ public class EarthQuake extends ActiveAbility {
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_COOLDOWN);
         if (level>=3){
-            cooldown *= 0.95f;
+            cooldown *= 0.85f;
         }
         return cooldown;
     }
@@ -121,11 +121,11 @@ public class EarthQuake extends ActiveAbility {
             case 2:
                 return "Earthquake damage increased by 25%";
             case 3:
-                return "Cooldown decreased by 5%";
+                return "Cooldown decreased by 15%";
             case 4:
                 return "duration increased by 10%";
             case 5:
-                return "End size increased by 25% and damage increased by 15%";
+                return "Size increased by 25% and damage increased by 15%";
             default:
                 return "No description available";
         }

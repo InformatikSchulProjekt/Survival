@@ -40,7 +40,7 @@ public class FireStormAbility extends ActiveAbility {
 
     @Override
     protected void activate() {
-        FireStorm fireStorm = new FireStorm(player.getX(), player.getY(), startSize, baseEndSize, texture, baseDuration, world, getDamage());
+        FireStorm fireStorm = new FireStorm(player.getX(), player.getY(), startSize, getBaseEndSizeSize(), texture, baseDuration, world, getDamage());
 
         world.addAbility(fireStorm);
     }
@@ -85,7 +85,7 @@ public class FireStormAbility extends ActiveAbility {
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
         if (level>=3){
-            cooldown *= 0.95f;
+            cooldown *= 0.9f;
         }
         return cooldown;
     }
@@ -116,7 +116,7 @@ public class FireStormAbility extends ActiveAbility {
             case 2:
                 return "Fire storm damage increased by 25%";
             case 3:
-                return "Cooldown decreased by 5%";
+                return "Cooldown decreased by 10%";
             case 4:
                 return "duration increased by 10%";
             case 5:

@@ -100,7 +100,7 @@ public class WaterBlast extends ActiveAbility {
             cooldown *= 0.9f;
         }
         if(level >= 4){
-            cooldown *= 0.85f;
+            cooldown *= 0.8f;
         }
         return cooldown;
     }
@@ -115,7 +115,7 @@ public class WaterBlast extends ActiveAbility {
             case 3:
                 return "Water blast cooldown decreased by 10%";
             case 4:
-                return "cooldown reduced by 15%";
+                return "cooldown reduced by 20%";
             case 5:
                 return "Damage increased by 25%";
             default:

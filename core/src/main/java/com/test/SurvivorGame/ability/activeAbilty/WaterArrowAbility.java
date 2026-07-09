@@ -71,10 +71,10 @@ public class WaterArrowAbility extends ActiveAbility {
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
         if (level >= 2) {
-            damage = 1.1f;
+            damage = 1.2f;
         }
         if (level >= 5) {
-            damage = 1.15f;
+            damage = 1.25f;
         }
         return damage;
 
@@ -99,7 +99,7 @@ public class WaterArrowAbility extends ActiveAbility {
     public float getDuration() {
         float duration = baseDuration;
         if (level >= 4) {
-            duration *= 2;
+            duration *= 2f;
         }
         return duration;
     }
@@ -140,13 +140,13 @@ public class WaterArrowAbility extends ActiveAbility {
             case 1:
                 return "Shoots a water arrow that explodes on impact";
             case 2:
-                return "Water arrow damage increased by 10%";
+                return "Water arrow damage increased by 20%";
             case 3:
                 return "Water arrow pierce increases by 3";
             case 4:
-                return "Duration increased";
+                return "Duration doubled";
             case 5:
-                return "Size increased by 5% and damage increased by 15%";
+                return "Size increased by 5% and damage increased by 25%";
             default:
                 return "No description available";
         }
