@@ -39,6 +39,7 @@ public class SpawnSystem {
     private Wave currentWaveReference;
 
     private int infiniteWaveCount = 0;
+    private float enemyHpScale = 1f;
 
     public SpawnSystem(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
     {
@@ -124,12 +125,12 @@ public class SpawnSystem {
                 currentWaveReference.getRandomBoss();
 
             enemies.add(
-                EnemyFactory.createEnemy(boss, x, y, world)
+                EnemyFactory.createEnemy(boss, x, y, world, enemyHpScale)
             );
             return;
         }
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world, enemyHpScale));
     }
 
     private void spawnBoss()
@@ -144,7 +145,7 @@ public class SpawnSystem {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world, enemyHpScale));
 
         world.setSurvivalTimePaused(true); // timer stop
     }
@@ -222,6 +223,9 @@ public class SpawnSystem {
     // TODO!
     private void setNewInfiniteWave() {
         infiniteWaveCount++;
+
+        enemyHpScale *= 1.15f; // um 15% erhöht
+
         currentWaveReference = InfiniteWaveGenerator.generate(gameMap, infiniteWaveCount);
     }
 

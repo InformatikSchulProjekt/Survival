@@ -10,9 +10,10 @@ import com.test.SurvivorGame.world.World;
 
 public class EnemyFactory {
 
-    public static Enemy createEnemy(EnemyType enemyType, float x, float y, World world) {
-        float hpMulti = world.getPlayer().getPlayerState().getPlayerStats().getStat(StatScope.ALL, StatType.ENEMY_HP);
+    public static Enemy createEnemy(EnemyType enemyType, float x, float y, World world, float hpScale) {
 
+        float hpMulti = world.getPlayer().getPlayerState().getPlayerStats().getStat(StatScope.ALL, StatType.ENEMY_HP);
+        hpMulti *= hpScale;
         switch (enemyType) {
 
             case SLIME:
