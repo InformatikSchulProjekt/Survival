@@ -31,6 +31,19 @@ public class TestMap extends GameMap {
             30
         );
 
+        spawnProfile.addWave(
+            10f,
+            1.5f,
+            0.3f,
+            EnemyType.BOSS
+        );
+
+        spawnProfile.addEnemyToWave(
+            spawnProfile.getCurrentWave(1),
+            EnemyType.SLIME,
+            100
+        );
+
 
     }
 
