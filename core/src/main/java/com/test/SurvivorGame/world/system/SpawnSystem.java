@@ -9,6 +9,7 @@ import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.wave.EnemyFactory;
+import com.test.SurvivorGame.world.wave.EnemyType;
 import com.test.SurvivorGame.world.wave.Wave;
 
 import java.util.ArrayList;
@@ -105,6 +106,18 @@ public class SpawnSystem {
 
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
+
+        // für infinite mode
+        if (MathUtils.random(100f) < currentWaveReference.getBossSpawnChance()) {
+
+            EnemyType boss =
+                currentWaveReference.getRandomBoss();
+
+            enemies.add(
+                EnemyFactory.createEnemy(boss, x, y, world)
+            );
+            return;
+        }
 
         enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world));
     }

@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.world.maps;
 
 import com.test.SurvivorGame.world.wave.EnemyType;
+import com.test.SurvivorGame.world.wave.MapSettings;
 
 import java.util.ArrayList;
 
@@ -32,16 +33,14 @@ public class SecondTestMap extends GameMap {
     }
 
     @Override
+    public MapSettings getMapsettings() {
+
+    }
+
+    @Override
     public int getMaxWaves() {
         return 3;
     }
 
-    @Override
-    public ArrayList<EnemyType> getEnemyTypes() {
-        ArrayList<EnemyType> enemyTypes = new ArrayList<>();
-        enemyTypes.add(EnemyType.SLIME);
-
-        return enemyTypes;
-    }
 }
 

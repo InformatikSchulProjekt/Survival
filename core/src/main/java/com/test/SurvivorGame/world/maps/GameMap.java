@@ -3,7 +3,9 @@ package com.test.SurvivorGame.world.maps;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.test.SurvivorGame.world.wave.EnemyType;
+import com.test.SurvivorGame.world.wave.MapSettings;
 import com.test.SurvivorGame.world.wave.SpawnProfile;
+import com.test.SurvivorGame.world.wave.Wave;
 
 import java.util.ArrayList;
 
@@ -51,10 +53,12 @@ public abstract class GameMap {
         return description;
     }
 
-    public abstract ArrayList<EnemyType> getEnemyTypes();
+    public abstract MapSettings getMapsettings();
 
     // returned die Anzahl an Waves die man besiegen muss, um die Map zu completen
     public abstract int getMaxWaves();
+
+    public abstract Wave getFinalWave();
 
     // ---------- Renderer ----------
 
@@ -81,4 +85,5 @@ public abstract class GameMap {
     public void dispose() {
         texture.dispose();
     }
+
 }
