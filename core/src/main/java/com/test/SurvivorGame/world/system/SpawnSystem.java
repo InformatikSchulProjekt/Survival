@@ -220,7 +220,6 @@ public class SpawnSystem {
         currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
     }
 
-    // TODO!
     private void setNewInfiniteWave() {
         infiniteWaveCount++;
 
