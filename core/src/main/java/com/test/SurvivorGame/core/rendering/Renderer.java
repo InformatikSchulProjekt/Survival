@@ -14,7 +14,7 @@ import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.screen.GameState;
-import com.test.SurvivorGame.screen.HuD.*;
+import com.test.SurvivorGame.screen.hud.*;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

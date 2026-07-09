@@ -11,7 +11,7 @@ import com.test.SurvivorGame.core.input.InputManager;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.screen.HuD.*;
+import com.test.SurvivorGame.screen.hud.*;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
