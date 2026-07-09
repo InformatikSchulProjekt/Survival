@@ -26,12 +26,6 @@ public class Boss extends Enemy {
     }
 
     @Override
-    protected ChestType getChestType()
-    {
-        return ChestType.BOSS;
-    }
-
-    @Override
     protected float getChestChance()
     {
         return 1f; // 100%

@@ -126,10 +126,10 @@
         protected void onDeath() {
             dead = true;
 
-            if (shouldSpawnChest())
+            if (shouldSpawnChest()&& !(this instanceof Boss))
             {
                 System.out.println("Chest spawned!");
-                world.addDrop(new ChestObject(getX(), getY(), player, getChestType()));
+                world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
             }
 
             if (isBoss()) {
