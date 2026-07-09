@@ -28,7 +28,7 @@ public class AbilityService {
         }
 
         int currentAmount = playerState.getPlayerData().abilities.getOrDefault(abilityID, 0);
-        System.out.println("CURRENT AMOUNT: "+currentAmount+" VON "+abilityID);
+        //System.out.println("CURRENT AMOUNT: "+currentAmount+" VON "+abilityID); // debug
 
         if (currentAmount >= ability.getMaxAmount()) {
             throw new IllegalStateException("Ability already maxed");
