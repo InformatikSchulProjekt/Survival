@@ -9,8 +9,10 @@ import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
+import com.test.SurvivorGame.world.system.AbilitySystem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class World {
 
@@ -27,10 +29,10 @@ public class World {
 
     float screenWidth, screenHeight; // nur für reset-test
 
-    private final ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
     private final ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
 
     private final SpawnManager spawnManager;
+    private final AbilitySystem abilitySystem;
 
     private final String map;
     private final DataLoader dataLoader;
@@ -43,10 +45,12 @@ public class World {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight; // nur für reset-test
 
-        spawnManager = new SpawnManager(this, gameMap, gamePlayScreen);
         this.map = map;
         this.dataLoader = dataLoader;
         this.playerState = playerState;
+
+        spawnManager = new SpawnManager(this, gameMap, gamePlayScreen);
+        this.abilitySystem = new AbilitySystem();
     }
 
     public void update(float deltaTime, GameMap map)
@@ -64,20 +68,9 @@ public class World {
         player.update(deltaTime, map);
         spawnManager.update(deltaTime, map);
 
-        checkAbilityCollision(deltaTime);
         checkPlayerCollisions(deltaTime);
 
-        for(int i = abilityObjects.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
-        {
-            AbilityObject abillityObject = abilityObjects.get(i);
-
-            abillityObject.update(deltaTime, map);
-
-            if(abillityObject.getExpired())
-            {
-                abilityObjects.remove(i);
-            }
-        }
+        abilitySystem.update(deltaTime, map, spawnManager.getEnemies());
 
         for (int i = droppedObjects.size() - 1; i >= 0; i--) {
             DroppedObject drop = droppedObjects.get(i);
@@ -116,21 +109,6 @@ public class World {
         }
     }
 
-    private void checkAbilityCollision(float deltaTime)
-    {
-
-        for(AbilityObject ability : abilityObjects)
-        {
-            for(Enemy enemy : spawnManager.getEnemies())
-            {
-                if(ability.overlaps(enemy))
-                {
-                    ability.onHit(enemy);
-                }
-            }
-        }
-    }
-
     public Player getPlayer()
     {
         return player;
@@ -144,16 +122,6 @@ public class World {
     public ArrayList<Enemy> getEnemies()
     {
         return spawnManager.getEnemies(); // Fassade für getEnemies()
-    }
-
-    public void addAbility(AbilityObject abilityObject)
-    {
-        abilityObjects.add(abilityObject);
-    }
-
-    public ArrayList<AbilityObject> getAbilityObjects()
-    {
-        return abilityObjects;
     }
 
 
@@ -182,5 +150,9 @@ public class World {
     public float getPassedTime()
     {
         return passedTime;
+    }
+
+    public List<AbilityObject> getAbilityObjects() {
+        return abilitySystem.getAbilityObjects();
     }
 }
