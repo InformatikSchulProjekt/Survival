@@ -12,22 +12,18 @@ import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.system.AbilitySystem;
 import com.test.SurvivorGame.world.system.CollisionSystem;
 import com.test.SurvivorGame.world.system.DropSystem;
+import com.test.SurvivorGame.world.system.RunTimerSystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
-    private boolean survivalTimePaused = false;
-
-    private float survivalTime = 0f; // wie lange der aktuelle Run schon läuft, für den HUD-Timer
-
-    private float passedTime = 0f; // wie viel ECHTE Zeit seit anfang des Runs vergangen istw
-
     private final Player player;
     private final SpawnManager spawnManager;
     private final AbilitySystem abilitySystem = new AbilitySystem();
     private final CollisionSystem collisionSystem = new CollisionSystem();
     private final DropSystem dropSystem = new DropSystem();
+    private final RunTimerSystem runTimerSystem = new RunTimerSystem();
 
     private final String map;
     private final DataLoader dataLoader;
@@ -51,15 +47,10 @@ public class World {
         // Passive Health Regen:
         playerState.heal(deltaTime*playerState.getPlayerStats().getStat(StatType.HEALING));
 
-        passedTime += deltaTime;
-        if (!survivalTimePaused)
-        {
-            survivalTime += deltaTime;
-        }
-
         player.update(deltaTime, gameMap);
 
         spawnManager.update(deltaTime, gameMap);
+        runTimerSystem.update(deltaTime);
         abilitySystem.update(deltaTime, gameMap);
         dropSystem.update(deltaTime, gameMap);
         collisionSystem.checkCollisions(deltaTime, player, getEnemies(), getAbilityObjects());
@@ -72,7 +63,7 @@ public class World {
 
     public float getSurvivalTime()
     {
-        return survivalTime;
+        return runTimerSystem.getSurvivalTime();
     }
 
     public ArrayList<Enemy> getEnemies()
@@ -93,18 +84,13 @@ public class World {
         dataLoader.savePlayerData(map, player.getPlayerState().getPlayerData());
     }
 
-    public boolean isSurvivalTimePaused()
-    {
-        return survivalTimePaused;
-    }
-
     public void setSurvivalTimePaused(boolean paused) {
-        this.survivalTimePaused = paused;
+        runTimerSystem.setSurvivalTimePaused(paused);
     }
 
     public float getPassedTime()
     {
-        return passedTime;
+        return runTimerSystem.getPassedTime();
     }
 
     public List<AbilityObject> getAbilityObjects() {

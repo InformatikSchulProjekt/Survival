@@ -18,13 +18,12 @@
         private static float maxStartHP; //standard zuweisung für den start des Spieles
         private float currentHP = maxStartHP; //current verändert sich, aber ist am start max
 
-        private float damage;
+        private final float damage;
 
-        private Player player;
-        private World world;
-        private PlayerState playerState;
+        private final Player player;
+        private final World world;
+        private final PlayerState playerState;
 
-        private Vector2 moveDirection;
         protected float animationTime = 0f;
 
         private boolean dead = false;
@@ -63,39 +62,40 @@
             // per-entity animation time so each enemy/boss animates independently
             animationTime += deltaTime;
 
-            moveDirection = player.getCenter().sub(this.getCenter()).nor().scl(movementSpeed * deltaTime);
+            Vector2 moveDirection = player.getCenter().sub(this.getCenter()).nor().scl(movementSpeed * deltaTime);
 
             collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
         }
 
-        public void takeDamage(float damage)
+        public void takeDamage(float dmg)
         {
-            damage = calculateDamageTaken(damage);
-            currentHP -= damage;
-            System.out.println("Enemy: " + damage+"dmg | hp: "+currentHP+"/"+maxHP);
+            dmg = calculateDamageTaken(dmg);
+            currentHP -= dmg;
+            System.out.println("Enemy: " + dmg+"dmg | hp: "+currentHP+"/"+maxHP);
 
             if(currentHP <= 0) { //=> Enemy Tod
                 onDeath();
-                damage -= currentHP; // => Echter Schaden (Wenn 1hp genug war um zu killen z. B. soll dmg net trzm 10 sein
+                dmg -= currentHP;
+                // => Echter Schaden (Wenn 1hp genug war um zu killen z. B. soll dmg net trzm 10 sein
             }
-            onDamage(damage);
+            onDamage(dmg);
         }
 
-        private void onDamage(float damage) {
+        private void onDamage(float dmg) {
             // Life steal heal:
-            float heal = damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL);
+            float heal = dmg*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL);
             if (heal > 0) {
-                playerState.heal(damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
+                playerState.heal(dmg*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL));
             }
         }
 
-        private float calculateDamageTaken(float damage) {
+        private float calculateDamageTaken(float dmg) {
             if (shouldCrit()) {
                 System.out.println("CRIT!"); // debug
-                damage *= 1 + playerState.getPlayerStats().getStat(StatScope.ALL, StatType.CRIT_MULTIPLIER);
+                dmg *= 1 + playerState.getPlayerStats().getStat(StatScope.ALL, StatType.CRIT_MULTIPLIER);
             }
 
-            return damage;
+            return dmg;
         }
 
         private boolean shouldCrit() {
@@ -131,7 +131,7 @@
         private boolean shouldSpawnChest() {
             float chance = getChestChance();
 
-            chance = Math.max(0f, Math.min(1f, chance));
+            chance = Math.clamp(chance, 0f, 1f);
 
             return Math.random() < chance;
         }
