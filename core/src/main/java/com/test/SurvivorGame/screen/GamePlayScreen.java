@@ -224,6 +224,7 @@ public class GamePlayScreen extends ScreenAdapter {
     }
 
     public void showGameFinishedUI() {
+        System.out.println("SHOW GAME FINISHED UI");
         state = GameState.MAP_FINISHED;
         Gdx.input.setInputProcessor(mapFinishedUI.getStage());
     }
