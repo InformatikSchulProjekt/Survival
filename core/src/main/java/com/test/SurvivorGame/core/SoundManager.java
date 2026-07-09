@@ -1,12 +1,8 @@
 package com.test.SurvivorGame.core;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.test.SurvivorGame.screen.GamePlayScreen;
-import com.test.SurvivorGame.screen.GameState;
 
 public class SoundManager {
 
@@ -20,8 +16,6 @@ public class SoundManager {
             Gdx.app.error("SoundManager", " konnte Sound nicht abspielen: " + fileName);
         }
     }
-
-
 
     private static void playFootstep() {
         if (footstepSound == null) {
@@ -45,6 +39,7 @@ public class SoundManager {
             footstepSound.stop();
         }
     }
+
     public static void updateFootsteps(boolean moving) {
         if (!moving) {
             stopFootsteps();

@@ -2,8 +2,8 @@ package com.test.SurvivorGame.world.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.test.SurvivorGame.world.WaveControl.EnemyType;
-import com.test.SurvivorGame.world.WaveControl.SpawnProfile;
+import com.test.SurvivorGame.world.wave.EnemyType;
+import com.test.SurvivorGame.world.wave.SpawnProfile;
 
 import java.util.ArrayList;
 
