@@ -16,9 +16,11 @@ public class ChestObject extends DroppedObject {
         super(x, y, 1.5f, 1f, new Texture(Gdx.files.internal("Placeholder/PlayerPH.png")), player);
         this.chestType = chestType;
     }
+
     public ChestState getState() {
         return state;
     }
+
     @Override
     public void update(float deltaTime, GameMap map) {
 
@@ -49,6 +51,7 @@ public class ChestObject extends DroppedObject {
             }
         }
     }
+
     public void open() {
         state = ChestState.OPENED;
     }
@@ -56,6 +59,7 @@ public class ChestObject extends DroppedObject {
     public float getAnimationTime() {
         return animationTime;
     }
+
     @Override
     protected float getDespawnTime() {
         return 120f;

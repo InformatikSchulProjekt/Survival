@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.world.WaveControl;
+package com.test.SurvivorGame.world.wave;
 
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;

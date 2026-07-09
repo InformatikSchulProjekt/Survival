@@ -100,10 +100,6 @@ public final class PlayerState {
         return playerStats.getStat(StatScope.ALL, StatType.SPEED);
     }
 
-    public void resetHealth() {
-        playerData.hp = getMaxHealth();
-    }
-
     public void heal(float amount) {
         if (amount <= 0f) {
             System.out.println("Attempt to heal <= 0 | nicht durchgeführt");

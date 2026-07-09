@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.world;
+package com.test.SurvivorGame.world.system;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.core.data.PlayerData;
@@ -6,13 +6,14 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
+import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
-import com.test.SurvivorGame.world.WaveControl.EnemyFactory;
-import com.test.SurvivorGame.world.WaveControl.Wave;
+import com.test.SurvivorGame.world.wave.EnemyFactory;
+import com.test.SurvivorGame.world.wave.Wave;
 
 import java.util.ArrayList;
 
-public class SpawnManager {
+public class SpawnSystem {
 
     private float waveTime = 0f;    // wieviel Zeit ist seit start der wave vergangen
     private float spawnTimer = 0f;
@@ -35,7 +36,7 @@ public class SpawnManager {
 
     private Wave currentWaveReference;
 
-    public SpawnManager(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
+    public SpawnSystem(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
     {
         this.world = world;
         this.player = world.getPlayer();

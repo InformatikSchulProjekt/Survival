@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.core.Input;
+package com.test.SurvivorGame.core.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;

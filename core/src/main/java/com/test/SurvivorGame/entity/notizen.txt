@@ -1,5 +1,0 @@
-Hier kommen Entities in für die Spieltwelt rein also:
-Player
-Gameobject
-łß+
--ä
