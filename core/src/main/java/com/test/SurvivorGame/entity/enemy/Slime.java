@@ -1,10 +1,11 @@
 package com.test.SurvivorGame.entity.enemy;
 
+import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.world.World;
 
 public class Slime extends Enemy{
 
-    private static final float SIZE = 1f;
+    private static final Vector2 SIZE = new Vector2(1,1);
     private static final float MAX_HP = 1f;
     private static final float MOVEMENT_SPEED = 2f;
     private static final float DAMAGE = 1f;
