@@ -8,7 +8,7 @@ public class RunTimerSystem {
     private float passedTime; // Echte vergangene Zeit
 
     public RunTimerSystem(PlayerData playerData) {
-        survivalTime = playerData.wave * 120f;
+        survivalTime = (playerData.wave - 1) * 120f;
         passedTime = survivalTime;
     }
 
