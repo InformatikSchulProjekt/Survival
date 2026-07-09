@@ -50,7 +50,7 @@ public final class Merzmancer extends BasePlayerClass {
             new StatModifier(
                 getScope(),
                 StatType.MAGIC_COOLDOWN,
-                0.67f,
+                -0.67f,
                 ModifierType.FLAT,
                 "class:" + getID()
             ),
@@ -77,4 +77,11 @@ public final class Merzmancer extends BasePlayerClass {
             )
         );
     }
+
+    @Override
+    public String getStartAbility() {
+        return "fire_storm";
+    }
+
+
 }

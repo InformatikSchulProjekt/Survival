@@ -21,6 +21,11 @@ public final class Pyromancer extends BasePlayerClass {
     }
 
     @Override
+    public String getStartAbility() {
+        return "fire_arrow";
+    }
+
+    @Override
     public String getDescription() {
         return "A flame-wielding mage who turns raw fire magic into overwhelming destruction. Pyromancers empower fire spells and burn through enemies before they can get close.";
     }

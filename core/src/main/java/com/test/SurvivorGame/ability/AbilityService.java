@@ -28,7 +28,7 @@ public class AbilityService {
         }
 
         int currentAmount = playerState.getPlayerData().abilities.getOrDefault(abilityID, 0);
-
+        System.out.println("CURRENT AMOUNT: "+currentAmount+" VON "+abilityID);
 
         if (currentAmount >= ability.getMaxAmount()) {
             throw new IllegalStateException("Ability already maxed");
@@ -39,7 +39,7 @@ public class AbilityService {
 
 
         // Packt Aktive Abilities in die Ability slot leiste, wenn Platz da
-        if (ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
+        if (currentAmount == 0 && ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
             boolean hadFreeSpace = tryPutAbilityIntoFreeSlot(abilityID);
             // debug:
             if (!hadFreeSpace) {

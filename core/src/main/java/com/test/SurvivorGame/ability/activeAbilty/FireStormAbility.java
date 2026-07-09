@@ -12,7 +12,7 @@ import com.test.SurvivorGame.world.World;
 
 public class FireStormAbility extends ActiveAbility {
 
-    public static final String ID = "firestorm";
+    public static final String ID = "fire_storm";
 
     private final Player player;
     private final World world;

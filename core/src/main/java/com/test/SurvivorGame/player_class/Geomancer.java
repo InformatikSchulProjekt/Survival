@@ -21,9 +21,12 @@ public final class Geomancer extends BasePlayerClass {
     }
 
     @Override
+    public String getStartAbility() {
+        return "rock_blast";
+    }
+
+    @Override
     public String getDescription() {
         return "An earth-forged mage who draws strength from stone and soil. Geomancers empower earth magic and stand firm against even the heaviest attacks.";
     }
-
-
 }
