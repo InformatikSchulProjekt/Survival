@@ -11,6 +11,7 @@ public final class PlayerClassRegistry {
         register(new Geomancer());
         register(new Aeromancer());
         register(new Hydromancer());
+        register(new Merzmancer());
     }
 
     public BasePlayerClass getPlayerClass(String playerClassId) {
