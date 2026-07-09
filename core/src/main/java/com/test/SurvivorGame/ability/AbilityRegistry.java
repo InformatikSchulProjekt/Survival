@@ -23,8 +23,6 @@ public final class AbilityRegistry {
         register(new ExpandingMagic());
 
         // Active Abilities:
-        register(new MeleeAbility(world, viewport));
-        register(new ProjectileAbility(world, viewport));
         register(new FireballAbility(world, viewport));
         register(new FireArrowAbility(world, viewport));
         register(new WaterBlast(world,viewport));
