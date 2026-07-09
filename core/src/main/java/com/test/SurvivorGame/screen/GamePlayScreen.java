@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.Input.InputManager;
-import com.test.SurvivorGame.core.Input.KeyBindings;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
@@ -43,8 +42,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private GameState state = GameState.PLAYING;
     private final String map;
 
-    private KeyBindings keyBindings;
-    private InputManager inputManager;
+    private final InputManager inputManager;
 
     private final PauseMenuRenderer pauseMenu;
     private final LevelUpUI levelUpUI;
@@ -55,8 +53,6 @@ public class GamePlayScreen extends ScreenAdapter {
     {
         this.main = game;
         this.map = map;
-
-        this.keyBindings = new KeyBindings();
 
         this.gameMap = MapRegistry.getMap(map);
 
@@ -78,13 +74,13 @@ public class GamePlayScreen extends ScreenAdapter {
         pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
         levelUpUI = new LevelUpUI(shapeRenderer);
         chestUI = new ChestUI(shapeRenderer);
-        settingsUI = new SettingsUI(keyBindings, shapeRenderer);
+        settingsUI = new SettingsUI(dataLoader, shapeRenderer);
 
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
 
-        this.inputManager = new InputManager(world, abilityService, keyBindings);
+        this.inputManager = new InputManager(world, abilityService, dataLoader);
 
         playerState.setupAbilityService(abilityService);
 
@@ -92,7 +88,6 @@ public class GamePlayScreen extends ScreenAdapter {
         setupLevelUpUI();
         setupChestUI();
         setupSettingsUI();
-
     }
 
     private void setupPauseMenu() {
@@ -179,7 +174,7 @@ public class GamePlayScreen extends ScreenAdapter {
         settingsUI.setResetListener(new Runnable() {
             @Override
             public void run() {
-                keyBindings.resetKeys();
+                dataLoader.resetKeybinds();
                 settingsUI.refreshButtons();
             }
         });

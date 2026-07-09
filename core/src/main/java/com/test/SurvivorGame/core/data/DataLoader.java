@@ -3,6 +3,7 @@ package com.test.SurvivorGame.core.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import com.test.SurvivorGame.core.Input.Action;
 
 public class DataLoader {
     private static final String SAVE_FILE = "save/save_data.json";
@@ -90,5 +91,32 @@ public class DataLoader {
 
     public boolean hasPlayerData(String map) {
         return getMapSaveData(map).playerData != null;
+    }
+
+    public int getKeybind(Action action) {
+        Integer keycode = saveData.generalData.keybinds.get(action.name());
+
+        if (keycode == null) {
+            keycode = action.getDefaultKey();
+            saveData.generalData.keybinds.put(action.name(), keycode);
+            saveSaveData();
+        }
+
+        return keycode;
+    }
+
+    public void setKeybind(Action action, int keycode) {
+        saveData.generalData.keybinds.put(action.name(), keycode);
+        saveSaveData();
+    }
+
+    public void resetKeybinds() {
+        saveData.generalData.keybinds.clear();
+
+        for (Action action : Action.values()) {
+            saveData.generalData.keybinds.put(action.name(), action.getDefaultKey());
+        }
+
+        saveSaveData();
     }
 }

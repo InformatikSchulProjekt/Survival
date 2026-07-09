@@ -1,15 +1,25 @@
 package com.test.SurvivorGame.core.Input;
 
+import com.badlogic.gdx.Input;
+
 public enum Action {
-    MOVE_UP,
-    MOVE_DOWN,
-    MOVE_LEFT,
-    MOVE_RIGHT,
+    MOVE_UP(Input.Keys.W),
+    MOVE_DOWN(Input.Keys.S),
+    MOVE_LEFT(Input.Keys.A),
+    MOVE_RIGHT(Input.Keys.D),
+    ABILITY_1(Input.Keys.NUM_1),
+    ABILITY_2(Input.Keys.NUM_2),
+    ABILITY_3(Input.Keys.NUM_3),
+    ABILITY_4(Input.Keys.NUM_4),
+    PAUSE(Input.Keys.ESCAPE);
 
-    ABILITY_1,
-    ABILITY_2,
-    ABILITY_3,
-    ABILITY_4,
+    private final int defaultKey;
 
-    PAUSE
+    Action(int defaultKey) {
+        this.defaultKey = defaultKey;
+    }
+
+    public int getDefaultKey() {
+        return defaultKey;
+    }
 }
