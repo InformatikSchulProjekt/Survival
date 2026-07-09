@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.world.WaveControl;
+package com.test.SurvivorGame.world.wave;
 
 import com.badlogic.gdx.math.MathUtils;
 

@@ -9,17 +9,14 @@ import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
-import com.test.SurvivorGame.world.system.AbilitySystem;
-import com.test.SurvivorGame.world.system.CollisionSystem;
-import com.test.SurvivorGame.world.system.DropSystem;
-import com.test.SurvivorGame.world.system.RunTimerSystem;
+import com.test.SurvivorGame.world.system.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
     private final Player player;
-    private final SpawnManager spawnManager;
+    private final SpawnSystem spawnSystem;
     private final AbilitySystem abilitySystem = new AbilitySystem();
     private final CollisionSystem collisionSystem = new CollisionSystem();
     private final DropSystem dropSystem = new DropSystem();
@@ -39,7 +36,7 @@ public class World {
         this.dataLoader = dataLoader;
         this.playerState = playerState;
 
-        spawnManager = new SpawnManager(this, gameMap, gamePlayScreen);
+        spawnSystem = new SpawnSystem(this, gameMap, gamePlayScreen);
     }
 
     public void update(float deltaTime) {
@@ -48,7 +45,7 @@ public class World {
 
         player.update(deltaTime, gameMap);
 
-        spawnManager.update(deltaTime, gameMap);
+        spawnSystem.update(deltaTime, gameMap);
         runTimerSystem.update(deltaTime);
         abilitySystem.update(deltaTime, gameMap);
         dropSystem.update(deltaTime, gameMap);
@@ -64,7 +61,7 @@ public class World {
     }
 
     public ArrayList<Enemy> getEnemies() {
-        return spawnManager.getEnemies(); // Fassade für getEnemies()
+        return spawnSystem.getEnemies(); // Fassade für getEnemies()
     }
 
     public void addDrop(DroppedObject drop) {

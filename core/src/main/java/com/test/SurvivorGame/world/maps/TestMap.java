@@ -1,6 +1,6 @@
 package com.test.SurvivorGame.world.maps;
 
-import com.test.SurvivorGame.world.WaveControl.EnemyType;
+import com.test.SurvivorGame.world.wave.EnemyType;
 
 import java.util.ArrayList;
 
