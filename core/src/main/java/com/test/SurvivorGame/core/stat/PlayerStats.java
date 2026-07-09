@@ -25,7 +25,7 @@ public final class PlayerStats {
         baseStats.put(StatType.ENEMY_HP, 1f);
 
         baseStats.put(StatType.MAGIC_DURATION, 1f);
-        baseStats.put(StatType.MAGIC_DAMAGE, 100f);
+        baseStats.put(StatType.MAGIC_DAMAGE, 1f);
         baseStats.put(StatType.MAGIC_COOLDOWN, 1f);
         baseStats.put(StatType.MAGIC_SIZE, 1f);
     }
