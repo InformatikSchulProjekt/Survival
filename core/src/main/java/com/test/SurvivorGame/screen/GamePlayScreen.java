@@ -45,6 +45,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private final LevelUpUI levelUpUI;
     private final ChestUI chestUI;
     private final SettingsUI settingsUI;
+    private final InventoryUI inventoryUI;
     private final MapFinishedUI mapFinishedUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
@@ -67,8 +68,10 @@ public class GamePlayScreen extends ScreenAdapter {
         chestUI = new ChestUI(shapeRenderer);
         settingsUI = new SettingsUI(dataLoader, shapeRenderer);
         mapFinishedUI = new MapFinishedUI(shapeRenderer);
+        inventoryUI = new InventoryUI(shapeRenderer);
+        inventoryUI.setPlayerState(playerState);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, mapFinishedUI);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, inventoryUI, mapFinishedUI);
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         this.inputManager = new InputManager(world, abilityService, dataLoader);
 
@@ -78,6 +81,7 @@ public class GamePlayScreen extends ScreenAdapter {
         setupLevelUpUI();
         setupChestUI();
         setupSettingsUI();
+        setupInventoryUI();
         setupMapFinishedUI();
     }
 
@@ -111,7 +115,14 @@ public class GamePlayScreen extends ScreenAdapter {
         pauseMenu.setInventoryListener(new Runnable() {
             @Override
             public void run() {
-                System.out.println("inventoryScreen");
+
+                state = GameState.INVENTORY;
+
+                inventoryUI.refresh();
+
+                Gdx.input.setInputProcessor(
+                    inventoryUI.getStage()
+                );
             }
         });
         pauseMenu.setAbilitiesListener(new Runnable() {
@@ -169,6 +180,24 @@ public class GamePlayScreen extends ScreenAdapter {
                 settingsUI.refreshButtons();
             }
         });
+    }
+
+    private void setupInventoryUI(){
+
+        inventoryUI.setBackListener(new Runnable() {
+
+            @Override
+            public void run() {
+
+                state = GameState.PAUSED;
+
+                Gdx.input.setInputProcessor(
+                    pauseMenu.getStage()
+                );
+
+            }
+        });
+
     }
 
     private void setupMapFinishedUI() {
@@ -240,6 +269,7 @@ public class GamePlayScreen extends ScreenAdapter {
             || state == GameState.CHEST_OPENING
             || state == GameState.SETTINGS
             || state == GameState.MAP_FINISHED
+            || state == GameState.INVENTORY
         ) {
             return;
         }
@@ -291,8 +321,13 @@ public class GamePlayScreen extends ScreenAdapter {
         renderer.render(gameMap, world, renderDeltaTime, state); //animationen
 
         switch (state) {
+
             case PAUSED:
                 pauseMenu.render();
+                break;
+
+            case INVENTORY:
+                inventoryUI.render();
                 break;
 
             case SETTINGS:

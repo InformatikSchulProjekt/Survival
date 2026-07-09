@@ -107,9 +107,14 @@ public class SpawnSystem {
                 bossChestSpawned = true;
             }
 
-            if (isInfiniteMode() || gameMap.getSpawnProfile().hasNextWave(playerData.wave))
-            {
+            if (isInfiniteMode()) {
                 startNextWave();
+            }
+            else if (gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
+                startNextWave();
+            }
+            else {
+                gamePlayScreen.showGameFinishedUI();
             }
         }
 
