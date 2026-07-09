@@ -53,8 +53,8 @@ public class SmallHeal extends ActiveAbility {
         float heal = baseHeal;
         heal *= playerStats.getStat(StatType.HEALING);
         heal *= playerStats.getStat(StatScope.WATER,StatType.HEALING);
-        if (level >= 3) heal*= 1.05f;
-        if (level >= 4) heal*= 1.1f;
+        if (level >= 3) heal*= 1.5f;
+        if (level >= 4) heal*= 1.33f;
         return heal;
     }
 //    public float getbaseInterval() {
@@ -73,8 +73,8 @@ public class SmallHeal extends ActiveAbility {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
-        if (level>=2) cooldown*= 0.95;
-        if (level == 5)cooldown*=0.75;
+        if (level>=2) cooldown*= 0.9f;
+        if (level == 5)cooldown*=0.75f;
         return cooldown;
 
     }
@@ -100,11 +100,11 @@ public class SmallHeal extends ActiveAbility {
             case 1:
                 return "Heal regenerates a small amount of HP";
             case 2:
-                return "reduces the ability cooldown by 5%";
+                return "reduces the ability cooldown by 10%";
             case 3:
-                return "heal increases by 5%";
+                return "heal increases by 50%";
             case 4:
-                return "heal increased by 10%";
+                return "heal increased by 33%%";
             case 5:
                 return "cooldown decreased by 25%";
             default:

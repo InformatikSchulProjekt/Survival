@@ -3,18 +3,18 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.activeAbilty.ActiveAbility;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.WaveProjectile;
 import com.test.SurvivorGame.world.World;
 
-public class WaterBlast extends ActiveAbility {
+public class Wave extends ActiveAbility {
 
-    public static final String ID = "water_blast";
+    public static final String ID = "wave";
 
     private final Viewport viewport;
     private final Player player;
@@ -24,16 +24,16 @@ public class WaterBlast extends ActiveAbility {
     private int level;
 
     private float duration = 3f;
-    private float baseWidth = 2f;
-    private float height= 1f;
+    private float baseWidth = 4f;
+    private float height= 0.7f;
     private float speed = 5f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private float baseDamage = 1f;
+    private static float baseDamage = 0.75f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    public WaterBlast(World world, Viewport viewport) {
+    public Wave(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
         this.playerStats = player.getPlayerState().getPlayerStats();
@@ -44,10 +44,10 @@ public class WaterBlast extends ActiveAbility {
 
     @Override
     protected void activate() {
-        WaterBlastProjectile waterBlastProjectile = new WaterBlastProjectile(
+        WaveProjectile waveProjectile = new WaveProjectile(
             player.getX(),
             player.getY(),
-            baseWidth,
+            getWidth(),
             height,
             texture,
             player,
@@ -57,7 +57,7 @@ public class WaterBlast extends ActiveAbility {
             getDamage()
         );
 
-        world.addAbility(waterBlastProjectile);
+        world.addAbility(waveProjectile);
     }
 
     public void dispose() {
@@ -69,10 +69,10 @@ public class WaterBlast extends ActiveAbility {
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
         if(level >= 2){
-            damage *= 1.1f;
+            damage *= 1.25f;
         }
         if(level ==5){
-            damage *= 1.25f;
+            damage *= 1.15f;
         }
         return damage;
     }
@@ -84,7 +84,7 @@ public class WaterBlast extends ActiveAbility {
 
     @Override
     public String getName() {
-        return "Water Blast";
+        return "Wave";
     }
 
     @Override
@@ -99,27 +99,34 @@ public class WaterBlast extends ActiveAbility {
         if(level >= 3){
             cooldown *= 0.9f;
         }
-        if(level >= 4){
-            cooldown *= 0.8f;
-        }
         return cooldown;
     }
-
+    public float getWidth(){
+        float width = baseWidth;
+        if(level >= 4){
+            width *= 1.25f;
+        }
+        if (level == 5){
+            width *= 1.4;
+        }
+        return width;
+    }
     @Override
     public String getDescription(int level) {
         switch (level) {
             case 1:
-                return "Shoots a water blast that explodes on impact";
+                return "creates a wave that deals damage";
             case 2:
-                return "Water blast damage increased by 10%";
+                return "Wave damage increased by 25%";
             case 3:
-                return "Water blast cooldown decreased by 10%";
+                return "Wave cooldown decreased by 10%";
             case 4:
-                return "cooldown reduced by 20%";
+                return "Width increased by 25%";
             case 5:
-                return "Damage increased by 25%";
+                return "Width increased by 40% and damage increased by 15%";
             default:
                 return "No description available";
         }
+        //reichweite noch einbauen morgen
     }
 }

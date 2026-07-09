@@ -3,18 +3,19 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.activeAbilty.ActiveAbility;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.RockBlastProjectile;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.world.World;
+// macht etwas mehr DMG weil es halt stein ist
+public class RockBlast extends ActiveAbility {
 
-public class WaterBlast extends ActiveAbility {
-
-    public static final String ID = "water_blast";
+    public static final String ID = "rock_blast";
 
     private final Viewport viewport;
     private final Player player;
@@ -29,11 +30,11 @@ public class WaterBlast extends ActiveAbility {
     private float speed = 5f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private float baseDamage = 1f;
+    private float baseDamage = 1.5f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    public WaterBlast(World world, Viewport viewport) {
+    public RockBlast(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
         this.playerStats = player.getPlayerState().getPlayerStats();
@@ -44,7 +45,7 @@ public class WaterBlast extends ActiveAbility {
 
     @Override
     protected void activate() {
-        WaterBlastProjectile waterBlastProjectile = new WaterBlastProjectile(
+        RockBlastProjectile rockBlastProjectile = new RockBlastProjectile(
             player.getX(),
             player.getY(),
             baseWidth,
@@ -57,7 +58,7 @@ public class WaterBlast extends ActiveAbility {
             getDamage()
         );
 
-        world.addAbility(waterBlastProjectile);
+        world.addAbility(rockBlastProjectile);
     }
 
     public void dispose() {
@@ -67,12 +68,12 @@ public class WaterBlast extends ActiveAbility {
     public float getDamage() {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
-        damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_DAMAGE);
         if(level >= 2){
             damage *= 1.1f;
         }
         if(level ==5){
-            damage *= 1.25f;
+            damage *= 1.3f;
         }
         return damage;
     }
@@ -84,7 +85,7 @@ public class WaterBlast extends ActiveAbility {
 
     @Override
     public String getName() {
-        return "Water Blast";
+        return "Rock blast";
     }
 
     @Override
@@ -95,12 +96,12 @@ public class WaterBlast extends ActiveAbility {
     public float getCooldown() {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_COOLDOWN);
         if(level >= 3){
             cooldown *= 0.9f;
         }
         if(level >= 4){
-            cooldown *= 0.8f;
+            cooldown *= 0.85f;
         }
         return cooldown;
     }
@@ -109,15 +110,15 @@ public class WaterBlast extends ActiveAbility {
     public String getDescription(int level) {
         switch (level) {
             case 1:
-                return "Shoots a water blast that explodes on impact";
+                return "Shoots a rock blast that explodes on impact";
             case 2:
-                return "Water blast damage increased by 10%";
+                return "Rock blast damage increased by 10%";
             case 3:
-                return "Water blast cooldown decreased by 10%";
+                return "Rock blast cooldown decreased by 10%";
             case 4:
-                return "cooldown reduced by 20%";
+                return "cooldown reduced by 15%";
             case 5:
-                return "Damage increased by 25%";
+                return "Damage increased by 30%";
             default:
                 return "No description available";
         }

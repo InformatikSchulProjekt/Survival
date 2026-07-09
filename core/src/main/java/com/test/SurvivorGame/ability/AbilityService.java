@@ -100,4 +100,5 @@ public class AbilityService {
     public AbilityRegistry getAbilityRegistry() {
         return this.abilityRegistry;
     }
+
 }
