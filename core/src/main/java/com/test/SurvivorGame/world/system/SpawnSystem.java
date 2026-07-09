@@ -199,6 +199,7 @@ public class SpawnSystem {
     // TODO!
     private void setNewInfiniteWave() {
         System.out.println("INFINITE WAVE SETUP NOT IMPLEMENTED!");
+        currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(1); // damit game net crashed
     }
 
     private boolean isInfiniteMode() {

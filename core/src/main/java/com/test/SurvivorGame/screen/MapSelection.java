@@ -72,14 +72,11 @@ public class MapSelection extends ScreenAdapter {
 
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-
-                    main.setScreen(
-                        new GamePlayScreen(
-                            main,
-                            dataLoader,
-                            map.getId()
-                        )
-                    );
+                    if (dataLoader.hasPlayerData(map.getId())) {
+                        main.setScreen(new GamePlayScreen(main, dataLoader, map.getId()));
+                    } else {
+                        main.setScreen(new ClassSelection(main, dataLoader, map.getId()));
+                    }
 
                     dispose();
                 }
