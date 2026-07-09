@@ -12,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.test.SurvivorGame.core.Input.Action;
-import com.test.SurvivorGame.core.Input.KeyBindings;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.test.SurvivorGame.core.data.DataLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +23,9 @@ public class SettingsUI {
 
     private final Stage stage;
     private final Skin skin;
-    private ShapeRenderer shapeRenderer;
+    private final ShapeRenderer shapeRenderer;
+    private final DataLoader dataLoader;
     private final OrthographicCamera camera = new OrthographicCamera();
-
-    private final KeyBindings keyBindings;
 
     private final Map<Action, TextButton> keyButtons = new HashMap<>();
 
@@ -35,13 +34,10 @@ public class SettingsUI {
     private Runnable backListener;
     private Runnable resetListener;
 
-
-    public SettingsUI(KeyBindings keyBindings, ShapeRenderer shapeRenderer) {
-
-        this.keyBindings = keyBindings;
-
+    public SettingsUI(DataLoader dataLoader, ShapeRenderer shapeRenderer) {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("uiskin.json"));
+        this.dataLoader = dataLoader;
 
         this.shapeRenderer = shapeRenderer;
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -97,7 +93,7 @@ public class SettingsUI {
         Label label = new Label(text, skin);
 
         TextButton button = new TextButton(
-            Input.Keys.toString(keyBindings.getKey(action)),
+            Input.Keys.toString(dataLoader.getKeybind(action)),
             skin
         );
 
@@ -118,14 +114,10 @@ public class SettingsUI {
     }
 
     public void render() {
-
         if (waitingForKey != null) {
-
             for (int key = 0; key < Input.Keys.MAX_KEYCODE; key++) {
-
                 if (Gdx.input.isKeyJustPressed(key)) {
-
-                    keyBindings.setKey(waitingForKey, key);
+                    dataLoader.setKeybind(waitingForKey, key);
 
                     keyButtons.get(waitingForKey)
                         .setText(Input.Keys.toString(key));
@@ -178,7 +170,7 @@ public class SettingsUI {
     public void refreshButtons() {
         for (Action action : Action.values()) {
             keyButtons.get(action)
-                .setText(Input.Keys.toString(keyBindings.getKey(action)));
+                .setText(Input.Keys.toString(dataLoader.getKeybind(action)));
         }
     }
 
