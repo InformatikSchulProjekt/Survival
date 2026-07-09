@@ -32,9 +32,9 @@ public class FireArrowAbility extends ActiveAbility {
     private final float baseDuration = 3f;
     private final float baseWidth = 3f;
     private final float baseHeight= 0.6f;
-    private final float baseSpeed = 7f;
+    private final float baseSpeed = 6f;
     private final int basePierce = 3;
-    private final float baseDamage = 0.5f;
+    private final float baseDamage = 0.75f;
     private final float baseCooldown = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
@@ -102,7 +102,7 @@ public class FireArrowAbility extends ActiveAbility {
     public float getDuration(){
         float duration = baseDuration;
         if(level >= 4){
-            duration *= 2;
+            duration *= 2f;
         }
         return duration;
     }
@@ -147,7 +147,7 @@ public class FireArrowAbility extends ActiveAbility {
             case 3:
                 return "Fire arrow pierce increases by 2";
             case 4:
-                return"Duration increased" ;
+                return"Duration doubled" ;
             case 5:
                 return "Size increased by 5% and damage increased by 15%";
             default:

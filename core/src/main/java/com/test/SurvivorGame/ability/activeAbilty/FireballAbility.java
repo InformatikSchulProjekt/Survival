@@ -25,7 +25,7 @@ public class FireballAbility extends ActiveAbility {
     private final float baseDuration = 3f;
     private final float baseWidth = 3f;
     private final float baseHeight = 0.6f;
-    private final float baseSpeed = 7f;
+    private final float baseSpeed = 5f;
     private final float baseDamage = 0.5f;
     private float duration = 2f;
     private float effectSize = 3f;
@@ -33,7 +33,7 @@ public class FireballAbility extends ActiveAbility {
     private float explosionRadius = 2f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private static float damage = 2f;
+    private static float damage = 1f;
 
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
@@ -75,9 +75,9 @@ public class FireballAbility extends ActiveAbility {
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
         if (level >= 2){
-            damage = 1.15f;        }
+            damage *= 1.15f;        }
         if (level==5){
-            damage = 1.15f;
+            damage *= 1.15f;
         }
         return damage;
     }
@@ -113,7 +113,7 @@ public class FireballAbility extends ActiveAbility {
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
         if (level>=4){
-            cooldown *= 0.95f;
+            cooldown *= 0.85f;
         }
         return cooldown;
     }
@@ -143,7 +143,7 @@ public class FireballAbility extends ActiveAbility {
             case 3:
                 return "Fireball size increases by 5%";
             case 4:
-                return "Cooldown decreased by 5%";
+                return "Cooldown decreased by 15%";
             case 5:
                 return "Size increased by 5% and damage increased by 15%";
             default:

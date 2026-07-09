@@ -2,11 +2,13 @@ package com.test.SurvivorGame.entity.abilityObjects.projectile;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.ability.activeAbilty.WindCutter;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
+import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class WaterBlastProjectile extends Projectile {
+public class WindCutterProjectile extends Projectile {
 
     private final float damage;
 
@@ -16,10 +18,12 @@ public class WaterBlastProjectile extends Projectile {
     private float animationTime = 0f;
 
 
-    public WaterBlastProjectile(float x, float y, float width, float height, Texture texture, Player player,
+
+    public WindCutterProjectile(float x, float y, float width, float height, Texture texture, Player player,
                                 Viewport viewport, float speed, float duration, float damage) {
         super(x, y, width, height, texture, player, viewport, speed, duration);
         this.damage = damage;
+
 
     }
 
@@ -31,7 +35,6 @@ public class WaterBlastProjectile extends Projectile {
         if (sameEnemyHitLock > 0) {
             sameEnemyHitLock -= deltaTime;
         }
-
     }
 
     @Override
@@ -45,18 +48,9 @@ public class WaterBlastProjectile extends Projectile {
         }
 
         damageEnemy(enemy, getDamage());
-
-        float slowAmount = 0.6f;  // 60% of original speed (40% slower)
-        float slowDuration = 2f;
-        applySlowToEnemy(enemy, slowAmount, slowDuration);
-
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
         expire();
-
-    }
-    private void applySlowToEnemy(Enemy enemy, float speedMultiplier, float duration) {
-        enemy.applySlow(speedMultiplier, 2f);
 
     }
 

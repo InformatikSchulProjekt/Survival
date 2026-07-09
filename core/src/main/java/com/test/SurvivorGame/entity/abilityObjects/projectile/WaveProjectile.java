@@ -6,20 +6,23 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class WaterBlastProjectile extends Projectile {
+public class WaveProjectile extends Projectile {
 
     private final float damage;
-
+    private final float maxDistance = 10f;
 
     private Enemy lastHitEnemy;
     private float sameEnemyHitLock = 0f;
     private float animationTime = 0f;
+    private float distanceTraveled;
+    private float speed;
 
-
-    public WaterBlastProjectile(float x, float y, float width, float height, Texture texture, Player player,
-                                Viewport viewport, float speed, float duration, float damage) {
+    public WaveProjectile(float x, float y, float width, float height, Texture texture, Player player,
+                          Viewport viewport, float speed, float duration, float damage) {
         super(x, y, width, height, texture, player, viewport, speed, duration);
         this.damage = damage;
+        this.speed  = speed;
+
 
     }
 
@@ -31,7 +34,10 @@ public class WaterBlastProjectile extends Projectile {
         if (sameEnemyHitLock > 0) {
             sameEnemyHitLock -= deltaTime;
         }
-
+        distanceTraveled += speed * deltaTime;
+        if (distanceTraveled >= maxDistance) {
+            expire();
+        }
     }
 
     @Override
@@ -45,20 +51,10 @@ public class WaterBlastProjectile extends Projectile {
         }
 
         damageEnemy(enemy, getDamage());
-
-        float slowAmount = 0.6f;  // 60% of original speed (40% slower)
-        float slowDuration = 2f;
-        applySlowToEnemy(enemy, slowAmount, slowDuration);
-
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
-        expire();
-
     }
-    private void applySlowToEnemy(Enemy enemy, float speedMultiplier, float duration) {
-        enemy.applySlow(speedMultiplier, 2f);
 
-    }
 
     @Override
     public float getDamage() {
