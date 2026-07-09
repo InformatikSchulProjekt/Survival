@@ -31,8 +31,7 @@ public class World {
     private final GameMap gameMap;
 
     public World(PlayerState playerState, GameMap gameMap,
-                 String map, DataLoader dataLoader, GamePlayScreen gamePlayScreen)
-    {
+                 String map, DataLoader dataLoader, GamePlayScreen gamePlayScreen) {
         player = new Player(playerState);
 
         this.map = map;
@@ -45,7 +44,7 @@ public class World {
 
     public void update(float deltaTime) {
         // Passive Health Regen:
-        playerState.heal(deltaTime*playerState.getPlayerStats().getStat(StatType.HEALING));
+        playerState.heal(deltaTime * playerState.getPlayerStats().getStat(StatType.HEALING));
 
         player.update(deltaTime, gameMap);
 
@@ -56,18 +55,15 @@ public class World {
         collisionSystem.checkCollisions(deltaTime, player, getEnemies(), getAbilityObjects());
     }
 
-    public Player getPlayer()
-    {
+    public Player getPlayer() {
         return player;
     }
 
-    public float getSurvivalTime()
-    {
+    public float getSurvivalTime() {
         return runTimerSystem.getSurvivalTime();
     }
 
-    public ArrayList<Enemy> getEnemies()
-    {
+    public ArrayList<Enemy> getEnemies() {
         return spawnManager.getEnemies(); // Fassade für getEnemies()
     }
 
@@ -79,8 +75,7 @@ public class World {
         return dropSystem.getDroppedObjects();
     }
 
-    public void saveGame()
-    {
+    public void saveGame() {
         dataLoader.savePlayerData(map, player.getPlayerState().getPlayerData());
     }
 
@@ -88,8 +83,7 @@ public class World {
         runTimerSystem.setSurvivalTimePaused(paused);
     }
 
-    public float getPassedTime()
-    {
+    public float getPassedTime() {
         return runTimerSystem.getPassedTime();
     }
 
