@@ -4,3 +4,4 @@ public enum ChestType {
     NORMAL,
     BOSS,
 }
+

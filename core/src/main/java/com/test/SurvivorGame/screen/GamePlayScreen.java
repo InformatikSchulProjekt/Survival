@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.ability.AbilityService;
+import com.test.SurvivorGame.core.Input.InputManager;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.Rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
-import com.test.SurvivorGame.screen.HuD.PauseMenuRenderer;
-import com.test.SurvivorGame.screen.HuD.LevelUpUI;
-import com.test.SurvivorGame.screen.HuD.ChestUI;
+import com.test.SurvivorGame.screen.HuD.*;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.world.World;
@@ -40,9 +39,13 @@ public class GamePlayScreen extends ScreenAdapter {
     private GameState state = GameState.PLAYING;
     private final String map;
 
-    private final PauseMenuRenderer pauseMenu;
+    private final InputManager inputManager;
+
+    private final PauseMenuUI pauseMenu;
     private final LevelUpUI levelUpUI;
     private final ChestUI chestUI;
+    private final SettingsUI settingsUI;
+    private final MapFinishedUI mapFinishedUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -62,22 +65,29 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData, this);
-        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader);
+        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader, this);
 
         this.shapeRenderer = new ShapeRenderer();
 
-        pauseMenu = new PauseMenuRenderer(shapeRenderer, playerState);
+        pauseMenu = new PauseMenuUI(shapeRenderer);
         levelUpUI = new LevelUpUI(shapeRenderer);
         chestUI = new ChestUI(shapeRenderer);
+        settingsUI = new SettingsUI(dataLoader, shapeRenderer);
+        mapFinishedUI = new MapFinishedUI(shapeRenderer);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, mapFinishedUI);
 
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
+
+        this.inputManager = new InputManager(world, abilityService, dataLoader);
+
         playerState.setupAbilityService(abilityService);
 
         setupPauseMenu();
         setupLevelUpUI();
         setupChestUI();
+        setupSettingsUI();
+        setupMapFinishedUI();
     }
 
     private void setupPauseMenu() {
@@ -103,22 +113,20 @@ public class GamePlayScreen extends ScreenAdapter {
         pauseMenu.setSettingsListener(new Runnable() {
             @Override
             public void run() {
-                System.out.println("settingsScreen");
-                Gdx.input.setInputProcessor(null);
+                state = GameState.SETTINGS;
+                Gdx.input.setInputProcessor(settingsUI.getStage());
             }
         });
         pauseMenu.setInventoryListener(new Runnable() {
             @Override
             public void run() {
                 System.out.println("inventoryScreen");
-                Gdx.input.setInputProcessor(null);
             }
         });
         pauseMenu.setAbilitiesListener(new Runnable() {
             @Override
             public void run() {
                 System.out.println("abilitiesScreen");
-                Gdx.input.setInputProcessor(null);
             }
         });
     }
@@ -155,13 +163,53 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
-    public void gameOver(boolean restart) {
+    private void setupSettingsUI() {
+        settingsUI.setBackListener(new Runnable() {
+            @Override
+            public void run() {
+                state = GameState.PAUSED;
+                Gdx.input.setInputProcessor(pauseMenu.getStage());
+            }
+        });
+        settingsUI.setResetListener(new Runnable() {
+            @Override
+            public void run() {
+                dataLoader.resetKeybinds();
+                settingsUI.refreshButtons();
+            }
+        });
+    }
+
+    private void setupMapFinishedUI() {
+        mapFinishedUI.setBackToMenuListener(new Runnable() {
+            @Override
+            public void run() {
+                gameDone(false);
+            }
+        });
+
+        mapFinishedUI.setKeepPlayingListener(new Runnable() {
+            @Override
+            public void run() {
+                state = GameState.PLAYING;
+                Gdx.input.setInputProcessor(null);
+            }
+        });
+    }
+
+    // Wird gecalled wenn game vorbei
+    private void gameDone(boolean restart) {
         state = GameState.PAUSED;
-        SoundManager.playSound("gameOver.wav");
 
         saveSurvivalTime();
         dataLoader.clearPlayerData(map);
         main.gameOver(restart, map);
+    }
+
+    // wird gecalled wenn Spiel verloren
+    public void gameOver(boolean restart) {
+        SoundManager.playSound("gameOver.wav");
+        gameDone(restart);
     }
 
     public void gameOver() {
@@ -177,91 +225,32 @@ public class GamePlayScreen extends ScreenAdapter {
         state = GameState.PAUSED;
     }
 
+    public void showGameFinishedUI() {
+        state = GameState.MAP_FINISHED;
+        Gdx.input.setInputProcessor(mapFinishedUI.getStage());
+    }
+
     @Override
     public void resize(int width, int height)
     {
         renderer.resize(width, height);   // passt sich der Bildschirmgröße an
     }
 
-    private void processInput() // sollte später eigene klasse werde, oder? hier nur zum, rumtesten ig
+    private void processInput()
     {
-        if (state == GameState.LEVEL_UP || state == GameState.CHEST_OPENING)
-        {
-            return; // Eingaben laufen während der Auswahl über die Stage der jeweiligen UI
-        }
-
-        playerMoveDirection.setZero(); // damits nicht wächst
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-        {
-            if (state == GameState.PLAYING)
-            {
-                state = GameState.PAUSED;
-
-                Gdx.input.setInputProcessor(pauseMenu.getStage());
-
-                // Spieler sofort anhalten
-                playerMoveDirection.setZero();
-                SoundManager.stopFootsteps();
-                world.getPlayer().updateMoveDirection(playerMoveDirection);
-
-            }
-            else
-            {
-                state = GameState.PLAYING;
-            }
-        }
-
-        if (state == GameState.PAUSED)
-        {
+        if (state == GameState.LEVEL_UP
+            || state == GameState.CHEST_OPENING
+            || state == GameState.SETTINGS
+            || state == GameState.MAP_FINISHED
+        ) {
             return;
         }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.W))
+        if (inputManager.processInput())
         {
-            playerMoveDirection.y += 1;
+            state = GameState.PAUSED;
+            Gdx.input.setInputProcessor(pauseMenu.getStage());
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.S))
-        {
-            playerMoveDirection.y -= 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D))
-        {
-            playerMoveDirection.x += 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A))
-        {
-            playerMoveDirection.x -= 1;
-        }
-
-        if(!playerMoveDirection.isZero()) //wenns schräg geht normalisieren, aber wenn sich der Player nicht bewegt wird (x = 0,y = 0) / 0
-        {
-            playerMoveDirection.nor();
-        }
-
-        world.getPlayer().updateMoveDirection(playerMoveDirection);
-
-        // Ability Keybinds
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1))
-        {
-            activateAbilitySlot(0);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2))
-        {
-            activateAbilitySlot(1);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3))
-        {
-            activateAbilitySlot(2);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_4))
-        {
-            activateAbilitySlot(3);
-        }
-
     }
 
     @Override
@@ -303,9 +292,26 @@ public class GamePlayScreen extends ScreenAdapter {
         float renderDeltaTime = state == GameState.PLAYING ? deltaTime : 0f;
         renderer.render(gameMap, world, renderDeltaTime, state); //animationen
 
-        if (state == GameState.PAUSED) {
-            pauseMenu.render();
+        switch (state) {
+            case PAUSED:
+                pauseMenu.render();
+                break;
+
+            case SETTINGS:
+                settingsUI.render();
+                break;
+
+            case MAP_FINISHED:
+                mapFinishedUI.render();
+                break;
         }
+        if (state == GameState.SETTINGS &&
+            Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+
+            state = GameState.PAUSED;
+            Gdx.input.setInputProcessor(pauseMenu.getStage());
+        }
+
     }
 
     private void updateLogic(float deltaTime, GameMap map)
@@ -321,21 +327,6 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
-    private void activateAbilitySlot(int slotIndex) {
-        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
-
-        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
-            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
-        }
-
-        String abilityId = abilitySlots[slotIndex];
-
-        if (abilityId == null || abilityId.isBlank()) {
-            return;
-        }
-
-        abilityService.activate(abilityId, world.getPassedTime());
-    }
 
     // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen
     private void swapAbilitySlots(int slot1, int slot2) {
