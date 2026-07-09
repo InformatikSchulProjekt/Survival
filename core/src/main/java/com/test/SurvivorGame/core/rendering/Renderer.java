@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.core.Rendering;
+package com.test.SurvivorGame.core.rendering;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

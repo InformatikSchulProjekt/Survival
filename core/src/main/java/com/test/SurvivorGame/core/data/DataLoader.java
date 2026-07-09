@@ -3,7 +3,7 @@ package com.test.SurvivorGame.core.data;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.test.SurvivorGame.core.Input.Action;
+import com.test.SurvivorGame.core.input.Action;
 
 public class DataLoader {
     private static final String SAVE_FILE = "save/save_data.json";

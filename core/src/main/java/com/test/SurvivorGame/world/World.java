@@ -60,7 +60,7 @@ public class World {
         return runTimerSystem.getSurvivalTime();
     }
 
-    public ArrayList<Enemy> getEnemies() {
+    public List<Enemy> getEnemies() {
         return spawnSystem.getEnemies(); // Fassade für getEnemies()
     }
 

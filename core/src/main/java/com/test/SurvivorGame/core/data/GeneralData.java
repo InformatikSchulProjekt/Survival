@@ -1,7 +1,7 @@
 package com.test.SurvivorGame.core.data;
 
 import com.badlogic.gdx.Input;
-import com.test.SurvivorGame.core.Input.Action;
+import com.test.SurvivorGame.core.input.Action;
 
 import java.util.HashMap;
 import java.util.Map;
