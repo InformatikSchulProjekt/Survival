@@ -40,7 +40,7 @@ public class FireStormAbility extends ActiveAbility {
 
     @Override
     protected void activate() {
-        FireStorm fireStorm = new FireStorm(player.getX(), player.getY(), startSize, getBaseEndSizeSize(), texture, baseDuration, world, getDamage());
+        FireStorm fireStorm = new FireStorm(player.getX(), player.getY(), startSize, getBaseEndSizeSize(), texture, getDuration(), world, getDamage());
 
         world.addAbility(fireStorm);
     }
@@ -90,8 +90,8 @@ public class FireStormAbility extends ActiveAbility {
         return cooldown;
     }
     //@Override
-    public float getDuration(float duration) {
-        float baseDuration = duration;
+    public float getDuration() {
+        float duration = baseDuration;
         if (level>=4){
             duration *= 1.1f;
         }
