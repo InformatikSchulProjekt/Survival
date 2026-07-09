@@ -15,7 +15,7 @@ public class SafeMeadows extends GameMap {
                 EnemyType.BOSS
                 //Hier eig noch mehr verschiedene Boss-Arten, wenn wir welche haben
             )),
-            10f, //gemeinsam überlegen wie wavetime hardcoded sein soll und co.
+            120f, //gemeinsam überlegen wie wavetime hardcoded sein soll und co.
             1.5f,
             0.3f
         );
@@ -31,25 +31,66 @@ public class SafeMeadows extends GameMap {
             30
         );
 
+        // Wave 1 -----------------------------------
         spawnProfile.addWave(
-            10f,
-            1.5f,
-            0.3f,
+            mapSettings.getWaveTime(),
+            mapSettings.getStartInterval(),
+            mapSettings.getEndInterval(),
             EnemyType.BOSS
         );
-
         spawnProfile.addEnemyToWave(
             spawnProfile.getCurrentWave(1),
             EnemyType.SLIME,
             100
         );
 
+        // Wave 2 -----------------------------------
+        spawnProfile.addWave(
+            mapSettings.getWaveTime(),
+            mapSettings.getStartInterval() - 0.1f,
+            mapSettings.getEndInterval() - 0.1f,
+            EnemyType.BOSS
+        );
+
+        spawnProfile.addEnemyToWave(
+            spawnProfile.getCurrentWave(2),
+            EnemyType.SLIME,
+            100
+        );
+
+        // Wave 3 -----------------------------------
+        spawnProfile.addWave(
+            mapSettings.getWaveTime(),
+            mapSettings.getStartInterval() - 0.2f,
+            mapSettings.getEndInterval() - 0.2f,
+            EnemyType.BOSS
+        );
+
+        spawnProfile.addEnemyToWave(
+            spawnProfile.getCurrentWave(3),
+            EnemyType.SLIME,
+            100
+        );
+
+        // Wave 4 -----------------------------------
+        spawnProfile.addWave(
+            mapSettings.getWaveTime(),
+            mapSettings.getStartInterval() - 0.3f,
+            mapSettings.getEndInterval() - 0.2f,
+            EnemyType.BOSS
+        );
+
+        spawnProfile.addEnemyToWave(
+            spawnProfile.getCurrentWave(4),
+            EnemyType.SLIME,
+            100
+        );
 
     }
 
     @Override
     public int getMaxWaves() {
-        return 1;
+        return 4;
     }
 
     @Override
