@@ -237,6 +237,23 @@ public class SpawnSystem {
         state = WaveState.NORMAL;
     }
 
+    public void startInfiniteMode()
+    {
+        playerData.wave = gameMap.getMaxWaves() + 1;
+
+        setNewCurrentWave();
+
+        waveTime = 0f;
+        spawnTimer = 0f;
+
+        bossChestSpawned = false;
+        bossPhaseTriggered = false;
+
+        state = WaveState.NORMAL;
+
+        world.setSurvivalTimePaused(false);
+    }
+
     private void setNewCurrentWave() {
         if (isInfiniteMode()) {
             setNewInfiniteWave();

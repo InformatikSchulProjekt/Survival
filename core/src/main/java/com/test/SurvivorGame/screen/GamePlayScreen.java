@@ -211,6 +211,8 @@ public class GamePlayScreen extends ScreenAdapter {
         mapFinishedUI.setKeepPlayingListener(new Runnable() {
             @Override
             public void run() {
+                world.getSpawnSystem().startInfiniteMode();
+
                 state = GameState.PLAYING;
                 Gdx.input.setInputProcessor(null);
             }
