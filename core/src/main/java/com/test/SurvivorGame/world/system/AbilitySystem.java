@@ -1,7 +1,6 @@
 package com.test.SurvivorGame.world.system;
 
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
-import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
 import java.util.ArrayList;
@@ -11,8 +10,7 @@ import java.util.List;
 public class AbilitySystem {
     private final ArrayList<AbilityObject> abilityObjects = new ArrayList<>();
 
-    public void update(float deltaTime, GameMap map, ArrayList<Enemy> enemies) {
-        checkCollisions(enemies);
+    public void update(float deltaTime, GameMap map) {
         updateAbilities(deltaTime, map);
     }
 
@@ -31,16 +29,6 @@ public class AbilitySystem {
 
             if (abilityObject.getExpired()) {
                 abilityObjects.remove(i);
-            }
-        }
-    }
-
-    private void checkCollisions(ArrayList<Enemy> enemies) {
-        for (AbilityObject ability : abilityObjects) {
-            for (Enemy enemy : enemies) {
-                if (ability.overlaps(enemy)) {
-                    ability.onHit(enemy);
-                }
             }
         }
     }

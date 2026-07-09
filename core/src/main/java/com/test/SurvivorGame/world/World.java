@@ -10,17 +10,12 @@ import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.system.AbilitySystem;
+import com.test.SurvivorGame.world.system.CollisionSystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
-
-    private final Player player;
-
-    private float damageTimer = 0f;
-    private final float DamageInterval = 0.5f;
-
     private boolean survivalTimePaused = false;
 
     private float survivalTime = 0f; // wie lange der aktuelle Run schon läuft, für den HUD-Timer
@@ -31,8 +26,10 @@ public class World {
 
     private final ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
 
+    private final Player player;
     private final SpawnManager spawnManager;
-    private final AbilitySystem abilitySystem;
+    private final AbilitySystem abilitySystem = new AbilitySystem();
+    private final CollisionSystem collisionSystem = new CollisionSystem();
 
     private final String map;
     private final DataLoader dataLoader;
@@ -50,7 +47,6 @@ public class World {
         this.playerState = playerState;
 
         spawnManager = new SpawnManager(this, gameMap, gamePlayScreen);
-        this.abilitySystem = new AbilitySystem();
     }
 
     public void update(float deltaTime, GameMap map)
@@ -66,11 +62,10 @@ public class World {
         }
 
         player.update(deltaTime, map);
+
         spawnManager.update(deltaTime, map);
-
-        checkPlayerCollisions(deltaTime);
-
-        abilitySystem.update(deltaTime, map, spawnManager.getEnemies());
+        abilitySystem.update(deltaTime, map);
+        collisionSystem.checkCollisions(deltaTime, player, spawnManager.getEnemies(), getAbilityObjects());
 
         for (int i = droppedObjects.size() - 1; i >= 0; i--) {
             DroppedObject drop = droppedObjects.get(i);
@@ -82,31 +77,6 @@ public class World {
             }
         }
 
-    }
-
-    private void checkPlayerCollisions(float deltaTime) //überprüft collisions mit der overlap methode von GameObjects
-    {
-        damageTimer += deltaTime; //addiert den timer mit der sekunde seit dem letzten frame vergangen ist
-
-        if(damageTimer >= DamageInterval) //wenn der timer das interval erreicht:
-        {
-            float dmgTaken = 0;
-
-            for(Enemy enemy : spawnManager.getEnemies())
-            {
-                if(player.overlaps(enemy))
-                {
-                    dmgTaken += enemy.getDamage();
-                }
-            }
-
-            if(dmgTaken > 0)
-            {
-                player.takeDamage(dmgTaken);
-            }
-
-            damageTimer = 0;
-        }
     }
 
     public Player getPlayer()
@@ -154,5 +124,9 @@ public class World {
 
     public List<AbilityObject> getAbilityObjects() {
         return abilitySystem.getAbilityObjects();
+    }
+
+    public void addAbility(AbilityObject abilityObject) {
+        abilitySystem.addAbility(abilityObject);
     }
 }
