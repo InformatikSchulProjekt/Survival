@@ -11,6 +11,7 @@ import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.system.AbilitySystem;
 import com.test.SurvivorGame.world.system.CollisionSystem;
+import com.test.SurvivorGame.world.system.DropSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,63 +21,48 @@ public class World {
 
     private float survivalTime = 0f; // wie lange der aktuelle Run schon läuft, für den HUD-Timer
 
-    private float passedTime = 0f; // wie viel ECHTE Zeit seit anfang des Runs vergangen ist
-
-    float screenWidth, screenHeight; // nur für reset-test
-
-    private final ArrayList<DroppedObject> droppedObjects = new ArrayList<>();
+    private float passedTime = 0f; // wie viel ECHTE Zeit seit anfang des Runs vergangen istw
 
     private final Player player;
     private final SpawnManager spawnManager;
     private final AbilitySystem abilitySystem = new AbilitySystem();
     private final CollisionSystem collisionSystem = new CollisionSystem();
+    private final DropSystem dropSystem = new DropSystem();
 
     private final String map;
     private final DataLoader dataLoader;
     private final PlayerState playerState;
+    private final GameMap gameMap;
 
-    public World(float screenWidth, float screenHeight, PlayerState playerState, GameMap gameMap,
+    public World(PlayerState playerState, GameMap gameMap,
                  String map, DataLoader dataLoader, GamePlayScreen gamePlayScreen)
     {
-        player = new Player(playerState); // wo er reinspawnt
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight; // nur für reset-test
+        player = new Player(playerState);
 
         this.map = map;
+        this.gameMap = gameMap;
         this.dataLoader = dataLoader;
         this.playerState = playerState;
 
         spawnManager = new SpawnManager(this, gameMap, gamePlayScreen);
     }
 
-    public void update(float deltaTime, GameMap map)
-    {
-        passedTime += deltaTime;
-
+    public void update(float deltaTime) {
         // Passive Health Regen:
         playerState.heal(deltaTime*playerState.getPlayerStats().getStat(StatType.HEALING));
 
+        passedTime += deltaTime;
         if (!survivalTimePaused)
         {
             survivalTime += deltaTime;
         }
 
-        player.update(deltaTime, map);
+        player.update(deltaTime, gameMap);
 
-        spawnManager.update(deltaTime, map);
-        abilitySystem.update(deltaTime, map);
-        collisionSystem.checkCollisions(deltaTime, player, spawnManager.getEnemies(), getAbilityObjects());
-
-        for (int i = droppedObjects.size() - 1; i >= 0; i--) {
-            DroppedObject drop = droppedObjects.get(i);
-
-            drop.update(deltaTime, map);
-
-            if (drop.isDespawned()) {
-                droppedObjects.remove(i);
-            }
-        }
-
+        spawnManager.update(deltaTime, gameMap);
+        abilitySystem.update(deltaTime, gameMap);
+        dropSystem.update(deltaTime, gameMap);
+        collisionSystem.checkCollisions(deltaTime, player, getEnemies(), getAbilityObjects());
     }
 
     public Player getPlayer()
@@ -94,13 +80,12 @@ public class World {
         return spawnManager.getEnemies(); // Fassade für getEnemies()
     }
 
-
     public void addDrop(DroppedObject drop) {
-        droppedObjects.add(drop);
+        dropSystem.addDrop(drop);
     }
 
-    public ArrayList<DroppedObject> getDroppedObjects() {
-        return droppedObjects;
+    public List<DroppedObject> getDroppedObjects() {
+        return dropSystem.getDroppedObjects();
     }
 
     public void saveGame()

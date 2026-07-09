@@ -65,7 +65,7 @@ public class GamePlayScreen extends ScreenAdapter {
         playerData.playerClass = "pyromancer"; // temporär bis Klasse picken logic da.
 
         this.playerState = new PlayerState(playerData, this);
-        this.world = new World(screenWidth, screenHeight, playerState, gameMap, map, dataLoader, this);
+        this.world = new World(playerState, gameMap, map, dataLoader, this);
 
         this.shapeRenderer = new ShapeRenderer();
 
@@ -76,9 +76,7 @@ public class GamePlayScreen extends ScreenAdapter {
         mapFinishedUI = new MapFinishedUI(shapeRenderer);
 
         this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, mapFinishedUI);
-
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
-
         this.inputManager = new InputManager(world, abilityService, dataLoader);
 
         playerState.setupAbilityService(abilityService);
@@ -286,7 +284,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
         if(state == GameState.PLAYING)
         {
-            updateLogic(deltaTime, gameMap);
+            updateLogic(deltaTime);
         }
 
         float renderDeltaTime = state == GameState.PLAYING ? deltaTime : 0f;
@@ -314,9 +312,9 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
-    private void updateLogic(float deltaTime, GameMap map)
+    private void updateLogic(float deltaTime)
     {
-        world.update(deltaTime, map);
+        world.update(deltaTime);
     }
 
     @Override
