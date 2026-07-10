@@ -31,4 +31,8 @@ public class RunTimerSystem {
     public void setSurvivalTimePaused(boolean paused) {
         this.survivalTimePaused = paused;
     }
+
+    public boolean isSurvivalTimePaused() {
+        return survivalTimePaused;
+    }
 }
