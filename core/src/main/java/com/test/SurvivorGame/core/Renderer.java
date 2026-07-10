@@ -430,6 +430,17 @@ public class Renderer {
     private final Animation<TextureRegion> skeletonAttackAnimation;
     private final Animation<TextureRegion> skeletonDeathAnimation;
     private final Animation<TextureRegion> skeletonDamageAnimation;
+
+    //Penguin
+    private final Texture penguin0;
+    private final Texture penguin1;
+    private final Texture penguin2;
+
+    //Penguin Animation
+    private final Animation<TextureRegion> penguinRight;
+    private final Animation<TextureRegion> penguinLeft;
+    private final Animation<TextureRegion> penguinUp;
+    private final Animation<TextureRegion> penguinDown;
     // Fireball
     private final Texture fireball0;
     private final Texture fireball1;
@@ -1338,6 +1349,24 @@ public class Renderer {
             new TextureRegion(boss13));
         bossAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
+        //Penguin
+        penguin0 = new Texture(Gdx.files.internal("Penguin/Penguin.png"));
+        penguin1 = new Texture(Gdx.files.internal("Penguin/Penguin1.png"));
+        penguin2 = new Texture(Gdx.files.internal("Penguin/Penguin2.png"));
+
+        penguinDown = new Animation<>(0.3f,
+        new TextureRegion(penguin0)
+        );
+        penguinUp = new Animation<>(0.3f,
+            new TextureRegion(penguin2)
+        );
+        penguinLeft = new Animation<>(0.3f,
+            new TextureRegion(penguin1)
+        );
+        penguinRight = new Animation<>(0.3f,
+            new TextureRegion(penguin1)
+        );
+
         // Fireball Animation laden
         fireball0 = new Texture(Gdx.files.internal("Ability/fireball0000.png"));
         fireball1 = new Texture(Gdx.files.internal("Ability/fireball0001.1.png"));
@@ -1791,6 +1820,24 @@ public class Renderer {
                     }
 
                 }
+                break;
+            case PENGUIN:
+
+
+
+                    if (enemy.getFacingDirection() == enemy.getFacingDirection().LEFT) {
+                        animation = penguinLeft;
+                    } else if (enemy.getFacingDirection() == enemy.getFacingDirection().RIGHT){
+                        animation = penguinRight;
+                    } else if (enemy.getFacingDirection() == enemy.getFacingDirection().UP){
+                        animation = penguinUp;
+                    }else if (enemy.getFacingDirection() == enemy.getFacingDirection().DOWN){
+                        animation = penguinDown;
+                    }
+
+
+
+
                 break;
         }
 

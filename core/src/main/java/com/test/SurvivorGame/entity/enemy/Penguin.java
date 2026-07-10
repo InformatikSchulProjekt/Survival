@@ -13,6 +13,6 @@ public class Penguin extends Enemy {
 
 
     public Penguin(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.SKELETON);
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.PENGUIN);
     }
 }

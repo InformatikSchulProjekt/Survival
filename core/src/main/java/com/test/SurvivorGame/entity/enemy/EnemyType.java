@@ -4,5 +4,6 @@ public enum EnemyType {
     BOSS1,
     WATCHERBOSS,
     SLIME,
-    SKELETON
+    SKELETON,
+    PENGUIN
 }
