@@ -3,6 +3,7 @@ package com.test.SurvivorGame.ability.active_abilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.ability_objects.projectile.WindBulletProjectile;
@@ -43,6 +44,7 @@ public class WindBullet extends ActiveAbility {
         );
 
         world.addAbility(windBulletProjectile);
+        SoundManager.playSound("WindBullet.wav");
     }
 
     public void dispose() {

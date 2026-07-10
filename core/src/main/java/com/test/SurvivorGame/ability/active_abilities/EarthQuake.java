@@ -2,6 +2,7 @@ package com.test.SurvivorGame.ability.active_abilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.ability_objects.Earthquake;
@@ -13,7 +14,7 @@ public class EarthQuake extends ActiveAbility {
 
     private static final float DAMAGE_INTERVAL = 1f;
 
-    private static final float BASE_DURATION = 3f;
+    private static final float BASE_DURATION = 4f;
     private static final float BASE_SIZE = 4f;
     private static final float BASE_DAMAGE = 0.8f;
     private static final float BASE_COOLDOWN = 2f;
@@ -29,6 +30,7 @@ public class EarthQuake extends ActiveAbility {
         Earthquake earthquake = new Earthquake(player.getX(), player.getY(), getSize(), texture, getDuration(), world, getDamage());
 
         world.addAbility(earthquake);
+        SoundManager.playSound("EarthQuake.wav");
     }
 
     public float getDamage() {

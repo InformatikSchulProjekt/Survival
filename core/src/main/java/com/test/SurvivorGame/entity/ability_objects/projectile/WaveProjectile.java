@@ -62,6 +62,10 @@ public class WaveProjectile extends Projectile {
             return;
         }
 
+        float slowAmount = 0.6f;
+        float slowDuration = 2f;
+        applySlowToEnemy(enemy, slowAmount, slowDuration);
+
         damageEnemy(enemy, getDamage());
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
@@ -69,6 +73,10 @@ public class WaveProjectile extends Projectile {
         hasHitEnemy = true;
     }
 
+    private void applySlowToEnemy(Enemy enemy, float speedMultiplier, float duration) {
+        enemy.applySlow(speedMultiplier, 2f);
+
+    }
 
     @Override
     public float getDamage() {
