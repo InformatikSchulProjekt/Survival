@@ -46,7 +46,7 @@ public class FireballAbility extends ActiveAbility {
             viewport,
             world,
             getSpeed(),
-            getDuration(),
+            baseDuration,
             getDamage(),
             baseExplosionRadius * getSize()   // skaliert mit dem Size-Stat, aber eigenständig
         );
@@ -88,18 +88,12 @@ public class FireballAbility extends ActiveAbility {
         return baseSpeed;
     }
 
-    public float getDuration() {
-        float duration = baseDuration;
-        duration *= playerStats.getStat(StatType.MAGIC_DURATION);
-        duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
-        return duration;
-    }
-
     public float getCooldown() {
         float cooldown = baseCooldown;
         if (getLevel() >= 4) {
             cooldown *= 0.85f;
         }
+        System.out.println("FIREBALL CD: "+cooldown);
         return cooldown;
     }
 

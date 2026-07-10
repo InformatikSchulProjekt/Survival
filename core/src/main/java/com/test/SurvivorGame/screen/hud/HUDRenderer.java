@@ -36,6 +36,7 @@ public class HUDRenderer {
     private static final Color XP_BG_COLOR = new Color(0.08f, 0.12f, 0.2f, 1f);
     private static final Color SLOT_FILLED_COLOR = new Color(0.18f, 0.18f, 0.28f, 0.9f);
     private static final Color SLOT_EMPTY_COLOR = new Color(0.1f, 0.1f, 0.1f, 0.6f);
+    private static final Color TIMER_PAUSED_COLOR = new Color(0.9f, 0.15f, 0.15f, 1f);
 
     public HUDRenderer(Batch batch, ShapeRenderer shapeRenderer) {
         this.batch = batch;
@@ -55,7 +56,7 @@ public class HUDRenderer {
         lastHeight = height;
     }
 
-    public void render(PlayerState playerState, float survivalTimeSeconds) {
+    public void render(PlayerState playerState, float survivalTimeSeconds, boolean survivalTimerPaused) {
         int currentWidth = Gdx.graphics.getWidth();
         int currentHeight = Gdx.graphics.getHeight();
 
@@ -75,7 +76,7 @@ public class HUDRenderer {
 
         drawHpBar(playerState, screenHeight);
         drawXpBar(playerState, screenHeight);
-        drawSurvivalTimer(survivalTimeSeconds, screenWidth, screenHeight);
+        drawSurvivalTimer(survivalTimeSeconds, survivalTimerPaused, screenWidth, screenHeight);
         drawAbilityBar(playerState.getPlayerData().abilitySlots, screenWidth);
     }
 
@@ -124,14 +125,14 @@ public class HUDRenderer {
         shapeRenderer.end();
     }
 
-    private void drawSurvivalTimer(float survivalTimeSeconds, float screenWidth, float screenHeight) {
+    private void drawSurvivalTimer(float survivalTimeSeconds, boolean survivalTimerPaused, float screenWidth, float screenHeight) {
         int totalSeconds = Math.max(0, (int) survivalTimeSeconds);
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         String text = String.format("%02d:%02d", minutes, seconds);
 
         batch.begin();
-        font.setColor(Color.WHITE);
+        font.setColor(survivalTimerPaused ? TIMER_PAUSED_COLOR : Color.WHITE);
         font.draw(batch, text, 0f, screenHeight - PADDING, screenWidth, Align.center, false);
         batch.end();
     }
