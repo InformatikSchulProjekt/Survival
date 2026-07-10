@@ -11,8 +11,10 @@ import com.test.SurvivorGame.world.World;
 
 public class FireArrowAbility extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "fire_arrow";
 
+    // Standardwerte der Fähigkeit
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 3f;
     private static final float BASE_HEIGHT = 0.6f;
@@ -21,15 +23,19 @@ public class FireArrowAbility extends ActiveAbility {
     private static final float BASE_DAMAGE = 0.75f;
     private static final float BASE_COOLDOWN = 1f;
 
+    // Textur, die für das Projektil verwendet wird
     private final Texture texture =
         new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public FireArrowAbility(World world, Viewport viewport) {
+        // Übergibt die wichtigsten Informationen an die Oberklasse
         super(ID, world, viewport, StatScope.FIRE);
     }
 
     @Override
     protected void activate() {
+
+        // Erzeugt ein neues Feuerpfeil-Projektil mit den aktuellen Werten
         FireArrowProjectile fireArrowProjectile = new FireArrowProjectile(
             player.getX(),
             player.getY(),
@@ -44,10 +50,18 @@ public class FireArrowAbility extends ActiveAbility {
             getPierce()
         );
 
+        // Fügt das Projektil der Spielwelt hinzu
         world.addAbility(fireArrowProjectile);
-        SoundManager.playSound("fireArrow.wav",1f);
+
+        // Spielt beim Abschuss einen Soundeffekt ab
+        SoundManager.playSound("fireArrow.wav", 1f);
     }
 
+    /**
+     * Berechnet den aktuellen Schaden der Fähigkeit.
+     * Der Schaden steigt abhängig vom Level und wird anschließend
+     * durch mögliche Spieler-Boni (Magic Damage) angepasst.
+     */
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
@@ -62,6 +76,10 @@ public class FireArrowAbility extends ActiveAbility {
         return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
+    /**
+     * Berechnet die aktuelle Größe des Projektils.
+     * Ab Level 5 wird der Feuerpfeil größer.
+     */
     public float getSize() {
         float size = 1f;
 
@@ -72,12 +90,17 @@ public class FireArrowAbility extends ActiveAbility {
         return applyStat(size, StatType.MAGIC_SIZE);
     }
 
+    /**
+     * Bestimmt, wie viele Gegner der Pfeil durchdringen kann,
+     * bevor er verschwindet.
+     */
     public int getPierce() {
         int pierce = BASE_PIERCE;
 
         if (getLevel() >= 3) {
             pierce += 2;
         }
+
         if (getLevel() >= 5) {
             pierce += 2;
         }
@@ -88,15 +111,24 @@ public class FireArrowAbility extends ActiveAbility {
     @Override
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
+
+        // Ab Level 4 wird die Abklingzeit reduziert.
         if (getLevel() >= 4) {
             cooldown *= 0.85f;
         }
 
-        float cooldownModifier = playerStats.getStat(getScope(), StatType.MAGIC_COOLDOWN_REDUCTION);
+        // Berücksichtigt zusätzliche Cooldown-Boni des Spielers.
+        float cooldownModifier =
+            playerStats.getStat(getScope(), StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
     }
 
+    /**
+     * Gibt den verwendeten Grafikspeicher frei.
+     * Sollte beim Beenden des Spiels bzw. beim Entfernen der Fähigkeit
+     * aufgerufen werden.
+     */
     public void dispose() {
         texture.dispose();
     }
@@ -108,9 +140,14 @@ public class FireArrowAbility extends ActiveAbility {
 
     @Override
     public int getMaxAmount() {
+        // Maximale Ausbaustufe der Fähigkeit
         return 5;
     }
 
+    /**
+     * Liefert die Beschreibung der jeweiligen Ausbaustufe,
+     * die im Upgrade-Menü angezeigt wird.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {
