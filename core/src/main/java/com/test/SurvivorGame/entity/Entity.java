@@ -37,45 +37,12 @@ public abstract class Entity extends GameObject {
         return isMoving;
     }
 
-    public float getCurrentHP() {
-        return currentHP;
-    }
-
-    public float getMaxHP() {
-        return maxHP;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
     public boolean isDamageFlashing() {
         return damageFlashTimer > 0f;
     }
 
     public float getDamageFlashProgress() {
         return Math.min(damageFlashTimer / DAMAGE_FLASH_DURATION, 1f);
-    }
-
-    public Vector2 getMoveDirection() {
-        return moveDirection;
-    }
-
-    public float getMovementSpeed() {
-        return movementSpeed;
-    }
-
-    // setter
-    public void setFacingDirection(Direction direction) {
-        this.facingDirection = direction;
-    }
-
-    public void setMoving(boolean moving) {
-        this.isMoving = moving;
-    }
-
-    public void setMovementSpeed(float speed) {
-        this.movementSpeed = speed;
     }
 
     // schaden
