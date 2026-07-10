@@ -14,6 +14,8 @@ public class Earthquake extends AbilityObject {
     private float deltaDuration;
 
     float size;
+    private float animationTime = 0f;
+
 
     private Player player;
 
@@ -72,6 +74,9 @@ public class Earthquake extends AbilityObject {
 
     }
 
+    public float getAnimationTime() {
+        return animationTime;
+    }
 
     public void setScale(float size)
     {
