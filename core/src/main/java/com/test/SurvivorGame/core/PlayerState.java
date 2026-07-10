@@ -68,10 +68,6 @@ public final class PlayerState {
         return playerData;
     }
 
-    public void addKill() {
-        playerData.enemiesKilled++;
-    }
-
     public int getKillCount() {
         return playerData.enemiesKilled;
     }
