@@ -13,6 +13,7 @@ import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
+import com.test.SurvivorGame.entity.enemy.WatcherBoss;
 import com.test.SurvivorGame.screen.GameState;
 import com.test.SurvivorGame.screen.hud.*;
 import com.test.SurvivorGame.world.maps.GameMap;
@@ -314,6 +315,18 @@ public class Renderer {
     private final Texture boss11;
     private final Texture boss12;
     private final Texture boss13;
+    //watcherboss
+    private final Texture watcherTexture;
+
+    private final Texture watcher1;
+    private final Texture watcher2;
+    private final Texture watcher3;
+    private final Texture watcher4;
+    private final Animation<TextureRegion> watcherLeftAnimation;
+    private final Animation<TextureRegion> watcherBackAnimation;
+    private final Animation<TextureRegion> watcherFrontAnimation;
+    private final Animation<TextureRegion> watcherRightAnimation;
+
 
 
 
@@ -590,6 +603,25 @@ public class Renderer {
 //            new TextureRegion(left3),
 //            new TextureRegion(left4));
 //        leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        this.watcherTexture = new Texture(Gdx.files.internal("Boss/skeletonBoss4.png"));
+        TextureRegion[][] frames = TextureRegion.split(watcherTexture, 64, 64);
+        watcher1 = new Texture(Gdx.files.internal("Boss/skeletonBoss4.png"));
+        watcherFrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(watcher1));
+        watcherFrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        watcher2 = new Texture(Gdx.files.internal("Boss/skeletonBoss2.png"));
+        watcherBackAnimation = new Animation<>(0.2f,
+            new TextureRegion(watcher2));
+        watcherBackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        watcher3 = new Texture(Gdx.files.internal("Boss/skeletonBoss1.png"));
+        watcherRightAnimation= new Animation<>(0.2f,
+            new TextureRegion(watcher3));
+        watcherRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        watcher4 = new Texture(Gdx.files.internal("Boss/skeletonBoss3.png"));
+        watcherLeftAnimation = new Animation<>(0.2f,
+            new TextureRegion(watcher4));
+        watcherLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
         //Slime ab hier
         // Idle
         slimeIdle0 = new Texture(Gdx.files.internal("Slime/slime-idle-0.png"));
@@ -1362,6 +1394,8 @@ public class Renderer {
         for (Enemy e : world.getEnemies()) {
             if (e instanceof Boss) {
                 renderBoss((Boss) e);
+            }else if (e instanceof WatcherBoss){
+                renderWatcher((WatcherBoss) e);
             }
         }
         for (DroppedObject drop : world.getDroppedObjects()) {
@@ -1637,6 +1671,41 @@ public class Renderer {
             boss.getY(),
             boss.getWidth(),
             boss.getHeight()
+        );
+    }
+    private void renderWatcher(WatcherBoss watcherBoss) {
+
+        Animation<TextureRegion> animation;
+        animation = bossAnimation;
+
+        if (!watcherBoss.isMoving()) {
+            animation = bossAnimation;
+        } else {
+            switch (watcherBoss.getFacingDirection()) {
+                case UP:
+                    animation = watcherFrontAnimation;
+                    break;
+                case LEFT:
+                    animation = watcherLeftAnimation;
+                    break;
+                case RIGHT:
+                    animation = watcherRightAnimation;
+                    break;
+                case DOWN:
+                default:
+                    animation = watcherBackAnimation;
+                    break;
+            }
+        }
+        TextureRegion currentFrame = animation.getKeyFrame(watcherBoss.getAnimationTime());
+
+
+        batch.draw(
+            currentFrame,
+            watcherBoss.getX(),
+            watcherBoss.getY(),
+            watcherBoss.getWidth(),
+            watcherBoss.getHeight()
         );
     }
 

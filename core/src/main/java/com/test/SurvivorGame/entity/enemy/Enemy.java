@@ -46,7 +46,7 @@
 
         public Enemy(float x, float y, World world,
                      Vector2 size, float maxHP,
-                     float movementSpeed, float damage, float hpMultiplier,EnemyType enemyType))
+                     float movementSpeed, float damage, float hpMultiplier,EnemyType enemyType)
         {
             super(x, y, size.x, size.y, maxHP*hpMultiplier, movementSpeed);
 
@@ -59,7 +59,6 @@
             this.maxHP = maxHP;
             this.currentHP = maxHP;
 
-            this.movementSpeed = movementSpeed;
             this.damage = damage;
             this.enemyType = enemyType;
             this.movementSpeed = movementSpeed;
