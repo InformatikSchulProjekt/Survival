@@ -87,7 +87,6 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
     public void applySlow(float speedMultiplier, float duration) {
         movementSpeed = originalMovementSpeed * speedMultiplier;
         slowTimer = duration;
-        System.out.println("APPLIED SLOW!");
     }
 
     public boolean isAttacking() {
