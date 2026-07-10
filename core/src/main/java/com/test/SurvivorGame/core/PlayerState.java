@@ -68,6 +68,35 @@ public final class PlayerState {
         return playerData;
     }
 
+    public void addKill() {
+        playerData.enemiesKilled++;
+    }
+
+    public int getKillCount() {
+        return playerData.enemiesKilled;
+    }
+
+    public String getPlayerClassName() {
+        return getPlayerClass().getName();
+    }
+
+    // Namen der aktuell in die Slots eingesetzten Spells (für Highscore-Anzeige etc.)
+    public String[] getEquippedAbilityNames() {
+        String[] abilitySlots = playerData.abilitySlots;
+        java.util.List<String> names = new ArrayList<>();
+
+        for (String abilityId : abilitySlots) {
+            if (abilityId == null || abilityId.isBlank()) {
+                continue;
+            }
+
+            BaseAbility ability = abilityRegistry != null ? abilityRegistry.getAbility(abilityId) : null;
+            names.add(ability != null ? ability.getName() : abilityId);
+        }
+
+        return names.toArray(new String[0]);
+    }
+
     public PlayerStats getPlayerStats() {
         return playerStats;
     }

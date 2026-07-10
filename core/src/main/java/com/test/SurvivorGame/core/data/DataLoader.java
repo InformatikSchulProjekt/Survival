@@ -72,6 +72,18 @@ public class DataLoader {
         }
     }
 
+    public BestRunData getBestRun() {
+        return saveData.bestRun;
+    }
+
+    public void saveBestRunIfBetter(BestRunData run) {
+        if (saveData.bestRun == null || run.survivalTime > saveData.bestRun.survivalTime) {
+            saveData.bestRun = run;
+            saveSaveData();
+            System.out.println("NEUER HIGHSCORE-RUN: " + run.survivalTime); // debug
+        }
+    }
+
     public PlayerData getPlayerData(String map) {
         PlayerData playerData = getMapSaveData(map).playerData;
         if (playerData == null) { // => PlayerData war leer.

@@ -32,6 +32,7 @@ public class TitleScreen extends ScreenAdapter {
         Label title = new Label("SURVIVOR GAME", skin);
 
         TextButton playButton = new TextButton("Play", skin);
+        TextButton highscoreButton = new TextButton("Highscore", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         playButton.addListener(new ClickListener() {
@@ -39,6 +40,16 @@ public class TitleScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
 
                 main.setScreen(new MapSelection(main, dataLoader));
+
+                dispose();
+            }
+        });
+
+        highscoreButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+                main.setScreen(new HighscoreScreen(main, dataLoader));
 
                 dispose();
             }
@@ -60,6 +71,13 @@ public class TitleScreen extends ScreenAdapter {
         table.row();
 
         table.add(playButton)
+            .width(250)
+            .height(60)
+            .pad(10);
+
+        table.row();
+
+        table.add(highscoreButton)
             .width(250)
             .height(60)
             .pad(10);
