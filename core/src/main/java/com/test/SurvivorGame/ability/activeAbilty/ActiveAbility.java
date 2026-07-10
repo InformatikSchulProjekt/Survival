@@ -8,18 +8,16 @@ import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
 
-import javax.swing.text.View;
-
 public abstract class ActiveAbility extends BaseAbility {
-
-    private float cooldownStartTime = 0f;
     protected Viewport viewport;
     protected final Player player;
     protected final World world;
     protected final PlayerStats playerStats;
     protected final PlayerState playerState;
 
-    public ActiveAbility(World world,Viewport viewport) {
+    private float cooldownStartTime = 0f;
+
+    public ActiveAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();
         this.world = world;
         this.playerStats = player.getPlayerState().getPlayerStats();
@@ -45,44 +43,21 @@ public abstract class ActiveAbility extends BaseAbility {
         return 0f;
     }
 
-    //protected abstract float getCooldownReduction();
-
-    public void tryActivate(float survivalTime) {
-        if (isOnCooldown(survivalTime)) {
+    public void tryActivate(float passedTime) {
+        if (isOnCooldown(passedTime)) {
             return;
         }
 
         activate();
-        cooldownStartTime = survivalTime + getDuration();
+        cooldownStartTime = passedTime + getDuration();
     }
     protected int getLevel(){
         return playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
     }
 
-    private float calcRealCooldown() {
-        float cooldownReduction = 0f;//getCooldownReduction(); // 0.5f = 50%
-
-        cooldownReduction = Math.max(0f, cooldownReduction);
-
-        float effectiveReduction;
-
-        if (cooldownReduction <= 0.5f) {
-            effectiveReduction = cooldownReduction;
-        } else {
-            float overflow = cooldownReduction - 0.5f;
-            float maxReduction = 0.8f;
-
-            effectiveReduction =
-                0.5f
-                    + (maxReduction - 0.5f)
-                    * (overflow / (overflow + 0.5f));
-        }
-
-        return getCooldown() * (1f - effectiveReduction);
-    }
-
     private boolean isOnCooldown(float survivalTime) {
-        float timeLeft = calcRealCooldown() - (survivalTime - cooldownStartTime);
+        float cooldown = Math.max(getCooldown(), 0.4f);
+        float timeLeft = cooldown - (survivalTime - cooldownStartTime);
 
         if (timeLeft > 0) {
             System.out.println("[DEBUG] " + getName() + " cooldown left: " + timeLeft + "s");

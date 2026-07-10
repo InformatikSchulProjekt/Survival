@@ -36,7 +36,7 @@ public class EarthQuake extends ActiveAbility {
         Earthquake earthquake= new Earthquake(
             player.getX(),
             player.getY(),
-            getBaseSize(),
+            getSize(),
             texture,
             getDuration(),
             world,
@@ -84,17 +84,20 @@ public class EarthQuake extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        if (getLevel()>=3){
-            cooldown *= 0.85f;
-        }
+        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_COOLDOWN);
+
+        if (getLevel() >=3 ) cooldown *= 0.85f;
+
         return cooldown;
     }
 
-    //@Override
-    public float getBaseSize(){
-       float size = baseSize;
-        if(getLevel() == 5) size*=1.25f;
-        return size;
+    public float getSize(){
+         float size = baseSize;
+         size *= playerStats.getStat(StatType.MAGIC_SIZE);
+         size *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_SIZE);
+         if(getLevel() == 5) size*=1.25f;
+         return size;
     }
 
     @Override
