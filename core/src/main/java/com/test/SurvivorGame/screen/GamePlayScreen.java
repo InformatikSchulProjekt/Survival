@@ -375,6 +375,8 @@ public class GamePlayScreen extends ScreenAdapter {
         {
             state = GameState.PAUSED;
             Gdx.input.setInputProcessor(pauseMenu.getStage());
+            SoundManager.stopFootsteps();
+
         }
     }
 
