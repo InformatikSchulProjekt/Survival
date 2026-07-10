@@ -49,7 +49,7 @@ public class FireStormAbility extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            damage *= 1.15f;
+            damage *= 1.3f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -83,7 +83,7 @@ public class FireStormAbility extends ActiveAbility {
         float endSize = BASE_END_SIZE;
 
         if (getLevel() == 5) {
-            endSize *= 1.25f;
+            endSize *= 1.40f;
         }
 
         return applyStat(endSize, StatType.MAGIC_SIZE);
@@ -114,7 +114,7 @@ public class FireStormAbility extends ActiveAbility {
             case 2 -> "Fire storm damage increased by 25%";
             case 3 -> "Cooldown decreased by 10%";
             case 4 -> "Duration increased by 10%";
-            case 5 -> "End size increased by 25% and damage increased by 15%";
+            case 5 -> "End size increased by 40% and damage increased by 30% [MAX LEVEL]";
             default -> "No description available";
         };
     }

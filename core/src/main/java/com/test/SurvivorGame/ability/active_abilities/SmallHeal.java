@@ -13,7 +13,7 @@ public class SmallHeal extends ActiveAbility {
     public static final String ID = "small_heal";
 
     private static final float BASE_COOLDOWN = 12f;
-    private static final float BASE_HEAL = 4f;
+    private static final float BASE_HEAL = 2.5f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
@@ -54,7 +54,7 @@ public class SmallHeal extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            cooldown *= 0.75f;
+            cooldown *= 0.5f;
         }
 
         float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
@@ -79,7 +79,7 @@ public class SmallHeal extends ActiveAbility {
             case 2 -> "Reduces the ability cooldown by 10%";
             case 3 -> "Heal increases by 50%";
             case 4 -> "Heal increased by 33%";
-            case 5 -> "Cooldown decreased by 25%";
+            case 5 -> "Cooldown decreased by 50% [MAX LEVEL]";
             default -> "No description available";
         };
     }

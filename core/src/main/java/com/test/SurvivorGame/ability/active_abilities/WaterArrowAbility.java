@@ -110,7 +110,7 @@ public class WaterArrowAbility extends ActiveAbility {
             case 2 -> "Water arrow damage increased by 20%";
             case 3 -> "Water arrow pierce increases by 3";
             case 4 -> "Water Arrow Size increases by 20%";
-            case 5 -> "Damage increased by 50%";
+            case 5 -> "Damage increased by 50% [MAX LEVEL]";
             default -> "No description available";
         };
     }

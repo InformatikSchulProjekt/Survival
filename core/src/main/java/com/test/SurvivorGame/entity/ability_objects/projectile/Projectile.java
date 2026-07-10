@@ -56,7 +56,6 @@ public abstract class Projectile extends AbilityObject {
         expired = true;
     }
 
-
     protected void damageEnemy(Enemy enemy, float damage) {
 
         enemy.takeDamage(damage);

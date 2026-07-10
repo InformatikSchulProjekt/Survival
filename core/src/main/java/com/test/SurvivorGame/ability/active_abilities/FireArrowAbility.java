@@ -56,7 +56,7 @@ public class FireArrowAbility extends ActiveAbility {
         }
 
         if (getLevel() >= 5) {
-            damage *= 1.15f;
+            damage *= 1.5f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -118,7 +118,7 @@ public class FireArrowAbility extends ActiveAbility {
             case 2 -> "Fire arrow damage increased by 15%";
             case 3 -> "Fire arrow pierce increases by 2";
             case 4 -> "Cooldown decreased by 15%";
-            case 5 -> "Size increased by 10%, damage increased by 15% and +2 Pierce";
+            case 5 -> "Size increased by 10%, damage increased by 50% and +2 Pierce [MAX LEVEL]";
             default -> "No description available";
         };
     }

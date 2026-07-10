@@ -54,7 +54,7 @@ public class RockBlast extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            damage *= 1.3f;
+            damage *= 1.75f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -102,7 +102,7 @@ public class RockBlast extends ActiveAbility {
             case 2 -> "Rock blast damage increased by 10%";
             case 3 -> "Rock blast cooldown decreased by 10%";
             case 4 -> "Cooldown reduced by 15%";
-            case 5 -> "Damage increased by 30%";
+            case 5 -> "Damage increased by 75% [MAX LEVEL]";
             default -> "No description available";
         };
     }

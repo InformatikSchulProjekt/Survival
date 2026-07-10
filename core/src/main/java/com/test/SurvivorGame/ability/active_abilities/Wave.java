@@ -57,7 +57,7 @@ public class Wave extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            damage *= 1.15f;
+            damage *= 1.25f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -107,7 +107,7 @@ public class Wave extends ActiveAbility {
             case 2 -> "Wave damage increased by 25%";
             case 3 -> "Wave cooldown decreased by 10%";
             case 4 -> "Size increased by 25%";
-            case 5 -> "Size increased by 40% and damage increased by 15%";
+            case 5 -> "Size increased by 40% and damage increased by 25% [MAX LEVEL]";
             default -> "No description available";
         };
     }

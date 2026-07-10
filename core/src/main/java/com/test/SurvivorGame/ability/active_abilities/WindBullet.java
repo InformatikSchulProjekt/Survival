@@ -59,7 +59,7 @@ public class WindBullet extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            damage *= 1.5f;
+            damage *= 1.75f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -116,10 +116,10 @@ public class WindBullet extends ActiveAbility {
     public String getDescription(int level) {
         return switch (level) {
             case 1 -> "Creates a bullet of wind that pierces the enemy";
-            case 2 -> "Wave damage increased by 33%";
+            case 2 -> "Wind Bullet damage increased by 33%";
             case 3 -> "Pierce increased by 1";
-            case 4 -> "Width increased by 25% and cooldown reduced by 20%";
-            case 5 -> "Damage increased by 50%";
+            case 4 -> "Size increased by 25% and cooldown reduced by 20%";
+            case 5 -> "Damage increased by 75% [MAX LEVEL]";
             default -> "No description available";
         };
     }

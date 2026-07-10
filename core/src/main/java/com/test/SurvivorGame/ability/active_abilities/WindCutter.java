@@ -56,8 +56,12 @@ public class WindCutter extends ActiveAbility {
             damage *= 1.1f;
         }
 
+        if (getLevel() >= 4) {
+            damage *= 1.25f;
+        }
+
         if (getLevel() == 5) {
-            damage *= 1.15f;
+            damage *= 1.60f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -106,8 +110,8 @@ public class WindCutter extends ActiveAbility {
             case 1 -> "Creates a blade of wind that cuts the enemy";
             case 2 -> "Wind cutter damage increased by 10%";
             case 3 -> "Wind cutter cooldown decreased by 5%";
-            case 4 -> "Size increased by 25%";
-            case 5 -> "Size increased by 40% and damage increased by 15%";
+            case 4 -> "Size increased by 25% and increases damage by 25%";
+            case 5 -> "Size increased by 40% and damage increased by 60% [MAX LEVEL]";
             default -> "No description available";
         };
     }

@@ -16,7 +16,7 @@ public class EarthQuake extends ActiveAbility {
 
     private static final float BASE_DURATION = 4f;
     private static final float BASE_SIZE = 4f;
-    private static final float BASE_DAMAGE = 0.8f;
+    private static final float BASE_DAMAGE = 0.5f;
     private static final float BASE_COOLDOWN = 2f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
@@ -41,7 +41,7 @@ public class EarthQuake extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            damage *= 1.15f;
+            damage *= 1.5f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -75,7 +75,7 @@ public class EarthQuake extends ActiveAbility {
         float size = BASE_SIZE;
 
         if (getLevel() == 5) {
-            size *= 1.25f;
+            size *= 1.50f;
         }
 
         return applyStat(size, StatType.MAGIC_SIZE);
@@ -106,7 +106,7 @@ public class EarthQuake extends ActiveAbility {
             case 2 -> "Earthquake damage increased by 25%";
             case 3 -> "Cooldown decreased by 15%";
             case 4 -> "Duration increased by 10%";
-            case 5 -> "Size increased by 25% and damage increased by 15%";
+            case 5 -> "Size increased by 50% and damage increased by 50% [MAX LEVEL]";
             default -> "No description available";
         };
     }

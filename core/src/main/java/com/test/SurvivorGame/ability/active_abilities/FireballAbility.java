@@ -57,7 +57,7 @@ public class FireballAbility extends ActiveAbility {
         }
 
         if (getLevel() >= 5) {
-            damage *= 1.15f;
+            damage *= 1.50f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -67,7 +67,7 @@ public class FireballAbility extends ActiveAbility {
         float size = 1f;
 
         if (getLevel() >= 3) {
-            size *= 1.05f;
+            size *= 1.10f;
         }
 
         if (getLevel() >= 5) {
@@ -110,9 +110,9 @@ public class FireballAbility extends ActiveAbility {
         return switch (level) {
             case 1 -> "Shoots a fireball that explodes on impact";
             case 2 -> "Fireball damage increased by 15%";
-            case 3 -> "Fireball size increases by 5%";
+            case 3 -> "Fireball size increases by 10%";
             case 4 -> "Cooldown decreased by 15%";
-            case 5 -> "Size increased by 15% and damage increased by 15%";
+            case 5 -> "Size increased by 15% and damage increased by 50% [MAX LEVEL]";
             default -> "No description available";
         };
     }

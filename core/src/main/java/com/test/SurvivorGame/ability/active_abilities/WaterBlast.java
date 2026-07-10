@@ -57,7 +57,7 @@ public class WaterBlast extends ActiveAbility {
         }
 
         if (getLevel() == 5) {
-            damage *= 1.25f;
+            damage *= 1.5f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -77,6 +77,10 @@ public class WaterBlast extends ActiveAbility {
 
         if (getLevel() >= 4) {
             cooldown *= 0.8f;
+        }
+
+        if (getLevel() >= 5) {
+            cooldown *= 0.9f;
         }
 
         float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
@@ -101,7 +105,7 @@ public class WaterBlast extends ActiveAbility {
             case 2 -> "Water blast damage increased by 10%";
             case 3 -> "Water blast cooldown decreased by 10%";
             case 4 -> "Cooldown reduced by 20%";
-            case 5 -> "Damage increased by 25%";
+            case 5 -> "Damage increased by 50% and decreases Cooldown by 10% [MAX LEVEL]";
             default -> "No description available";
         };
     }
