@@ -1,11 +1,10 @@
-package com.test.SurvivorGame.core.rendering;
+package com.test.SurvivorGame.core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.abilityObjects.projectile.*;
@@ -14,8 +13,9 @@ import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
 import com.test.SurvivorGame.entity.enemy.WatcherBoss;
+import com.test.SurvivorGame.overlays.ingameUI.*;
 import com.test.SurvivorGame.screen.GameState;
-import com.test.SurvivorGame.screen.hud.*;
+import com.test.SurvivorGame.overlays.ingameUI.HUDoverlay;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -443,7 +443,7 @@ public class Renderer {
     private final Texture fireball11;
     private final Animation<TextureRegion> fireballMovementAnimation;
     private final Animation<TextureRegion> fireballExplosionAnimation;
-    private final HUDRenderer hud;
+    private final HUDoverlay hud;
 
     // WaterArrow
     private final Texture waterArrow1;
@@ -534,7 +534,7 @@ public class Renderer {
         this.abilitiesUI = abilitiesUI;
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
-        this.hud = new HUDRenderer(batch, shapeRenderer);
+        this.hud = new HUDoverlay(batch, shapeRenderer);
         this.pauseMenu = pauseMenu;
         this.levelUpUI = levelUpUI;
         this.chestUI = chestUI;

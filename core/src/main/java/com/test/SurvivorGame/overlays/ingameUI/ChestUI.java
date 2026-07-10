@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.screen.hud;
+package com.test.SurvivorGame.overlays.ingameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,12 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.test.SurvivorGame.ability.AbilityRegistry;
-import com.test.SurvivorGame.ability.BaseAbility;
-import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.item.BaseItem;
 
 import java.util.function.IntConsumer;
-public class LevelUpUI {
+
+/**
+ * Chest UI: zeigt beim Öffnen einer Truhe die Item-Optionen als Karten zur Auswahl an.
+ * Baut auf dem gleichen Scene2D-Stage/Skin-Muster wie PauseMenuRenderer/LevelUpUI auf.
+ */
+public class ChestUI {
 
     private final ShapeRenderer shapeRenderer;
     private final OrthographicCamera camera = new OrthographicCamera();
@@ -26,11 +29,9 @@ public class LevelUpUI {
     private final Skin skin;
     private final Table cardTable;
 
-    private AbilityRegistry abilityRegistry;
-    private PlayerState playerState;
     private IntConsumer optionChosenListener;
 
-    public LevelUpUI(ShapeRenderer shapeRenderer) {
+    public ChestUI(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -38,7 +39,7 @@ public class LevelUpUI {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        Label title = new Label("LEVEL UP!", skin);
+        Label title = new Label("Chest found!", skin);
 
         cardTable = new Table();
 
@@ -52,38 +53,20 @@ public class LevelUpUI {
         stage.addActor(root);
     }
 
-    // Muss nach der Erstellung von AbilityService/PlayerState einmal gesetzt werden
-    public void setAbilityRegistry(AbilityRegistry abilityRegistry) {
-        this.abilityRegistry = abilityRegistry;
-    }
-
-    public void setPlayerState(PlayerState playerState) {
-        this.playerState = playerState;
-    }
-
     // Wird aufgerufen, sobald der Spieler eine Karte anklickt. Übergibt den Index (0,1,2,...)
     public void setOptionChosenListener(IntConsumer listener) {
         this.optionChosenListener = listener;
     }
 
-    // Baut die Karten für die aktuellen Ability-Optionen neu auf
-    public void showOptions(String[] abilityOptions) {
+    // Baut die Karten für die aktuellen Item-Optionen neu auf
+    public void showOptions(BaseItem[] itemChoices) {
         cardTable.clear();
 
-        for (int i = 0; i < abilityOptions.length; i++) {
-            String abilityId = abilityOptions[i];
+        for (int i = 0; i < itemChoices.length; i++) {
+            BaseItem item = itemChoices[i];
             final int optionIndex = i;
 
-            String buttonText = abilityId;
-
-            if (abilityRegistry != null) {
-                BaseAbility ability = abilityRegistry.getAbility(abilityId);
-
-                if (ability != null) {
-                    int nextLevel = getCurrentAbilityAmount(abilityId) + 1;
-                    buttonText = ability.getName() + "\n\n" + ability.getDescription(nextLevel);
-                }
-            }
+            String buttonText = item.getName() + "\n[" + item.getRarity() + "]\n\n" + item.getDescription();
 
             TextButton card = new TextButton(buttonText, skin);
             card.getLabel().setWrap(true);
@@ -101,18 +84,13 @@ public class LevelUpUI {
         }
     }
 
-    private int getCurrentAbilityAmount(String abilityId) {
-        if (playerState == null) return 0;
-        return playerState.getPlayerData().abilities.getOrDefault(abilityId, 0);
-    }
-
     public void resize(int width, int height) {
         camera.setToOrtho(false, width, height);
         stage.getViewport().update(width, height, true);
     }
 
     public void render() {
-        // Hintergrund abdunkeln, genau wie beim PauseMenuRenderer
+        // Hintergrund abdunkeln, genau wie beim PauseMenuRenderer/LevelUpUI
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         Gdx.gl.glEnable(GL20.GL_BLEND);

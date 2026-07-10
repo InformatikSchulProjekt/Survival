@@ -19,7 +19,7 @@ import com.test.SurvivorGame.core.data.MapSaveData;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.world.maps.MapRegistry;
 
-public class MapSelection extends ScreenAdapter {
+public class MapSelectionScreen extends ScreenAdapter {
 
     private final Main main;
     private final DataLoader dataLoader;
@@ -27,7 +27,7 @@ public class MapSelection extends ScreenAdapter {
     private final Stage stage;
     private final Skin skin;
 
-    public MapSelection(Main main, DataLoader dataLoader) {
+    public MapSelectionScreen(Main main, DataLoader dataLoader) {
 
         this.main = main;
         this.dataLoader = dataLoader;
@@ -75,7 +75,7 @@ public class MapSelection extends ScreenAdapter {
                     if (dataLoader.hasPlayerData(map.getId())) {
                         main.setScreen(new GamePlayScreen(main, dataLoader, map.getId()));
                     } else {
-                        main.setScreen(new ClassSelection(main, dataLoader, map.getId()));
+                        main.setScreen(new ClassSelectionScreen(main, dataLoader, map.getId()));
                     }
 
                     dispose();

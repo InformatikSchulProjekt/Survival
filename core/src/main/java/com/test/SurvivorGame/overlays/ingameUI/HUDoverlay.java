@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.screen.hud;
+package com.test.SurvivorGame.overlays.ingameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import com.test.SurvivorGame.core.PlayerState;
 
-public class HUDRenderer {
+public class HUDoverlay {
 
     private final Batch batch;
     private final ShapeRenderer shapeRenderer;
@@ -38,7 +38,7 @@ public class HUDRenderer {
     private static final Color SLOT_EMPTY_COLOR = new Color(0.1f, 0.1f, 0.1f, 0.6f);
     private static final Color TIMER_PAUSED_COLOR = new Color(0.9f, 0.15f, 0.15f, 1f);
 
-    public HUDRenderer(Batch batch, ShapeRenderer shapeRenderer) {
+    public HUDoverlay(Batch batch, ShapeRenderer shapeRenderer) {
         this.batch = batch;
         this.shapeRenderer = shapeRenderer;
 

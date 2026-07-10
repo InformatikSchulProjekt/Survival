@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.screen.hud;
+package com.test.SurvivorGame.overlays.ingameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -60,7 +60,7 @@ public class AbilitiesUI {
         root.add(title).padBottom(20);
         root.row();
 
-        hintLabel = new Label("Slot auswählen, dann Ability zum Einsetzen anklicken.", skin);
+        hintLabel = new Label("choose slot, then click on ability you want to swap.", skin);
         root.add(hintLabel).padBottom(20);
         root.row();
 
@@ -155,7 +155,7 @@ public class AbilitiesUI {
         List<String> unlockedIds = abilityService.getUnlockedActiveAbilityIds();
 
         if (unlockedIds.isEmpty()) {
-            Label empty = new Label("Noch keine Active Abilities freigeschaltet.", skin);
+            Label empty = new Label("no aktiv ability unlocked", skin);
             abilityListTable.add(empty).pad(20);
             return;
         }

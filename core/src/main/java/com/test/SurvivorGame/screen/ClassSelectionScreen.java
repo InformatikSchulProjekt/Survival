@@ -12,7 +12,7 @@ import com.test.SurvivorGame.Main;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.core.data.PlayerData;
 
-public class ClassSelection extends ScreenAdapter {
+public class ClassSelectionScreen extends ScreenAdapter {
 
     private final Main main;
     private final DataLoader dataLoader;
@@ -22,7 +22,7 @@ public class ClassSelection extends ScreenAdapter {
 
     private final String map;
 
-    public ClassSelection(Main main, DataLoader dataLoader, String map) {
+    public ClassSelectionScreen(Main main, DataLoader dataLoader, String map) {
         this.main = main;
         this.dataLoader = dataLoader;
         this.map = map;
@@ -71,7 +71,7 @@ public class ClassSelection extends ScreenAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                main.setScreen(new MapSelection(main, dataLoader));
+                main.setScreen(new MapSelectionScreen(main, dataLoader));
                 dispose();
             }
         });
