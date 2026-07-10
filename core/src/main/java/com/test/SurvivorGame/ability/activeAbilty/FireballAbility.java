@@ -21,24 +21,19 @@ public class FireballAbility extends ActiveAbility {
     private final PlayerStats playerStats;
     private final PlayerState playerState;
     private final int level;
+    private final float baseExplosionRadius = 2.5f; // deutlich größer als die Hitbox, testet gern rum
 
     private final float baseDuration = 3f;
     private final float baseWidth = 2f;
-    private final float baseHeight = 0.4f;
+    private final float baseHeight = 2f;
     private final float baseSpeed = 5f;
-    private final float baseDamage = 0.5f;
-    private float duration = 2f;
-    private float effectSize = 3f;
-    private float speed = 6f;
-    private float explosionRadius = 2f;
-    private float baseCooldown = 1f; // müsst ihr noch anpassen
+    private final float baseDamage = 2f;
+    private final float baseCooldown = 1f;
+    // müsst ihr noch anpassen
 
-    private static float damage = 1f;
-
-    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     private Fireball fireball;
-
 
     public FireballAbility(World world, Viewport viewport) {
         this.player = world.getPlayer();
@@ -50,7 +45,7 @@ public class FireballAbility extends ActiveAbility {
     }
 
     @Override
-    public void activate() {
+    protected void activate() {
         fireball = new Fireball(
             player.getX(),
             player.getY(),
@@ -59,9 +54,11 @@ public class FireballAbility extends ActiveAbility {
             texture,
             player,
             viewport,
+            world,
             getSpeed(),
             getDuration(),
-            getDamage()
+            getDamage(),
+            baseExplosionRadius * getSize()   // skaliert mit dem Size-Stat, aber eigenständig
         );
         world.addAbility(fireball);
     }
@@ -74,9 +71,10 @@ public class FireballAbility extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
-        if (level >= 2){
-            damage *= 1.15f;        }
-        if (level==5){
+        if (level >= 2) {
+            damage *= 1.15f;
+        }
+        if (level == 5) {
             damage *= 1.15f;
         }
         return damage;
@@ -86,19 +84,17 @@ public class FireballAbility extends ActiveAbility {
         float size = 1f;
         size *= playerStats.getStat(StatType.MAGIC_SIZE);
         size *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_SIZE);
-        if(level >= 3){
+        if (level >= 3) {
             size *= 1.05f;
         }
-        if(level == 5){
+        if (level == 5) {
             size *= 1.05f;
         }
         return size;
     }
 
     public float getSpeed() {
-        float speed = baseSpeed;
-
-        return speed;
+        return baseSpeed;
     }
 
     public float getDuration() {
@@ -112,7 +108,7 @@ public class FireballAbility extends ActiveAbility {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
-        if (level>=4){
+        if (level >= 4) {
             cooldown *= 0.85f;
         }
         return cooldown;

@@ -22,7 +22,7 @@ public final class Pyromancer extends BasePlayerClass {
 
     @Override
     public String getStartAbility() {
-        return "fire_arrow";
+        return "fireball";
     }
 
     @Override
