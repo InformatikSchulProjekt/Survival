@@ -9,20 +9,17 @@ import java.util.List;
 public class CollisionSystem {
     private final Player player;
 
-    private float damageTimer = 0f;
-    private static final float DAMAGE_INTERVAL = 0.5f;
-
     public CollisionSystem(Player player) {
         this.player = player;
     }
 
     public void checkCollisions(
-        float deltaTime,
+
         List<Enemy> enemies,
         List<AbilityObject> abilityObjects
     ) {
         checkAbilityEnemyCollisions(abilityObjects, enemies);
-        checkPlayerEnemyCollisions(deltaTime, enemies);
+        checkPlayerEnemyCollisions(enemies);
     }
 
     private void checkAbilityEnemyCollisions(List<AbilityObject> abilities, List<Enemy> enemies) {
@@ -35,23 +32,27 @@ public class CollisionSystem {
         }
     }
 
-    private void checkPlayerEnemyCollisions(float deltaTime, List<Enemy> enemies) {
-        damageTimer += deltaTime;
+    private void checkPlayerEnemyCollisions( List<Enemy> enemies) {
 
-        if (damageTimer >= DAMAGE_INTERVAL) {
-            float dmgTaken = 0;
+        float totalDamage = 0f;
 
-            for (Enemy enemy : enemies) {
-                if (player.overlaps(enemy)) {
-                    dmgTaken += enemy.getDamage();
-                }
+        for (Enemy enemy : enemies) {
+
+            if (!player.overlaps(enemy)) {
+                continue;
             }
 
-            if (dmgTaken > 0) {
-                player.takeDamage(dmgTaken);
+            if (!enemy.canAttack()) {
+                continue;
             }
 
-            damageTimer = 0;
+            enemy.attack();
+            System.out.println(enemy.isAttacking());
+            totalDamage += enemy.getDamage();
+        }
+
+        if (totalDamage > 0f) {
+            player.takeDamage(totalDamage);
         }
     }
 }

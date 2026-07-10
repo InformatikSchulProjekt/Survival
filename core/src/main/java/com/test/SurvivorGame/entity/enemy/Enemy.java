@@ -31,9 +31,22 @@
 
         private boolean dead = false;
 
+        private final EnemyType enemyType;
+        private boolean attacking = false;
+        private float attackTimer = 0f;
+
+        private static final float ATTACK_DURATION = 0.35f;
+        private static final float DAMAGE_DURATION = 0.25f;
+        private float attackCooldown = 0f;
+        private static final float ATTACK_COOLDOWN = 1.0f; // 1 Angriff pro Sekunde
+        private boolean removable = false;
+        private static final float DEATH_DURATION = 0.6f;
+
+
+
         public Enemy(float x, float y, World world,
                      Vector2 size, float maxHP,
-                     float movementSpeed, float damage, float hpMultiplier)
+                     float movementSpeed, float damage, float hpMultiplier,EnemyType enemyType)
         {
             super(x, y, size.x, size.y, maxHP*hpMultiplier, movementSpeed);
 
@@ -46,8 +59,10 @@
             this.maxHP = maxHP;
             this.currentHP = maxHP;
 
-            this.movementSpeed = movementSpeed;
             this.damage = damage;
+            this.enemyType = enemyType;
+            this.movementSpeed = movementSpeed;
+            this.originalMovementSpeed = movementSpeed;
         }
 
         public int getXPWorth() {
@@ -63,26 +78,77 @@
             movementSpeed = originalMovementSpeed * 0.8f;
             slowTimer = duration;
         }
+        public boolean isAttacking() {
+            return attacking;
+        }
+        public boolean canAttack() {
+            return attackCooldown <= 0f;
+        }
+        public void attack() {
+
+            if (!canAttack()) {
+                return;
+            }
+
+            attacking = true;
+            attackTimer = ATTACK_DURATION;
+            attackCooldown = ATTACK_COOLDOWN;
+            animationTime = 0f;
+        }
 
         @Override
         public void update(float deltaTime, GameMap map)
         {
-            // per-entity animation time so each enemy/boss animates independently
+            if (dead) {
+
+                if (animationTime >= DEATH_DURATION) {
+                    removable = true;
+                }
+
+                animationTime += deltaTime;
+                return;
+            }
             animationTime += deltaTime;
+            updateDamageFlash(deltaTime);
+            Vector2 moveDirection = new Vector2(player.getCenter())
+                .sub(this.getCenter())
+                .nor()
+                .scl(movementSpeed * deltaTime);
+            updateMoveDirection(moveDirection);
+            collider.setPosition(
+                collider.getX() + moveDirection.x,
+                collider.getY() + moveDirection.y);
 
-            Vector2 moveDirection = player.getCenter().sub(this.getCenter()).nor().scl(movementSpeed * deltaTime);
+            if (slowTimer > 0f) {
+                slowTimer -= deltaTime;
+            } else {
+                movementSpeed = originalMovementSpeed;
+            }
 
-            collider.setPosition(collider.getX() + moveDirection.x, collider.getY() + moveDirection.y);
-            if (slowTimer <= 0) {
-                movementSpeed = originalMovementSpeed;  // Restore when done
+            if (attacking) {
+                attackTimer -= deltaTime;
+
+                if (attackTimer <= 0f) {
+                    attacking = false;
+                }
+            }
+
+            if (attackCooldown > 0f) {
+                attackCooldown -= deltaTime;
             }
         }
 
         public void takeDamage(float damage)
         {
-            damage = calculateDamageTaken(damage);
-            currentHP -= damage;
-            System.out.println("Enemy: " + damage+"dmg | hp: "+currentHP+"/"+maxHP);
+                damage = calculateDamageTaken(damage);
+
+                currentHP -= damage;
+
+            animationTime = 0f;
+            startDamageFlash();
+
+                System.out.println("Enemy: " + damage + " dmg | hp: " + currentHP + "/" + maxHP);
+
 
             if(currentHP <= 0) { //=> Enemy Tod
                 onDeath();
@@ -91,7 +157,9 @@
             }
             onDamage(damage);
         }
-
+        public boolean isRemovable() {
+            return removable;
+        }
         private void onDamage(float damage) {
             // Life steal heal:
             float heal = damage*playerState.getPlayerStats().getStat(StatScope.ALL, StatType.LIFE_STEAL);
@@ -125,6 +193,7 @@
 
         protected void onDeath() {
             dead = true;
+            animationTime = 0f;
 
             if (shouldSpawnChest()&& !(this instanceof Boss))
             {
@@ -151,6 +220,9 @@
         // animation time access for renderer
         public float getAnimationTime() {
             return animationTime;
+        }
+        public EnemyType getEnemyType() {
+            return enemyType;
         }
 
         protected ChestType getChestType() {

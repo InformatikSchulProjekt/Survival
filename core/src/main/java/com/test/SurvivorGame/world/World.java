@@ -49,7 +49,7 @@ public class World {
         runTimerSystem.update(deltaTime);
         abilitySystem.update(deltaTime, gameMap);
         dropSystem.update(deltaTime, gameMap);
-        collisionSystem.checkCollisions(deltaTime, getEnemies(), getAbilityObjects());
+        collisionSystem.checkCollisions(getEnemies(), getAbilityObjects());
     }
 
     public Player getPlayer() {

@@ -13,7 +13,7 @@ public class WatcherBoss extends Enemy{
     private static int bossCount = 1;
     private static int bossWaveCount = 0;
     public WatcherBoss(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier);
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier,EnemyType.WATCHERBOSS);
     }
 
     public static int getBossCount() {
