@@ -20,7 +20,7 @@ public enum StatType {
     // Magic:
     MAGIC_DURATION,
     MAGIC_DAMAGE,
-    MAGIC_COOLDOWN,
+    MAGIC_COOLDOWN_REDUCTION,
     MAGIC_SIZE,
 }
 

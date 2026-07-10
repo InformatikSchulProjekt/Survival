@@ -1,9 +1,9 @@
 package com.test.SurvivorGame.ability;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.activeAbilty.*;
+import com.test.SurvivorGame.ability.active_abilities.*;
 import com.test.SurvivorGame.world.World;
-import com.test.SurvivorGame.ability.statAbility.*;
+import com.test.SurvivorGame.ability.stat_abilities.*;
 
 import java.util.HashMap;
 import java.util.Map;

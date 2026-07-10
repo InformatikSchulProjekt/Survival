@@ -44,8 +44,8 @@ public final class MysticHourglass extends BaseItem {
             ),
             new StatModifier(
                 StatScope.ALL,
-                StatType.MAGIC_COOLDOWN,
-                -0.10f,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                0.10f,
                 ModifierType.PERCENT,
                 "item:" + ID
             )

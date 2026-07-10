@@ -32,9 +32,9 @@ public abstract class BasePlayerClass {
             ),
             new StatModifier(
                 getScope(),
-                StatType.MAGIC_COOLDOWN,
-                0.50f,
-                ModifierType.FLAT,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                0.10f,
+                ModifierType.PERCENT,
                 "class:" + getID()
             ),
             new StatModifier(
