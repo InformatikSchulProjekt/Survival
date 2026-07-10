@@ -64,14 +64,13 @@ public class Earthquake extends AbilityObject {
     {
         deltaDuration -= deltaTime;
 
+        animationTime += deltaTime;
+
         if(player != null && player.getCenter() != null && collider != null) {
             collider.setCenter(player.getCenter());
         }
 
-        // Safely increment timers without risking ConcurrentModificationException
-        // (replaceAll updates values in-place)
         damageTimers.replaceAll((enemy, t) -> t + deltaTime);
-
     }
 
     public float getAnimationTime() {

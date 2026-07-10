@@ -70,12 +70,11 @@ public class FireStorm extends AbilityObject {
     {
         deltaDuration -= deltaTime;
 
+        animationTime += deltaTime;
+
         collider.setCenter(player.getCenter());
 
-        for(Enemy enemy : damageTimers.keySet())
-        {
-            damageTimers.put(enemy, damageTimers.get(enemy) + deltaTime);
-        }
+        damageTimers.replaceAll((enemy, timer) -> timer + deltaTime);
 
         grow(deltaTime);
     }
