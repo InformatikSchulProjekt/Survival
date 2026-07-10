@@ -16,13 +16,6 @@ public class WaterArrowAbility extends ActiveAbility {
 
     public static final String ID = "water_arrow";
 
-    private final Viewport viewport;
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final PlayerState playerState;
-    private int level;
-
     // Ability base Stats
     private final float baseDuration = 3f;
     private final float baseWidth = 3f;
@@ -35,12 +28,7 @@ public class WaterArrowAbility extends ActiveAbility {
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WaterArrowAbility(World world, Viewport viewport) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.viewport = viewport;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        super(world, viewport);
     }
 
     @Override
@@ -70,10 +58,10 @@ public class WaterArrowAbility extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
-        if (level >= 2) {
+        if (getLevel() >= 2) {
             damage = 1.2f;
         }
-        if (level >= 5) {
+        if (getLevel() >= 5) {
             damage = 1.25f;
         }
         return damage;
@@ -82,9 +70,7 @@ public class WaterArrowAbility extends ActiveAbility {
 
     public float getSize() {
         float size = 1f;
-        size *= playerStats.getStat(StatType.MAGIC_SIZE);
-        size *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_SIZE);
-        if (level >= 5) {
+        if (getLevel() >= 5) {
             size *= 1.05f;
         }
         return size;
@@ -98,7 +84,7 @@ public class WaterArrowAbility extends ActiveAbility {
 
     public float getDuration() {
         float duration = baseDuration;
-        if (level >= 4) {
+        if (getLevel() >= 4) {
             duration *= 2f;
         }
         return duration;
@@ -113,8 +99,6 @@ public class WaterArrowAbility extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_COOLDOWN);
         return cooldown;
 
     }

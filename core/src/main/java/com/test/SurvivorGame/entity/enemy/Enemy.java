@@ -140,8 +140,9 @@
 
         public void takeDamage(float damage)
         {
-                damage = calculateDamageTaken(damage);
+            if (dead) return;
 
+            damage = calculateDamageTaken(damage);
                 currentHP -= damage;
 
             animationTime = 0f;

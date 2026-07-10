@@ -21,12 +21,7 @@ public class FireArrowAbility extends ActiveAbility {
 
     public static final String ID = "fire_arrow";
 
-    private final Viewport viewport;
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final  PlayerState playerState;
-    private int level;
+
 
     // Ability base Stats
     private final float baseDuration = 3f;
@@ -40,12 +35,7 @@ public class FireArrowAbility extends ActiveAbility {
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public FireArrowAbility(World world, Viewport viewport) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.viewport = viewport;
-        this.playerStats =  player.getPlayerState().getPlayerStats();
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        super(world, viewport);
     }
 
     @Override
@@ -75,9 +65,9 @@ public class FireArrowAbility extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
-        if (level >= 2){
+        if (getLevel() >= 2){
             damage = 1.15f;        }
-        if (level>=5){
+        if (getLevel()>=5){
             damage = 1.15f;
         }
         return damage;
@@ -86,10 +76,8 @@ public class FireArrowAbility extends ActiveAbility {
 
     public float getSize() {
         float size = 1f;
-        size *= playerStats.getStat(StatType.MAGIC_SIZE);
-        size *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_SIZE);
-        if (level>= 5){
-            size *= 1.05f;}
+        if (getLevel()>= 5){
+            size *= 1.1f;}
         return size;
     }
 
@@ -101,7 +89,7 @@ public class FireArrowAbility extends ActiveAbility {
 
     public float getDuration(){
         float duration = baseDuration;
-        if(level >= 4){
+        if(getLevel() >= 4){
             duration *= 2f;
         }
         return duration;
@@ -116,8 +104,6 @@ public class FireArrowAbility extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
         return cooldown;
 
     }
@@ -149,35 +135,13 @@ public class FireArrowAbility extends ActiveAbility {
             case 4:
                 return"Duration doubled" ;
             case 5:
-                return "Size increased by 5% and damage increased by 15%";
+                return "Size increased by 10% and damage increased by 15%";
             default:
                 return "No description available";
         }
     }
 
-//    public List<StatModifier> getModifiers(int amount){
-//       int pierce = basePierce;
-//        ArrayList<StatModifier> mods = new ArrayList<>();
-//        if (amount >= 2){
-//            pierce +=2;
-//        }
-//        // Level 3: +20% fire magic damage, +30% magic duration
-//        if (amount >= 3 ) {
-//            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_DAMAGE, 0.2f, ModifierType.PERCENT, "ability:" + getID()));
-//            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_DURATION, 0.3f, ModifierType.PERCENT, "ability:" + getID()));
-//        }
-//
-//        // Level 4: +30% magic size (cumulated with level 3 rules)
-//        if (amount >= 4) {
-//            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_SIZE, 0.3f, ModifierType.PERCENT, "ability:" + getID()));
-//        }
-//
-//        // Level 5: increase damage to +70%
-//        if (amount >= 5) {
-//            mods.add(new StatModifier(StatScope.FIRE, StatType.MAGIC_DAMAGE, 1f, ModifierType.PERCENT, "ability:" + getID()));
-//        }
-//
-//        return mods;
+
 
     }
 

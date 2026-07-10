@@ -13,7 +13,6 @@ import com.test.SurvivorGame.world.World;
 public class MeleeAbility extends ActiveAbility {
 
     public static final String ID = "melee";
-    private final Viewport viewport;
 
     private float duration = 1f;
     private float effectSize = 2f;
@@ -27,15 +26,11 @@ public class MeleeAbility extends ActiveAbility {
     private Melee melee;
     private Player player;
     private World world;
-    private final PlayerStats playerStats;
 
 
     public MeleeAbility(World world, Viewport viewport)
     {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.viewport = viewport;
+        super(world,viewport);
     }
 
     @Override

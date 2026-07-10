@@ -17,13 +17,6 @@ public class RockBlast extends ActiveAbility {
 
     public static final String ID = "rock_blast";
 
-    private final Viewport viewport;
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final PlayerState playerState;
-    private int level;
-
     private float duration = 3f;
     private float baseWidth = 2f;
     private float height= 1f;
@@ -35,12 +28,7 @@ public class RockBlast extends ActiveAbility {
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public RockBlast(World world, Viewport viewport) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.viewport = viewport;
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        super(world, viewport);
     }
 
     @Override
@@ -69,10 +57,10 @@ public class RockBlast extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_DAMAGE);
-        if(level >= 2){
+        if(getLevel() >= 2){
             damage *= 1.1f;
         }
-        if(level ==5){
+        if(getLevel() ==5){
             damage *= 1.3f;
         }
         return damage;
@@ -95,12 +83,11 @@ public class RockBlast extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_COOLDOWN);
-        if(level >= 3){
+
+        if(getLevel() >= 3){
             cooldown *= 0.9f;
         }
-        if(level >= 4){
+        if(getLevel() >= 4){
             cooldown *= 0.85f;
         }
         return cooldown;

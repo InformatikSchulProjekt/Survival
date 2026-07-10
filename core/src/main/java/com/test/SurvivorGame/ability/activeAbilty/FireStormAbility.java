@@ -14,12 +14,6 @@ public class FireStormAbility extends ActiveAbility {
 
     public static final String ID = "fire_storm";
 
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final PlayerState playerState;
-    private final int level;
-
     private static float damageInterval = 0.1f;
     // Ability base Stats
     private float baseDuration = 1f;
@@ -30,11 +24,7 @@ public class FireStormAbility extends ActiveAbility {
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
     public FireStormAbility(World world) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+       super(world);
 
     }
 
@@ -49,9 +39,9 @@ public class FireStormAbility extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
-        if (level >= 2){
+        if (getLevel() >= 2){
             damage *= 1.25f;        }
-        if (level==5){
+        if (getLevel()==5){
             damage*= 1.15f;
         }
         return damage;
@@ -82,9 +72,7 @@ public class FireStormAbility extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
-        if (level>=3){
+        if (getLevel()>=3){
             cooldown *= 0.9f;
         }
         return cooldown;
@@ -92,7 +80,7 @@ public class FireStormAbility extends ActiveAbility {
     //@Override
     public float getDuration() {
         float duration = baseDuration;
-        if (level>=4){
+        if (getLevel()>=4){
             duration *= 1.1f;
         }
         // temp:
@@ -102,7 +90,7 @@ public class FireStormAbility extends ActiveAbility {
     public float getBaseEndSizeSize(){
         baseEndSize = startSize +4f;
 
-        if(level ==5){
+        if(getLevel() ==5){
         baseEndSize*=1.25f;
         }
         return baseEndSize;

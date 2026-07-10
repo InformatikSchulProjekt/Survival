@@ -8,6 +8,10 @@ import com.test.SurvivorGame.world.maps.GameMap;
 
 public class WaveProjectile extends Projectile {
 
+    private boolean hasHitEnemy = false;
+    private float postHitDistance = 0f;
+    private final float postHitTravelLimit = 2.5f;
+
     private final float damage;
     private final float maxDistance = 10f;
 
@@ -35,9 +39,17 @@ public class WaveProjectile extends Projectile {
             sameEnemyHitLock -= deltaTime;
         }
         distanceTraveled += speed * deltaTime;
+        if (hasHitEnemy) {
+            postHitDistance += speed * deltaTime;
+            if (postHitDistance>=postHitTravelLimit) {
+                expire();
+                return;
+            }
+        }
         if (distanceTraveled >= maxDistance) {
             expire();
         }
+
     }
 
     @Override
@@ -53,6 +65,8 @@ public class WaveProjectile extends Projectile {
         damageEnemy(enemy, getDamage());
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
+
+        hasHitEnemy = true;
     }
 
 
