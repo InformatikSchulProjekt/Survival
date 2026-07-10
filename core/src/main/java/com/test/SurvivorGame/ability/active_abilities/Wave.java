@@ -16,7 +16,7 @@ public class Wave extends ActiveAbility {
     private static final float BASE_WIDTH = 0.5f;
     private static final float BASE_HEIGHT = 5f;
     private static final float BASE_SPEED = 5f;
-    private static final float BASE_COOLDOWN = 1f;
+    private static final float BASE_COOLDOWN = 2.3f;
     private static final float BASE_DAMAGE = 0.75f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
