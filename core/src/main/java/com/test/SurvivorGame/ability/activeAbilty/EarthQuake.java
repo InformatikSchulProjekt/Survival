@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -42,8 +43,9 @@ public class EarthQuake extends ActiveAbility {
             world,
             getDamage()
         );
-//float x, float y, float startSize, float endSize, Texture texture, float duration, World world, float damage
+
         world.addAbility(earthquake);
+        SoundManager.playSound("EarthQuake.wav");
     }
 
     public float getDamage() {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.activeAbilty.ActiveAbility;
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -46,6 +47,7 @@ public class WaterBlast extends ActiveAbility {
         );
 
         world.addAbility(waterBlastProjectile);
+        SoundManager.playSound("WaterBlast.wav");
     }
 
     public void dispose() {
