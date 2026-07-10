@@ -1535,20 +1535,17 @@ public class Renderer {
         batch.begin();
 
         renderMap(map, cam);
-
-
         for (Enemy enemy : world.getEnemies()) {
-            if (!(enemy instanceof Boss)) {
+
+            if (enemy instanceof WatcherBoss) {
+                renderWatcher((WatcherBoss) enemy);
+            } else if (enemy instanceof Boss) {
+                renderBoss((Boss) enemy);
+            } else {
                 renderEnemy(enemy);
             }
         }
-        for (Enemy e : world.getEnemies()) {
-            if (e instanceof Boss) {
-                renderBoss((Boss) e);
-            }else if (e instanceof WatcherBoss){
-                renderWatcher((WatcherBoss) e);
-            }
-        }
+
         for (DroppedObject drop : world.getDroppedObjects()) {
 
             if (drop instanceof ChestObject chest) {
@@ -1763,13 +1760,11 @@ public class Renderer {
                 } else if (enemy.isAttacking()) {
                     animation = slimeAttackAnimation;
                 } else {
-
                     if (enemy.getFacingDirection() == enemy.getFacingDirection().LEFT) {
                         animation = slimeMoveAnimation;
                     } else {
                         animation = slimeMoveAnimation;
                     }
-
                 }
                 break;
 
@@ -1789,11 +1784,9 @@ public class Renderer {
                     } else {
                         animation = skeletonWalkRightAnimation;
                     }
-
                 }
                 break;
         }
-
         TextureRegion currentFrame =
             animation.getKeyFrame(enemy.getAnimationTime());
 
@@ -1843,10 +1836,10 @@ public class Renderer {
     private void renderWatcher(WatcherBoss watcherBoss) {
 
         Animation<TextureRegion> animation;
-        animation = bossAnimation;
+        animation = watcherFrontAnimation;
 
         if (!watcherBoss.isMoving()) {
-            animation = bossAnimation;
+            animation = watcherFrontAnimation;
         } else {
             switch (watcherBoss.getFacingDirection()) {
                 case UP:
