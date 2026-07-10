@@ -12,7 +12,7 @@ public class Penguin extends Enemy {
     private static final float DAMAGE = 0.5f;
 
 
-    public Penguin(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.PENGUIN);
+    public Penguin(float x, float y, World world, float hpMultiplier, float dmgScale) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE * dmgScale, hpMultiplier, EnemyType.PENGUIN);
     }
 }

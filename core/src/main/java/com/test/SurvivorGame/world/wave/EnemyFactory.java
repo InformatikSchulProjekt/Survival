@@ -7,26 +7,26 @@ import com.test.SurvivorGame.world.World;
 
 public class EnemyFactory {
 
-    public static Enemy createEnemy(EnemyType enemyType, float x, float y, World world, float hpScale) {
+    public static Enemy createEnemy(EnemyType enemyType, float x, float y, World world, float scale) {
 
         float hpMulti = world.getPlayer().getPlayerState().getPlayerStats().getStat(StatScope.ALL, StatType.ENEMY_HP);
-        hpMulti *= hpScale;
+        hpMulti *= scale;
         switch (enemyType) {
 
             case SLIME:
-                return new Slime(x, y, world, hpMulti);
+                return new Slime(x, y, world, hpMulti, scale);
 
             case SKELETON:
-                return new Skeleton(x, y, world, hpMulti);
+                return new Skeleton(x, y, world, hpMulti, scale);
 
             case BOSS:
-                return new Agis(x, y, world, hpMulti);
+                return new Agis(x, y, world, hpMulti, scale);
 
             case WATCHER:
-                return new WatcherBoss(x, y, world, hpMulti);
+                return new WatcherBoss(x, y, world, hpMulti, scale);
 
             case PENGUIN:
-                return new Penguin(x, y, world, hpMulti);
+                return new Penguin(x, y, world, hpMulti, scale);
 
             default:
                 throw new IllegalArgumentException("Unknown EnemyType: " + enemyType);

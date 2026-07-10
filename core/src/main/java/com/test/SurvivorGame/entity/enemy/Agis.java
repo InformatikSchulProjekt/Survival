@@ -27,8 +27,8 @@ public class Agis extends Enemy {
     private static final float Projectile_DAMAGE = 3f;
     private static final float Projectile_COOLDOWN = 3f;
 
-    public Agis(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.AGIS);
+    public Agis(float x, float y, World world, float hpMultiplier, float dmgScale) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE * dmgScale, hpMultiplier, EnemyType.AGIS);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Agis extends Enemy {
 
     @Override
     protected float getChestChance() {
-        return 0f; // 0%, Bosse sollen normalerweise keine Chest spawnen
+        return 1f; // 100%
     }
 
     @Override

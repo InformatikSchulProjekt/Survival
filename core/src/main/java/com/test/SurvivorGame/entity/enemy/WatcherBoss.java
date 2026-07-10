@@ -26,8 +26,8 @@ public class WatcherBoss extends Enemy {
     private static final float Projectile_DAMAGE = 1f;
     private static final float Projectile_COOLDOWN = 0.5f;
 
-    public WatcherBoss(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.WATCHER);
+    public WatcherBoss(float x, float y, World world, float hpMultiplier, float dmgScale) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE*dmgScale, hpMultiplier, EnemyType.WATCHER);
     }
 
     @Override

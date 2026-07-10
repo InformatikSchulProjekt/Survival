@@ -46,7 +46,7 @@ public class SpawnSystem {
     private Wave currentWaveReference;
 
     private int infiniteWaveCount = 0;
-    private float enemyHpScale = 1f;
+    private float enemyScale = 1f;
 
     private boolean bossChestSpawned = false;
 
@@ -142,12 +142,12 @@ public class SpawnSystem {
                 currentWaveReference.getRandomBoss();
 
             enemies.add(
-                EnemyFactory.createEnemy(boss, x, y, world, enemyHpScale)
+                EnemyFactory.createEnemy(boss, x, y, world, enemyScale)
             );
             return;
         }
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world, enemyHpScale));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world, enemyScale));
     }
 
     // Spawnt einen Boss an einer zufälligen Position um den Spieler.
@@ -163,7 +163,7 @@ public class SpawnSystem {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(), x, y, world, enemyHpScale));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(), x, y, world, enemyScale));
 
         world.setSurvivalTimePaused(true); // timer stop
     }
@@ -269,7 +269,8 @@ public class SpawnSystem {
     private void setNewInfiniteWave() {
         infiniteWaveCount++;
 
-        enemyHpScale *= 1.15f; // um 15% erhöht
+        enemyScale = (float) Math.pow(1.5f, playerData.wave - gameMap.getMaxWaves());
+        // => Infinite Mode wird Exponentiel schwerer
 
         currentWaveReference = InfiniteWaveGenerator.generate(gameMap, infiniteWaveCount);
     }
