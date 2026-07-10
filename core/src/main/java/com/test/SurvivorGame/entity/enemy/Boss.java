@@ -34,4 +34,9 @@ public class Boss extends Enemy {
     protected boolean isBoss() {
         return true;
     }
+
+    @Override
+    public int getXPWorth() {
+        return 25;
+    }
 }
