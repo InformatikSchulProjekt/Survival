@@ -12,7 +12,7 @@ import com.test.SurvivorGame.core.PlayerState;
  * Geschwindigkeit und Position werden im zugehörigen {@link PlayerState}
  * gespeichert und verändert.
  */
-public class Player extends Entity {
+public class Player extends Entity  {
     private final PlayerState playerState;
 
     public Player(PlayerState playerState) {

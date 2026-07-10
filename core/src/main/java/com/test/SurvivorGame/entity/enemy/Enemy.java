@@ -233,6 +233,10 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
         );
     }
 
+    protected World getWorld() {
+        return world;
+    }
+
     protected boolean isBoss() {
         return false;
     }

@@ -1,7 +1,11 @@
 package com.test.SurvivorGame.entity.enemy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.test.SurvivorGame.entity.ability_objects.projectile.BossProjectile;
 import com.test.SurvivorGame.world.World;
+import com.test.SurvivorGame.world.maps.GameMap;
 
 public class Boss extends Enemy {
 
@@ -13,8 +17,51 @@ public class Boss extends Enemy {
     private static int bossCount = 1;
     private static int bossWaveCount = 30;
 
+    private float projectileTimer = 0;
+    private final Texture projectileTexture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png")); // omar mach
+
+    private static final float Projectile_DURATION = 3f;
+    private static final float Projectile_WIDTH = 3f;
+    private static final float Projectile_HEIGHT = 0.6f;
+    private static final float Projectile_SPEED = 6f;
+    private static final float Projectile_DAMAGE = 0.75f;
+    private static final float Projectile_COOLDOWN = 1f;
+
     public Boss(float x, float y, World world, float hpMultiplier) {
         super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.BOSS1);
+    }
+
+    @Override
+    public void update(float deltaTime, GameMap map) {
+        super.update(deltaTime, map);
+
+        projectileTimer -= deltaTime;
+
+        if (projectileTimer <= 0) {
+            projectileTimer = Projectile_COOLDOWN;
+
+            shootProjectile();
+        }
+    }
+
+    private void shootProjectile() {
+
+        Vector2 direction = new Vector2(getWorld().getPlayer().getCenter()).sub(getCenter()).nor();
+
+        getWorld().addAbility(
+            new BossProjectile(
+                getCenter().x,
+                getCenter().y,
+                Projectile_WIDTH,
+                Projectile_HEIGHT,
+                projectileTexture,
+                getWorld().getPlayer(),
+                Projectile_SPEED,
+                Projectile_DURATION,
+                Projectile_DAMAGE,
+                direction
+            )
+        );
     }
 
     public static int getBossCount() {

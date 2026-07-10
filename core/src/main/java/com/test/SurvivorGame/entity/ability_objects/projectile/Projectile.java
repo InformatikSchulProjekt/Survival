@@ -46,6 +46,30 @@ public abstract class Projectile extends AbilityObject {
 
     }
 
+    public Projectile(
+        float x,
+        float y,
+        float width,
+        float height,
+        Texture texture,
+        Vector2 direction,
+        float speed,
+        float duration
+    ) {
+        super(x, y, width, height, texture);
+
+        this.deltaDuration = duration;
+        this.speed = speed;
+
+        this.direction = new Vector2(direction).nor();
+        rotation = this.direction.angleDeg();
+
+        collider.setPosition(
+            x - getWidth()/2,
+            y - getHeight()/2
+        );
+    }
+
     @Override
     public void update(float deltaTime, GameMap map) {
         if (deltaDuration <= 0) expired = true;
@@ -79,5 +103,4 @@ public abstract class Projectile extends AbilityObject {
     public boolean getExpired() {
         return expired;
     }
-
 }
