@@ -1,7 +1,6 @@
 package com.test.SurvivorGame.entity.enemy;
 
 import com.badlogic.gdx.math.Vector2;
-import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.world.World;
 
 public class Boss extends Enemy {

@@ -36,7 +36,7 @@ public class DarkFrontier extends GameMap {
             mapSettings.getWaveTime(),
             mapSettings.getStartInterval(),
             mapSettings.getEndInterval(),
-            EnemyType.BOSS
+            EnemyType.WATCHER
         );
 
         spawnProfile.addEnemyToWave(
@@ -56,7 +56,7 @@ public class DarkFrontier extends GameMap {
             mapSettings.getWaveTime(),
             mapSettings.getStartInterval() - 0.1f,
             mapSettings.getEndInterval() - 0.1f,
-            EnemyType.BOSS
+            EnemyType.WATCHER
         );
 
         spawnProfile.addEnemyToWave(
@@ -76,7 +76,7 @@ public class DarkFrontier extends GameMap {
             mapSettings.getWaveTime(),
             mapSettings.getStartInterval() - 0.2f,
             mapSettings.getEndInterval() - 0.2f,
-            EnemyType.BOSS
+            EnemyType.WATCHER
         );
 
         spawnProfile.addEnemyToWave(
@@ -96,7 +96,7 @@ public class DarkFrontier extends GameMap {
             mapSettings.getWaveTime(),
             mapSettings.getStartInterval() - 0.3f,
             mapSettings.getEndInterval() - 0.2f,
-            EnemyType.BOSS
+            EnemyType.WATCHER
         );
 
         spawnProfile.addEnemyToWave(
