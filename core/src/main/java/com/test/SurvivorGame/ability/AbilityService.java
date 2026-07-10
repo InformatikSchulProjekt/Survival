@@ -48,7 +48,6 @@ public class AbilityService {
         // Applied die Modifier von StatAbilities
         } else if (ability.getAbilityType() == AbilityType.STAT_ABILITY) {
             ability.onApply(playerState.getPlayerStats(), newAmount);
-
         }
 
     }
@@ -61,7 +60,6 @@ public class AbilityService {
         }
 
         ability.onApply(playerState.getPlayerStats(), amount);
-
     }
 
     // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die

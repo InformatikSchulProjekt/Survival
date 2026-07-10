@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.*;
 import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
@@ -22,8 +22,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.Fireball;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -447,6 +445,37 @@ public class Renderer {
     private final Animation<TextureRegion> fireballExplosionAnimation;
     private final HUDRenderer hud;
 
+    // WaterArrow
+    private final Texture waterArrow1;
+    private final Texture waterArrow2;
+    private final Texture waterArrow3;
+    private final Texture waterArrow4;
+    private final Animation<TextureRegion> waterArrowAnimation;
+
+    // Wave
+    private final Texture wave1;
+    private final Texture wave2;
+    private final Texture wave3;
+    private final Texture wave4;
+    private final Animation<TextureRegion> waveAnimation;
+
+    // WindBullet
+    private final Texture windBullet1;
+    private final Texture windBullet2;
+    private final Texture windBullet3;
+    private final Texture windBullet4;
+    private final Animation<TextureRegion> windBulletAnimation;
+
+    // WindCutter
+    private final Texture windCutter1;
+    private final Texture windCutter2;
+    private final Texture windCutter3;
+    private final Texture windCutter4;
+    private final Animation<TextureRegion> windCutterAnimation;
+
+    // RockBlast
+    private final Texture rockBlast0;
+    private final Animation<TextureRegion> rockBlastAnimation;
 
     //FireArrow
     private final Texture firearrow0;
@@ -1316,6 +1345,63 @@ public class Renderer {
             new TextureRegion(fireball11));
         fireballExplosionAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 
+        // ab hier water arrow
+        waterArrow1 = new Texture(Gdx.files.internal("Ability/waterArrow1.png"));
+        waterArrow2 = new Texture(Gdx.files.internal("Ability/waterArrow2.png"));
+        waterArrow3 = new Texture(Gdx.files.internal("Ability/waterArrow3.png"));
+        waterArrow4 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+
+        waterArrowAnimation = new Animation<>(0.08f,
+            new TextureRegion(waterArrow1),
+            new TextureRegion(waterArrow2),
+            new TextureRegion(waterArrow3),
+            new TextureRegion(waterArrow4));
+        waterArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // ab hier wave
+        wave1 = new Texture(Gdx.files.internal("Ability/wave1.png"));
+        wave2 = new Texture(Gdx.files.internal("Ability/wave2.png"));
+        wave3 = new Texture(Gdx.files.internal("Ability/wave3.png"));
+        wave4 = new Texture(Gdx.files.internal("Ability/wave4.png"));
+
+        waveAnimation = new Animation<>(0.1f,
+            new TextureRegion(wave1),
+            new TextureRegion(wave2),
+            new TextureRegion(wave3),
+            new TextureRegion(wave4));
+        waveAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        // ab hier wind bullet
+        windBullet1 = new Texture(Gdx.files.internal("Ability/WindBullet1.png"));
+        windBullet2 = new Texture(Gdx.files.internal("Ability/WindBullet2.png"));
+        windBullet3 = new Texture(Gdx.files.internal("Ability/WindBullet3.png"));
+        windBullet4 = new Texture(Gdx.files.internal("Ability/WindBullet4.png"));
+
+        windBulletAnimation = new Animation<>(0.08f,
+            new TextureRegion(windBullet1),
+            new TextureRegion(windBullet2),
+            new TextureRegion(windBullet3),
+            new TextureRegion(windBullet4));
+        windBulletAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // ab hier wind cutter
+        windCutter1 = new Texture(Gdx.files.internal("Ability/WindCutter1.png"));
+        windCutter2 = new Texture(Gdx.files.internal("Ability/WindCutter2.png"));
+        windCutter3 = new Texture(Gdx.files.internal("Ability/WindCutter3.png"));
+        windCutter4 = new Texture(Gdx.files.internal("Ability/WindCutter4.png"));
+
+        windCutterAnimation = new Animation<>(0.08f,
+            new TextureRegion(windCutter1),
+            new TextureRegion(windCutter2),
+            new TextureRegion(windCutter3),
+            new TextureRegion(windCutter4));
+        windCutterAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        // ab hier rock blast
+        rockBlast0 = new Texture(Gdx.files.internal("Ability/RockBlast.png"));
+        rockBlastAnimation = new Animation<>(0.1f,
+            new TextureRegion(rockBlast0));
+        rockBlastAnimation.setPlayMode(Animation.PlayMode.NORMAL);
         // Ab hier Fire Arow
         firearrow0 = new Texture (Gdx.files.internal("Ability/fireArrow1.png"));
         firearrow1 = new Texture (Gdx.files.internal("Ability/fireArrow2.png"));
@@ -1415,7 +1501,17 @@ public class Renderer {
                 renderFireArrow((FireArrowProjectile) abilityObject, deltaTime);
             } else if (abilityObject instanceof WaterBlastProjectile) {
                 renderWaterBlast((WaterBlastProjectile) abilityObject, deltaTime);
-            }else {
+            } else if (abilityObject instanceof WaterArrowProjectile) {
+                renderWaterArrow((WaterArrowProjectile) abilityObject, deltaTime);
+            } else if (abilityObject instanceof WaveProjectile) {
+                renderWave((WaveProjectile) abilityObject, deltaTime);
+            } else if (abilityObject instanceof WindBulletProjectile) {
+                renderWindBullet((WindBulletProjectile) abilityObject, deltaTime);
+            } else if (abilityObject instanceof WindCutterProjectile) {
+                renderWindCutter((WindCutterProjectile) abilityObject, deltaTime);
+            } else if (abilityObject instanceof RockBlastProjectile) {
+                renderRockBlast((RockBlastProjectile) abilityObject, deltaTime);
+            } else {
                 abilityObject.draw(batch);
             }
         }
@@ -1747,6 +1843,85 @@ public class Renderer {
             chest.getY(),
             chest.getWidth(),
             chest.getHeight()
+        );
+    }
+    private void renderWaterArrow(WaterArrowProjectile waterArrow, float deltaTime) {
+        TextureRegion currentFrame = waterArrowAnimation.getKeyFrame(waterArrow.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            waterArrow.getX(),
+            waterArrow.getY(),
+            waterArrow.getWidth() / 2,
+            waterArrow.getHeight() / 2,
+            waterArrow.getWidth(),
+            waterArrow.getHeight(),
+            1,
+            1,
+            waterArrow.getRotation()
+        );
+    }
+
+    private void renderWave(WaveProjectile wave, float deltaTime) {
+        TextureRegion currentFrame = waveAnimation.getKeyFrame(wave.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            wave.getX(),
+            wave.getY(),
+            wave.getWidth() / 2,
+            wave.getHeight() / 2,
+            wave.getWidth(),
+            wave.getHeight(),
+            1,
+            1,
+            wave.getRotation()
+        );
+    }
+
+    private void renderWindBullet(WindBulletProjectile windBullet, float deltaTime) {
+        TextureRegion currentFrame = windBulletAnimation.getKeyFrame(windBullet.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            windBullet.getX(),
+            windBullet.getY(),
+            windBullet.getWidth() / 2,
+            windBullet.getHeight() / 2,
+            windBullet.getWidth(),
+            windBullet.getHeight(),
+            1,
+            1,
+            windBullet.getRotation()
+        );
+    }
+
+    private void renderWindCutter(WindCutterProjectile windCutter, float deltaTime) {
+        TextureRegion currentFrame = windCutterAnimation.getKeyFrame(windCutter.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            windCutter.getX(),
+            windCutter.getY(),
+            windCutter.getWidth() / 2,
+            windCutter.getHeight() / 2,
+            windCutter.getWidth(),
+            windCutter.getHeight(),
+            1,
+            1,
+            windCutter.getRotation()
+        );
+    }
+
+    private void renderRockBlast(RockBlastProjectile rockBlast, float deltaTime) {
+        TextureRegion currentFrame = rockBlastAnimation.getKeyFrame(rockBlast.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            rockBlast.getX(),
+            rockBlast.getY(),
+            rockBlast.getWidth(),
+            rockBlast.getHeight()
         );
     }
     private void renderFireball(Fireball fireball, float deltaTime) {
@@ -2144,5 +2319,27 @@ public class Renderer {
         skeletonDeath4.dispose();
 
         skeletonTakeDmg.dispose();
+
+        waterArrow1.dispose();
+        waterArrow2.dispose();
+        waterArrow3.dispose();
+        waterArrow4.dispose();
+
+        wave1.dispose();
+        wave2.dispose();
+        wave3.dispose();
+        wave4.dispose();
+
+        windBullet1.dispose();
+        windBullet2.dispose();
+        windBullet3.dispose();
+        windBullet4.dispose();
+
+        windCutter1.dispose();
+        windCutter2.dispose();
+        windCutter3.dispose();
+        windCutter4.dispose();
+
+        rockBlast0.dispose();
     }
 }
