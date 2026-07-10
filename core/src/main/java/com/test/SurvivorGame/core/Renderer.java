@@ -1364,7 +1364,7 @@ public class Renderer {
         //Penguin
         penguin0 = new Texture(Gdx.files.internal("Penguin/Penguin.png"));
         penguin1 = new Texture(Gdx.files.internal("Penguin/Penguin1.png"));
-        penguin2 = new Texture(Gdx.files.internal("Penguin/penguin2.png"));
+        penguin2 = new Texture(Gdx.files.internal("Penguin/Penguin2.png"));
 
         penguinDown = new Animation<>(0.3f,
         new TextureRegion(penguin0)
