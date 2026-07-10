@@ -1,7 +1,7 @@
 package com.test.SurvivorGame.entity.ability_objects;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.test.SurvivorGame.ability.activeAbilty.EarthQuake;
+import com.test.SurvivorGame.ability.active_abilities.EarthQuake;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.World;

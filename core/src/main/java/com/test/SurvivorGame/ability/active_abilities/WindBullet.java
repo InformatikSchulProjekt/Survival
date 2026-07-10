@@ -1,35 +1,34 @@
-package com.test.SurvivorGame.ability.activeAbilty;
+package com.test.SurvivorGame.ability.active_abilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.ability_objects.projectile.FireArrowProjectile;
+import com.test.SurvivorGame.entity.ability_objects.projectile.WindBulletProjectile;
 import com.test.SurvivorGame.world.World;
 
-public class FireArrowAbility extends ActiveAbility {
+public class WindBullet extends ActiveAbility {
 
-    public static final String ID = "fire_arrow";
+    public static final String ID = "wind_bullet";
 
     private static final float BASE_DURATION = 3f;
-    private static final float BASE_WIDTH = 3f;
-    private static final float BASE_HEIGHT = 0.6f;
-    private static final float BASE_SPEED = 6f;
-    private static final int BASE_PIERCE = 3;
-    private static final float BASE_DAMAGE = 0.75f;
+    private static final float BASE_WIDTH = 0.7f;
+    private static final float BASE_HEIGHT = 0.3f;
+    private static final float BASE_SPEED = 7.5f;
     private static final float BASE_COOLDOWN = 1f;
+    private static final int BASE_PIERCE = 2;
+    private static final float BASE_DAMAGE = 0.75f;
 
-    private final Texture texture =
-        new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    public FireArrowAbility(World world, Viewport viewport) {
-        super(ID, world, viewport, StatScope.FIRE);
+    public WindBullet(World world, Viewport viewport) {
+        super(ID, world, viewport, StatScope.WIND);
     }
 
     @Override
     protected void activate() {
-        FireArrowProjectile fireArrowProjectile = new FireArrowProjectile(
+        WindBulletProjectile windBulletProjectile = new WindBulletProjectile(
             player.getX(),
             player.getY(),
             BASE_WIDTH * getSize(),
@@ -43,18 +42,22 @@ public class FireArrowAbility extends ActiveAbility {
             getPierce()
         );
 
-        world.addAbility(fireArrowProjectile);
+        world.addAbility(windBulletProjectile);
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
         if (getLevel() >= 2) {
-            damage *= 1.15f;
+            damage *= 1.333f;
         }
 
-        if (getLevel() >= 5) {
-            damage *= 1.15f;
+        if (getLevel() == 5) {
+            damage *= 1.5f;
         }
 
         return applyStat(damage, StatType.MAGIC_DAMAGE);
@@ -63,8 +66,12 @@ public class FireArrowAbility extends ActiveAbility {
     public float getSize() {
         float size = 1f;
 
-        if (getLevel() >= 5) {
-            size *= 1.1f;
+        if (getLevel() >= 4) {
+            size *= 1.25f;
+        }
+
+        if (getLevel() == 5) {
+            size *= 1.4f;
         }
 
         return applyStat(size, StatType.MAGIC_SIZE);
@@ -74,10 +81,7 @@ public class FireArrowAbility extends ActiveAbility {
         int pierce = BASE_PIERCE;
 
         if (getLevel() >= 3) {
-            pierce += 2;
-        }
-        if (getLevel() >= 5) {
-            pierce += 2;
+            pierce += 1;
         }
 
         return pierce;
@@ -86,22 +90,19 @@ public class FireArrowAbility extends ActiveAbility {
     @Override
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
+
         if (getLevel() >= 4) {
-            cooldown *= 0.85f;
+            cooldown *= 0.8f;
         }
 
-        float cooldownModifier = playerStats.getStat(getScope(), StatType.MAGIC_COOLDOWN_REDUCTION);
+        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
     }
 
-    public void dispose() {
-        texture.dispose();
-    }
-
     @Override
     public String getName() {
-        return "Fire Arrow";
+        return "Wind bullet";
     }
 
     @Override
@@ -112,11 +113,11 @@ public class FireArrowAbility extends ActiveAbility {
     @Override
     public String getDescription(int level) {
         return switch (level) {
-            case 1 -> "Shoots a fire arrow that explodes on impact";
-            case 2 -> "Fire arrow damage increased by 15%";
-            case 3 -> "Fire arrow pierce increases by 2";
-            case 4 -> "Cooldown decreased by 15%";
-            case 5 -> "Size increased by 10%, damage increased by 15% and +2 Pierce";
+            case 1 -> "Creates a bullet of wind that pierces the enemy";
+            case 2 -> "Wave damage increased by 33%";
+            case 3 -> "Pierce increased by 1";
+            case 4 -> "Width increased by 25% and cooldown reduced by 20%";
+            case 5 -> "Damage increased by 50%";
             default -> "No description available";
         };
     }

@@ -1,34 +1,44 @@
-package com.test.SurvivorGame.ability.activeAbilty;
+package com.test.SurvivorGame.ability.active_abilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.ability_objects.Earthquake;
+import com.test.SurvivorGame.entity.ability_objects.FireStorm;
 import com.test.SurvivorGame.world.World;
 
-public class EarthQuake extends ActiveAbility {
+public class FireStormAbility extends ActiveAbility {
 
-    public static final String ID = "earth_quake";
+    public static final String ID = "fire_storm";
 
-    private static final float DAMAGE_INTERVAL = 1f;
+    private static final float DAMAGE_INTERVAL = 0.1f;
 
-    private static final float BASE_DURATION = 3f;
-    private static final float BASE_SIZE = 4f;
-    private static final float BASE_DAMAGE = 0.8f;
-    private static final float BASE_COOLDOWN = 2f;
+    private static final float BASE_DURATION = 1f;
+    private static final float START_SIZE = 0f;
+    private static final float BASE_END_SIZE = 4f;
+    private static final float BASE_DAMAGE = 0.5f;
+    private static final float BASE_COOLDOWN = 1f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    public EarthQuake(World world) {
-        super(ID, world, StatScope.EARTH);
+    public FireStormAbility(World world) {
+        super(ID, world, StatScope.FIRE);
     }
 
     @Override
     protected void activate() {
-        Earthquake earthquake = new Earthquake(player.getX(), player.getY(), getSize(), texture, getDuration(), world, getDamage());
+        FireStorm fireStorm = new FireStorm(
+            player.getX(),
+            player.getY(),
+            START_SIZE,
+            getEndSize(),
+            texture,
+            getDuration(),
+            world,
+            getDamage()
+        );
 
-        world.addAbility(earthquake);
+        world.addAbility(fireStorm);
     }
 
     public float getDamage() {
@@ -50,7 +60,7 @@ public class EarthQuake extends ActiveAbility {
         float cooldown = BASE_COOLDOWN;
 
         if (getLevel() >= 3) {
-            cooldown *= 0.85f;
+            cooldown *= 0.9f;
         }
 
         float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
@@ -63,20 +73,20 @@ public class EarthQuake extends ActiveAbility {
         float duration = BASE_DURATION;
 
         if (getLevel() >= 4) {
-            duration *= 1.10f;
+            duration *= 1.1f;
         }
 
         return applyStat(duration, StatType.MAGIC_DURATION);
     }
 
-    public float getSize() {
-        float size = BASE_SIZE;
+    public float getEndSize() {
+        float endSize = BASE_END_SIZE;
 
         if (getLevel() == 5) {
-            size *= 1.25f;
+            endSize *= 1.25f;
         }
 
-        return applyStat(size, StatType.MAGIC_SIZE);
+        return applyStat(endSize, StatType.MAGIC_SIZE);
     }
 
     public static float getDamageInterval() {
@@ -89,7 +99,7 @@ public class EarthQuake extends ActiveAbility {
 
     @Override
     public String getName() {
-        return "Earthquake Ability";
+        return "Firestorm Ability";
     }
 
     @Override
@@ -100,11 +110,11 @@ public class EarthQuake extends ActiveAbility {
     @Override
     public String getDescription(int level) {
         return switch (level) {
-            case 1 -> "Lets the earth rupture and causes cracks in the ground";
-            case 2 -> "Earthquake damage increased by 25%";
-            case 3 -> "Cooldown decreased by 15%";
+            case 1 -> "Emits a fire storm that deals damage in a certain interval";
+            case 2 -> "Fire storm damage increased by 25%";
+            case 3 -> "Cooldown decreased by 10%";
             case 4 -> "Duration increased by 10%";
-            case 5 -> "Size increased by 25% and damage increased by 15%";
+            case 5 -> "End size increased by 25% and damage increased by 15%";
             default -> "No description available";
         };
     }

@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.statAbility;
+package com.test.SurvivorGame.ability.stat_abilities;
 
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
@@ -7,8 +7,8 @@ import com.test.SurvivorGame.core.stat.StatType;
 
 import java.util.List;
 
-public final class Regeneration extends StatAbility {
-    public static final String ID = "regeneration";
+public final class ExpandingMagic extends StatAbility {
+    public static final String ID = "expanding_magic";
 
     @Override
     public String getID() {
@@ -17,7 +17,7 @@ public final class Regeneration extends StatAbility {
 
     @Override
     public String getName() {
-        return "Regeneration";
+        return "Expanding Magic";
     }
 
     @Override
@@ -30,8 +30,8 @@ public final class Regeneration extends StatAbility {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.HEALING,
-                amount * 0.05f,
+                StatType.MAGIC_SIZE,
+                amount * 0.10f,
                 ModifierType.FLAT,
                 "ability:" + ID
             )
@@ -40,6 +40,6 @@ public final class Regeneration extends StatAbility {
 
     @Override
     public String getDescription(int level) {
-        return "Increase Healing by 0.05";
+        return "Increase Magic Size by 10%";
     }
 }

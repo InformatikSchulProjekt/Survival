@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.activeAbilty;
+package com.test.SurvivorGame.ability.active_abilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

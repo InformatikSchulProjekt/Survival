@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.statAbility;
+package com.test.SurvivorGame.ability.stat_abilities;
 
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
@@ -7,8 +7,8 @@ import com.test.SurvivorGame.core.stat.StatType;
 
 import java.util.List;
 
-public final class SwiftStep extends StatAbility {
-    public static final String ID = "swift_step";
+public final class QuickCasting extends StatAbility {
+    public static final String ID = "quick_casting";
 
     @Override
     public String getID() {
@@ -17,7 +17,7 @@ public final class SwiftStep extends StatAbility {
 
     @Override
     public String getName() {
-        return "Swift Step";
+        return "Quick Casting";
     }
 
     @Override
@@ -30,9 +30,9 @@ public final class SwiftStep extends StatAbility {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.SPEED,
-                amount * 0.1f,
-                ModifierType.PERCENT,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                amount * 0.05f,
+                ModifierType.FLAT,
                 "ability:" + ID
             )
         );
@@ -40,6 +40,6 @@ public final class SwiftStep extends StatAbility {
 
     @Override
     public String getDescription(int level) {
-        return "Increase Speed by 10%";
+        return "Reduce Magic Cooldown by 5%";
     }
 }

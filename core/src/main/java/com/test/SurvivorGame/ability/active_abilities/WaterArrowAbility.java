@@ -1,34 +1,34 @@
-package com.test.SurvivorGame.ability.activeAbilty;
+package com.test.SurvivorGame.ability.active_abilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.ability_objects.projectile.WindBulletProjectile;
+import com.test.SurvivorGame.entity.ability_objects.projectile.WaterArrowProjectile;
 import com.test.SurvivorGame.world.World;
 
-public class WindBullet extends ActiveAbility {
+public class WaterArrowAbility extends ActiveAbility {
 
-    public static final String ID = "wind_bullet";
+    public static final String ID = "water_arrow";
 
     private static final float BASE_DURATION = 3f;
-    private static final float BASE_WIDTH = 0.7f;
-    private static final float BASE_HEIGHT = 0.3f;
-    private static final float BASE_SPEED = 7.5f;
-    private static final float BASE_COOLDOWN = 1f;
-    private static final int BASE_PIERCE = 2;
+    private static final float BASE_WIDTH = 3f;
+    private static final float BASE_HEIGHT = 0.6f;
+    private static final float BASE_SPEED = 6f;
+    private static final int BASE_PIERCE = 3;
     private static final float BASE_DAMAGE = 0.75f;
+    private static final float BASE_COOLDOWN = 1f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
-    public WindBullet(World world, Viewport viewport) {
-        super(ID, world, viewport, StatScope.WIND);
+    public WaterArrowAbility(World world, Viewport viewport) {
+        super(ID, world, viewport, StatScope.WATER);
     }
 
     @Override
     protected void activate() {
-        WindBulletProjectile windBulletProjectile = new WindBulletProjectile(
+        WaterArrowProjectile waterArrowProjectile = new WaterArrowProjectile(
             player.getX(),
             player.getY(),
             BASE_WIDTH * getSize(),
@@ -42,7 +42,7 @@ public class WindBullet extends ActiveAbility {
             getPierce()
         );
 
-        world.addAbility(windBulletProjectile);
+        world.addAbility(waterArrowProjectile);
     }
 
     public void dispose() {
@@ -53,10 +53,10 @@ public class WindBullet extends ActiveAbility {
         float damage = BASE_DAMAGE;
 
         if (getLevel() >= 2) {
-            damage *= 1.333f;
+            damage *= 1.2f;
         }
 
-        if (getLevel() == 5) {
+        if (getLevel() >= 5) {
             damage *= 1.5f;
         }
 
@@ -67,11 +67,7 @@ public class WindBullet extends ActiveAbility {
         float size = 1f;
 
         if (getLevel() >= 4) {
-            size *= 1.25f;
-        }
-
-        if (getLevel() == 5) {
-            size *= 1.4f;
+            size *= 1.20f;
         }
 
         return applyStat(size, StatType.MAGIC_SIZE);
@@ -81,7 +77,7 @@ public class WindBullet extends ActiveAbility {
         int pierce = BASE_PIERCE;
 
         if (getLevel() >= 3) {
-            pierce += 1;
+            pierce += 3;
         }
 
         return pierce;
@@ -89,20 +85,14 @@ public class WindBullet extends ActiveAbility {
 
     @Override
     public float getCooldown() {
-        float cooldown = BASE_COOLDOWN;
-
-        if (getLevel() >= 4) {
-            cooldown *= 0.8f;
-        }
-
         float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
-        return cooldown / cooldownModifier;
+        return BASE_COOLDOWN / cooldownModifier;
     }
 
     @Override
     public String getName() {
-        return "Wind bullet";
+        return "Water Arrow";
     }
 
     @Override
@@ -113,10 +103,10 @@ public class WindBullet extends ActiveAbility {
     @Override
     public String getDescription(int level) {
         return switch (level) {
-            case 1 -> "Creates a bullet of wind that pierces the enemy";
-            case 2 -> "Wave damage increased by 33%";
-            case 3 -> "Pierce increased by 1";
-            case 4 -> "Width increased by 25% and cooldown reduced by 20%";
+            case 1 -> "Shoots a water arrow that explodes on impact";
+            case 2 -> "Water arrow damage increased by 20%";
+            case 3 -> "Water arrow pierce increases by 3";
+            case 4 -> "Water Arrow Size increases by 20%";
             case 5 -> "Damage increased by 50%";
             default -> "No description available";
         };

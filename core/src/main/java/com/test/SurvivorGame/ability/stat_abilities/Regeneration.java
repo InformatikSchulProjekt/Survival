@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.ability.statAbility;
+package com.test.SurvivorGame.ability.stat_abilities;
 
 import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.core.stat.StatModifier;
@@ -7,8 +7,8 @@ import com.test.SurvivorGame.core.stat.StatType;
 
 import java.util.List;
 
-public final class Vitality extends StatAbility {
-    public static final String ID = "vitality";
+public final class Regeneration extends StatAbility {
+    public static final String ID = "regeneration";
 
     @Override
     public String getID() {
@@ -17,7 +17,7 @@ public final class Vitality extends StatAbility {
 
     @Override
     public String getName() {
-        return "Vitality";
+        return "Regeneration";
     }
 
     @Override
@@ -30,9 +30,9 @@ public final class Vitality extends StatAbility {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.MAX_HEALTH,
-                amount * 0.15f,
-                ModifierType.PERCENT,
+                StatType.HEALING,
+                amount * 0.05f,
+                ModifierType.FLAT,
                 "ability:" + ID
             )
         );
@@ -40,6 +40,6 @@ public final class Vitality extends StatAbility {
 
     @Override
     public String getDescription(int level) {
-        return "Increase Max Health by 15%";
+        return "Increase Healing by 0.05";
     }
 }
