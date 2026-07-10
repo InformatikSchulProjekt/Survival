@@ -3,12 +3,8 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.core.SoundManager;
-import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.ability_objects.projectile.FireArrowProjectile;
 import com.test.SurvivorGame.world.World;
 
@@ -16,21 +12,19 @@ public class FireArrowAbility extends ActiveAbility {
 
     public static final String ID = "fire_arrow";
 
+    private static final float BASE_DURATION = 3f;
+    private static final float BASE_WIDTH = 3f;
+    private static final float BASE_HEIGHT = 0.6f;
+    private static final float BASE_SPEED = 6f;
+    private static final int BASE_PIERCE = 3;
+    private static final float BASE_DAMAGE = 0.75f;
+    private static final float BASE_COOLDOWN = 1f;
 
-
-    // Ability base Stats
-    private final float baseDuration = 3f;
-    private final float baseWidth = 3f;
-    private final float baseHeight= 0.6f;
-    private final float baseSpeed = 6f;
-    private final int basePierce = 3;
-    private final float baseDamage = 0.75f;
-    private final float baseCooldown = 1f;
-
-    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private final Texture texture =
+        new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public FireArrowAbility(World world, Viewport viewport) {
-        super(world, viewport);
+        super(ID, world, viewport, StatScope.FIRE);
     }
 
     @Override
@@ -38,75 +32,71 @@ public class FireArrowAbility extends ActiveAbility {
         FireArrowProjectile fireArrowProjectile = new FireArrowProjectile(
             player.getX(),
             player.getY(),
-            baseWidth*getSize(),
-            baseHeight*getSize(),
+            BASE_WIDTH * getSize(),
+            BASE_HEIGHT * getSize(),
             texture,
             player,
             viewport,
-            getSpeed(),
-            baseDuration,
+            BASE_SPEED,
+            BASE_DURATION,
             getDamage(),
             getPierce()
         );
 
         world.addAbility(fireArrowProjectile);
-        SoundManager.playSound("fireArrow.wav");
-    }
-
-    public void dispose() {
-        texture.dispose();
     }
 
     public float getDamage() {
-        float damage = baseDamage;
-        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
-        damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
-        if (getLevel() >= 2){
-            damage = 1.15f;        }
-        if (getLevel()>=5){
-            damage = 1.15f;
-        }
-        return damage;
+        float damage = BASE_DAMAGE;
 
+        if (getLevel() >= 2) {
+            damage *= 1.15f;
+        }
+
+        if (getLevel() >= 5) {
+            damage *= 1.15f;
+        }
+
+        return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
     public float getSize() {
         float size = 1f;
-        if (getLevel()>= 5){
-            size *= 1.1f;}
-        return size;
-    }
 
-    public float getSpeed() {
-        float speed = baseSpeed;
-
-        return speed;
-    }
-
-    public float getDuration(){
-        float duration = baseDuration;
-        if(getLevel() >= 4){
-            duration *= 2f;
+        if (getLevel() >= 5) {
+            size *= 1.1f;
         }
-        return duration;
+
+        return applyStat(size, StatType.MAGIC_SIZE);
     }
 
     public int getPierce() {
-        int level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
-        int pierce = basePierce;
-        if (level >= 3) pierce += 2; // wenn die Ability Level 3 erreicht wird pierce um 2 erhöht
+        int pierce = BASE_PIERCE;
+
+        if (getLevel() >= 3) {
+            pierce += 2;
+        }
+        if (getLevel() >= 5) {
+            pierce += 2;
+        }
+
         return pierce;
     }
 
+    @Override
     public float getCooldown() {
-        float cooldown = baseCooldown;
-        return cooldown;
+        float cooldown = BASE_COOLDOWN;
+        if (getLevel() >= 4) {
+            cooldown *= 0.85f;
+        }
 
+        float cooldownModifier = playerStats.getStat(getScope(), StatType.MAGIC_COOLDOWN_REDUCTION);
+
+        return cooldown / cooldownModifier;
     }
 
-    @Override
-    public String getID() {
-        return ID;
+    public void dispose() {
+        texture.dispose();
     }
 
     @Override
@@ -120,25 +110,14 @@ public class FireArrowAbility extends ActiveAbility {
     }
 
     @Override
-    public String getDescription(int level){
-        switch(level){
-            case 1:
-                return "Shoots a fire arrow that explodes on impact";
-            case 2:
-                return "Fire arrow damage increased by 15%";
-            case 3:
-                return "Fire arrow pierce increases by 2";
-            case 4:
-                return"Duration doubled" ;
-            case 5:
-                return "Size increased by 10% and damage increased by 15%";
-            default:
-                return "No description available";
-        }
+    public String getDescription(int level) {
+        return switch (level) {
+            case 1 -> "Shoots a fire arrow that explodes on impact";
+            case 2 -> "Fire arrow damage increased by 15%";
+            case 3 -> "Fire arrow pierce increases by 2";
+            case 4 -> "Cooldown decreased by 15%";
+            case 5 -> "Size increased by 10%, damage increased by 15% and +2 Pierce";
+            default -> "No description available";
+        };
     }
-
-
-
-    }
-
-
+}

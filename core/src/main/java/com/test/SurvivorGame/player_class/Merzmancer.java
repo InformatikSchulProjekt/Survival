@@ -49,9 +49,9 @@ public final class Merzmancer extends BasePlayerClass {
             ),
             new StatModifier(
                 getScope(),
-                StatType.MAGIC_COOLDOWN,
-                -0.67f,
-                ModifierType.FLAT,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                0.67f,
+                ModifierType.PERCENT,
                 "class:" + getID()
             ),
             new StatModifier(

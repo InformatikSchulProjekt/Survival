@@ -30,8 +30,8 @@ public final class QuickCasting extends StatAbility {
         return List.of(
             new StatModifier(
                 StatScope.ALL,
-                StatType.MAGIC_COOLDOWN,
-                amount * -0.05f,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                amount * 0.05f,
                 ModifierType.FLAT,
                 "ability:" + ID
             )

@@ -44,8 +44,8 @@ public final class CrownOfTheArchmage extends BaseItem {
             ),
             new StatModifier(
                 StatScope.ALL,
-                StatType.MAGIC_COOLDOWN,
-                -0.20f,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                0.20f,
                 ModifierType.PERCENT,
                 "item:" + ID
             ),

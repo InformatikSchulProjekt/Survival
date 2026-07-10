@@ -37,8 +37,8 @@ public final class OceanTear extends BaseItem {
         return List.of(
             new StatModifier(
                 StatScope.WATER,
-                StatType.MAGIC_COOLDOWN,
-                -0.1f,
+                StatType.MAGIC_COOLDOWN_REDUCTION,
+                0.1f,
                 ModifierType.PERCENT,
                 "item:" + ID
             )

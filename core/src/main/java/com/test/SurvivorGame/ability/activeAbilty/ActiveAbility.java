@@ -18,10 +18,12 @@ public abstract class ActiveAbility extends BaseAbility {
     protected final PlayerState playerState;
 
     private final StatScope statScope;
+    private final String ID;
 
     private float cooldownStartTime = 0f;
 
-    public ActiveAbility(World world, Viewport viewport, StatScope statScope) {
+    public ActiveAbility(String ID, World world, Viewport viewport, StatScope statScope) {
+        this.ID = ID;
         this.player = world.getPlayer();
         this.world = world;
         this.playerState = player.getPlayerState();
@@ -30,12 +32,18 @@ public abstract class ActiveAbility extends BaseAbility {
         this.statScope = statScope;
     }
 
-    public ActiveAbility(World world, StatScope statScope) {
+    public ActiveAbility(String ID, World world, StatScope statScope) {
+        this.ID = ID;
         this.player = world.getPlayer();
         this.world = world;
         this.playerState = player.getPlayerState();
         this.playerStats = playerState.getPlayerStats();
         this.statScope = statScope;
+    }
+
+    @Override
+    public String getID() {
+        return ID;
     }
 
     public AbilityType getAbilityType() {
@@ -52,6 +60,11 @@ public abstract class ActiveAbility extends BaseAbility {
 
     public float getDuration() {
         return 0f;
+    }
+
+    @Override
+    public StatScope getScope() {
+        return statScope;
     }
 
     public void tryActivate(float passedTime) {
