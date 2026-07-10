@@ -11,8 +11,10 @@ import com.test.SurvivorGame.world.World;
 
 public class Wave extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "wave";
 
+    // Basiswerte der Fähigkeit
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 0.25f;
     private static final float BASE_HEIGHT = 2.5f;
@@ -20,7 +22,9 @@ public class Wave extends ActiveAbility {
     private static final float BASE_COOLDOWN = 4.5f;
     private static final float BASE_DAMAGE = 0.5f;
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    // Platzhaltertextur für das Projektil
+    private final Texture texture =
+        new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public Wave(World world, Viewport viewport) {
         super(ID, world, viewport, StatScope.WATER);
@@ -28,6 +32,9 @@ public class Wave extends ActiveAbility {
 
     @Override
     protected void activate() {
+
+        // Erzeugt das Wellen-Projektil an der Position des Spielers.
+        // Größe und Schaden werden anhand des Levels und der Spielerwerte berechnet.
         WaveProjectile waveProjectile = new WaveProjectile(
             player.getX(),
             player.getY(),
@@ -41,14 +48,24 @@ public class Wave extends ActiveAbility {
             getDamage()
         );
 
+        // Fügt das Projektil der Spielwelt hinzu.
         world.addAbility(waveProjectile);
-        SoundManager.playSound("wave.wav",0.15f);
+
+        // Spielt den Soundeffekt der Fähigkeit ab.
+        SoundManager.playSound("wave.wav", 0.15f);
     }
 
+    /**
+     * Gibt den belegten Grafikspeicher der Textur frei.
+     */
     public void dispose() {
         texture.dispose();
     }
 
+    /**
+     * Berechnet den Schaden abhängig vom aktuellen Level
+     * und den Magie-Schadensboni des Spielers.
+     */
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
@@ -63,6 +80,9 @@ public class Wave extends ActiveAbility {
         return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
+    /**
+     * Berechnet die Größe der Welle.
+     */
     public float getSize() {
         float size = 1f;
 
@@ -81,11 +101,14 @@ public class Wave extends ActiveAbility {
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
 
+        // Ab Level 3 wird die Abklingzeit reduziert.
         if (getLevel() >= 3) {
             cooldown *= 0.9f;
         }
 
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
+        // Berücksichtigt zusätzliche Cooldown-Boni des Spielers.
+        float cooldownModifier =
+            applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
     }
@@ -100,6 +123,9 @@ public class Wave extends ActiveAbility {
         return 5;
     }
 
+    /**
+     * Beschreibung der Upgrades für jedes Level.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {

@@ -11,8 +11,10 @@ import com.test.SurvivorGame.world.World;
 
 public class WindCutter extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "wind_cutter";
 
+    // Basiswerte der Fähigkeit
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 3f;
     private static final float BASE_HEIGHT = 0.7f;
@@ -20,7 +22,9 @@ public class WindCutter extends ActiveAbility {
     private static final float BASE_COOLDOWN = 1f;
     private static final float BASE_DAMAGE = 1f;
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    // Platzhaltertextur für das Projektil
+    private final Texture texture =
+        new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WindCutter(World world, Viewport viewport) {
         super(ID, world, viewport, StatScope.WIND);
@@ -28,6 +32,9 @@ public class WindCutter extends ActiveAbility {
 
     @Override
     protected void activate() {
+
+        // Erzeugt das Windprojektil an der Position des Spielers.
+        // Größe und Schaden werden anhand des Levels und der Spielerwerte berechnet.
         WindCutterProjectile windCutterProjectile = new WindCutterProjectile(
             player.getX(),
             player.getY(),
@@ -41,14 +48,24 @@ public class WindCutter extends ActiveAbility {
             getDamage()
         );
 
+        // Fügt das Projektil der Spielwelt hinzu.
         world.addAbility(windCutterProjectile);
-        SoundManager.playSound("WindCutter.wav",1f);
+
+        // Spielt den Soundeffekt der Fähigkeit ab.
+        SoundManager.playSound("WindCutter.wav", 1f);
     }
 
+    /**
+     * Gibt den belegten Grafikspeicher der Textur frei.
+     */
     public void dispose() {
         texture.dispose();
     }
 
+    /**
+     * Berechnet den Schaden abhängig vom aktuellen Level
+     * und den Magie-Schadensboni des Spielers.
+     */
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
@@ -67,6 +84,9 @@ public class WindCutter extends ActiveAbility {
         return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
+    /**
+     * Berechnet die Größe des Projektils.
+     */
     public float getSize() {
         float size = 1f;
 
@@ -85,11 +105,14 @@ public class WindCutter extends ActiveAbility {
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
 
+        // Ab Level 3 wird die Abklingzeit leicht reduziert.
         if (getLevel() >= 3) {
             cooldown *= 0.95f;
         }
 
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
+        // Berücksichtigt zusätzliche Cooldown-Boni des Spielers.
+        float cooldownModifier =
+            applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
     }
@@ -104,6 +127,9 @@ public class WindCutter extends ActiveAbility {
         return 5;
     }
 
+    /**
+     * Beschreibung der Upgrades für jedes Level.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {

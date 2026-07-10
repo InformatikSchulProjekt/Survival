@@ -11,8 +11,10 @@ import com.test.SurvivorGame.world.World;
 
 public class WaterBlast extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "water_blast";
 
+    // Basiswerte der Fähigkeit
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 2f;
     private static final float BASE_HEIGHT = 1f;
@@ -20,7 +22,9 @@ public class WaterBlast extends ActiveAbility {
     private static final float BASE_COOLDOWN = 1f;
     private static final float BASE_DAMAGE = 1f;
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    // Platzhaltertextur für das Projektil
+    private final Texture texture =
+        new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WaterBlast(World world, Viewport viewport) {
         super(ID, world, viewport, StatScope.WATER);
@@ -28,6 +32,9 @@ public class WaterBlast extends ActiveAbility {
 
     @Override
     protected void activate() {
+
+        // Erzeugt das Wasserprojektil an der Position des Spielers.
+        // Größe und Schaden werden anhand des Levels und der Spielerwerte berechnet.
         WaterBlastProjectile waterBlastProjectile = new WaterBlastProjectile(
             player.getX(),
             player.getY(),
@@ -41,14 +48,24 @@ public class WaterBlast extends ActiveAbility {
             getDamage()
         );
 
+        // Fügt das Projektil der Spielwelt hinzu.
         world.addAbility(waterBlastProjectile);
-        SoundManager.playSound("WaterBlast.wav",1f);
+
+        // Spielt den Soundeffekt der Fähigkeit ab.
+        SoundManager.playSound("WaterBlast.wav", 1f);
     }
 
+    /**
+     * Gibt den belegten Grafikspeicher der Textur frei.
+     */
     public void dispose() {
         texture.dispose();
     }
 
+    /**
+     * Berechnet den Schaden abhängig vom aktuellen Level
+     * und den Magie-Schadensboni des Spielers.
+     */
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
@@ -63,14 +80,19 @@ public class WaterBlast extends ActiveAbility {
         return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
+    /**
+     * Berechnet die Größe des Projektils.
+     * Der Basiswert ist bewusst etwas kleiner gewählt.
+     */
     public float getSize() {
-        return applyStat(0.75f, StatType.MAGIC_SIZE); // kleiner gemacht
+        return applyStat(0.75f, StatType.MAGIC_SIZE);
     }
 
     @Override
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
 
+        // Je nach Level wird die Abklingzeit weiter reduziert.
         if (getLevel() >= 3) {
             cooldown *= 0.9f;
         }
@@ -83,7 +105,9 @@ public class WaterBlast extends ActiveAbility {
             cooldown *= 0.9f;
         }
 
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
+        // Berücksichtigt zusätzliche Cooldown-Boni des Spielers.
+        float cooldownModifier =
+            applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
     }
@@ -98,6 +122,9 @@ public class WaterBlast extends ActiveAbility {
         return 5;
     }
 
+    /**
+     * Beschreibung der Upgrades für jedes Level.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {

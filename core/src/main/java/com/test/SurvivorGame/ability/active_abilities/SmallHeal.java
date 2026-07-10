@@ -10,27 +10,36 @@ import com.test.SurvivorGame.world.World;
 
 public class SmallHeal extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "small_heal";
 
+    // Standardwerte der Heilfähigkeit
     private static final float BASE_COOLDOWN = 12f;
     private static final float BASE_HEAL = 2.5f;
 
+    // Platzhaltertextur der Fähigkeit
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public SmallHeal(World world, Viewport viewport) {
+        // Initialisiert die Fähigkeit. Sie gehört zum Stat-Bereich ALL,
+        // da sie keine bestimmte Magierichtung verwendet.
         super(ID, world, viewport, StatScope.ALL);
     }
 
     @Override
     protected void activate() {
+
+        // Heilt den Spieler um den aktuell berechneten Heilwert.
         playerState.heal(getHeal());
-        SoundManager.playSound("SmallHeal.wav",1f);
+
+        // Spielt den Heilungssound ab.
+        SoundManager.playSound("SmallHeal.wav", 1f);
     }
 
-    public void dispose() {
-        texture.dispose();
-    }
-
+    /**
+     * Berechnet den aktuellen Heilwert der Fähigkeit.
+     * Mit höheren Leveln wird die Heilung stärker.
+     */
     public float getHeal() {
         float heal = BASE_HEAL;
 
@@ -49,6 +58,7 @@ public class SmallHeal extends ActiveAbility {
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
 
+        // Höhere Level verkürzen die Zeit bis zur nächsten Heilung.
         if (getLevel() >= 2) {
             cooldown *= 0.9f;
         }
@@ -57,9 +67,17 @@ public class SmallHeal extends ActiveAbility {
             cooldown *= 0.5f;
         }
 
+        // Berücksichtigt zusätzliche Cooldown-Reduktionen durch Spielerwerte.
         float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
+    }
+
+    /**
+     * Gibt die verwendete Textur frei, um Speicherlecks zu vermeiden.
+     */
+    public void dispose() {
+        texture.dispose();
     }
 
     @Override
@@ -69,9 +87,14 @@ public class SmallHeal extends ActiveAbility {
 
     @Override
     public int getMaxAmount() {
+        // Maximale Ausbaustufe der Fähigkeit.
         return 5;
     }
 
+    /**
+     * Liefert die Beschreibung der jeweiligen Ausbaustufe,
+     * die im Upgrade-Menü angezeigt wird.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {

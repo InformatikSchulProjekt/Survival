@@ -11,8 +11,10 @@ import com.test.SurvivorGame.world.World;
 
 public class WindBullet extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "wind_bullet";
 
+    // Basiswerte der Fähigkeit
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 0.7f;
     private static final float BASE_HEIGHT = 0.3f;
@@ -21,7 +23,9 @@ public class WindBullet extends ActiveAbility {
     private static final int BASE_PIERCE = 2;
     private static final float BASE_DAMAGE = 0.75f;
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    // Platzhaltertextur für das Projektil
+    private final Texture texture =
+        new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WindBullet(World world, Viewport viewport) {
         super(ID, world, viewport, StatScope.WIND);
@@ -29,6 +33,10 @@ public class WindBullet extends ActiveAbility {
 
     @Override
     protected void activate() {
+
+        // Erzeugt das Windprojektil an der Position des Spielers.
+        // Größe, Schaden und Durchdringung werden anhand des Levels
+        // und der Spielerwerte berechnet.
         WindBulletProjectile windBulletProjectile = new WindBulletProjectile(
             player.getX(),
             player.getY(),
@@ -43,14 +51,24 @@ public class WindBullet extends ActiveAbility {
             getPierce()
         );
 
+        // Fügt das Projektil der Spielwelt hinzu.
         world.addAbility(windBulletProjectile);
-        SoundManager.playSound("WindBullet.wav",1f);
+
+        // Spielt den Soundeffekt der Fähigkeit ab.
+        SoundManager.playSound("WindBullet.wav", 1f);
     }
 
+    /**
+     * Gibt den belegten Grafikspeicher der Textur frei.
+     */
     public void dispose() {
         texture.dispose();
     }
 
+    /**
+     * Berechnet den Schaden abhängig vom aktuellen Level
+     * und den Magie-Schadensboni des Spielers.
+     */
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
@@ -65,6 +83,9 @@ public class WindBullet extends ActiveAbility {
         return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
+    /**
+     * Berechnet die Größe des Projektils.
+     */
     public float getSize() {
         float size = 1f;
 
@@ -79,6 +100,10 @@ public class WindBullet extends ActiveAbility {
         return applyStat(size, StatType.MAGIC_SIZE);
     }
 
+    /**
+     * Berechnet, wie viele Gegner das Projektil
+     * durchdringen kann.
+     */
     public int getPierce() {
         int pierce = BASE_PIERCE;
 
@@ -93,11 +118,14 @@ public class WindBullet extends ActiveAbility {
     public float getCooldown() {
         float cooldown = BASE_COOLDOWN;
 
+        // Ab Level 4 wird die Abklingzeit reduziert.
         if (getLevel() >= 4) {
             cooldown *= 0.8f;
         }
 
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
+        // Berücksichtigt zusätzliche Cooldown-Boni des Spielers.
+        float cooldownModifier =
+            applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return cooldown / cooldownModifier;
     }
@@ -112,6 +140,9 @@ public class WindBullet extends ActiveAbility {
         return 5;
     }
 
+    /**
+     * Beschreibung der Upgrades für jedes Level.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {

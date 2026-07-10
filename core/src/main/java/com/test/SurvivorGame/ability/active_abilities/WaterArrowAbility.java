@@ -11,8 +11,10 @@ import com.test.SurvivorGame.world.World;
 
 public class WaterArrowAbility extends ActiveAbility {
 
+    // Eindeutige ID der Fähigkeit
     public static final String ID = "water_arrow";
 
+    // Standardwerte der Fähigkeit
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 3f;
     private static final float BASE_HEIGHT = 0.6f;
@@ -21,14 +23,18 @@ public class WaterArrowAbility extends ActiveAbility {
     private static final float BASE_DAMAGE = 0.75f;
     private static final float BASE_COOLDOWN = 1f;
 
+    // Textur des Wasserpfeil-Projektils
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WaterArrowAbility(World world, Viewport viewport) {
+        // Initialisiert die Fähigkeit und ordnet sie dem Wasser-Statbereich zu.
         super(ID, world, viewport, StatScope.WATER);
     }
 
     @Override
     protected void activate() {
+
+        // Erstellt einen Wasserpfeil mit den aktuellen Werten der Fähigkeit.
         WaterArrowProjectile waterArrowProjectile = new WaterArrowProjectile(
             player.getX(),
             player.getY(),
@@ -41,17 +47,27 @@ public class WaterArrowAbility extends ActiveAbility {
             BASE_DURATION,
             getDamage(),
             getPierce()
-
         );
 
+        // Fügt das Projektil der Spielwelt hinzu.
         world.addAbility(waterArrowProjectile);
-        SoundManager.playSound("WaterArrow.wav",1f);
+
+        // Spielt den Abschuss-Sound ab.
+        SoundManager.playSound("WaterArrow.wav", 1f);
     }
 
+    /**
+     * Gibt die verwendete Textur frei, um Speicherlecks zu vermeiden.
+     */
     public void dispose() {
         texture.dispose();
     }
 
+    /**
+     * Berechnet den aktuellen Schaden des Wasserpfeils.
+     * Der Schaden steigt mit höheren Leveln und wird anschließend
+     * durch Spielerwerte (Magic Damage) angepasst.
+     */
     public float getDamage() {
         float damage = BASE_DAMAGE;
 
@@ -66,6 +82,10 @@ public class WaterArrowAbility extends ActiveAbility {
         return applyStat(damage, StatType.MAGIC_DAMAGE);
     }
 
+    /**
+     * Berechnet die Größe des Projektils.
+     * Ab Level 4 wird der Wasserpfeil größer.
+     */
     public float getSize() {
         float size = 1f;
 
@@ -76,6 +96,10 @@ public class WaterArrowAbility extends ActiveAbility {
         return applyStat(size, StatType.MAGIC_SIZE);
     }
 
+    /**
+     * Bestimmt, wie viele Gegner der Wasserpfeil durchdringen kann,
+     * bevor er verschwindet.
+     */
     public int getPierce() {
         int pierce = BASE_PIERCE;
 
@@ -88,6 +112,8 @@ public class WaterArrowAbility extends ActiveAbility {
 
     @Override
     public float getCooldown() {
+
+        // Berücksichtigt mögliche Cooldown-Reduktionen durch Spielerwerte.
         float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
 
         return BASE_COOLDOWN / cooldownModifier;
@@ -100,9 +126,14 @@ public class WaterArrowAbility extends ActiveAbility {
 
     @Override
     public int getMaxAmount() {
+        // Maximale Ausbaustufe der Fähigkeit.
         return 5;
     }
 
+    /**
+     * Liefert die Beschreibung der jeweiligen Ausbaustufe,
+     * die im Upgrade-Menü angezeigt wird.
+     */
     @Override
     public String getDescription(int level) {
         return switch (level) {
