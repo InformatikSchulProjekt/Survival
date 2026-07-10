@@ -1450,7 +1450,7 @@ public class Renderer {
         fireStorm7 = new Texture(Gdx.files.internal("Ability/FireStorm7.png"));
         fireStorm8 = new Texture(Gdx.files.internal("Ability/FireStorm8.png"));
 
-        fireStormAnimation = new Animation<>(0.5f,
+        fireStormAnimation = new Animation<>(0.2f,
             new TextureRegion(fireStorm1),
             new TextureRegion(fireStorm2),
             new TextureRegion(fireStorm3),
