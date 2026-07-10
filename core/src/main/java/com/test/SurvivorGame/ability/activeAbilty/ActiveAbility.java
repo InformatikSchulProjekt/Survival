@@ -1,11 +1,37 @@
 package com.test.SurvivorGame.ability.activeAbilty;
 
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.AbilityType;
 import com.test.SurvivorGame.ability.BaseAbility;
+import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.world.World;
+
+import javax.swing.text.View;
 
 public abstract class ActiveAbility extends BaseAbility {
 
     private float cooldownStartTime = 0f;
+    protected Viewport viewport;
+    protected final Player player;
+    protected final World world;
+    protected final PlayerStats playerStats;
+    protected final PlayerState playerState;
+
+    public ActiveAbility(World world,Viewport viewport) {
+        this.player = world.getPlayer();
+        this.world = world;
+        this.playerStats = player.getPlayerState().getPlayerStats();
+        this.viewport = viewport;
+        this.playerState = player.getPlayerState();
+    }
+    public ActiveAbility(World world) {
+        this.player = world.getPlayer();
+        this.world = world;
+        this.playerStats = player.getPlayerState().getPlayerStats();
+        this.playerState = player.getPlayerState();
+    }
 
     public AbilityType getAbilityType() {
         return AbilityType.ACTIVE_ABILITY;
@@ -28,6 +54,9 @@ public abstract class ActiveAbility extends BaseAbility {
 
         activate();
         cooldownStartTime = survivalTime + getDuration();
+    }
+    protected int getLevel(){
+        return playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
     }
 
     private float calcRealCooldown() {

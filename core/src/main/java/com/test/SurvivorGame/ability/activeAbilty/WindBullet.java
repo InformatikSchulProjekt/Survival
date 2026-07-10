@@ -16,13 +16,6 @@ public class WindBullet extends ActiveAbility {
 
     public static final String ID = "wind_bullet";
 
-    private final Viewport viewport;
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final PlayerState playerState;
-    private int level;
-
     private float duration = 3f;
     private float baseWidth = 0.7f;
     private float height= 0.3f;
@@ -36,12 +29,7 @@ public class WindBullet extends ActiveAbility {
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WindBullet(World world, Viewport viewport) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.viewport = viewport;
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        super(world, viewport);
 
     }
 
@@ -73,10 +61,10 @@ public class WindBullet extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_DAMAGE);
-        if(level >= 2){
+        if(getLevel() >= 2){
             damage *= 1.333f;
         }
-        if(level ==5){
+        if(getLevel() ==5){
             damage *= 1.5f;
         }
         return damage;
@@ -101,17 +89,17 @@ public class WindBullet extends ActiveAbility {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
         cooldown *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_COOLDOWN);
-        if(level >= 4){
+        if(getLevel() >= 4){
             cooldown *= 0.8f;
         }
         return cooldown;
     }
     public float getWidth(){
         float width = baseWidth;
-        if(level >= 4){
+        if(getLevel() >= 4){
             width *= 1.25f;
         }
-        if (level == 5){
+        if (getLevel() == 5){
             width *= 1.4;
         }
         return width;

@@ -16,16 +16,9 @@ public class Wave extends ActiveAbility {
 
     public static final String ID = "wave";
 
-    private final Viewport viewport;
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final PlayerState playerState;
-    private int level;
-
     private float duration = 3f;
-    private float baseWidth = 4f;
-    private float height= 0.7f;
+    private float baseWidth = 0.5f;
+    private float height= 5f;
     private float speed = 5f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
@@ -34,12 +27,7 @@ public class Wave extends ActiveAbility {
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public Wave(World world, Viewport viewport) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.viewport = viewport;
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        super(world, viewport);
     }
 
     @Override
@@ -68,10 +56,10 @@ public class Wave extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
-        if(level >= 2){
+        if(getLevel() >= 2){
             damage *= 1.25f;
         }
-        if(level ==5){
+        if(getLevel() ==5){
             damage *= 1.15f;
         }
         return damage;
@@ -94,19 +82,17 @@ public class Wave extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_COOLDOWN);
-        if(level >= 3){
+        if(getLevel() >= 3){
             cooldown *= 0.9f;
         }
         return cooldown;
     }
     public float getWidth(){
         float width = baseWidth;
-        if(level >= 4){
+        if(getLevel() >= 4){
             width *= 1.25f;
         }
-        if (level == 5){
+        if (getLevel() == 5){
             width *= 1.4;
         }
         return width;

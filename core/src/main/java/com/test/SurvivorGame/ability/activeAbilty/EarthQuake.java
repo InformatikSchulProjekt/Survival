@@ -2,6 +2,7 @@ package com.test.SurvivorGame.ability.activeAbilty;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
@@ -15,11 +16,7 @@ public class EarthQuake extends ActiveAbility {
 
     public static final String ID = "earth_quake";
 
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final PlayerState playerState;
-    private final int level;
+
 
     private static float damageInterval = 1f;
     // Ability base Stats
@@ -30,13 +27,9 @@ public class EarthQuake extends ActiveAbility {
     private float baseCooldown = 2f; // müsst ihr noch anpassen
 
     public EarthQuake(World world) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
-
+        super(world);
     }
+
 
     @Override
     protected void activate() {
@@ -57,9 +50,9 @@ public class EarthQuake extends ActiveAbility {
         float damage = baseDamage;
         damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
         damage *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_DAMAGE);
-        if (level >= 2){
+        if (getLevel() >= 2){
             damage *= 1.25f;        }
-        if (level==5){
+        if (getLevel()==5){
             damage*= 1.15f;
         }
         return damage;
@@ -90,26 +83,16 @@ public class EarthQuake extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_COOLDOWN);
-        if (level>=3){
+        if (getLevel()>=3){
             cooldown *= 0.85f;
         }
         return cooldown;
     }
-    //@Override
-    public float getDuration() {
-        float duration = baseDuration;
-        if (level>=4){
-            duration *= 1.1f;
-        }
-        // temp:
-        return duration;
-    }
+
     //@Override
     public float getBaseSize(){
        float size = baseSize;
-        if(level == 5) size*=1.25f;
+        if(getLevel() == 5) size*=1.25f;
         return size;
     }
 

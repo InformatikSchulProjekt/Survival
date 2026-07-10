@@ -13,7 +13,6 @@ import com.test.SurvivorGame.world.World;
 public class ProjectileAbility extends ActiveAbility {
 
     public static final String ID = "projectile";
-    private final Viewport viewport;
 
     private float duration = 4f;
     private float width = 3f;
@@ -27,15 +26,11 @@ public class ProjectileAbility extends ActiveAbility {
     private Projectile projectile;
     private Player player;
     private World world;
-    private final PlayerStats playerStats;
 
 
     public ProjectileAbility(World world, Viewport viewport)
     {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
-        this.viewport = viewport;
+        super(world, viewport);
     }
 
     @Override

@@ -15,13 +15,6 @@ public class SmallHeal extends ActiveAbility {
 
     public static final String ID = "small_heal";
 
-    private final Viewport viewport;
-    private final Player player;
-    private final World world;
-    private final PlayerStats playerStats;
-    private final  PlayerState playerState;
-    private int level;
-
     // Ability base Stats
     private final float baseDuration = 3f;
     private final float baseInterval = 1.5f;
@@ -31,12 +24,7 @@ public class SmallHeal extends ActiveAbility {
     private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public SmallHeal(World world, Viewport viewport) {
-        this.player = world.getPlayer();
-        this.world = world;
-        this.viewport = viewport;
-        this.playerStats =  player.getPlayerState().getPlayerStats();
-        this.playerState = player.getPlayerState();
-        this.level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        super(world, viewport);
     }
 
     @Override
@@ -53,8 +41,8 @@ public class SmallHeal extends ActiveAbility {
         float heal = baseHeal;
         heal *= playerStats.getStat(StatType.HEALING);
         heal *= playerStats.getStat(StatScope.WATER,StatType.HEALING);
-        if (level >= 3) heal*= 1.5f;
-        if (level >= 4) heal*= 1.33f;
+        if (getLevel() >= 3) heal*= 1.5f;
+        if (getLevel() >= 4) heal*= 1.33f;
         return heal;
     }
 //    public float getbaseInterval() {
@@ -71,10 +59,8 @@ public class SmallHeal extends ActiveAbility {
 
     public float getCooldown() {
         float cooldown = baseCooldown;
-        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
-        cooldown *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_COOLDOWN);
-        if (level>=2) cooldown*= 0.9f;
-        if (level == 5)cooldown*=0.75f;
+        if (getLevel()>=2) cooldown*= 0.9f;
+        if (getLevel()== 5)cooldown*=0.75f;
         return cooldown;
 
     }
