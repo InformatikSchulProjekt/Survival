@@ -67,6 +67,11 @@ public class Renderer {
 //    private final Animation<TextureRegion> leftAnimation;
     private float playerAnimationTime = 0f;
     //Ab hier mancer
+    private final Texture merzTexture;
+    private final Texture merzmancer1;
+    private final Animation<TextureRegion> merzanimation;
+    private float merzAnimationTime = 0f;
+
     private final Texture pyromancerTexture;
     private final Texture pyromanceridle2;
     private final Texture pyromanceridle3;
@@ -821,6 +826,13 @@ public class Renderer {
 
         skeletonDamageAnimation = new Animation<>(0.15f,
             new TextureRegion(skeletonTakeDmg));
+        //merz
+        this.merzTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        merzmancer1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
+        merzanimation = new Animation<>(0.4f,
+            new TextureRegion(merzmancer1));
+        merzanimation.setPlayMode(Animation.PlayMode.LOOP);
+
         //pyromancer ab hier
         this.pyromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         pyromanceridle2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
@@ -1700,6 +1712,11 @@ public class Renderer {
                 }
             }
             currentFrame = animation.getKeyFrame(hydromancerAnimationTime);
+        } else if (playerData.getPlayerClass().equals("Merzmancer")) {
+            merzAnimationTime += deltaTime;
+
+            animation = merzanimation;
+            currentFrame = animation.getKeyFrame(merzAnimationTime);
         } else {
             geomancerAnimationTime += deltaTime;
 
