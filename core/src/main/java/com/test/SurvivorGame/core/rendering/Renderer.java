@@ -41,7 +41,7 @@ public class Renderer {
     private final InventoryUI inventoryUI;
     private final MapFinishedUI mapFinishedUI;
 
-//    private final Texture playerTexture;
+    //    private final Texture playerTexture;
 //    private final Texture idle2;
 //    private final Texture idle3;
 //    private final Texture idle4;
@@ -1528,7 +1528,8 @@ public class Renderer {
         DBcolliderRenderer();
         hud.render(
             world.getPlayer().getPlayerState(),
-            world.getSurvivalTime()
+            world.getSurvivalTime(),
+            world.isSurvivalTimePaused()
         );
 
         if(gameState == GameState.PAUSED)
@@ -1708,7 +1709,7 @@ public class Renderer {
                 break;
 
 
-        case SKELETON:
+            case SKELETON:
 
                 if (enemy.isDead()) {
                     animation = skeletonDeathAnimation;
