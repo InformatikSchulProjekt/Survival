@@ -96,7 +96,12 @@ public class FireballAbility extends ActiveAbility {
     public float getSpeed() {
         return baseSpeed;
     }
-
+    public float getDuration() {
+        float duration = baseDuration;
+        duration *= playerStats.getStat(StatType.MAGIC_DURATION);
+        duration *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DURATION);
+        return duration;
+    }
     public float getCooldown() {
         float cooldown = baseCooldown;
         cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);

@@ -17,6 +17,7 @@ public class WaveProjectile extends Projectile {
     private float distanceTraveled;
     private float speed;
 
+
     public WaveProjectile(float x, float y, float width, float height, Texture texture, Player player,
                           Viewport viewport, float speed, float duration, float damage) {
         super(x, y, width, height, texture, player, viewport, speed, duration);

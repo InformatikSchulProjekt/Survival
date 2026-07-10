@@ -22,7 +22,7 @@ public final class Aeromancer extends BasePlayerClass {
 
     @Override
     public String getStartAbility() {
-        return "wind_bullet";
+        return "wave";
     }
 
     @Override

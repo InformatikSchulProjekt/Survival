@@ -24,8 +24,8 @@ public class Wave extends ActiveAbility {
     private int level;
 
     private float duration = 3f;
-    private float baseWidth = 4f;
-    private float height= 0.7f;
+    private float baseWidth = 2f;
+    private float height= 1.2f;
     private float speed = 5f;
     private float baseCooldown = 1f; // müsst ihr noch anpassen
 
