@@ -7,6 +7,11 @@ import com.test.SurvivorGame.world.World;
 
 public class EnemyFactory {
 
+    /**
+     * Erstellt abhängig vom übergebenen EnemyType den passenden Gegner.
+     * Dabei werden die aktuellen Spieler-Modifikatoren sowie der übergebene
+     * Skalierungsfaktor auf die Gegnerwerte angewendet.
+     */
     public static Enemy createEnemy(EnemyType enemyType, float x, float y, World world, float scale) {
 
         float hpMulti = world.getPlayer().getPlayerState().getPlayerStats().getStat(StatScope.ALL, StatType.ENEMY_HP);

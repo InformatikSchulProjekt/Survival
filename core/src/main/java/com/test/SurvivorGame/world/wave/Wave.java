@@ -27,11 +27,18 @@ public class Wave {
         this.bossType = bossType;
     }
 
+    /**
+     * Fügt der Wave einen neuen Gegnertyp mit seiner Spawn-Wahrscheinlichkeit hinzu.
+     */
     public void addEnemy(SpawnEntry spawnEntry)
     {
         enemies.add(spawnEntry);
     }
 
+    /**
+     * Wählt anhand der hinterlegten Spawn-Wahrscheinlichkeiten einen zufälligen Gegner aus.
+     * Jeder SpawnEntry besitzt eine prozentuale Chance, ausgewählt zu werden.
+     */
     public EnemyType getRandomEnemy() {
         if (enemies.isEmpty()) {
             throw new IllegalStateException("Wave enthält keine Gegner!");
@@ -41,6 +48,8 @@ public class Wave {
         float random = MathUtils.random(100f);
         float sum = 0;
 
+        // Durchläuft alle SpawnEntries und prüft,
+        // in welchen Wahrscheinlichkeitsbereich die Zufallszahl fällt.
         for (SpawnEntry entry : enemies) {
             sum += entry.getChance();
 
@@ -88,6 +97,10 @@ public class Wave {
         return bossSpawnChance;
     }
 
+    /**
+     * Gibt einen zufälligen Boss aus der Liste der erlaubten Bossgegner zurück.
+     * Diese werden für die zufällige Boss generierung in infinitewaves gebrauch gemacht
+     */
     public EnemyType getRandomBoss() {
         return bossTypes.get(MathUtils.random(bossTypes.size() - 1));
     }
