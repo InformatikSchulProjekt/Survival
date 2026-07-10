@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -46,6 +47,7 @@ public class Wave extends ActiveAbility {
         );
 
         world.addAbility(waveProjectile);
+        SoundManager.playSound("wave.wav");
     }
 
     public void dispose() {
