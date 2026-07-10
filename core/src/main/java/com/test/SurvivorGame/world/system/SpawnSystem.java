@@ -25,6 +25,8 @@ public class SpawnSystem {
 
     private boolean bossPhaseTriggered = false;
 
+    // Speichert den aktuellen Zustand der Wave.
+    // Normal bedeutet normale Gegner-Spawns, Boss bedeutet Boss-Phase.
     private enum WaveState {
         NORMAL,
         BOSS
@@ -40,6 +42,7 @@ public class SpawnSystem {
 
     private ArrayList<Enemy> enemies = new ArrayList<>();
 
+    // Referenz auf die aktuell laufende Wave, damit Spawn-Werte nicht jedes Mal neu geladen werden müssen.
     private Wave currentWaveReference;
 
     private int infiniteWaveCount = 0;
@@ -67,6 +70,8 @@ public class SpawnSystem {
 
     }
 
+    // Aktualisiert die normale Wave und berechnet anhand der vergangenen Zeit
+    // das aktuelle Spawn-Intervall zwischen Start- und Endwert.
     public void updateNormalWave(float deltaTime) {
         waveTime += deltaTime;
         spawnTimer += deltaTime;
@@ -81,11 +86,14 @@ public class SpawnSystem {
             spawnTimer = 0;
         }
 
+        // Sobald die Wave-Zeit abgelaufen ist, wird in die Boss-Phase gewechselt.
         if (endTime()) {
             state = WaveState.BOSS;
         }
     }
 
+    // Verwaltet die Boss-Phase.
+    // Der Boss wird einmal gespawnt und danach gewartet, bis alle Gegner besiegt wurden.
     private void updateBossWave() {
         if (!bossPhaseTriggered) {
             triggerBossPhase();
@@ -94,11 +102,15 @@ public class SpawnSystem {
         if (enemies.isEmpty()) {
 
             world.saveGame();
+
+            // Die Boss-Truhe erscheint nur einmal pro Boss-Wave.
             if (!bossChestSpawned) {
                 spawnBossChest();
                 bossChestSpawned = true;
             }
 
+            // Startet entweder die nächste normale Wave, eine Infinite-Wave
+            // oder beendet das Spiel, wenn keine Waves mehr vorhanden sind.
             if (isInfiniteMode()) {
                 startNextWave();
             } else if (gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
@@ -110,6 +122,8 @@ public class SpawnSystem {
         }
     }
 
+    // Spawnt einen normalen Gegner an einer zufälligen Position um den Spieler.
+    // Im Infinite Mode besteht zusätzlich die Chance, dass ein Boss erscheint.
     private void spawnEnemy() {
         float distance = MathUtils.random(10f, 15f); // zufälliger radius
 
@@ -136,6 +150,8 @@ public class SpawnSystem {
         enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world, enemyScale));
     }
 
+    // Spawnt einen Boss an einer zufälligen Position um den Spieler.
+    // Während einer Boss-Phase wird der Survival-Timer pausiert.
     private void spawnBoss() {
         float distance = MathUtils.random(10f, 15f); // zufälliger radius
 
@@ -152,6 +168,8 @@ public class SpawnSystem {
         world.setSurvivalTimePaused(true); // timer stop
     }
 
+    // Aktualisiert alle Gegner und entfernt Gegner, die nicht mehr benötigt werden.
+    // Rückwärts durch die Liste gehen verhindert Fehler beim Entfernen während der Iteration.
     private void updateEnemy(float deltaTime, GameMap map) {
         for (int i = enemies.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
         {
@@ -164,6 +182,8 @@ public class SpawnSystem {
         }
     }
 
+    // Startet die Boss-Phase und erzeugt die vorgesehenen Boss- und Zusatzgegner.
+    // Die Abfrage verhindert, dass die Phase mehrfach ausgelöst wird.
     private void triggerBossPhase() {
         if (!bossPhaseTriggered && endTime()) {
             for (int i = 1; i < Agis.getBossWaveCount(); i++) {
@@ -176,11 +196,12 @@ public class SpawnSystem {
         }
     }
 
-
+    // Prüft, ob die aktuelle Wave ihre maximale Laufzeit erreicht hat.
     private boolean endTime() {
         return !(waveTime < currentWaveReference.getWaveLifeTime());
     }
 
+    // Spawnt die Belohnungstruhe nach einer besiegten Boss-Wave.
     private void spawnBossChest() {
         float distance = MathUtils.random(2f, 4f);
         float angle = MathUtils.random(0f, 360f);
@@ -198,6 +219,7 @@ public class SpawnSystem {
         return enemies;
     }
 
+    // Setzt alle Werte zurück und lädt die nächste Wave.
     private void startNextWave() {
         playerData.wave++;
 
@@ -213,6 +235,7 @@ public class SpawnSystem {
         state = WaveState.NORMAL;
     }
 
+    // Startet den Infinite Mode ab der ersten Wave nach dem normalen Spielende.
     public void startInfiniteMode() {
         playerData.wave = gameMap.getMaxWaves() + 1;
 
@@ -229,6 +252,7 @@ public class SpawnSystem {
         world.setSurvivalTimePaused(false);
     }
 
+    // Entscheidet anhand der Auswahl aus dem Screen am Ende einer Map, ob eine normale oder Infinite Wave geladen wird.
     private void setNewCurrentWave() {
         if (isInfiniteMode()) {
             setNewInfiniteWave();
@@ -241,6 +265,7 @@ public class SpawnSystem {
         currentWaveReference = gameMap.getSpawnProfile().getCurrentWave(playerData.wave);
     }
 
+    // Erstellt eine neue zufällige Infinite-Wave und erhöht die Gegner-Skalierung.
     private void setNewInfiniteWave() {
         infiniteWaveCount++;
 
@@ -250,6 +275,7 @@ public class SpawnSystem {
         currentWaveReference = InfiniteWaveGenerator.generate(gameMap, infiniteWaveCount);
     }
 
+    // Prüft, ob der Spieler bereits über die normalen Maps hinaus ist.
     private boolean isInfiniteMode() {
         return playerData.wave > gameMap.getMaxWaves();
     }
