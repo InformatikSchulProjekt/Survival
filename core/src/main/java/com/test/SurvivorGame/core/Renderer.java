@@ -1385,13 +1385,13 @@ public class Renderer {
             new TextureRegion(waterArrow4));
         waterArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
         //Ab hier earthQuake
-        earthQuake1 = new Texture(Gdx.files.internal("Ability/waterArrow1.png"));
-        earthQuake2 = new Texture(Gdx.files.internal("Ability/waterArrow2.png"));
-        earthQuake3 = new Texture(Gdx.files.internal("Ability/waterArrow3.png"));
-        earthQuake4 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
-        earthQuake5 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        earthQuake1 = new Texture(Gdx.files.internal("Ability/earthQuake1.png"));
+        earthQuake2 = new Texture(Gdx.files.internal("Ability/earthQuake2.png"));
+        earthQuake3 = new Texture(Gdx.files.internal("Ability/earthQuake3.png"));
+        earthQuake4 = new Texture(Gdx.files.internal("Ability/earthQuake4.png"));
+        earthQuake5 = new Texture(Gdx.files.internal("Ability/earthQuake5.png"));
 
-        earthQuakeAnimation = new Animation<>(0.08f,
+        earthQuakeAnimation = new Animation<>(0.5f,
             new TextureRegion(earthQuake1),
             new TextureRegion(earthQuake2),
             new TextureRegion(earthQuake3),
@@ -1400,16 +1400,16 @@ public class Renderer {
         earthQuakeAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 
         //ab hier fireStorm
-        fireStorm1 = new Texture(Gdx.files.internal("Ability/waterArrow1.png"));
-        fireStorm2 = new Texture(Gdx.files.internal("Ability/waterArrow2.png"));
-        fireStorm3 = new Texture(Gdx.files.internal("Ability/waterArrow3.png"));
-        fireStorm4 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
-        fireStorm5 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
-        fireStorm6 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
-        fireStorm7 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
-        fireStorm8 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        fireStorm1 = new Texture(Gdx.files.internal("Ability/FireStorm2.png"));
+        fireStorm2 = new Texture(Gdx.files.internal("Ability/FireStorm2.png"));
+        fireStorm3 = new Texture(Gdx.files.internal("Ability/FireStorm3.png"));
+        fireStorm4 = new Texture(Gdx.files.internal("Ability/FireStorm4.png"));
+        fireStorm5 = new Texture(Gdx.files.internal("Ability/FireStorm5.png"));
+        fireStorm6 = new Texture(Gdx.files.internal("Ability/FireStorm6.png"));
+        fireStorm7 = new Texture(Gdx.files.internal("Ability/FireStorm7.png"));
+        fireStorm8 = new Texture(Gdx.files.internal("Ability/FireStorm8.png"));
 
-        fireStormAnimation = new Animation<>(0.08f,
+        fireStormAnimation = new Animation<>(0.5f,
             new TextureRegion(fireStorm1),
             new TextureRegion(fireStorm2),
             new TextureRegion(fireStorm3),
@@ -1535,7 +1535,7 @@ public class Renderer {
         batch.begin();
 
         renderMap(map, cam);
-        renderPlayer(world.getPlayer(), world.getPlayer().getPlayerState(), deltaTime);
+
 
         for (Enemy enemy : world.getEnemies()) {
             if (!(enemy instanceof Boss)) {
@@ -1576,12 +1576,16 @@ public class Renderer {
                 renderWindCutter((WindCutterProjectile) abilityObject, deltaTime);
             } else if (abilityObject instanceof RockBlastProjectile) {
                 renderRockBlast((RockBlastProjectile) abilityObject, deltaTime);
+            }else if (abilityObject instanceof FireStorm) {
+                fireStorm((FireStorm) abilityObject, deltaTime);
+            }else if (abilityObject instanceof Earthquake) {
+                eartQuake((Earthquake) abilityObject, deltaTime);
             } else {
                 abilityObject.draw(batch);
             }
         }
 
-
+        renderPlayer(world.getPlayer(), world.getPlayer().getPlayerState(), deltaTime);
 
         batch.end();
 
@@ -1997,7 +2001,7 @@ public class Renderer {
     }
 
     private void eartQuake(Earthquake earthquake, float deltaTime) {
-        TextureRegion currentFrame = fireStormAnimation.getKeyFrame(earthquake.getAnimationTime());
+        TextureRegion currentFrame = earthQuakeAnimation.getKeyFrame(earthquake.getAnimationTime());
 
         batch.draw(
             currentFrame,
