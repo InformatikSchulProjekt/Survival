@@ -64,7 +64,7 @@ public class WaterBlast extends ActiveAbility {
     }
 
     public float getSize() {
-        return applyStat(1f, StatType.MAGIC_SIZE);
+        return applyStat(0.75f, StatType.MAGIC_SIZE); // kleiner gemacht
     }
 
     @Override
