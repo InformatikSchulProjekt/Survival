@@ -7,6 +7,14 @@ import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.screen.TitleScreen;
 
+/**
+ * Zentrale Einstiegsklasse des Spiels.
+ * <p>
+ * Diese Klasse initialisiert die gemeinsam verwendeten LibGDX-Ressourcen,
+ * lädt die gespeicherten Spieldaten und öffnet beim Start den Titelbildschirm.
+ * Außerdem verwaltet sie den Wechsel zwischen dem Titelbildschirm und einer
+ * neuen Spielrunde, beispielsweise nachdem eine Runde beendet wurde.
+ */
 public class Main extends Game {
     private Batch batch; // ist so ein sammler für sprites die dann an die GPU gesendet werden
     private DataLoader dataLoader;

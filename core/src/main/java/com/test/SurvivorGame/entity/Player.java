@@ -1,14 +1,19 @@
 package com.test.SurvivorGame.entity;
 
 import com.test.SurvivorGame.core.SoundManager;
-import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.PlayerState;
 
+/**
+ * Repräsentiert die Spielfigur als Objekt in der Spielwelt.
+ * <p>
+ * Die Klasse ist für die Bewegung, Kollision und Schadensdarstellung
+ * des Spielers zuständig. Die eigentlichen Spielerwerte wie Lebenspunkte,
+ * Geschwindigkeit und Position werden im zugehörigen {@link PlayerState}
+ * gespeichert und verändert.
+ */
 public class Player extends Entity {
     private final PlayerState playerState;
-
-
 
     public Player(PlayerState playerState) {
         super(playerState.getX(), playerState.getY(), 1f, 1.5f, playerState.getHP(), playerState.getSpeed());
@@ -42,7 +47,7 @@ public class Player extends Entity {
     }
 
     @Override
-    public void update(float deltaTime,GameMap map) {
+    public void update(float deltaTime, GameMap map) {
         SoundManager.updateFootsteps(!moveDirection.isZero());
         updateDamageFlash(deltaTime);
         move(deltaTime);

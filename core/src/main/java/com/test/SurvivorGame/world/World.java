@@ -13,6 +13,16 @@ import com.test.SurvivorGame.world.system.*;
 
 import java.util.List;
 
+/**
+ * Verwaltet den gesamten Spielzustand während einer Spielrunde.
+ * <p>
+ * Die World dient als zentrale Schnittstelle zwischen den verschiedenen
+ * Spielsystemen. Sie speichert den Spieler, alle Gegner, Projektile,
+ * Fähigkeiten und die aktuelle Karte und stellt diese den anderen
+ * Komponenten zur Verfügung.
+ * Außerdem koordiniert sie das Aktualisieren und Entfernen von Objekten
+ * sowie die Kommunikation zwischen den einzelnen Spielsystemen.
+ */
 public class World {
     private final Player player;
     private final SpawnSystem spawnSystem;

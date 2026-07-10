@@ -10,6 +10,19 @@ import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
 
+/**
+ * Abstrakte Basisklasse für alle aktiven Fähigkeiten.
+ * <p>
+ * Sie stellt Funktionen bereit, die von allen aktiven Fähigkeiten gemeinsam
+ * genutzt werden, wie beispielsweise den Zugriff auf den Spieler, die World,
+ * Statistiken und die Verwaltung der Abklingzeit (Cooldown).
+ * <p>
+ * Die eigentliche Wirkung einer Fähigkeit wird von den jeweiligen
+ * Unterklassen implementiert.
+ * <p>
+ * Die Klasse legt außerdem fest, dass alle Unterklassen dem AbilityType
+ * {@link AbilityType#ACTIVE_ABILITY} zugeordnet werden.
+ */
 public abstract class ActiveAbility extends BaseAbility {
     protected Viewport viewport;
     protected final Player player;
