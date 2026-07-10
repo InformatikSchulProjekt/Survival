@@ -839,7 +839,7 @@ public class Renderer {
             new TextureRegion(skeletonTakeDmg));
         //merz
         this.merzTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
-        merzmancer1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
+        merzmancer1 = new Texture(Gdx.files.internal("Mancer/Merzmancer.png"));
         merzanimation = new Animation<>(0.4f,
             new TextureRegion(merzmancer1));
         merzanimation.setPlayMode(Animation.PlayMode.LOOP);
@@ -1364,7 +1364,7 @@ public class Renderer {
         //Penguin
         penguin0 = new Texture(Gdx.files.internal("Penguin/Penguin.png"));
         penguin1 = new Texture(Gdx.files.internal("Penguin/Penguin1.png"));
-        penguin2 = new Texture(Gdx.files.internal("Penguin/Penguin2.png"));
+        penguin2 = new Texture(Gdx.files.internal("Penguin/penguin2.png"));
 
         penguinDown = new Animation<>(0.3f,
         new TextureRegion(penguin0)
@@ -1450,7 +1450,7 @@ public class Renderer {
         fireStorm7 = new Texture(Gdx.files.internal("Ability/FireStorm7.png"));
         fireStorm8 = new Texture(Gdx.files.internal("Ability/FireStorm8.png"));
 
-        fireStormAnimation = new Animation<>(0.5f,
+        fireStormAnimation = new Animation<>(0.2f,
             new TextureRegion(fireStorm1),
             new TextureRegion(fireStorm2),
             new TextureRegion(fireStorm3),
@@ -1741,7 +1741,7 @@ public class Renderer {
                 }
             }
             currentFrame = animation.getKeyFrame(hydromancerAnimationTime);
-        } else if (playerData.getPlayerClass().equals("Merzmancer")) {
+        } else if (playerData.getPlayerClass().equals("merzmancer")) {
             merzAnimationTime += deltaTime;
 
             animation = merzanimation;
