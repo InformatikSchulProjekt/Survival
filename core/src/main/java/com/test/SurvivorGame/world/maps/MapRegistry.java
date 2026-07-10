@@ -5,8 +5,8 @@ import java.util.List;
 public class MapRegistry {
 
     private static final List<GameMap> MAPS = List.of(
-        new TestMap(),
-        new SecondTestMap()
+        new SafeMeadows(),
+        new DarkFrontier()
     );
 
     public static List<GameMap> getMaps() {

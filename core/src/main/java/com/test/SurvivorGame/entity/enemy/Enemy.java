@@ -45,10 +45,10 @@
 
 
         public Enemy(float x, float y, World world,
-                     float size, float maxHP,
-                     float movementSpeed, float damage, float hpMultiplier,EnemyType enemyType)
+                     Vector2 size, float maxHP,
+                     float movementSpeed, float damage, float hpMultiplier,EnemyType enemyType))
         {
-            super(x, y, size, size, maxHP*hpMultiplier, movementSpeed);
+            super(x, y, size.x, size.y, maxHP*hpMultiplier, movementSpeed);
 
             maxHP *= hpMultiplier;
 
@@ -236,7 +236,6 @@
                 StatType.CHEST_CHANCE
             );
         }
-
 
         protected boolean isBoss() {
             return false;

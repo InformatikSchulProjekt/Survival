@@ -1,11 +1,12 @@
 package com.test.SurvivorGame.entity.enemy;
 
+import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.world.World;
 
 public class Boss extends Enemy {
 
-    private static final float SIZE = 5f;
+    private static final Vector2 SIZE = new Vector2(3f, 3f);
     private static final float MAX_HP = 30f;
     private static final float MOVEMENT_SPEED = 1f;
     private static final float DAMAGE = 3f;

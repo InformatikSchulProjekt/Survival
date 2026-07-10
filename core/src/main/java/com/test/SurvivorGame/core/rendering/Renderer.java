@@ -39,6 +39,7 @@ public class Renderer {
     private final LevelUpUI levelUpUI;
     private final ChestUI chestUI;
     private final SettingsUI settingsUI;
+    private final InventoryUI inventoryUI;
     private final MapFinishedUI mapFinishedUI;
 
 //    private final Texture playerTexture;
@@ -479,7 +480,10 @@ public class Renderer {
                     PauseMenuUI pauseMenu,
                     LevelUpUI levelUpUI,
                     ChestUI chestUI,
-                    SettingsUI settingsUI, MapFinishedUI mapFinishedUI) {
+                    SettingsUI settingsUI,
+                    InventoryUI inventoryUI,
+                    MapFinishedUI mapFinishedUI)
+    {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
@@ -491,6 +495,7 @@ public class Renderer {
         this.levelUpUI = levelUpUI;
         this.chestUI = chestUI;
         this.settingsUI = settingsUI;
+        this.inventoryUI = inventoryUI;
         this.mapFinishedUI = mapFinishedUI;
 
         this.normalChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
@@ -1317,6 +1322,7 @@ public class Renderer {
         levelUpUI.resize(width, height);
         chestUI.resize(width, height);
         settingsUI.resize(width, height);
+        inventoryUI.resize(width,height);
         mapFinishedUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)

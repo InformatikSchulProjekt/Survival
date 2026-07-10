@@ -107,9 +107,14 @@ public class SpawnSystem {
                 bossChestSpawned = true;
             }
 
-            if (isInfiniteMode() || gameMap.getSpawnProfile().hasNextWave(playerData.wave))
-            {
+            if (isInfiniteMode()) {
                 startNextWave();
+            }
+            else if (gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
+                startNextWave();
+            }
+            else {
+                gamePlayScreen.showGameFinishedUI();
             }
         }
 
@@ -218,9 +223,6 @@ public class SpawnSystem {
 
     private void startNextWave()
     {
-        if (playerData.wave == gameMap.getMaxWaves()) {
-            gamePlayScreen.showGameFinishedUI();
-        }
         playerData.wave++;
 
         setNewCurrentWave();
@@ -233,6 +235,23 @@ public class SpawnSystem {
 
         bossPhaseTriggered = false;
         state = WaveState.NORMAL;
+    }
+
+    public void startInfiniteMode()
+    {
+        playerData.wave = gameMap.getMaxWaves() + 1;
+
+        setNewCurrentWave();
+
+        waveTime = 0f;
+        spawnTimer = 0f;
+
+        bossChestSpawned = false;
+        bossPhaseTriggered = false;
+
+        state = WaveState.NORMAL;
+
+        world.setSurvivalTimePaused(false);
     }
 
     private void setNewCurrentWave() {

@@ -80,6 +80,11 @@ public class World {
         runTimerSystem.setSurvivalTimePaused(paused);
     }
 
+    public SpawnSystem getSpawnSystem()
+    {
+        return spawnSystem;
+    }
+
     public float getPassedTime() {
         return runTimerSystem.getPassedTime();
     }
