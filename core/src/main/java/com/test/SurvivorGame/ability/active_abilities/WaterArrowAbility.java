@@ -45,7 +45,7 @@ public class WaterArrowAbility extends ActiveAbility {
         );
 
         world.addAbility(waterArrowProjectile);
-        SoundManager.playSound("WaterArrow.wav");
+        SoundManager.playSound("WaterArrow.wav",1f);
     }
 
     public void dispose() {

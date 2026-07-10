@@ -11,12 +11,11 @@ public class SoundManager {
     private static Music footstepSound;
     private static ObjectMap<String, Sound> sounds = new ObjectMap<>();
 
-    public static void playSound(String fileName) {
+    public static void playSound(String fileName, float customVolume) {
         try {
             Sound sound = Gdx.audio.newSound(Gdx.files.internal("sounds/" + fileName));
-            sound.play();
             long id = sound.play();
-            sound.setVolume(id, volume);
+            sound.setVolume(id, customVolume);
 
 
         } catch (Exception e) {

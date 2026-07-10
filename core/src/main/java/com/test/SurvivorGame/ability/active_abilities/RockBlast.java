@@ -43,7 +43,7 @@ public class RockBlast extends ActiveAbility {
         );
 
         world.addAbility(rockBlastProjectile);
-        SoundManager.playSound("rockBlast.wav");
+        SoundManager.playSound("rockBlast.wav",1f);
     }
 
     public float getDamage() {

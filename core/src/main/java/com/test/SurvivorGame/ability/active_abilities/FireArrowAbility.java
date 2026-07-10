@@ -45,7 +45,7 @@ public class FireArrowAbility extends ActiveAbility {
         );
 
         world.addAbility(fireArrowProjectile);
-        SoundManager.playSound("fireArrow.wav");
+        SoundManager.playSound("fireArrow.wav",1f);
     }
 
     public float getDamage() {

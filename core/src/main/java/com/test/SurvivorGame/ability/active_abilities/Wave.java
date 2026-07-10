@@ -42,7 +42,7 @@ public class Wave extends ActiveAbility {
         );
 
         world.addAbility(waveProjectile);
-        SoundManager.playSound("wave.wav");
+        SoundManager.playSound("wave.wav",0.15f);
     }
 
     public void dispose() {

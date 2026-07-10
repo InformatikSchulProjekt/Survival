@@ -172,12 +172,12 @@ public final class PlayerState {
         float damageMultiplier = 1f / resistance;
         float finalDamage = amount * damageMultiplier;
         playerData.hp -= finalDamage;
-        SoundManager.playSound("damaged1.wav");
+        SoundManager.playSound("damaged1.wav",1f);
 
         System.out.println("-"+finalDamage+"hp => "+playerData.hp+"/"+playerStats.getStat(StatScope.ALL, StatType.MAX_HEALTH)+"hp"); // debug
 
         if (playerData.hp <= 0f) {
-            SoundManager.playSound("deathSound.wav");
+            SoundManager.playSound("deathSound.wav",1f);
 
             boolean playerCanRevive = playerStats.getStat(StatScope.ALL, StatType.REVIVES) > playerData.revivesUsed;
             if (!playerCanRevive) {
