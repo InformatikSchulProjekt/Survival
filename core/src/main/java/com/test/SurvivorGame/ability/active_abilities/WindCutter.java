@@ -42,7 +42,7 @@ public class WindCutter extends ActiveAbility {
         );
 
         world.addAbility(windCutterProjectile);
-        SoundManager.playSound("WindCutter.wav");
+        SoundManager.playSound("WindCutter.wav",1f);
     }
 
     public void dispose() {

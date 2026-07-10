@@ -24,7 +24,7 @@ public class SmallHeal extends ActiveAbility {
     @Override
     protected void activate() {
         playerState.heal(getHeal());
-        SoundManager.playSound("SmallHeal.wav");
+        SoundManager.playSound("SmallHeal.wav",1f);
     }
 
     public void dispose() {

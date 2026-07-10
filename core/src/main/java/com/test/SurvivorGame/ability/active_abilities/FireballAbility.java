@@ -46,7 +46,7 @@ public class FireballAbility extends ActiveAbility {
         );
 
         world.addAbility(fireball);
-        SoundManager.playSound("fireBall.wav");
+        SoundManager.playSound("fireBall.wav",1f);
     }
 
     public float getDamage() {
