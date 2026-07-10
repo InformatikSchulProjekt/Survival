@@ -1,6 +1,7 @@
 package com.test.SurvivorGame.entity.enemy;
 
 import com.badlogic.gdx.math.Vector2;
+import com.test.SurvivorGame.ability.AbilityType;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
@@ -11,6 +12,23 @@ import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 
+/**
+ * Repräsentiert einen Gegner innerhalb der Spielwelt.
+ * <p>
+ * Die Klasse verwaltet grundlegende Eigenschaften und Verhaltensweisen,
+ * die von allen Gegnertypen verwendet werden. Dazu gehören Lebenspunkte,
+ * Schaden, Bewegungsgeschwindigkeit, Angriffe, Verlangsamungseffekte,
+ * Trefferreaktionen und der Todeszustand.
+ * <p>
+ * Während der Aktualisierung bewegt sich der Gegner auf den Spieler zu.
+ * Nach seinem Tod vergibt er Erfahrungspunkte, erhöht den Zähler besiegter
+ * Gegner und kann abhängig von der Truhenchance eine Truhe erzeugen.
+ * <p>
+ * Konkrete Gegnertypen können diese Klasse erweitern und beispielsweise
+ * eigene Werte, Animationen oder Belohnungen festlegen.
+ * <p>
+ * Jeder Enemy hat außerdem einen {@link AbilityType}.
+ */
 public class Enemy extends Entity { //sollte später abstract parent von den enemies sein, grad zum Testen is aber da ;
     private float currentHP; //current verändert sich, aber ist am start max
 
