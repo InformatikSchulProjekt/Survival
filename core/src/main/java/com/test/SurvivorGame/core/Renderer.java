@@ -27,6 +27,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 
 public class Renderer {
+    private final boolean debug = false;
 
     private final Batch batch;
     private final Viewport viewport;
@@ -1548,6 +1549,7 @@ public class Renderer {
 
     public void DBcolliderRenderer() //für Debug Purpose Collider anzeigen
     {
+        if(!debug) return;
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         world.getPlayer().drawCollider(shapeRenderer);
