@@ -2180,24 +2180,10 @@ public class Renderer {
     }
 
     public void dispose() {
-//        idle2.dispose();
-//        idle3.dispose();
-//        idle4.dispose();
-//        back1.dispose();
-//        back2.dispose();
-//        front1.dispose();
-//        front2.dispose();
-//        front3.dispose();
-//        right1.dispose();
-//        right2.dispose();
-//        right3.dispose();
-//        right4.dispose();
-//        left1.dispose();
-//        left2.dispose();
-//        left3.dispose();
-//        left4.dispose();
+        merzTexture.dispose();
+        merzmancer1.dispose();
 
-
+        pyromancerTexture.dispose();
         pyromanceridle2.dispose();
         pyromanceridle3.dispose();
         pyromanceridle4.dispose();
@@ -2230,6 +2216,7 @@ public class Renderer {
         pyromancerleft8.dispose();
         pyromancerleft9.dispose();
 
+        aeromancerTexture.dispose();
         aeromanceridle2.dispose();
         aeromanceridle3.dispose();
         aeromanceridle4.dispose();
@@ -2294,6 +2281,7 @@ public class Renderer {
         aeromancerleft24.dispose();
         aeromancerleft25.dispose();
 
+        hydromancerTexture.dispose();
         hydromanceridle2.dispose();
         hydromanceridle3.dispose();
         hydromanceridle4.dispose();
@@ -2326,6 +2314,7 @@ public class Renderer {
         hydromancerleft8.dispose();
         hydromancerleft9.dispose();
 
+        geomancerTexture.dispose();
         geomanceridle2.dispose();
         geomanceridle3.dispose();
         geomanceridle4.dispose();
@@ -2357,6 +2346,8 @@ public class Renderer {
         geomancerleft7.dispose();
         geomancerleft8.dispose();
         geomancerleft9.dispose();
+
+        enemy1Texture.dispose();
         enemy1idle2.dispose();
         enemy1idle3.dispose();
         enemy1idle4.dispose();
@@ -2369,20 +2360,14 @@ public class Renderer {
         enemy1right2.dispose();
         enemy1right3.dispose();
         enemy1right4.dispose();
+        enemy1right5.dispose();
         enemy1left1.dispose();
         enemy1left2.dispose();
         enemy1left3.dispose();
         enemy1left4.dispose();
-//        bossidle2.dispose();
-//        bossidle3.dispose();
-//        bossback1.dispose();
-//        bossback2.dispose();
-//        bossfront1.dispose();
-//        bossfront2.dispose();
-//        bossright1.dispose();
-//        bossright2.dispose();
-//        bossleft1.dispose();
-//        bossleft2.dispose();
+        enemy1left5.dispose();
+
+        bossTexture.dispose();
         boss1.dispose();
         boss2.dispose();
         boss3.dispose();
@@ -2396,6 +2381,17 @@ public class Renderer {
         boss11.dispose();
         boss12.dispose();
         boss13.dispose();
+
+        watcherTexture.dispose();
+        watcher1.dispose();
+        watcher2.dispose();
+        watcher3.dispose();
+        watcher4.dispose();
+
+        penguin0.dispose();
+        penguin1.dispose();
+        penguin2.dispose();
+
         fireball0.dispose();
         fireball1.dispose();
         fireball2.dispose();
@@ -2407,20 +2403,33 @@ public class Renderer {
         fireball8.dispose();
         fireball9.dispose();
         fireball10.dispose();
+        fireball11.dispose();
+
         hud.dispose();
+
+        pauseMenu.dispose();
         levelUpUI.dispose();
         chestUI.dispose();
+        settingsUI.dispose();
+        inventoryUI.dispose();
+        abilitiesUI.dispose();
+        deathScreenUI.dispose();
+        mapFinishedUI.dispose();
+
+        normalChestTexture.dispose();
         normalChest1.dispose();
         normalChest2.dispose();
         normalChest3.dispose();
         normalChest4.dispose();
         normalChest5.dispose();
+        legendaryChestTexture.dispose();
         legendaryChest1.dispose();
         legendaryChest2.dispose();
         legendaryChest3.dispose();
         legendaryChest4.dispose();
         legendaryChest5.dispose();
-// Slime
+
+        // Slime
         slimeIdle0.dispose();
         slimeIdle1.dispose();
         slimeIdle2.dispose();
@@ -2447,7 +2456,7 @@ public class Renderer {
         slimeDie2.dispose();
         slimeDie3.dispose();
 
-// Skeleton
+        // Skeleton
         skeletonWL1.dispose();
         skeletonWL2.dispose();
         skeletonWL3.dispose();
@@ -2502,5 +2511,31 @@ public class Renderer {
         windCutter4.dispose();
 
         rockBlast0.dispose();
+
+        firearrow0.dispose();
+        firearrow1.dispose();
+        firearrow2.dispose();
+        firearrow3.dispose();
+
+        waterblast0.dispose();
+        waterblast1.dispose();
+        waterblast2.dispose();
+        waterblast3.dispose();
+        waterblast4.dispose();
+
+        earthQuake1.dispose();
+        earthQuake2.dispose();
+        earthQuake3.dispose();
+        earthQuake4.dispose();
+        earthQuake5.dispose();
+
+        fireStorm1.dispose();
+        fireStorm2.dispose();
+        fireStorm3.dispose();
+        fireStorm4.dispose();
+        fireStorm5.dispose();
+        fireStorm6.dispose();
+        fireStorm7.dispose();
+        fireStorm8.dispose();
     }
 }
