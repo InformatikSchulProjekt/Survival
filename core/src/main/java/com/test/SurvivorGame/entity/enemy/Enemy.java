@@ -198,6 +198,7 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
         }
 
         playerState.giveXP(getXPWorth());
+        playerState.getPlayerData().enemiesKilled++;
     }
 
     private boolean shouldSpawnChest() {

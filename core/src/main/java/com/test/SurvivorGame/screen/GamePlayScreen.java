@@ -11,6 +11,7 @@ import com.test.SurvivorGame.core.input.InputManager;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.rendering.Renderer;
 import com.test.SurvivorGame.core.data.DataLoader;
+import com.test.SurvivorGame.core.data.BestRunData;
 import com.test.SurvivorGame.screen.hud.*;
 import com.test.SurvivorGame.world.maps.GameMap;
 import com.test.SurvivorGame.core.data.PlayerData;
@@ -330,6 +331,15 @@ public class GamePlayScreen extends ScreenAdapter {
     public void saveSurvivalTime() {
         int survivalTime = (int) world.getSurvivalTime();
         dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
+
+        BestRunData bestRun = new BestRunData();
+        bestRun.survivalTime = survivalTime;
+        bestRun.mapName = gameMap.getDisplayName();
+        bestRun.playerClassName = playerState.getPlayerClassName();
+        bestRun.enemiesKilled = playerState.getKillCount();
+        bestRun.spellNames = playerState.getEquippedAbilityNames();
+
+        dataLoader.saveBestRunIfBetter(bestRun);
     }
 
     public void pauseGame() {

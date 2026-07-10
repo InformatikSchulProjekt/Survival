@@ -18,6 +18,8 @@ public class PlayerData {
 
     public int revivesUsed = 0;
 
+    public int enemiesKilled = 0;
+
     public String playerClass = "";
 
     public String[] abilitySlots = new String[4];
