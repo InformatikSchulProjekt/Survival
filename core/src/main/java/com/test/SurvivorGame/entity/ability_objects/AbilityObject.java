@@ -3,6 +3,7 @@ package com.test.SurvivorGame.entity.ability_objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.test.SurvivorGame.entity.GameObject;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
@@ -27,6 +28,8 @@ public abstract class AbilityObject extends GameObject{
     public abstract float getDamage(); //damage aus der ability steuerungs klasse
 
     public abstract void onHit(Enemy enemy);
+
+    public void onPlayerHit(Player player) {}
 
     @Override
     public boolean overlaps(GameObject other)
@@ -77,5 +80,10 @@ public abstract class AbilityObject extends GameObject{
     public void setRotation(float rotation)
     {
         this.rotation = rotation;
+    }
+
+    public boolean damagesPlayer()
+    {
+        return false;
     }
 }
