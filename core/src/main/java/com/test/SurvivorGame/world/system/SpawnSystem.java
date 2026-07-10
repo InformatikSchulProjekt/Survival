@@ -24,10 +24,12 @@ public class SpawnSystem {
     private float currentSpawnInterval;
 
     private boolean bossPhaseTriggered = false;
+
     private enum WaveState {
         NORMAL,
         BOSS
     }
+
     private WaveState state = WaveState.NORMAL;
 
     private final PlayerData playerData;
@@ -45,8 +47,7 @@ public class SpawnSystem {
 
     private boolean bossChestSpawned = false;
 
-    public SpawnSystem(World world, GameMap gameMap, GamePlayScreen gamePlayScreen)
-    {
+    public SpawnSystem(World world, GameMap gameMap, GamePlayScreen gamePlayScreen) {
         this.world = world;
         this.player = world.getPlayer();
         this.playerData = player.getPlayerState().getPlayerData();
@@ -56,10 +57,8 @@ public class SpawnSystem {
         setNewCurrentWave();
     }
 
-    public void update(float deltaTime, GameMap map)
-    {
-        switch (state)
-        {
+    public void update(float deltaTime, GameMap map) {
+        switch (state) {
             case NORMAL -> updateNormalWave(deltaTime);
             case BOSS -> updateBossWave();
         }
@@ -68,8 +67,7 @@ public class SpawnSystem {
 
     }
 
-    public void updateNormalWave(float deltaTime)
-    {
+    public void updateNormalWave(float deltaTime) {
         waveTime += deltaTime;
         spawnTimer += deltaTime;
 
@@ -78,22 +76,18 @@ public class SpawnSystem {
             currentWaveReference.getEndInterval(),
             waveTime / currentWaveReference.getWaveLifeTime());
 
-        if (spawnTimer >= currentSpawnInterval)
-        {
+        if (spawnTimer >= currentSpawnInterval) {
             spawnEnemy();
             spawnTimer = 0;
         }
 
-        if(endTime())
-        {
+        if (endTime()) {
             state = WaveState.BOSS;
         }
     }
 
-    private void updateBossWave()
-    {
-        if(!bossPhaseTriggered)
-        {
+    private void updateBossWave() {
+        if (!bossPhaseTriggered) {
             triggerBossPhase();
         }
 
@@ -101,27 +95,23 @@ public class SpawnSystem {
 
             world.saveGame();
 
-            if(!bossChestSpawned)
-            {
+            if (!bossChestSpawned) {
                 spawnBossChest();
                 bossChestSpawned = true;
             }
 
             if (isInfiniteMode()) {
                 startNextWave();
-            }
-            else if (gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
+            } else if (gameMap.getSpawnProfile().hasNextWave(playerData.wave)) {
                 startNextWave();
-            }
-            else {
+            } else {
                 gamePlayScreen.showGameFinishedUI();
             }
         }
 
     }
 
-    private void spawnEnemy()
-    {
+    private void spawnEnemy() {
         float distance = MathUtils.random(10f, 15f); // zufälliger radius
 
         float angle = MathUtils.random(0f, 360f); //zufällige richtung
@@ -147,8 +137,7 @@ public class SpawnSystem {
         enemies.add(EnemyFactory.createEnemy(currentWaveReference.getRandomEnemy(), x, y, world, enemyHpScale));
     }
 
-    private void spawnBoss()
-    {
+    private void spawnBoss() {
         float distance = MathUtils.random(10f, 15f); // zufälliger radius
 
         float angle = MathUtils.random(0f, 360f); //zufällige richtung
@@ -159,51 +148,41 @@ public class SpawnSystem {
         float y = player.getCenter().y +
             MathUtils.sinDeg(angle) * distance;
 
-        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(),x,y,world, enemyHpScale));
+        enemies.add(EnemyFactory.createEnemy(currentWaveReference.getBoss(), x, y, world, enemyHpScale));
 
         world.setSurvivalTimePaused(true); // timer stop
     }
 
-    private void updateEnemy(float deltaTime, GameMap map)
-    {
-        for(int i = enemies.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
+    private void updateEnemy(float deltaTime, GameMap map) {
+        for (int i = enemies.size() - 1; i >= 0; i--) // ability objects werden nacheinander durchgegangen
         {
             Enemy enemy = enemies.get(i);
-
             enemy.update(deltaTime, map);
 
-            if(enemy.isRemovable())
-            {
+            if (enemy.isRemovable()) {
                 enemies.remove(i);
             }
         }
     }
 
-    private void triggerBossPhase()
-    {
-        if(!bossPhaseTriggered && endTime())
-        {
-            for(int i = 1; i < Boss.getBossWaveCount(); i++)
-            {
+    private void triggerBossPhase() {
+        if (!bossPhaseTriggered && endTime()) {
+            for (int i = 1; i < Boss.getBossWaveCount(); i++) {
                 spawnEnemy();
             }
-            for (int i = 0; i < Boss.getBossCount(); i++)
-            {
+            for (int i = 0; i < Boss.getBossCount(); i++) {
                 spawnBoss();
             }
-
             bossPhaseTriggered = true;
         }
     }
 
 
-    private boolean endTime()
-    {
+    private boolean endTime() {
         return !(waveTime < currentWaveReference.getWaveLifeTime());
     }
 
-    private void spawnBossChest()
-    {
+    private void spawnBossChest() {
         float distance = MathUtils.random(2f, 4f);
         float angle = MathUtils.random(0f, 360f);
 
@@ -216,13 +195,11 @@ public class SpawnSystem {
         world.addDrop(new ChestObject(x, y, player, ChestType.BOSS));
     }
 
-    public ArrayList<Enemy> getEnemies()
-    {
+    public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
 
-    private void startNextWave()
-    {
+    private void startNextWave() {
         playerData.wave++;
 
         setNewCurrentWave();
@@ -237,8 +214,7 @@ public class SpawnSystem {
         state = WaveState.NORMAL;
     }
 
-    public void startInfiniteMode()
-    {
+    public void startInfiniteMode() {
         playerData.wave = gameMap.getMaxWaves() + 1;
 
         setNewCurrentWave();

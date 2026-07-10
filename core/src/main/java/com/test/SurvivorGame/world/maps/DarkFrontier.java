@@ -41,7 +41,7 @@ public class DarkFrontier extends GameMap {
 
         spawnProfile.addEnemyToWave(
             spawnProfile.getCurrentWave(1),
-            EnemyType.SLIME,
+            EnemyType.PENGUIN,
             80
         );
 
@@ -61,7 +61,7 @@ public class DarkFrontier extends GameMap {
 
         spawnProfile.addEnemyToWave(
             spawnProfile.getCurrentWave(2),
-            EnemyType.SLIME,
+            EnemyType.PENGUIN,
             70
         );
 
@@ -81,7 +81,7 @@ public class DarkFrontier extends GameMap {
 
         spawnProfile.addEnemyToWave(
             spawnProfile.getCurrentWave(3),
-            EnemyType.SLIME,
+            EnemyType.PENGUIN,
             60
         );
 
@@ -101,7 +101,7 @@ public class DarkFrontier extends GameMap {
 
         spawnProfile.addEnemyToWave(
             spawnProfile.getCurrentWave(4),
-            EnemyType.SLIME,
+            EnemyType.PENGUIN,
             50
         );
 

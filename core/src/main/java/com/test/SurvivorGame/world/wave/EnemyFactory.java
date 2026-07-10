@@ -25,6 +25,9 @@ public class EnemyFactory {
             case WATCHER:
                 return new WatcherBoss(x, y, world, hpMulti);
 
+            case PENGUIN:
+                return new Penguin(x, y, world, hpMulti);
+
             default:
                 throw new IllegalArgumentException("Unknown EnemyType: " + enemyType);
         }
