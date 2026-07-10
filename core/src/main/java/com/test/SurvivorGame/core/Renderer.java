@@ -553,6 +553,28 @@ public class Renderer {
     private final Animation<TextureRegion> legendaryChestOpeningAnimation;
     private final Animation<TextureRegion> legendaryChestClosedAnimation;
 
+    /**
+     * Konstruktor des Renderers.
+     * Erstellt die Kamera-Viewport, speichert alle übergebenen UI-Screens/Referenzen
+     * und lädt SÄMTLICHE Texturen sowie Animationen (Spielerklassen, Gegner, Bosse,
+     * Fähigkeiten/Projektile, Truhen) einmalig beim Start des Spiels.
+     * Wird nur einmal aufgerufen, bevor das eigentliche Rendering beginnt.
+     *
+     * @param batch          SpriteBatch, mit dem alle Texturen gezeichnet werden
+     * @param screenWidth    Breite des sichtbaren Kamera-Ausschnitts (Viewport)
+     * @param screenHeight   Höhe des sichtbaren Kamera-Ausschnitts (Viewport)
+     * @param world          Referenz auf die Spielwelt (Spieler, Gegner, Objekte)
+     * @param shapeRenderer  wird nur für das Debug-Zeichnen der Collider verwendet
+     * @param playerData     enthält u.a. die aktuell gewählte Spielerklasse
+     * @param pauseMenu      UI für das Pausenmenü
+     * @param levelUpUI      UI für den Level-Up-Bildschirm
+     * @param chestUI        UI für das Öffnen von Truhen
+     * @param settingsUI     UI für die Einstellungen
+     * @param inventoryUI    UI für das Inventar
+     * @param abilitiesUI    UI für die Fähigkeitenübersicht
+     * @param deathScreenUI  UI für den Bildschirm bei Spielertod
+     * @param mapFinishedUI  UI, wenn eine Karte/ein Level abgeschlossen wurde
+     */
     public Renderer(Batch batch,
                     float screenWidth,
                     float screenHeight,
@@ -1537,6 +1559,14 @@ public class Renderer {
         waterBlastAnimation.setPlayMode(Animation.PlayMode.NORMAL);
     }
 
+    /**
+     * Wird von LibGDX automatisch aufgerufen, wenn sich die Fenster-/Bildschirmgröße ändert.
+     * Passt die Kamera-Viewport an die neue Größe an und reicht die neue Größe
+     * an alle UI-Elemente (HUD, Menüs) weiter, damit diese sich ebenfalls anpassen.
+     *
+     * @param width  neue Breite des Fensters in Pixeln
+     * @param height neue Höhe des Fensters in Pixeln
+     */
     public void resize(int width, int height) {
         viewport.update(width, height, true);
         hud.resize(width, height); //hier etwas für Hud screen dazu
@@ -1549,6 +1579,23 @@ public class Renderer {
         deathScreenUI.resize(width, height);
         mapFinishedUI.resize(width, height);
     }
+    /**
+     * Zentrale Render-Methode, wird jeden Frame (also sehr oft pro Sekunde) aufgerufen.
+     * Ablauf:
+     *  1. Bildschirm leeren (blaue Hintergrundfarbe)
+     *  2. Kamera auf die Spielerposition zentrieren
+     *  3. Karte, Gegner (inkl. Bosse), fallengelassene Objekte/Truhen,
+     *     Fähigkeits-Projektile und den Spieler selbst zeichnen
+     *  4. Debug-Collider zeichnen (nur wenn "debug" true ist)
+     *  5. HUD zeichnen
+     *  6. je nach aktuellem GameState (pausiert, Level-Up, Truhe öffnen)
+     *     das passende Overlay-UI darüber zeichnen
+     *
+     * @param map        die aktuell aktive Karte, die im Hintergrund gekachelt gezeichnet wird
+     * @param world      die Spielwelt mit Spieler, Gegnern, Objekten und Fähigkeiten
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame in Sekunden (für Animationen)
+     * @param gameState  aktueller Spielzustand (z.B. PAUSED, LEVEL_UP, CHEST_OPENING)
+     */
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
     {
 
@@ -1649,6 +1696,13 @@ public class Renderer {
 
     }
 
+    /**
+     * Debug-Methode: zeichnet die Umriss-Collider (Hitboxen) von Spieler, Gegnern
+     * und Fähigkeits-Objekten als Linien auf den Bildschirm.
+     * Wird nur ausgeführt, wenn das Feld "debug" auf true gesetzt ist,
+     * ansonsten bricht die Methode sofort ab (return).
+     * Dient nur der Entwicklung/Fehlersuche und hat keinen Einfluss auf das eigentliche Gameplay.
+     */
     public void DBcolliderRenderer() //für Debug Purpose Collider anzeigen
     {
         if(!debug) return;
@@ -1667,6 +1721,19 @@ public class Renderer {
         shapeRenderer.end();
     }
 
+    /**
+     * Zeichnet den Spieler-Charakter auf den Bildschirm.
+     * Wählt zunächst anhand der gewählten Spielerklasse (pyromancer, aeromancer,
+     * hydromancer, merzmancer oder geomancer) den passenden Animations-Satz aus,
+     * und innerhalb dieses Satzes wiederum anhand von Bewegung und Blickrichtung
+     * (UP/DOWN/LEFT/RIGHT) die konkrete Animation (idle, front, back, left, right).
+     * Zusätzlich wird eine rote Einfärbung (Flash) angezeigt, wenn der Spieler
+     * gerade Schaden nimmt, sowie ein visueller Effekt während eines Ausweich-Manövers (Dodge).
+     *
+     * @param player      das Spieler-Objekt mit Position, Größe und Bewegungsstatus
+     * @param playerState  aktueller Zustand des Spielers (z.B. ob der Dodge-Effekt aktiv ist)
+     * @param deltaTime   vergangene Zeit seit dem letzten Frame, treibt die Animation voran
+     */
     private void renderPlayer(Player player, PlayerState playerState, float deltaTime) {
 
         playerAnimationTime += deltaTime;
@@ -1792,6 +1859,14 @@ public class Renderer {
         batch.setColor(oldColor);
     }
 
+    /**
+     * Zeichnet einen normalen Gegner (kein Boss) auf den Bildschirm.
+     * Wählt anhand des Gegner-Typs (SLIME, SKELETON, PENGUIN) und dessen aktuellem
+     * Zustand (tot, wird gerade getroffen, greift an, bewegt sich) die passende
+     * Animation aus und zeichnet den aktuellen Frame an der Position des Gegners.
+     *
+     * @param enemy der zu zeichnende Gegner
+     */
     private void renderEnemy(Enemy enemy) {
 
         Animation<TextureRegion> animation = null;
@@ -1862,6 +1937,14 @@ public class Renderer {
             enemy.getHeight()
         );
     }
+    /**
+     * Zeichnet den Boss-Gegner "Agis" auf den Bildschirm.
+     * Verwendet aktuell immer dieselbe (einzige) Boss-Animation,
+     * unabhängig von Bewegung oder Blickrichtung (der auskommentierte Code zeigt,
+     * dass ursprünglich eine richtungsabhängige Animation geplant war).
+     *
+     * @param agis der zu zeichnende Boss
+     */
     private void renderBoss(Agis agis) {
 
         Animation<TextureRegion> animation;
@@ -1897,6 +1980,13 @@ public class Renderer {
             agis.getHeight()
         );
     }
+    /**
+     * Zeichnet den Boss-Gegner "WatcherBoss" auf den Bildschirm.
+     * Wählt je nach Bewegungsstatus und Blickrichtung (UP/DOWN/LEFT/RIGHT)
+     * die passende Animation aus (front, back, left, right).
+     *
+     * @param watcherBoss der zu zeichnende WatcherBoss
+     */
     private void renderWatcher(WatcherBoss watcherBoss) {
 
         Animation<TextureRegion> animation;
@@ -1933,6 +2023,14 @@ public class Renderer {
         );
     }
 
+    /**
+     * Zeichnet eine Truhe (normal oder legendär) auf den Bildschirm.
+     * Wählt zunächst anhand des Truhen-Typs (NORMAL/LEGENDARY) den passenden
+     * Animations-Satz und danach anhand des aktuellen Zustands der Truhe
+     * (CLOSED, OPENING, OPENED) die konkrete Animation aus.
+     *
+     * @param chest die zu zeichnende Truhe
+     */
     private void renderChest(ChestObject chest) {
 
         Animation<TextureRegion> animation = null;
@@ -1973,6 +2071,15 @@ public class Renderer {
             chest.getHeight()
         );
     }
+    /**
+     * Zeichnet ein Wasserpfeil-Projektil (WaterArrow) auf den Bildschirm.
+     * Das Sprite wird um seinen eigenen Mittelpunkt gedreht, damit es
+     * in die Flugrichtung des Projektils zeigt.
+     *
+     * @param waterArrow das zu zeichnende Wasserpfeil-Projektil
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt,
+     *                   die Animation läuft über die eigene Zeit des Projektils)
+     */
     private void renderWaterArrow(WaterArrowProjectile waterArrow, float deltaTime) {
         TextureRegion currentFrame = waterArrowAnimation.getKeyFrame(waterArrow.getAnimationTime());
 
@@ -1990,6 +2097,13 @@ public class Renderer {
         );
     }
 
+    /**
+     * Zeichnet ein Wellen-Projektil (Wave) auf den Bildschirm, gedreht in
+     * Richtung seiner Flugbahn.
+     *
+     * @param wave       das zu zeichnende Wellen-Projektil
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderWave(WaveProjectile wave, float deltaTime) {
         TextureRegion currentFrame = waveAnimation.getKeyFrame(wave.getAnimationTime());
 
@@ -2007,6 +2121,13 @@ public class Renderer {
         );
     }
 
+    /**
+     * Zeichnet ein Windkugel-Projektil (WindBullet) auf den Bildschirm, gedreht
+     * in Richtung seiner Flugbahn.
+     *
+     * @param windBullet das zu zeichnende Windkugel-Projektil
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderWindBullet(WindBulletProjectile windBullet, float deltaTime) {
         TextureRegion currentFrame = windBulletAnimation.getKeyFrame(windBullet.getAnimationTime());
 
@@ -2024,6 +2145,13 @@ public class Renderer {
         );
     }
 
+    /**
+     * Zeichnet ein Windschneide-Projektil (WindCutter) auf den Bildschirm,
+     * gedreht in Richtung seiner Flugbahn.
+     *
+     * @param windCutter das zu zeichnende WindCutter-Projektil
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderWindCutter(WindCutterProjectile windCutter, float deltaTime) {
         TextureRegion currentFrame = windCutterAnimation.getKeyFrame(windCutter.getAnimationTime());
 
@@ -2040,6 +2168,12 @@ public class Renderer {
             windCutter.getRotation()
         );
     }
+    /**
+     * Zeichnet den Flächen-Effekt "FireStorm" (Feuersturm-Fähigkeit) auf den Bildschirm.
+     *
+     * @param fireStorm  das zu zeichnende FireStorm-Fähigkeitsobjekt
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void fireStorm(FireStorm fireStorm, float deltaTime) {
         TextureRegion currentFrame = fireStormAnimation.getKeyFrame(fireStorm.getAnimationTime());
 
@@ -2057,6 +2191,12 @@ public class Renderer {
         );
     }
 
+    /**
+     * Zeichnet den Flächen-Effekt "Earthquake" (Erdbeben-Fähigkeit) auf den Bildschirm.
+     *
+     * @param earthquake das zu zeichnende Earthquake-Fähigkeitsobjekt
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void eartQuake(Earthquake earthquake, float deltaTime) {
         TextureRegion currentFrame = earthQuakeAnimation.getKeyFrame(earthquake.getAnimationTime());
 
@@ -2074,6 +2214,14 @@ public class Renderer {
         );
     }
 
+    /**
+     * Zeichnet den Effekt "RockBlast" (Gesteins-Explosion) auf den Bildschirm.
+     * Im Gegensatz zu den anderen Projektilen wird hier ohne Rotation
+     * und ohne Ursprungsverschiebung gezeichnet.
+     *
+     * @param rockBlast  das zu zeichnende RockBlast-Objekt
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderRockBlast(RockBlastProjectile rockBlast, float deltaTime) {
         TextureRegion currentFrame = rockBlastAnimation.getKeyFrame(rockBlast.getAnimationTime());
 
@@ -2085,6 +2233,15 @@ public class Renderer {
             rockBlast.getHeight()
         );
     }
+    /**
+     * Zeichnet ein Feuerball-Projektil (Fireball) auf den Bildschirm.
+     * Unterscheidet zwei Phasen: solange der Feuerball noch fliegt, wird die
+     * Flug-Animation gezeigt; sobald er explodiert ist (hasExploded() == true),
+     * wird stattdessen die Explosions-Animation abgespielt.
+     *
+     * @param fireball   das zu zeichnende Fireball-Objekt
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderFireball(Fireball fireball, float deltaTime) {
         Animation<TextureRegion> animation;
 
@@ -2109,6 +2266,13 @@ public class Renderer {
             fireball.getRotation()
         );
     }
+    /**
+     * Zeichnet ein Feuerpfeil-Projektil (FireArrow) auf den Bildschirm,
+     * gedreht in Richtung seiner Flugbahn.
+     *
+     * @param fireArrow  das zu zeichnende Feuerpfeil-Projektil
+     * @param deltaTime  vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderFireArrow(FireArrowProjectile fireArrow, float deltaTime) {
         Animation<TextureRegion> animation;
 
@@ -2129,6 +2293,13 @@ public class Renderer {
             fireArrow.getRotation()
         );
     }
+    /**
+     * Zeichnet ein Wasserexplosions-Projektil (WaterBlast) auf den Bildschirm,
+     * gedreht in Richtung seiner Flugbahn.
+     *
+     * @param waterBlastProjectile das zu zeichnende WaterBlast-Projektil
+     * @param deltaTime            vergangene Zeit seit dem letzten Frame (aktuell ungenutzt)
+     */
     private void renderWaterBlast(WaterBlastProjectile waterBlastProjectile, float deltaTime) {
         Animation<TextureRegion> animation;
 
@@ -2149,6 +2320,16 @@ public class Renderer {
             waterBlastProjectile.getRotation()
         );
     }
+    /**
+     * Zeichnet die Hintergrund-Karte als sich wiederholende (gekachelte) Textur.
+     * Berechnet zunächst, welcher Kachel-Bereich (startX/endX, startY/endY) überhaupt
+     * innerhalb des sichtbaren Kamera-Ausschnitts liegt, und zeichnet dann nur diese
+     * sichtbaren Kacheln – das spart Rechenleistung, da nicht die gesamte Karte,
+     * sondern nur der sichtbare Ausschnitt gezeichnet wird.
+     *
+     * @param map die zu zeichnende Karte (liefert Kachelgröße und Textur)
+     * @param cam die aktuelle Kamera, anhand derer der sichtbare Bereich bestimmt wird
+     */
     private void renderMap(GameMap map, OrthographicCamera cam) {
         float tileWidth = map.getWorldWidth();
         float tileHeight = map.getWorldHeight();
@@ -2175,10 +2356,24 @@ public class Renderer {
         }
     }
 
+    /**
+     * Gibt die aktuelle Kamera-Viewport des Renderers zurück.
+     * Wird z.B. von anderen Klassen benötigt, um Bildschirm- in Weltkoordinaten
+     * umzurechnen (etwa bei Mausklicks/Touch-Eingaben).
+     *
+     * @return die vom Renderer verwendete Viewport
+     */
     public Viewport getViewport() {
         return viewport;
     }
 
+    /**
+     * Gibt sämtliche im Konstruktor geladenen Texturen sowie alle UI-Screens
+     * wieder frei (dispose). Muss aufgerufen werden, wenn der Renderer nicht
+     * mehr gebraucht wird (z.B. beim Beenden des Spiels oder Wechsel des Screens),
+     * da LibGDX-Texturen direkten Grafikspeicher belegen, der sonst nicht
+     * automatisch vom Garbage Collector freigegeben wird.
+     */
     public void dispose() {
         merzTexture.dispose();
         merzmancer1.dispose();
