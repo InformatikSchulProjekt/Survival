@@ -5,6 +5,5 @@ package com.test.SurvivorGame.screen;public enum GameState {
     CHEST_OPENING,
     SETTINGS,
     MAP_FINISHED,
-    INVENTORY,
-    ABILITIES
+    INVENTORY
 }
