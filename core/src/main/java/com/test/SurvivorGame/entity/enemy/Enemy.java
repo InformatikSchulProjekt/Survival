@@ -133,12 +133,11 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
         }
     }
 
-        public void takeDamage(float damage)
-        {
-            if (dead) return;
+    public void takeDamage(float damage) {
+        if (dead) return;
 
-            damage = calculateDamageTaken(damage);
-                currentHP -= damage;
+        damage = calculateDamageTaken(damage);
+        currentHP -= damage;
 
         animationTime = 0f;
         startDamageFlash();

@@ -3,7 +3,7 @@ package com.test.SurvivorGame.entity.enemy;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.world.World;
 
-public class WatcherBoss extends Enemy{
+public class WatcherBoss extends Enemy {
 
     private static final Vector2 SIZE = new Vector2(2.5f, 3f);
     private static final float MAX_HP = 250f;
@@ -12,8 +12,9 @@ public class WatcherBoss extends Enemy{
 
     private static int bossCount = 1;
     private static int bossWaveCount = 0;
+
     public WatcherBoss(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier,EnemyType.WATCHERBOSS);
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.WATCHERBOSS);
     }
 
     public static int getBossCount() {

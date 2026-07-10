@@ -3,15 +3,15 @@ package com.test.SurvivorGame.entity.enemy;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.world.World;
 
-public class Slime extends Enemy{
+public class Slime extends Enemy {
 
-    private static final Vector2 SIZE = new Vector2(1,1);
+    private static final Vector2 SIZE = new Vector2(1, 1);
     private static final float MAX_HP = 2f;
     private static final float MOVEMENT_SPEED = 1.5f;
     private static final float DAMAGE = 0.7f;
 
 
     public Slime(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier,EnemyType.SLIME);
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.SLIME);
     }
 }

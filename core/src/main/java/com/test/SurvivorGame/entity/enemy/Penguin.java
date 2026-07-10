@@ -4,15 +4,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
 
-public class Skeleton extends Enemy {
+public class Penguin extends Enemy {
 
     private static final Vector2 SIZE = new Vector2(1f, 1.5f);
-    private static final float MAX_HP = 2.5f;
-    private static final float MOVEMENT_SPEED = 2.5f;
-    private static final float DAMAGE = 1.3f;
+    private static final float MAX_HP = 1f;
+    private static final float MOVEMENT_SPEED = 5f;
+    private static final float DAMAGE = 0.67f;
 
 
-    public Skeleton(float x, float y, World world, float hpMultiplier) {
+    public Penguin(float x, float y, World world, float hpMultiplier) {
         super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.SKELETON);
     }
 }
