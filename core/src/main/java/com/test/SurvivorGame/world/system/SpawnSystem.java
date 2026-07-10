@@ -94,7 +94,6 @@ public class SpawnSystem {
         if (enemies.isEmpty()) {
 
             world.saveGame();
-
             if (!bossChestSpawned) {
                 spawnBossChest();
                 bossChestSpawned = true;
@@ -107,8 +106,8 @@ public class SpawnSystem {
             } else {
                 gamePlayScreen.showGameFinishedUI();
             }
+            world.saveGame();
         }
-
     }
 
     private void spawnEnemy() {
