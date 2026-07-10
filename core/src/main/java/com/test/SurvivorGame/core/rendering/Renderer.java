@@ -326,7 +326,7 @@ public class Renderer {
     private final Animation<TextureRegion> watcherRightAnimation;
 
 
-
+    private final AbilitiesUI abilitiesUI;
 
 
     //    private final Texture bossidle2;
@@ -524,12 +524,14 @@ public class Renderer {
                     ChestUI chestUI,
                     SettingsUI settingsUI,
                     InventoryUI inventoryUI,
+                    AbilitiesUI abilitiesUI,
+
                     MapFinishedUI mapFinishedUI)
     {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
         this.playerData = playerData;
-
+        this.abilitiesUI = abilitiesUI;
         this.world = world;
         this.shapeRenderer = shapeRenderer; // für debug der collider
         this.hud = new HUDRenderer(batch, shapeRenderer);
@@ -1441,6 +1443,7 @@ public class Renderer {
         chestUI.resize(width, height);
         settingsUI.resize(width, height);
         inventoryUI.resize(width,height);
+        abilitiesUI.resize(width, height);
         mapFinishedUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
