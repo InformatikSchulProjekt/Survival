@@ -7,7 +7,12 @@ import java.util.ArrayList;
 
 public class InfiniteWaveGenerator {
 
-
+    /**
+     * Erstellt aus der letzten regulären Wave eine neue Endlos-Wave.
+     * Dabei werden alle normalen Gegner übernommen, ein zufälliger Boss
+     * gewählt und die Chance auf zufällige Boss-Spawns mit jeder
+     * Endlos-Wave erhöht.
+     */
     public static Wave generate(GameMap gameMap, int infiniteWaveCount) {
 
         ArrayList<EnemyType> bossTypes = gameMap.getMapsettings().getBossTypes();

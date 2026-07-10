@@ -97,6 +97,7 @@ public class GamePlayScreen extends ScreenAdapter {
         setupDeathScreenUI();
     }
 
+    // Verknüpft alle Aktionen des Pause-Menüs mit der entsprechenden Spiellogik.
     private void setupPauseMenu() {
         pauseMenu.setResumeListener(new Runnable() {
             @Override
@@ -152,6 +153,8 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
+    // Initialisiert das Level-Up-Menü und verarbeitet die Auswahl
+    // der neuen Fähigkeit des Spielers.
     private void setupLevelUpUI() {
         levelUpUI.setAbilityRegistry(abilityService.getAbilityRegistry());
         levelUpUI.setPlayerState(playerState);
@@ -172,6 +175,8 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
+    // Initialisiert das Truhen-Menü und verarbeitet
+    // die Auswahl des Belohnungsgegenstands.
     private void setupChestUI() {
         chestUI.setOptionChosenListener(new IntConsumer() {
             @Override
@@ -184,6 +189,8 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
+    // Verknüpft die Einstellungen mit ihren Aktionen,
+    // z. B. das Zurückkehren oder Zurücksetzen der Tastenbelegung.
     private void setupSettingsUI() {
         settingsUI.setBackListener(new Runnable() {
             @Override
@@ -201,6 +208,8 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
+    // Initialisiert das Inventar-Menü und ermöglicht
+    // die Rückkehr zum Pause-Menü.
     private void setupInventoryUI(){
 
         inventoryUI.setBackListener(new Runnable() {
@@ -219,6 +228,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
+    // Initialisiert das Fähigkeiten-Menü und ermöglicht
+    // die Rückkehr zum Pause-Menü.
     private void setupAbilitiesUI() {
 
         abilitiesUI.setBackListener(new Runnable() {
@@ -237,6 +248,8 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
+    // Initialisiert den Todesbildschirm und verarbeitet
+    // Neustart oder Rückkehr ins Hauptmenü.
     private void setupDeathScreenUI() {
 
         deathScreenUI.setRestartListener(new Runnable() {
@@ -255,6 +268,9 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
+    // Initialisiert das Menü nach Abschluss einer Map.
+    // Der Spieler kann zur Map-Auswahl zurückkehren
+    // oder den Infinite Mode starten.
     private void setupMapFinishedUI() {
         mapFinishedUI.setBackToMenuListener(new Runnable() {
             @Override
@@ -274,7 +290,8 @@ public class GamePlayScreen extends ScreenAdapter {
         });
     }
 
-    // Wird gecalled wenn game vorbei
+    // Beendet den aktuellen Spielstand und speichert
+    // alle relevanten Daten des abgeschlossenen Runs.
     private void gameDone(boolean restart) {
         state = GameState.PAUSED;
 
@@ -291,6 +308,8 @@ public class GamePlayScreen extends ScreenAdapter {
         main.gameOver(restart, map);
     }
 
+    // Erstellt einen neuen Spielstand mit derselben Klasse,
+    // setzt aber alle Fortschritte des aktuellen Runs zurück.
     private void restartWithSameClass() {
         String playerClass = playerState.getPlayerData().playerClass;
 
@@ -300,13 +319,15 @@ public class GamePlayScreen extends ScreenAdapter {
         dataLoader.savePlayerData(map, freshPlayerData);
     }
 
+    // Kehrt ohne Speichern des aktuellen Fortschritts
+    // zurück ins Hauptmenü.
     private void backToMenuWithoutSaving() {
         state = GameState.PAUSED;
 
         main.setScreen(new TitleScreen(main, dataLoader));
     }
 
-    // wird gecalled wenn Spiel verloren
+    // Beendet den aktuellen Run und zeigt den Todesbildschirm an.
     public void gameOver(boolean restart) {
         SoundManager.playSound("gameOver.wav",1f);
         showDeathScreen();
@@ -316,6 +337,8 @@ public class GamePlayScreen extends ScreenAdapter {
         gameOver(false);
     }
 
+    // Zeigt den Todesbildschirm an und verhindert,
+    // dass sich der Spieler weiterhin bewegen kann.
     private void showDeathScreen() {
         state = GameState.DEAD;
 
@@ -328,6 +351,8 @@ public class GamePlayScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(deathScreenUI.getStage());
     }
 
+    // Speichert die Überlebenszeit und aktualisiert
+    // bei Bedarf den persönlichen Bestwert.
     public void saveSurvivalTime() {
         int survivalTime = (int) world.getSurvivalTime();
         dataLoader.saveSurvivalTimeIfBest(map, survivalTime);
@@ -346,6 +371,9 @@ public class GamePlayScreen extends ScreenAdapter {
         state = GameState.PAUSED;
     }
 
+    // Zeigt nach Abschluss aller normalen Waves
+    // das Map-Abschluss-Menü an.
+    // möglichkeit zu infinite-mode
     public void showGameFinishedUI() {
         System.out.println("SHOW GAME FINISHED UI");
         state = GameState.MAP_FINISHED;
@@ -358,6 +386,8 @@ public class GamePlayScreen extends ScreenAdapter {
         renderer.resize(width, height);   // passt sich der Bildschirmgröße an
     }
 
+    // Verarbeitet die Eingaben des Spielers,
+    // sofern sich das Spiel nicht in einem Menü befindet.
     private void processInput()
     {
         if (state == GameState.LEVEL_UP
@@ -380,6 +410,8 @@ public class GamePlayScreen extends ScreenAdapter {
         }
     }
 
+    // Aktualisiert den Spielzustand, verarbeitet Menüs
+    // und rendert anschließend die aktuelle Szene.
     @Override
     public void render(float deltaTime)
     {
@@ -454,6 +486,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
+    // Aktualisiert die Spiellogik des aktuellen Frames welche in world verwaltet wird.
     private void updateLogic(float deltaTime)
     {
         world.update(deltaTime);

@@ -39,7 +39,7 @@ public abstract class GameMap {
         this.worldHeight = worldHeight;
     }
 
-    // ---------- Map Informationen ----------
+    //Map Informationen ---------
 
     public String getId() {
         return id;
@@ -60,7 +60,7 @@ public abstract class GameMap {
 
     public abstract Wave getFinalWave();
 
-    // ---------- Renderer ----------
+    //Renderer --------
 
     public Texture getTexture() {
         return texture;
@@ -74,13 +74,13 @@ public abstract class GameMap {
         return worldHeight;
     }
 
-    // ---------- Gameplay ----------
+    // Gameplay ---------
 
     public SpawnProfile getSpawnProfile() {
         return spawnProfile;
     }
 
-    // ---------- Cleanup ----------
+    //Cleanup -------
 
     public void dispose() {
         texture.dispose();
