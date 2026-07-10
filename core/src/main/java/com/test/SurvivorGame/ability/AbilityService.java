@@ -30,7 +30,6 @@ public class AbilityService {
         }
 
         int currentAmount = playerState.getPlayerData().abilities.getOrDefault(abilityID, 0);
-        //System.out.println("CURRENT AMOUNT: "+currentAmount+" VON "+abilityID); // debug
 
         if (currentAmount >= ability.getMaxAmount()) {
             throw new IllegalStateException("Ability already maxed");
@@ -66,7 +65,6 @@ public class AbilityService {
 
     }
 
-    // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
     private void registerAbilities() {
         for (Map.Entry<String, Integer> entry : playerState.getPlayerData().abilities.entrySet()) {
             String abilityID = entry.getKey();
@@ -103,9 +101,6 @@ public class AbilityService {
         return this.abilityRegistry;
     }
 
-    // Alle bereits freigeschalteten Active Abilities (unabhängig davon, ob sie
-    // gerade in der Ability-Leiste stecken oder nicht). Wird von der AbilitiesUI benutzt,
-    // um die Auswahl-Liste zu befüllen.
     public List<String> getUnlockedActiveAbilityIds() {
         List<String> result = new ArrayList<>();
 
@@ -120,7 +115,6 @@ public class AbilityService {
         return result;
     }
 
-    // Gibt den Slot-Index zurück, in dem die Ability aktuell aktiv ist, oder -1 wenn sie in keinem Slot ist.
     public int getSlotIndexOfAbility(String abilityId) {
         String[] abilitySlots = playerState.getPlayerData().abilitySlots;
 
@@ -133,10 +127,6 @@ public class AbilityService {
         return -1;
     }
 
-    // Packt eine bereits freigeschaltete Ability in einen der 4 Slots der Ability-Leiste.
-    // Steckt die Ability schon in einem anderen Slot, werden die beiden Slots einfach vertauscht.
-    // War der Ziel-Slot vorher belegt, wird die alte Ability dort "unequipped"
-    // (bleibt freigeschaltet, ist aber nicht mehr aktiv in der Leiste).
     public void equipAbilityToSlot(int slotIndex, String abilityId) {
         String[] abilitySlots = playerState.getPlayerData().abilitySlots;
 
