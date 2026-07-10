@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.ability_objects.Earthquake;
+import com.test.SurvivorGame.entity.ability_objects.FireStorm;
 import com.test.SurvivorGame.entity.ability_objects.projectile.*;
 import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
@@ -491,6 +493,28 @@ public class Renderer {
     private final Texture waterblast3;
     private final Texture waterblast4;
     private final Animation<TextureRegion> waterBlastAnimation;
+    //earthQuake
+    private final Texture earthQuake1;
+    private final Texture earthQuake2;
+    private final Texture earthQuake3;
+    private final Texture earthQuake4;
+    private final Texture earthQuake5;
+    private final Animation<TextureRegion> earthQuakeAnimation;
+
+
+    //fireStorm
+    private final Texture fireStorm1;
+    private final Texture fireStorm2;
+    private final Texture fireStorm3;
+    private final Texture fireStorm4;
+    private final Texture fireStorm5;
+    private final Texture fireStorm6;
+    private final Texture fireStorm7;
+    private final Texture fireStorm8;
+
+    private final Animation<TextureRegion> fireStormAnimation;
+
+
 
     //Chest
     private final Texture normalChestTexture;
@@ -1360,6 +1384,42 @@ public class Renderer {
             new TextureRegion(waterArrow3),
             new TextureRegion(waterArrow4));
         waterArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+        //Ab hier earthQuake
+        earthQuake1 = new Texture(Gdx.files.internal("Ability/waterArrow1.png"));
+        earthQuake2 = new Texture(Gdx.files.internal("Ability/waterArrow2.png"));
+        earthQuake3 = new Texture(Gdx.files.internal("Ability/waterArrow3.png"));
+        earthQuake4 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        earthQuake5 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+
+        earthQuakeAnimation = new Animation<>(0.08f,
+            new TextureRegion(earthQuake1),
+            new TextureRegion(earthQuake2),
+            new TextureRegion(earthQuake3),
+            new TextureRegion(earthQuake4),
+            new TextureRegion(earthQuake5));
+        earthQuakeAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
+        //ab hier fireStorm
+        fireStorm1 = new Texture(Gdx.files.internal("Ability/waterArrow1.png"));
+        fireStorm2 = new Texture(Gdx.files.internal("Ability/waterArrow2.png"));
+        fireStorm3 = new Texture(Gdx.files.internal("Ability/waterArrow3.png"));
+        fireStorm4 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        fireStorm5 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        fireStorm6 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        fireStorm7 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+        fireStorm8 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
+
+        fireStormAnimation = new Animation<>(0.08f,
+            new TextureRegion(fireStorm1),
+            new TextureRegion(fireStorm2),
+            new TextureRegion(fireStorm3),
+            new TextureRegion(fireStorm4),
+            new TextureRegion(fireStorm5),
+            new TextureRegion(fireStorm6),
+            new TextureRegion(fireStorm7),
+            new TextureRegion(fireStorm8));
+        fireStormAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+
 
         // ab hier wave
         wave1 = new Texture(Gdx.files.internal("Ability/wave1.png"));
@@ -1917,6 +1977,39 @@ public class Renderer {
             1,
             1,
             windCutter.getRotation()
+        );
+    }
+    private void fireStorm(FireStorm fireStorm, float deltaTime) {
+        TextureRegion currentFrame = fireStormAnimation.getKeyFrame(fireStorm.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            fireStorm.getX(),
+            fireStorm.getY(),
+            fireStorm.getWidth() / 2,
+            fireStorm.getHeight() / 2,
+            fireStorm.getWidth(),
+            fireStorm.getHeight(),
+            1,
+            1,
+            fireStorm.getRotation()
+        );
+    }
+
+    private void eartQuake(Earthquake earthquake, float deltaTime) {
+        TextureRegion currentFrame = fireStormAnimation.getKeyFrame(earthquake.getAnimationTime());
+
+        batch.draw(
+            currentFrame,
+            earthquake.getX(),
+            earthquake.getY(),
+            earthquake.getWidth() / 2,
+            earthquake.getHeight() / 2,
+            earthquake.getWidth(),
+            earthquake.getHeight(),
+            1,
+            1,
+            earthquake.getRotation()
         );
     }
 

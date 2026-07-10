@@ -14,6 +14,8 @@ public class FireStorm extends AbilityObject {
 
     private float deltaDuration;
     private float duration;
+    private float animationTime = 0f;
+
 
     private float elapsedTime = 0;
     float startSize, endSize;
@@ -94,5 +96,9 @@ public class FireStorm extends AbilityObject {
         collider.setWidth(size);
         collider.setHeight(size);
     }
+    public float getAnimationTime() {
+        return animationTime;
+    }
+
 
 }
