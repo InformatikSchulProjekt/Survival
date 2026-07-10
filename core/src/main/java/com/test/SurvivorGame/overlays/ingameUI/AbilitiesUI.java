@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.screen.hud;
+package com.test.SurvivorGame.overlays.ingameUI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

@@ -39,7 +39,7 @@ public class TitleScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
 
-                main.setScreen(new MapSelection(main, dataLoader));
+                main.setScreen(new MapSelectionScreen(main, dataLoader));
 
                 dispose();
             }
