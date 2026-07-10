@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.entity.abilityObjects.projectile;
+package com.test.SurvivorGame.entity.ability_objects.projectile;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;

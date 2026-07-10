@@ -8,8 +8,7 @@ import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.WindBulletProjectile;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.WindCutterProjectile;
+import com.test.SurvivorGame.entity.ability_objects.projectile.WindBulletProjectile;
 import com.test.SurvivorGame.world.World;
 
 public class WindBullet extends ActiveAbility {

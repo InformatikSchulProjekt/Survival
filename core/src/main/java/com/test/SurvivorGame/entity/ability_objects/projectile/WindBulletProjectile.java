@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.entity.abilityObjects.projectile;
+package com.test.SurvivorGame.entity.ability_objects.projectile;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -6,21 +6,20 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class WaterBlastProjectile extends Projectile {
+public class WindBulletProjectile extends Projectile {
 
     private final float damage;
-
+    private int pierceLeft;
 
     private Enemy lastHitEnemy;
     private float sameEnemyHitLock = 0f;
     private float animationTime = 0f;
 
-
-    public WaterBlastProjectile(float x, float y, float width, float height, Texture texture, Player player,
-                                Viewport viewport, float speed, float duration, float damage) {
+    public WindBulletProjectile(float x, float y, float width, float height, Texture texture, Player player,
+                                Viewport viewport, float speed, float duration, float damage, int pierceLeft) {
         super(x, y, width, height, texture, player, viewport, speed, duration);
         this.damage = damage;
-
+        this.pierceLeft = pierceLeft;
     }
 
     @Override
@@ -31,7 +30,6 @@ public class WaterBlastProjectile extends Projectile {
         if (sameEnemyHitLock > 0) {
             sameEnemyHitLock -= deltaTime;
         }
-
     }
 
     @Override
@@ -45,19 +43,14 @@ public class WaterBlastProjectile extends Projectile {
         }
 
         damageEnemy(enemy, getDamage());
-
-        float slowAmount = 0.6f;  // 60% of original speed (40% slower)
-        float slowDuration = 2f;
-        applySlowToEnemy(enemy, slowAmount, slowDuration);
-
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
-        expire();
 
-    }
-    private void applySlowToEnemy(Enemy enemy, float speedMultiplier, float duration) {
-        enemy.applySlow(speedMultiplier, 2f);
+        pierceLeft--;
 
+        if (pierceLeft <= 0) {
+            expire();
+        }
     }
 
     @Override

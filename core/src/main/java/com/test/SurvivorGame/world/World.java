@@ -4,7 +4,7 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.DataLoader;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.ability_objects.AbilityObject;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;

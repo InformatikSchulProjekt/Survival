@@ -3,20 +3,14 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.ability.AbilityService;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.core.stat.StatModifier;
-import com.test.SurvivorGame.core.stat.ModifierType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
+import com.test.SurvivorGame.entity.ability_objects.projectile.FireArrowProjectile;
 import com.test.SurvivorGame.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FireArrowAbility extends ActiveAbility {
 

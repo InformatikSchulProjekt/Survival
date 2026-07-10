@@ -9,7 +9,7 @@ import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.Fireball;
+import com.test.SurvivorGame.entity.ability_objects.projectile.Fireball;
 import com.test.SurvivorGame.world.World;
 
 public class FireballAbility extends ActiveAbility {

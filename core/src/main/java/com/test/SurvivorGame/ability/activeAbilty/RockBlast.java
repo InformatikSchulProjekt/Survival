@@ -9,9 +9,7 @@ import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.Projectile;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.RockBlastProjectile;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
+import com.test.SurvivorGame.entity.ability_objects.projectile.RockBlastProjectile;
 import com.test.SurvivorGame.world.World;
 // macht etwas mehr DMG weil es halt stein ist
 public class RockBlast extends ActiveAbility {

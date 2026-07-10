@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.entity.abilityObjects.projectile;
+package com.test.SurvivorGame.entity.ability_objects.projectile;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -6,7 +6,7 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class RockBlastProjectile extends Projectile {
+public class WaterBlastProjectile extends Projectile {
 
     private final float damage;
 
@@ -15,8 +15,9 @@ public class RockBlastProjectile extends Projectile {
     private float sameEnemyHitLock = 0f;
     private float animationTime = 0f;
 
-    public RockBlastProjectile(float x, float y, float width, float height, Texture texture, Player player,
-                               Viewport viewport, float speed, float duration, float damage) {
+
+    public WaterBlastProjectile(float x, float y, float width, float height, Texture texture, Player player,
+                                Viewport viewport, float speed, float duration, float damage) {
         super(x, y, width, height, texture, player, viewport, speed, duration);
         this.damage = damage;
 
@@ -30,6 +31,7 @@ public class RockBlastProjectile extends Projectile {
         if (sameEnemyHitLock > 0) {
             sameEnemyHitLock -= deltaTime;
         }
+
     }
 
     @Override
@@ -43,9 +45,18 @@ public class RockBlastProjectile extends Projectile {
         }
 
         damageEnemy(enemy, getDamage());
+
+        float slowAmount = 0.6f;  // 60% of original speed (40% slower)
+        float slowDuration = 2f;
+        applySlowToEnemy(enemy, slowAmount, slowDuration);
+
         lastHitEnemy = enemy;
         sameEnemyHitLock = 0.25f;
         expire();
+
+    }
+    private void applySlowToEnemy(Enemy enemy, float speedMultiplier, float duration) {
+        enemy.applySlow(speedMultiplier, 2f);
 
     }
 

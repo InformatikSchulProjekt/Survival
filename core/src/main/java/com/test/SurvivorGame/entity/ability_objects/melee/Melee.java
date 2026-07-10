@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.entity.abilityObjects.melee;
+package com.test.SurvivorGame.entity.ability_objects.melee;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.ability.activeAbilty.MeleeAbility;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.ability_objects.AbilityObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 

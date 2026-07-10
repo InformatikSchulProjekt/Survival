@@ -2,9 +2,12 @@ package com.test.SurvivorGame.ability.activeAbilty;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.abilityObjects.FireStorm;
+import com.test.SurvivorGame.entity.Player;
+import com.test.SurvivorGame.entity.ability_objects.FireStorm;
 import com.test.SurvivorGame.world.World;
 
 public class FireStormAbility extends ActiveAbility {
@@ -50,7 +53,6 @@ public class FireStormAbility extends ActiveAbility {
 
     public void dispose() {
         texture.dispose();
-
     }
 
     @Override

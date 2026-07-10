@@ -1,10 +1,9 @@
-package com.test.SurvivorGame.entity.abilityObjects;
+package com.test.SurvivorGame.entity.ability_objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.test.SurvivorGame.entity.GameObject;
 import com.test.SurvivorGame.entity.enemy.Enemy;
-import com.test.SurvivorGame.world.maps.GameMap;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;

@@ -4,10 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.stat.PlayerStats;
-import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.melee.Melee;
+import com.test.SurvivorGame.entity.ability_objects.melee.Melee;
 import com.test.SurvivorGame.world.World;
 
 public class MeleeAbility extends ActiveAbility {

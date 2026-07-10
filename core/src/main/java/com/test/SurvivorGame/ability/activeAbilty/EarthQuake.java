@@ -9,8 +9,7 @@ import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.Earthquake;
-import com.test.SurvivorGame.entity.abilityObjects.FireStorm;
+import com.test.SurvivorGame.entity.ability_objects.Earthquake;
 import com.test.SurvivorGame.world.World;
 
 public class EarthQuake extends ActiveAbility {

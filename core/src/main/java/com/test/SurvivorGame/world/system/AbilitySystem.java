@@ -1,6 +1,6 @@
 package com.test.SurvivorGame.world.system;
 
-import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.ability_objects.AbilityObject;
 import com.test.SurvivorGame.world.maps.GameMap;
 
 import java.util.ArrayList;
