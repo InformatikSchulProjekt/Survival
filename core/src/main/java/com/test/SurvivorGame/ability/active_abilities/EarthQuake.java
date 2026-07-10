@@ -30,7 +30,7 @@ public class EarthQuake extends ActiveAbility {
         Earthquake earthquake = new Earthquake(player.getX(), player.getY(), getSize(), texture, getDuration(), world, getDamage());
 
         world.addAbility(earthquake);
-        SoundManager.playSound("EarthQuake.wav");
+        SoundManager.playSound("EarthQuake.wav",1f);
     }
 
     public float getDamage() {

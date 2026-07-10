@@ -47,7 +47,7 @@ public class WaterBlastProjectile extends Projectile {
         damageEnemy(enemy, getDamage());
 
         float slowAmount = 0.6f;
-        float slowDuration = 2f;
+        float slowDuration = 0.5f;
         applySlowToEnemy(enemy, slowAmount, slowDuration);
 
         lastHitEnemy = enemy;

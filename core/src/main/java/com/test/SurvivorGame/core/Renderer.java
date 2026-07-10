@@ -13,7 +13,7 @@ import com.test.SurvivorGame.entity.ability_objects.projectile.*;
 import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
-import com.test.SurvivorGame.entity.enemy.Boss;
+import com.test.SurvivorGame.entity.enemy.Agis;
 import com.test.SurvivorGame.entity.enemy.WatcherBoss;
 import com.test.SurvivorGame.screen.ingame_ui.GameState;
 import com.test.SurvivorGame.screen.ingame_ui.*;
@@ -839,7 +839,7 @@ public class Renderer {
             new TextureRegion(skeletonTakeDmg));
         //merz
         this.merzTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
-        merzmancer1 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
+        merzmancer1 = new Texture(Gdx.files.internal("Mancer/Merzmancer.png"));
         merzanimation = new Animation<>(0.4f,
             new TextureRegion(merzmancer1));
         merzanimation.setPlayMode(Animation.PlayMode.LOOP);
@@ -1450,7 +1450,7 @@ public class Renderer {
         fireStorm7 = new Texture(Gdx.files.internal("Ability/FireStorm7.png"));
         fireStorm8 = new Texture(Gdx.files.internal("Ability/FireStorm8.png"));
 
-        fireStormAnimation = new Animation<>(0.5f,
+        fireStormAnimation = new Animation<>(0.2f,
             new TextureRegion(fireStorm1),
             new TextureRegion(fireStorm2),
             new TextureRegion(fireStorm3),
@@ -1580,8 +1580,8 @@ public class Renderer {
 
             if (enemy instanceof WatcherBoss) {
                 renderWatcher((WatcherBoss) enemy);
-            } else if (enemy instanceof Boss) {
-                renderBoss((Boss) enemy);
+            } else if (enemy instanceof Agis) {
+                renderBoss((Agis) enemy);
             } else {
                 renderEnemy(enemy);
             }
@@ -1741,7 +1741,7 @@ public class Renderer {
                 }
             }
             currentFrame = animation.getKeyFrame(hydromancerAnimationTime);
-        } else if (playerData.getPlayerClass().equals("Merzmancer")) {
+        } else if (playerData.getPlayerClass().equals("merzmancer")) {
             merzAnimationTime += deltaTime;
 
             animation = merzanimation;
@@ -1862,7 +1862,7 @@ public class Renderer {
             enemy.getHeight()
         );
     }
-    private void renderBoss(Boss boss) {
+    private void renderBoss(Agis agis) {
 
         Animation<TextureRegion> animation;
         animation = bossAnimation;
@@ -1886,15 +1886,15 @@ public class Renderer {
 //                    break;
 //            }
 //        }
-        TextureRegion currentFrame = animation.getKeyFrame(boss.getAnimationTime());
+        TextureRegion currentFrame = animation.getKeyFrame(agis.getAnimationTime());
 
 
         batch.draw(
             currentFrame,
-            boss.getX(),
-            boss.getY(),
-            boss.getWidth(),
-            boss.getHeight()
+            agis.getX(),
+            agis.getY(),
+            agis.getWidth(),
+            agis.getHeight()
         );
     }
     private void renderWatcher(WatcherBoss watcherBoss) {

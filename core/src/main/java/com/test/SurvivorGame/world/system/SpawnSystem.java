@@ -5,7 +5,7 @@ import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
-import com.test.SurvivorGame.entity.enemy.Boss;
+import com.test.SurvivorGame.entity.enemy.Agis;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.screen.GamePlayScreen;
 import com.test.SurvivorGame.world.World;
@@ -167,10 +167,10 @@ public class SpawnSystem {
 
     private void triggerBossPhase() {
         if (!bossPhaseTriggered && endTime()) {
-            for (int i = 1; i < Boss.getBossWaveCount(); i++) {
+            for (int i = 1; i < Agis.getBossWaveCount(); i++) {
                 spawnEnemy();
             }
-            for (int i = 0; i < Boss.getBossCount(); i++) {
+            for (int i = 0; i < Agis.getBossCount(); i++) {
                 spawnBoss();
             }
             bossPhaseTriggered = true;

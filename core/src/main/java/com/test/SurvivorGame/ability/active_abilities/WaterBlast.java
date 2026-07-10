@@ -42,7 +42,7 @@ public class WaterBlast extends ActiveAbility {
         );
 
         world.addAbility(waterBlastProjectile);
-        SoundManager.playSound("WaterBlast.wav");
+        SoundManager.playSound("WaterBlast.wav",1f);
     }
 
     public void dispose() {

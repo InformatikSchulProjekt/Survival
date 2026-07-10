@@ -308,7 +308,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     // wird gecalled wenn Spiel verloren
     public void gameOver(boolean restart) {
-        SoundManager.playSound("gameOver.wav");
+        SoundManager.playSound("gameOver.wav",1f);
         showDeathScreen();
     }
 

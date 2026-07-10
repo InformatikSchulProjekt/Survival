@@ -14,11 +14,11 @@ public class Wave extends ActiveAbility {
     public static final String ID = "wave";
 
     private static final float BASE_DURATION = 3f;
-    private static final float BASE_WIDTH = 0.5f;
-    private static final float BASE_HEIGHT = 5f;
+    private static final float BASE_WIDTH = 0.25f;
+    private static final float BASE_HEIGHT = 2.5f;
     private static final float BASE_SPEED = 5f;
-    private static final float BASE_COOLDOWN = 2.3f;
-    private static final float BASE_DAMAGE = 0.75f;
+    private static final float BASE_COOLDOWN = 4.5f;
+    private static final float BASE_DAMAGE = 0.5f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
@@ -42,7 +42,7 @@ public class Wave extends ActiveAbility {
         );
 
         world.addAbility(waveProjectile);
-        SoundManager.playSound("wave.wav");
+        SoundManager.playSound("wave.wav",0.15f);
     }
 
     public void dispose() {

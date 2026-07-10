@@ -44,7 +44,7 @@ public class WindBullet extends ActiveAbility {
         );
 
         world.addAbility(windBulletProjectile);
-        SoundManager.playSound("WindBullet.wav");
+        SoundManager.playSound("WindBullet.wav",1f);
     }
 
     public void dispose() {

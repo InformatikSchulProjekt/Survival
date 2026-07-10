@@ -7,7 +7,7 @@ import com.test.SurvivorGame.entity.ability_objects.projectile.BossProjectile;
 import com.test.SurvivorGame.world.World;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class Boss extends Enemy {
+public class Agis extends Enemy {
 
     private static final Vector2 SIZE = new Vector2(3f, 3f);
     private static final float MAX_HP = 30f;
@@ -27,8 +27,8 @@ public class Boss extends Enemy {
     private static final float Projectile_DAMAGE = 0.75f;
     private static final float Projectile_COOLDOWN = 1f;
 
-    public Boss(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.BOSS1);
+    public Agis(float x, float y, World world, float hpMultiplier) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.AGIS);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Boss extends Enemy {
     }
 
     @Override
-    protected boolean isBoss() {
-        return true;
+    public int getXPWorth() {
+        return 25;
     }
 }

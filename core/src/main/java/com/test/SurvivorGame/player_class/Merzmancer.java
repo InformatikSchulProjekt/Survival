@@ -71,7 +71,7 @@ public final class Merzmancer extends BasePlayerClass {
             new StatModifier(
                 getScope(),
                 StatType.SPEED,
-                -5.1f, // merzmancer sind alt und senil und laufen deswegen (langsam) immer in die Falsche Richtung
+                -6f, // merzmancer sind alt und senil und laufen deswegen (langsam) immer in die Falsche Richtung
                 ModifierType.FLAT,
                 "class:" + getID()
             )
