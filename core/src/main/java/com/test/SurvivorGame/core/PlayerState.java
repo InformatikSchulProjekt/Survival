@@ -190,7 +190,9 @@ public final class PlayerState {
         System.out.println("Gained XP: "+actualXP);
 
         int newLevel = calcLevel();
+        //System.out.println(level + " | "+newLevel); // debug
         if (newLevel > level) {
+            System.out.println("LEVEL UP!");
             pendingLevelUps += (newLevel - level);
             level = newLevel;
 
@@ -527,7 +529,7 @@ public final class PlayerState {
         // werden sie erstmal weniger oft angezeigt.
         if (playerData.skippedAbilityOptions.containsKey(abilityID)) {
             float skippedCount = playerData.skippedAbilityOptions.get(abilityID);
-            weight *= 1f - skippedCount;
+            weight /= 1f + skippedCount;
         }
 
         // Wenn Spieler Ability schon hat, soll er sie öfter wieder bekommen.

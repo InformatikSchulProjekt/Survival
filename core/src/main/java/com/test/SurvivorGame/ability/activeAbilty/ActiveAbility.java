@@ -19,6 +19,8 @@ public abstract class ActiveAbility extends BaseAbility {
         return 0f;
     }
 
+    protected abstract float getCooldownReduction();
+
     public void tryActivate(float survivalTime) {
         if (isOnCooldown(survivalTime)) {
             return;
@@ -28,8 +30,30 @@ public abstract class ActiveAbility extends BaseAbility {
         cooldownStartTime = survivalTime + getDuration();
     }
 
+    private float calcRealCooldown() {
+        float cooldownReduction = getCooldownReduction(); // 0.5f = 50%
+
+        cooldownReduction = Math.max(0f, cooldownReduction);
+
+        float effectiveReduction;
+
+        if (cooldownReduction <= 0.5f) {
+            effectiveReduction = cooldownReduction;
+        } else {
+            float overflow = cooldownReduction - 0.5f;
+            float maxReduction = 0.8f;
+
+            effectiveReduction =
+                0.5f
+                    + (maxReduction - 0.5f)
+                    * (overflow / (overflow + 0.5f));
+        }
+
+        return getCooldown() * (1f - effectiveReduction);
+    }
+
     private boolean isOnCooldown(float survivalTime) {
-        float timeLeft = getCooldown() - (survivalTime - cooldownStartTime);
+        float timeLeft = calcRealCooldown() - (survivalTime - cooldownStartTime);
 
         if (timeLeft > 0) {
             System.out.println("[DEBUG] " + getName() + " cooldown left: " + timeLeft + "s");
