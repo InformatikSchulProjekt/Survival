@@ -5,6 +5,8 @@ import com.test.SurvivorGame.ability.AbilityType;
 import com.test.SurvivorGame.ability.BaseAbility;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
+import com.test.SurvivorGame.core.stat.StatScope;
+import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.world.World;
 
@@ -15,24 +17,33 @@ public abstract class ActiveAbility extends BaseAbility {
     protected final PlayerStats playerStats;
     protected final PlayerState playerState;
 
+    private final StatScope statScope;
+
     private float cooldownStartTime = 0f;
 
-    public ActiveAbility(World world, Viewport viewport) {
+    public ActiveAbility(World world, Viewport viewport, StatScope statScope) {
         this.player = world.getPlayer();
         this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
+        this.playerState = player.getPlayerState();
+        this.playerStats = playerState.getPlayerStats();
         this.viewport = viewport;
-        this.playerState = player.getPlayerState();
+        this.statScope = statScope;
     }
-    public ActiveAbility(World world) {
+
+    public ActiveAbility(World world, StatScope statScope) {
         this.player = world.getPlayer();
         this.world = world;
-        this.playerStats = player.getPlayerState().getPlayerStats();
         this.playerState = player.getPlayerState();
+        this.playerStats = playerState.getPlayerStats();
+        this.statScope = statScope;
     }
 
     public AbilityType getAbilityType() {
         return AbilityType.ACTIVE_ABILITY;
+    }
+
+    protected final float applyStat(float baseValue, StatType statType) {
+        return baseValue * playerStats.getStat(statScope, statType);
     }
 
     protected abstract void activate();
@@ -51,7 +62,8 @@ public abstract class ActiveAbility extends BaseAbility {
         activate();
         cooldownStartTime = passedTime + getDuration();
     }
-    protected int getLevel(){
+
+    protected int getLevel() {
         return playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
     }
 
