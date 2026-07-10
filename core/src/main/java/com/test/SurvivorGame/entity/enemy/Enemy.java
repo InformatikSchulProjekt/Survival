@@ -40,7 +40,7 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
 
     protected float animationTime = 0f;
     private float originalMovementSpeed;
-    private float slowTimer = 2f;
+    private float slowTimer = 0f;
 
     private boolean dead = false;
 
@@ -85,9 +85,9 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
     }
 
     public void applySlow(float speedMultiplier, float duration) {
-        originalMovementSpeed = movementSpeed;  // Save original
-        movementSpeed = originalMovementSpeed * 0.8f;
+        movementSpeed = originalMovementSpeed * speedMultiplier;
         slowTimer = duration;
+        System.out.println("APPLIED SLOW!");
     }
 
     public boolean isAttacking() {

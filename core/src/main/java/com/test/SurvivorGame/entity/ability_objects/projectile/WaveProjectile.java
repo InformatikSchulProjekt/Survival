@@ -6,28 +6,27 @@ import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
-public class WaveProjectile extends Projectile {
+import java.util.ArrayList;
 
-    private boolean hasHitEnemy = false;
+public class WaveProjectile extends Projectile {
     private float postHitDistance = 0f;
     private final float postHitTravelLimit = 2.5f;
 
     private final float damage;
     private final float maxDistance = 10f;
 
-    private Enemy lastHitEnemy;
     private float sameEnemyHitLock = 0f;
     private float animationTime = 0f;
     private float distanceTraveled;
     private float speed;
 
+    private ArrayList<Enemy> enemiesHit = new ArrayList<>();
+
     public WaveProjectile(float x, float y, float width, float height, Texture texture, Player player,
                           Viewport viewport, float speed, float duration, float damage) {
         super(x, y, width, height, texture, player, viewport, speed, duration);
         this.damage = damage;
-        this.speed  = speed;
-
-
+        this.speed = speed;
     }
 
     @Override
@@ -39,13 +38,13 @@ public class WaveProjectile extends Projectile {
             sameEnemyHitLock -= deltaTime;
         }
         distanceTraveled += speed * deltaTime;
-        if (hasHitEnemy) {
-            postHitDistance += speed * deltaTime;
-            if (postHitDistance>=postHitTravelLimit) {
-                expire();
-                return;
-            }
-        }
+//        if (hasHitEnemy) {
+//            postHitDistance += speed * deltaTime;
+//            if (postHitDistance >= postHitTravelLimit) {
+//                expire();
+//                return;
+//            }
+//        }
         if (distanceTraveled >= maxDistance) {
             expire();
         }
@@ -58,7 +57,7 @@ public class WaveProjectile extends Projectile {
             return;
         }
 
-        if (enemy == lastHitEnemy && sameEnemyHitLock > 0) {
+        if (enemiesHit.contains(enemy)) { // => Damit jedes Enemy nur einmal gehitet werdne kann
             return;
         }
 
@@ -67,14 +66,11 @@ public class WaveProjectile extends Projectile {
         applySlowToEnemy(enemy, slowAmount, slowDuration);
 
         damageEnemy(enemy, getDamage());
-        lastHitEnemy = enemy;
-        sameEnemyHitLock = 0.25f;
-
-        hasHitEnemy = true;
+        enemiesHit.add(enemy);
     }
 
     private void applySlowToEnemy(Enemy enemy, float speedMultiplier, float duration) {
-        enemy.applySlow(speedMultiplier, 2f);
+        enemy.applySlow(speedMultiplier, 0.25f);
 
     }
 
@@ -82,6 +78,7 @@ public class WaveProjectile extends Projectile {
     public float getDamage() {
         return damage;
     }
+
     public float getAnimationTime() {
         return animationTime;
     }
