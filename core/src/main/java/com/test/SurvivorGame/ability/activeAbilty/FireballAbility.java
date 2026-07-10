@@ -56,7 +56,7 @@ public class FireballAbility extends ActiveAbility {
             viewport,
             world,
             getSpeed(),
-            getDuration(),
+            baseDuration,
             getDamage(),
             baseExplosionRadius * getSize()   // skaliert mit dem Size-Stat, aber eigenständig
         );
