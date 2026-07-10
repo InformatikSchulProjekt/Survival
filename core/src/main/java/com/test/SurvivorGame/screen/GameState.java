@@ -6,5 +6,7 @@ package com.test.SurvivorGame.screen;public enum GameState {
     SETTINGS,
     MAP_FINISHED,
     INVENTORY,
-    ABILITIES
+    ABILITIES,
+    DEAD,
+    GAMEOVER
 }
