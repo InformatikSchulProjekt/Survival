@@ -11,18 +11,12 @@ import com.test.SurvivorGame.entity.enemy.Enemy;
 import com.test.SurvivorGame.world.maps.GameMap;
 
 public abstract class Projectile extends AbilityObject {
-
-    private Viewport viewport;
     private float deltaDuration;
-    private final long cooldown = 1;
-
-    private Player player;
 
     private Vector3 mouseScreen;
     protected Vector2 direction;
 
     private float speed;
-
     protected boolean expired;
 
     public Projectile(float x, float y, float effectSize, Texture texture, Player player, Viewport viewport, float speed, float duration) {
@@ -33,8 +27,6 @@ public abstract class Projectile extends AbilityObject {
         super(x, y, width, height, texture);
 
         this.deltaDuration = duration;
-        this.player = player;
-        this.viewport = viewport;
         this.speed = speed;
 
         mouseScreen = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -71,6 +63,7 @@ public abstract class Projectile extends AbilityObject {
     }
 
     public void onHit(Enemy enemy) {
+        if (enemy.isDead()) return;
         damageEnemy(enemy, getDamage());
         expired = true;
     }
