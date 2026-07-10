@@ -6,6 +6,8 @@ import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class AbilityService {
@@ -45,9 +47,10 @@ public class AbilityService {
             if (!hadFreeSpace) {
                 System.out.println("Ability Bar had no empty slots for new ability: "+abilityID);
             }
-        // Applied die Modifier von StatAbilities
+            // Applied die Modifier von StatAbilities
         } else if (ability.getAbilityType() == AbilityType.STAT_ABILITY) {
             ability.onApply(playerState.getPlayerStats(), newAmount);
+
         }
 
     }
@@ -60,9 +63,10 @@ public class AbilityService {
         }
 
         ability.onApply(playerState.getPlayerStats(), amount);
+
     }
 
-    // looped durch alle Entries also alle Abilities und initialisiert die Klassen für die
+    // looped durch alle Entries also alle Abilities und initialisiert die Klassen f체r die
     private void registerAbilities() {
         for (Map.Entry<String, Integer> entry : playerState.getPlayerData().abilities.entrySet()) {
             String abilityID = entry.getKey();
@@ -97,6 +101,84 @@ public class AbilityService {
 
     public AbilityRegistry getAbilityRegistry() {
         return this.abilityRegistry;
+    }
+
+    // Alle bereits freigeschalteten Active Abilities (unabh채ngig davon, ob sie
+    // gerade in der Ability-Leiste stecken oder nicht). Wird von der AbilitiesUI benutzt,
+    // um die Auswahl-Liste zu bef체llen.
+    public List<String> getUnlockedActiveAbilityIds() {
+        List<String> result = new ArrayList<>();
+
+        for (String abilityID : playerState.getPlayerData().abilities.keySet()) {
+            BaseAbility ability = abilityRegistry.getAbility(abilityID);
+
+            if (ability != null && ability.getAbilityType() == AbilityType.ACTIVE_ABILITY) {
+                result.add(abilityID);
+            }
+        }
+
+        return result;
+    }
+
+    // Gibt den Slot-Index zur체ck, in dem die Ability aktuell aktiv ist, oder -1 wenn sie in keinem Slot ist.
+    public int getSlotIndexOfAbility(String abilityId) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        for (int i = 0; i < abilitySlots.length; i++) {
+            if (abilityId != null && abilityId.equals(abilitySlots[i])) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    // Packt eine bereits freigeschaltete Ability in einen der 4 Slots der Ability-Leiste.
+    // Steckt die Ability schon in einem anderen Slot, werden die beiden Slots einfach vertauscht.
+    // War der Ziel-Slot vorher belegt, wird die alte Ability dort "unequipped"
+    // (bleibt freigeschaltet, ist aber nicht mehr aktiv in der Leiste).
+    public void equipAbilityToSlot(int slotIndex, String abilityId) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
+        }
+
+        BaseAbility ability = abilityRegistry.getAbility(abilityId);
+
+        if (ability == null || ability.getAbilityType() != AbilityType.ACTIVE_ABILITY) {
+            throw new IllegalArgumentException("Not a valid active ability: " + abilityId);
+        }
+
+        if (!playerState.getPlayerData().abilities.containsKey(abilityId)) {
+            throw new IllegalStateException("Ability not unlocked yet: " + abilityId);
+        }
+
+        int existingSlot = getSlotIndexOfAbility(abilityId);
+
+        if (existingSlot == slotIndex) {
+            return; // Ability steckt schon genau in diesem Slot
+        }
+
+        String previousOccupant = abilitySlots[slotIndex];
+
+        if (existingSlot != -1) {
+            // Ability war schon in einem anderen Slot aktiv => Slots vertauschen
+            abilitySlots[existingSlot] = previousOccupant;
+        }
+
+        abilitySlots[slotIndex] = abilityId;
+    }
+
+    // Entfernt die Ability aus dem Slot. Sie bleibt freigeschaltet, ist aber nicht mehr aktiv.
+    public void unequipSlot(int slotIndex) {
+        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
+
+        if (slotIndex < 0 || slotIndex >= abilitySlots.length) {
+            throw new IllegalArgumentException("Invalid ability slot index: " + slotIndex);
+        }
+
+        abilitySlots[slotIndex] = null;
     }
 
 }
