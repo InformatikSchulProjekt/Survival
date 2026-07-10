@@ -48,7 +48,6 @@ public class GamePlayScreen extends ScreenAdapter {
     private final InventoryUI inventoryUI;
     private final AbilitiesUI abilitiesUI;
     private final MapFinishedUI mapFinishedUI;
-    private final DeathScreenUI deathScreenUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
     {
@@ -76,9 +75,7 @@ public class GamePlayScreen extends ScreenAdapter {
         abilitiesUI = new AbilitiesUI(shapeRenderer);
         abilitiesUI.setPlayerState(playerState);
 
-        deathScreenUI = new DeathScreenUI(shapeRenderer);
-
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, inventoryUI, abilitiesUI, mapFinishedUI, deathScreenUI);
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, inventoryUI, abilitiesUI, mapFinishedUI);
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         this.inputManager = new InputManager(world, abilityService, dataLoader);
 
@@ -93,7 +90,6 @@ public class GamePlayScreen extends ScreenAdapter {
         setupInventoryUI();
         setupAbilitiesUI();
         setupMapFinishedUI();
-        setupDeathScreenUI();
     }
 
     private void setupPauseMenu() {
@@ -236,24 +232,6 @@ public class GamePlayScreen extends ScreenAdapter {
 
     }
 
-    private void setupDeathScreenUI() {
-
-        deathScreenUI.setRestartListener(new Runnable() {
-            @Override
-            public void run() {
-                gameDone(true);
-            }
-        });
-
-        deathScreenUI.setBackToTitleListener(new Runnable() {
-            @Override
-            public void run() {
-                gameDone(false);
-            }
-        });
-
-    }
-
     private void setupMapFinishedUI() {
         mapFinishedUI.setBackToMenuListener(new Runnable() {
             @Override
@@ -278,25 +256,8 @@ public class GamePlayScreen extends ScreenAdapter {
         state = GameState.PAUSED;
 
         saveSurvivalTime();
-
-        if (restart) {
-            // Neuer Run mit der gleichen Klasse, aber sonst komplett von 0
-            // (kein clearPlayerData, sonst würde beim Neustart die playerClass fehlen und der Start crashen).
-            restartWithSameClass();
-        } else {
-            dataLoader.clearPlayerData(map);
-        }
-
+        dataLoader.clearPlayerData(map);
         main.gameOver(restart, map);
-    }
-
-    private void restartWithSameClass() {
-        String playerClass = playerState.getPlayerData().playerClass;
-
-        PlayerData freshPlayerData = new PlayerData();
-        freshPlayerData.playerClass = playerClass;
-
-        dataLoader.savePlayerData(map, freshPlayerData);
     }
 
     private void backToMenuWithoutSaving() {
@@ -308,23 +269,11 @@ public class GamePlayScreen extends ScreenAdapter {
     // wird gecalled wenn Spiel verloren
     public void gameOver(boolean restart) {
         SoundManager.playSound("gameOver.wav");
-        showDeathScreen();
+        gameDone(restart);
     }
 
     public void gameOver() {
         gameOver(false);
-    }
-
-    private void showDeathScreen() {
-        state = GameState.DEAD;
-
-        playerMoveDirection.setZero();
-        SoundManager.stopFootsteps();
-        world.getPlayer().updateMoveDirection(playerMoveDirection);
-
-        deathScreenUI.show(world.getSurvivalTime());
-
-        Gdx.input.setInputProcessor(deathScreenUI.getStage());
     }
 
     public void saveSurvivalTime() {
@@ -356,7 +305,6 @@ public class GamePlayScreen extends ScreenAdapter {
             || state == GameState.MAP_FINISHED
             || state == GameState.INVENTORY
             || state == GameState.ABILITIES
-            || state == GameState.DEAD
         ) {
             return;
         }
@@ -372,7 +320,7 @@ public class GamePlayScreen extends ScreenAdapter {
     public void render(float deltaTime)
     {
 
-        if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && state != GameState.DEAD && playerState.isAwaitingLevelUpChoice())
+        if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingLevelUpChoice())
         {
             // Level-Up-Auswahl steht an: Spiel anhalten und Karten anzeigen
             state = GameState.LEVEL_UP;
@@ -384,7 +332,7 @@ public class GamePlayScreen extends ScreenAdapter {
             levelUpUI.showOptions(playerState.getPendingAbilityOptions());
             Gdx.input.setInputProcessor(levelUpUI.getStage());
         }
-        else if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && state != GameState.DEAD && playerState.isAwaitingChestChoice())
+        else if (state != GameState.LEVEL_UP && state != GameState.CHEST_OPENING && playerState.isAwaitingChestChoice())
         {
             // Chest wurde geöffnet: Spiel anhalten und Item-Karten anzeigen
             state = GameState.CHEST_OPENING;
@@ -427,10 +375,6 @@ public class GamePlayScreen extends ScreenAdapter {
 
             case MAP_FINISHED:
                 mapFinishedUI.render();
-                break;
-
-            case DEAD:
-                deathScreenUI.render();
                 break;
         }
         if (state == GameState.SETTINGS &&

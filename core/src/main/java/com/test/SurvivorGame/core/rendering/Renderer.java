@@ -42,7 +42,6 @@ public class Renderer {
     private final InventoryUI inventoryUI;
     private final AbilitiesUI abilitiesUI;
     private final MapFinishedUI mapFinishedUI;
-    private final DeathScreenUI deathScreenUI;
 
     private final Texture playerTexture;
     private final Texture idle2;
@@ -385,8 +384,7 @@ public class Renderer {
                     SettingsUI settingsUI,
                     InventoryUI inventoryUI,
                     AbilitiesUI abilitiesUI,
-                    MapFinishedUI mapFinishedUI,
-                    DeathScreenUI deathScreenUI)
+                    MapFinishedUI mapFinishedUI)
     {
         this.batch = batch;
         this.viewport = new FillViewport(screenWidth, screenHeight);
@@ -402,7 +400,6 @@ public class Renderer {
         this.inventoryUI = inventoryUI;
         this.abilitiesUI = abilitiesUI;
         this.mapFinishedUI = mapFinishedUI;
-        this.deathScreenUI = deathScreenUI;
 
         this.normalChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         TextureRegion[][] normalChestframes = TextureRegion.split(normalChestTexture, 64, 64);
@@ -1066,7 +1063,6 @@ public class Renderer {
         inventoryUI.resize(width,height);
         abilitiesUI.resize(width, height);
         mapFinishedUI.resize(width, height);
-        deathScreenUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
     {
