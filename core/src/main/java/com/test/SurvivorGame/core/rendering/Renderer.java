@@ -327,7 +327,7 @@ public class Renderer {
 
 
     private final AbilitiesUI abilitiesUI;
-
+    private final DeathScreenUI deathScreenUI;
 
     //    private final Texture bossidle2;
 //    private final Texture bossidle3;
@@ -525,7 +525,7 @@ public class Renderer {
                     SettingsUI settingsUI,
                     InventoryUI inventoryUI,
                     AbilitiesUI abilitiesUI,
-
+                    DeathScreenUI deathScreenUI,
                     MapFinishedUI mapFinishedUI)
     {
         this.batch = batch;
@@ -540,6 +540,7 @@ public class Renderer {
         this.chestUI = chestUI;
         this.settingsUI = settingsUI;
         this.inventoryUI = inventoryUI;
+        this.deathScreenUI = deathScreenUI;
         this.mapFinishedUI = mapFinishedUI;
 
         this.normalChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
@@ -1444,6 +1445,7 @@ public class Renderer {
         settingsUI.resize(width, height);
         inventoryUI.resize(width,height);
         abilitiesUI.resize(width, height);
+        deathScreenUI.resize(width, height);
         mapFinishedUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
