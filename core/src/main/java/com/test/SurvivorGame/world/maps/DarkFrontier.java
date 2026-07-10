@@ -12,7 +12,7 @@ public class DarkFrontier extends GameMap {
     private final MapSettings mapSettings =
         new MapSettings(
             new ArrayList<>(List.of(
-                EnemyType.BOSS
+                EnemyType.WATCHER
                 //Hier eig noch mehr verschiedene Boss-Arten, wenn wir welche haben
             )),
             120f,

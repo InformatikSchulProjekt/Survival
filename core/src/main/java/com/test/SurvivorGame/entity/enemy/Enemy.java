@@ -209,7 +209,7 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
         dead = true;
         animationTime = 0f;
 
-        if (shouldSpawnChest() && !(this instanceof Agis)) {
+        if (shouldSpawnChest()) {
             System.out.println("Chest spawned!");
             world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
         }
