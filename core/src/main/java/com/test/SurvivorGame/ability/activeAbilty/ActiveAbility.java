@@ -19,7 +19,7 @@ public abstract class ActiveAbility extends BaseAbility {
         return 0f;
     }
 
-    protected abstract float getCooldownReduction();
+    //protected abstract float getCooldownReduction();
 
     public void tryActivate(float survivalTime) {
         if (isOnCooldown(survivalTime)) {
@@ -31,7 +31,7 @@ public abstract class ActiveAbility extends BaseAbility {
     }
 
     private float calcRealCooldown() {
-        float cooldownReduction = getCooldownReduction(); // 0.5f = 50%
+        float cooldownReduction = 0f;//getCooldownReduction(); // 0.5f = 50%
 
         cooldownReduction = Math.max(0f, cooldownReduction);
 
