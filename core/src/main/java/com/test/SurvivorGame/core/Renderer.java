@@ -1741,7 +1741,7 @@ public class Renderer {
                 }
             }
             currentFrame = animation.getKeyFrame(hydromancerAnimationTime);
-        } else if (playerData.getPlayerClass().equals("Merzmancer")) {
+        } else if (playerData.getPlayerClass().equals("merzmancer")) {
             merzAnimationTime += deltaTime;
 
             animation = merzanimation;
