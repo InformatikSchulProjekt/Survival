@@ -1,4 +1,4 @@
-package com.test.SurvivorGame.screen;public enum GameState {
+package com.test.SurvivorGame.screen.ingame_ui;public enum GameState {
     PAUSED,
     PLAYING,
     LEVEL_UP,
