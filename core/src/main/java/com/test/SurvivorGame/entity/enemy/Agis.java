@@ -18,7 +18,7 @@ public class Agis extends Enemy {
     private static int bossWaveCount = 30;
 
     private float projectileTimer = 0;
-    private final Texture projectileTexture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png")); // omar mach
+    private final Texture projectileTexture = new Texture(Gdx.files.internal("Ability/fireArrow4.png"));
 
     private static final float Projectile_DURATION = 3f;
     private static final float Projectile_WIDTH = 3f;
