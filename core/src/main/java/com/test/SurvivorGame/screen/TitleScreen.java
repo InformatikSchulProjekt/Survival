@@ -29,7 +29,7 @@ public class TitleScreen extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(stage);
 
-        Label title = new Label("SURVIVOR GAME", skin);
+        Label title = new Label("Overrun - Survive the Hordes", skin);
 
         TextButton playButton = new TextButton("Play", skin);
         TextButton highscoreButton = new TextButton("Highscore", skin);

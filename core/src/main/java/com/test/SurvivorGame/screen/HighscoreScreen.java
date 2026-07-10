@@ -58,7 +58,7 @@ public class HighscoreScreen extends ScreenAdapter {
             Label mapLabel = new Label("Map: " + bestRun.mapName, skin);
             Label classLabel = new Label("Class: " + bestRun.playerClassName, skin);
             Label killsLabel = new Label("Kills: " + bestRun.enemiesKilled, skin);
-            Label spellsLabel = new Label("Spells: " + formatSpells(bestRun.spellNames), skin);
+            Label spellsLabel = new Label("Abilitys: " + formatSpells(bestRun.spellNames), skin);
             spellsLabel.setWrap(true);
             spellsLabel.setAlignment(Align.center);
 
