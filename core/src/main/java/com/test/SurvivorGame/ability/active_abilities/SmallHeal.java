@@ -3,6 +3,7 @@ package com.test.SurvivorGame.ability.active_abilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.world.World;
@@ -11,7 +12,7 @@ public class SmallHeal extends ActiveAbility {
 
     public static final String ID = "small_heal";
 
-    private static final float BASE_COOLDOWN = 1f;
+    private static final float BASE_COOLDOWN = 2f;
     private static final float BASE_HEAL = 2f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
@@ -23,6 +24,7 @@ public class SmallHeal extends ActiveAbility {
     @Override
     protected void activate() {
         playerState.heal(getHeal());
+        SoundManager.playSound("SmallHeal.wav");
     }
 
     public void dispose() {

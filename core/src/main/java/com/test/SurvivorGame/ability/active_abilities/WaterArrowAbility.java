@@ -3,6 +3,7 @@ package com.test.SurvivorGame.ability.active_abilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.ability_objects.projectile.WaterArrowProjectile;
@@ -40,9 +41,11 @@ public class WaterArrowAbility extends ActiveAbility {
             BASE_DURATION,
             getDamage(),
             getPierce()
+
         );
 
         world.addAbility(waterArrowProjectile);
+        SoundManager.playSound("WaterArrow.wav");
     }
 
     public void dispose() {

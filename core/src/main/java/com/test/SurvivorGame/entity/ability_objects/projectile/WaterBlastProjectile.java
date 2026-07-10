@@ -46,7 +46,7 @@ public class WaterBlastProjectile extends Projectile {
 
         damageEnemy(enemy, getDamage());
 
-        float slowAmount = 0.6f;  // 60% of original speed (40% slower)
+        float slowAmount = 0.6f;
         float slowDuration = 2f;
         applySlowToEnemy(enemy, slowAmount, slowDuration);
 

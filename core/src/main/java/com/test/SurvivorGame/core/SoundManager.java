@@ -63,6 +63,4 @@ public class SoundManager {
     public static float getVolume(){
         return volume;
     }
-
-
 }

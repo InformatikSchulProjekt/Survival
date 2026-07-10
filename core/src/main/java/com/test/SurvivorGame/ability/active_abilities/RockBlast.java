@@ -3,6 +3,7 @@ package com.test.SurvivorGame.ability.active_abilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.SoundManager;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
 import com.test.SurvivorGame.entity.ability_objects.projectile.RockBlastProjectile;
@@ -16,7 +17,7 @@ public class RockBlast extends ActiveAbility {
     private static final float BASE_DURATION = 3f;
     private static final float BASE_WIDTH = 2f;
     private static final float BASE_HEIGHT = 1f;
-    private static final float BASE_SPEED = 2f;
+    private static final float BASE_SPEED = 3f;
     private static final float BASE_COOLDOWN = 1f;
     private static final float BASE_DAMAGE = 1.5f;
 
@@ -42,6 +43,7 @@ public class RockBlast extends ActiveAbility {
         );
 
         world.addAbility(rockBlastProjectile);
+        SoundManager.playSound("rockBlast.wav");
     }
 
     public float getDamage() {
