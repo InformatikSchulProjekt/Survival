@@ -3,7 +3,7 @@ package com.test.SurvivorGame.entity.enemy;
 import com.badlogic.gdx.math.Vector2;
 import com.test.SurvivorGame.world.World;
 
-public class Boss extends Enemy {
+public class Agis extends Enemy {
 
     private static final Vector2 SIZE = new Vector2(3f, 3f);
     private static final float MAX_HP = 30f;
@@ -13,8 +13,8 @@ public class Boss extends Enemy {
     private static int bossCount = 1;
     private static int bossWaveCount = 30;
 
-    public Boss(float x, float y, World world, float hpMultiplier) {
-        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.BOSS1);
+    public Agis(float x, float y, World world, float hpMultiplier) {
+        super(x, y, world, SIZE, MAX_HP, MOVEMENT_SPEED, DAMAGE, hpMultiplier, EnemyType.AGIS);
     }
 
     public static int getBossCount() {
@@ -28,11 +28,6 @@ public class Boss extends Enemy {
     @Override
     protected float getChestChance() {
         return 1f; // 100%
-    }
-
-    @Override
-    protected boolean isBoss() {
-        return true;
     }
 
     @Override

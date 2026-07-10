@@ -13,7 +13,7 @@ import com.test.SurvivorGame.entity.ability_objects.projectile.*;
 import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
-import com.test.SurvivorGame.entity.enemy.Boss;
+import com.test.SurvivorGame.entity.enemy.Agis;
 import com.test.SurvivorGame.entity.enemy.WatcherBoss;
 import com.test.SurvivorGame.screen.ingame_ui.GameState;
 import com.test.SurvivorGame.screen.ingame_ui.*;
@@ -1580,8 +1580,8 @@ public class Renderer {
 
             if (enemy instanceof WatcherBoss) {
                 renderWatcher((WatcherBoss) enemy);
-            } else if (enemy instanceof Boss) {
-                renderBoss((Boss) enemy);
+            } else if (enemy instanceof Agis) {
+                renderBoss((Agis) enemy);
             } else {
                 renderEnemy(enemy);
             }
@@ -1862,7 +1862,7 @@ public class Renderer {
             enemy.getHeight()
         );
     }
-    private void renderBoss(Boss boss) {
+    private void renderBoss(Agis agis) {
 
         Animation<TextureRegion> animation;
         animation = bossAnimation;
@@ -1886,15 +1886,15 @@ public class Renderer {
 //                    break;
 //            }
 //        }
-        TextureRegion currentFrame = animation.getKeyFrame(boss.getAnimationTime());
+        TextureRegion currentFrame = animation.getKeyFrame(agis.getAnimationTime());
 
 
         batch.draw(
             currentFrame,
-            boss.getX(),
-            boss.getY(),
-            boss.getWidth(),
-            boss.getHeight()
+            agis.getX(),
+            agis.getY(),
+            agis.getWidth(),
+            agis.getHeight()
         );
     }
     private void renderWatcher(WatcherBoss watcherBoss) {

@@ -209,7 +209,7 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
         dead = true;
         animationTime = 0f;
 
-        if (shouldSpawnChest() && !(this instanceof Boss)) {
+        if (shouldSpawnChest() && !(this instanceof Agis)) {
             System.out.println("Chest spawned!");
             world.addDrop(new ChestObject(getX(), getY(), player, ChestType.NORMAL));
         }
@@ -239,19 +239,10 @@ public class Enemy extends Entity { //sollte später abstract parent von den ene
         return enemyType;
     }
 
-    protected ChestType getChestType() {
-        return ChestType.NORMAL;
-    }
-
     protected float getChestChance() {
         return playerState.getPlayerStats().getStat(
             StatScope.ALL,
             StatType.CHEST_CHANCE
         );
     }
-
-    protected boolean isBoss() {
-        return false;
-    }
-
 }

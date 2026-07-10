@@ -20,7 +20,7 @@ public class EnemyFactory {
                 return new Skeleton(x, y, world, hpMulti);
 
             case BOSS:
-                return new Boss(x, y, world, hpMulti);
+                return new Agis(x, y, world, hpMulti);
 
             case WATCHER:
                 return new WatcherBoss(x, y, world, hpMulti);
