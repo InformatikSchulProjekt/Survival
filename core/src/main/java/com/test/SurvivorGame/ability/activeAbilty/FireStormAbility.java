@@ -2,8 +2,11 @@ package com.test.SurvivorGame.ability.activeAbilty;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.ability_objects.FireStorm;
 import com.test.SurvivorGame.world.World;
 
@@ -11,90 +14,50 @@ public class FireStormAbility extends ActiveAbility {
 
     public static final String ID = "fire_storm";
 
-    private static final float DAMAGE_INTERVAL = 0.1f;
-
-    private static final float BASE_DURATION = 1f;
-    private static final float START_SIZE = 0f;
-    private static final float BASE_END_SIZE = 4f;
-    private static final float BASE_DAMAGE = 0.5f;
-    private static final float BASE_COOLDOWN = 1f;
-
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private static float damageInterval = 0.1f;
+    // Ability base Stats
+    private float baseDuration = 1f;
+    private float startSize = 0f;
+    private float baseEndSize = 4f;
+    private static float baseDamage = 0.5f;
+    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
 
     public FireStormAbility(World world) {
-        super(ID, world, StatScope.FIRE);
+       super(world);
+
     }
 
     @Override
     protected void activate() {
-        FireStorm fireStorm = new FireStorm(
-            player.getX(),
-            player.getY(),
-            START_SIZE,
-            getEndSize(),
-            texture,
-            getDuration(),
-            world,
-            getDamage()
-        );
+        FireStorm fireStorm = new FireStorm(player.getX(), player.getY(), startSize, getBaseEndSizeSize(), texture, getDuration(), world, getDamage());
 
         world.addAbility(fireStorm);
     }
 
     public float getDamage() {
-        float damage = BASE_DAMAGE;
-
-        if (getLevel() >= 2) {
-            damage *= 1.25f;
+        float damage = baseDamage;
+        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.FIRE, StatType.MAGIC_DAMAGE);
+        if (getLevel() >= 2){
+            damage *= 1.25f;        }
+        if (getLevel()==5){
+            damage*= 1.15f;
         }
-
-        if (getLevel() == 5) {
-            damage *= 1.15f;
-        }
-
-        return applyStat(damage, StatType.MAGIC_DAMAGE);
-    }
-
-    @Override
-    public float getCooldown() {
-        float cooldown = BASE_COOLDOWN;
-
-        if (getLevel() >= 3) {
-            cooldown *= 0.9f;
-        }
-
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
-
-        return cooldown / cooldownModifier;
-    }
-
-    @Override
-    public float getDuration() {
-        float duration = BASE_DURATION;
-
-        if (getLevel() >= 4) {
-            duration *= 1.1f;
-        }
-
-        return applyStat(duration, StatType.MAGIC_DURATION);
-    }
-
-    public float getEndSize() {
-        float endSize = BASE_END_SIZE;
-
-        if (getLevel() == 5) {
-            endSize *= 1.25f;
-        }
-
-        return applyStat(endSize, StatType.MAGIC_SIZE);
+        return damage;
     }
 
     public static float getDamageInterval() {
-        return DAMAGE_INTERVAL;
+        return damageInterval;
     }
 
     public void dispose() {
         texture.dispose();
+    }
+
+    @Override
+    public String getID() {
+        return ID;
     }
 
     @Override
@@ -107,15 +70,47 @@ public class FireStormAbility extends ActiveAbility {
         return 5;
     }
 
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        if (getLevel()>=3){
+            cooldown *= 0.9f;
+        }
+        return cooldown;
+    }
+    //@Override
+    public float getDuration() {
+        float duration = baseDuration;
+        if (getLevel()>=4){
+            duration *= 1.1f;
+        }
+        // temp:
+        return duration;
+    }
+    //@Override
+    public float getBaseEndSizeSize(){
+        baseEndSize = startSize +4f;
+
+        if(getLevel() ==5){
+        baseEndSize*=1.25f;
+        }
+        return baseEndSize;
+    }
+
     @Override
     public String getDescription(int level) {
-        return switch (level) {
-            case 1 -> "Emits a fire storm that deals damage in a certain interval";
-            case 2 -> "Fire storm damage increased by 25%";
-            case 3 -> "Cooldown decreased by 10%";
-            case 4 -> "Duration increased by 10%";
-            case 5 -> "End size increased by 25% and damage increased by 15%";
-            default -> "No description available";
-        };
+        switch (level) {
+            case 1:
+                return "Emits a fire storm that deals damage in a certain interval";
+            case 2:
+                return "Fire storm damage increased by 25%";
+            case 3:
+                return "Cooldown decreased by 10%";
+            case 4:
+                return "duration increased by 10%";
+            case 5:
+                return "End size increased by 25% and damage increased by 15%";
+            default:
+                return "No description available";
+        }
     }
 }

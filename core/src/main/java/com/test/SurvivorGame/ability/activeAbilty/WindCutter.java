@@ -3,8 +3,11 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.ability_objects.projectile.WindCutterProjectile;
 import com.test.SurvivorGame.world.World;
 
@@ -12,17 +15,19 @@ public class WindCutter extends ActiveAbility {
 
     public static final String ID = "wind_cutter";
 
-    private static final float BASE_DURATION = 3f;
-    private static final float BASE_WIDTH = 3f;
-    private static final float BASE_HEIGHT = 0.7f;
-    private static final float BASE_SPEED = 6f;
-    private static final float BASE_COOLDOWN = 1f;
-    private static final float BASE_DAMAGE = 1f;
+    private float duration = 3f;
+    private float baseWidth = 3f;
+    private float height= 0.7f;
+    private float speed = 6f;
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private static float baseDamage = 1f;
+
+    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WindCutter(World world, Viewport viewport) {
-        super(ID, world, viewport, StatScope.WIND);
+        super(world, viewport);
+
     }
 
     @Override
@@ -30,17 +35,18 @@ public class WindCutter extends ActiveAbility {
         WindCutterProjectile windCutterProjectile = new WindCutterProjectile(
             player.getX(),
             player.getY(),
-            BASE_WIDTH * getSize(),
-            BASE_HEIGHT * getSize(),
+            getWidth(),
+            height,
             texture,
             player,
             viewport,
-            BASE_SPEED,
-            BASE_DURATION,
+            speed,
+            duration,
             getDamage()
         );
 
         world.addAbility(windCutterProjectile);
+
     }
 
     public void dispose() {
@@ -48,44 +54,21 @@ public class WindCutter extends ActiveAbility {
     }
 
     public float getDamage() {
-        float damage = BASE_DAMAGE;
-
-        if (getLevel() >= 2) {
+        float damage = baseDamage;
+        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_DAMAGE);
+        if(getLevel() >= 2){
             damage *= 1.1f;
         }
-
-        if (getLevel() == 5) {
+        if(getLevel() ==5){
             damage *= 1.15f;
         }
-
-        return applyStat(damage, StatType.MAGIC_DAMAGE);
-    }
-
-    public float getSize() {
-        float size = 1f;
-
-        if (getLevel() >= 4) {
-            size *= 1.25f;
-        }
-
-        if (getLevel() == 5) {
-            size *= 1.4f;
-        }
-
-        return applyStat(size, StatType.MAGIC_SIZE);
+        return damage;
     }
 
     @Override
-    public float getCooldown() {
-        float cooldown = BASE_COOLDOWN;
-
-        if (getLevel() >= 3) {
-            cooldown *= 0.95f;
-        }
-
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
-
-        return cooldown / cooldownModifier;
+    public String getID() {
+        return ID;
     }
 
     @Override
@@ -98,15 +81,38 @@ public class WindCutter extends ActiveAbility {
         return 5;
     }
 
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        if(getLevel() >= 3){
+            cooldown *= 0.95f;
+        }
+        return cooldown;
+    }
+    public float getWidth(){
+        float width = baseWidth;
+        if(getLevel() >= 4){
+            width *= 1.25f;
+        }
+        if (getLevel() == 5){
+            width *= 1.4;
+        }
+        return width;
+    }
     @Override
     public String getDescription(int level) {
-        return switch (level) {
-            case 1 -> "Creates a blade of wind that cuts the enemy";
-            case 2 -> "Wind cutter damage increased by 10%";
-            case 3 -> "Wind cutter cooldown decreased by 5%";
-            case 4 -> "Size increased by 25%";
-            case 5 -> "Size increased by 40% and damage increased by 15%";
-            default -> "No description available";
-        };
+        switch (level) {
+            case 1:
+                return "creates a blade of wind that cuts the enemy";
+            case 2:
+                return "Wind cutter damage increased by 10%";
+            case 3:
+                return "Wind cutter blast cooldown decreased by 5%";
+            case 4:
+                return "Width increased by 25%";
+            case 5:
+                return "Width increased by 40% and damage increased by 15%";
+            default:
+                return "No description available";
+        }
     }
 }

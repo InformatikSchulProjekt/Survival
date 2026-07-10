@@ -3,27 +3,30 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.ability_objects.projectile.RockBlastProjectile;
 import com.test.SurvivorGame.world.World;
-
 // macht etwas mehr DMG weil es halt stein ist
 public class RockBlast extends ActiveAbility {
 
     public static final String ID = "rock_blast";
 
-    private static final float BASE_DURATION = 3f;
-    private static final float BASE_WIDTH = 2f;
-    private static final float BASE_HEIGHT = 1f;
-    private static final float BASE_SPEED = 2f;
-    private static final float BASE_COOLDOWN = 1f;
-    private static final float BASE_DAMAGE = 1.5f;
+    private float duration = 3f;
+    private float baseWidth = 2f;
+    private float height= 1f;
+    private float speed = 5f;
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private float baseDamage = 1.5f;
+
+    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public RockBlast(World world, Viewport viewport) {
-        super(ID, world, viewport, StatScope.EARTH);
+        super(world, viewport);
     }
 
     @Override
@@ -31,56 +34,39 @@ public class RockBlast extends ActiveAbility {
         RockBlastProjectile rockBlastProjectile = new RockBlastProjectile(
             player.getX(),
             player.getY(),
-            BASE_WIDTH * getSize(),
-            BASE_HEIGHT * getSize(),
+            baseWidth,
+            height,
             texture,
             player,
             viewport,
-            BASE_SPEED,
-            BASE_DURATION,
+            speed,
+            duration,
             getDamage()
         );
 
         world.addAbility(rockBlastProjectile);
     }
 
-    public float getDamage() {
-        float damage = BASE_DAMAGE;
+    public void dispose() {
+        texture.dispose();
+    }
 
-        if (getLevel() >= 2) {
+    public float getDamage() {
+        float damage = baseDamage;
+        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.EARTH, StatType.MAGIC_DAMAGE);
+        if(getLevel() >= 2){
             damage *= 1.1f;
         }
-
-        if (getLevel() == 5) {
+        if(getLevel() ==5){
             damage *= 1.3f;
         }
-
-        return applyStat(damage, StatType.MAGIC_DAMAGE);
+        return damage;
     }
 
     @Override
-    public float getCooldown() {
-        float cooldown = BASE_COOLDOWN;
-
-        if (getLevel() >= 3) {
-            cooldown *= 0.9f;
-        }
-
-        if (getLevel() >= 4) {
-            cooldown *= 0.85f;
-        }
-
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
-
-        return cooldown / cooldownModifier;
-    }
-
-    public float getSize() {
-        return applyStat(1f, StatType.MAGIC_SIZE);
-    }
-
-    public void dispose() {
-        texture.dispose();
+    public String getID() {
+        return ID;
     }
 
     @Override
@@ -93,15 +79,33 @@ public class RockBlast extends ActiveAbility {
         return 5;
     }
 
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+
+        if(getLevel() >= 3){
+            cooldown *= 0.9f;
+        }
+        if(getLevel() >= 4){
+            cooldown *= 0.85f;
+        }
+        return cooldown;
+    }
+
     @Override
     public String getDescription(int level) {
-        return switch (level) {
-            case 1 -> "Shoots a rock blast that explodes on impact";
-            case 2 -> "Rock blast damage increased by 10%";
-            case 3 -> "Rock blast cooldown decreased by 10%";
-            case 4 -> "Cooldown reduced by 15%";
-            case 5 -> "Damage increased by 30%";
-            default -> "No description available";
-        };
+        switch (level) {
+            case 1:
+                return "Shoots a rock blast that explodes on impact";
+            case 2:
+                return "Rock blast damage increased by 10%";
+            case 3:
+                return "Rock blast cooldown decreased by 10%";
+            case 4:
+                return "cooldown reduced by 15%";
+            case 5:
+                return "Damage increased by 30%";
+            default:
+                return "No description available";
+        }
     }
 }

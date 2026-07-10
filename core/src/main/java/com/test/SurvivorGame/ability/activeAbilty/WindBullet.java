@@ -3,8 +3,11 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.test.SurvivorGame.core.PlayerState;
+import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
+import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.ability_objects.projectile.WindBulletProjectile;
 import com.test.SurvivorGame.world.World;
 
@@ -12,37 +15,41 @@ public class WindBullet extends ActiveAbility {
 
     public static final String ID = "wind_bullet";
 
-    private static final float BASE_DURATION = 3f;
-    private static final float BASE_WIDTH = 0.7f;
-    private static final float BASE_HEIGHT = 0.3f;
-    private static final float BASE_SPEED = 7.5f;
-    private static final float BASE_COOLDOWN = 1f;
-    private static final int BASE_PIERCE = 2;
-    private static final float BASE_DAMAGE = 0.75f;
+    private float duration = 3f;
+    private float baseWidth = 0.7f;
+    private float height= 0.3f;
+    private float speed = 7.5f;
+    private float baseCooldown = 1f; // müsst ihr noch anpassen
+    private final int basePierce = 2;
 
-    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+
+    private static float baseDamage = 0.75f;
+
+    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WindBullet(World world, Viewport viewport) {
-        super(ID, world, viewport, StatScope.WIND);
+        super(world, viewport);
+
     }
 
     @Override
     protected void activate() {
-        WindBulletProjectile windBulletProjectile = new WindBulletProjectile(
+        WindBulletProjectile windCutterProjectile = new WindBulletProjectile(
             player.getX(),
             player.getY(),
-            BASE_WIDTH * getSize(),
-            BASE_HEIGHT * getSize(),
+            getWidth(),
+            height,
             texture,
             player,
             viewport,
-            BASE_SPEED,
-            BASE_DURATION,
+            speed,
+            duration,
             getDamage(),
             getPierce()
         );
 
-        world.addAbility(windBulletProjectile);
+        world.addAbility(windCutterProjectile);
+
     }
 
     public void dispose() {
@@ -50,54 +57,21 @@ public class WindBullet extends ActiveAbility {
     }
 
     public float getDamage() {
-        float damage = BASE_DAMAGE;
-
-        if (getLevel() >= 2) {
+        float damage = baseDamage;
+        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
+        damage *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_DAMAGE);
+        if(getLevel() >= 2){
             damage *= 1.333f;
         }
-
-        if (getLevel() == 5) {
+        if(getLevel() ==5){
             damage *= 1.5f;
         }
-
-        return applyStat(damage, StatType.MAGIC_DAMAGE);
-    }
-
-    public float getSize() {
-        float size = 1f;
-
-        if (getLevel() >= 4) {
-            size *= 1.25f;
-        }
-
-        if (getLevel() == 5) {
-            size *= 1.4f;
-        }
-
-        return applyStat(size, StatType.MAGIC_SIZE);
-    }
-
-    public int getPierce() {
-        int pierce = BASE_PIERCE;
-
-        if (getLevel() >= 3) {
-            pierce += 1;
-        }
-
-        return pierce;
+        return damage;
     }
 
     @Override
-    public float getCooldown() {
-        float cooldown = BASE_COOLDOWN;
-
-        if (getLevel() >= 4) {
-            cooldown *= 0.8f;
-        }
-
-        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
-
-        return cooldown / cooldownModifier;
+    public String getID() {
+        return ID;
     }
 
     @Override
@@ -110,15 +84,47 @@ public class WindBullet extends ActiveAbility {
         return 5;
     }
 
+    public float getCooldown() {
+        float cooldown = baseCooldown;
+        cooldown *= playerStats.getStat(StatType.MAGIC_COOLDOWN);
+        cooldown *= playerStats.getStat(StatScope.WIND, StatType.MAGIC_COOLDOWN);
+        if(getLevel() >= 4){
+            cooldown *= 0.8f;
+        }
+        return cooldown;
+    }
+    public float getWidth(){
+        float width = baseWidth;
+        if(getLevel() >= 4){
+            width *= 1.25f;
+        }
+        if (getLevel() == 5){
+            width *= 1.4;
+        }
+        return width;
+    }
+    public int getPierce() {
+        int level = playerState.getPlayerData().abilities.getOrDefault(getID(), 0);
+        int pierce = basePierce;
+        if (level >= 3) pierce += 1; // wenn die Ability Level 3 erreicht wird pierce um 2 erhöht
+        return pierce;
+    }
     @Override
     public String getDescription(int level) {
-        return switch (level) {
-            case 1 -> "Creates a bullet of wind that pierces the enemy";
-            case 2 -> "Wave damage increased by 33%";
-            case 3 -> "Pierce increased by 1";
-            case 4 -> "Width increased by 25% and cooldown reduced by 20%";
-            case 5 -> "Damage increased by 50%";
-            default -> "No description available";
-        };
+        switch (level) {
+            case 1:
+                return "creates a bullet of wind that pierces the enemy";
+            case 2:
+                return "Wave damage increased by 33%";
+            case 3:
+                return "pierce increased by 1";
+            case 4:
+                return "Width increased by 25% and cooldown reduced by 20%";
+            case 5:
+                return "Damage increased by 50%";
+            default:
+                return "No description available";
+        }
+
     }
 }
