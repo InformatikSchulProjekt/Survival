@@ -12,8 +12,8 @@ public class SmallHeal extends ActiveAbility {
 
     public static final String ID = "small_heal";
 
-    private static final float BASE_COOLDOWN = 2f;
-    private static final float BASE_HEAL = 2f;
+    private static final float BASE_COOLDOWN = 12f;
+    private static final float BASE_HEAL = 4f;
 
     private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
