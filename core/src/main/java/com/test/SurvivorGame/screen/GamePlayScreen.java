@@ -46,6 +46,7 @@ public class GamePlayScreen extends ScreenAdapter {
     private final ChestUI chestUI;
     private final SettingsUI settingsUI;
     private final InventoryUI inventoryUI;
+    private final AbilitiesUI abilitiesUI;
     private final MapFinishedUI mapFinishedUI;
 
     public GamePlayScreen(Main game, DataLoader dataLoader, String map)
@@ -71,9 +72,14 @@ public class GamePlayScreen extends ScreenAdapter {
         inventoryUI = new InventoryUI(shapeRenderer);
         inventoryUI.setPlayerState(playerState);
 
-        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, inventoryUI, mapFinishedUI);
+        abilitiesUI = new AbilitiesUI(shapeRenderer);
+        abilitiesUI.setPlayerState(playerState);
+
+        this.renderer = new Renderer(game.getBatch(), screenWidth, screenHeight, world, shapeRenderer,playerData,pauseMenu,levelUpUI,chestUI, settingsUI, inventoryUI, abilitiesUI, mapFinishedUI);
         this.abilityService = new AbilityService(playerState, world, renderer.getViewport());
         this.inputManager = new InputManager(world, abilityService, dataLoader);
+
+        abilitiesUI.setAbilityService(abilityService);
 
         playerState.setupAbilityService(abilityService);
 
@@ -82,6 +88,7 @@ public class GamePlayScreen extends ScreenAdapter {
         setupChestUI();
         setupSettingsUI();
         setupInventoryUI();
+        setupAbilitiesUI();
         setupMapFinishedUI();
     }
 
@@ -128,7 +135,14 @@ public class GamePlayScreen extends ScreenAdapter {
         pauseMenu.setAbilitiesListener(new Runnable() {
             @Override
             public void run() {
-                System.out.println("abilitiesScreen");
+
+                state = GameState.ABILITIES;
+
+                abilitiesUI.refresh();
+
+                Gdx.input.setInputProcessor(
+                    abilitiesUI.getStage()
+                );
             }
         });
     }
@@ -185,6 +199,24 @@ public class GamePlayScreen extends ScreenAdapter {
     private void setupInventoryUI(){
 
         inventoryUI.setBackListener(new Runnable() {
+
+            @Override
+            public void run() {
+
+                state = GameState.PAUSED;
+
+                Gdx.input.setInputProcessor(
+                    pauseMenu.getStage()
+                );
+
+            }
+        });
+
+    }
+
+    private void setupAbilitiesUI() {
+
+        abilitiesUI.setBackListener(new Runnable() {
 
             @Override
             public void run() {
@@ -272,6 +304,7 @@ public class GamePlayScreen extends ScreenAdapter {
             || state == GameState.SETTINGS
             || state == GameState.MAP_FINISHED
             || state == GameState.INVENTORY
+            || state == GameState.ABILITIES
         ) {
             return;
         }
@@ -332,6 +365,10 @@ public class GamePlayScreen extends ScreenAdapter {
                 inventoryUI.render();
                 break;
 
+            case ABILITIES:
+                abilitiesUI.render();
+                break;
+
             case SETTINGS:
                 settingsUI.render();
                 break;
@@ -360,28 +397,5 @@ public class GamePlayScreen extends ScreenAdapter {
         renderer.dispose();
         gameMap.dispose();
 
-    }
-
-
-    // Methode die vom UI benutzt werden kann um 2 Ability Slots zu swappen
-    private void swapAbilitySlots(int slot1, int slot2) {
-        String[] abilitySlots = playerState.getPlayerData().abilitySlots;
-
-        if (slot1 < 0 || slot1 >= abilitySlots.length) {
-            throw new IllegalArgumentException("Invalid ability slot index: " + slot1);
-        }
-
-        if (slot2 < 0 || slot2 >= abilitySlots.length) {
-            throw new IllegalArgumentException("Invalid ability slot index: " + slot2);
-        }
-
-        if (slot1 == slot2) {
-            System.out.println("[WARNING]: Tried to swap same slot!");
-            return;
-        }
-
-        String temp = abilitySlots[slot1];
-        abilitySlots[slot1] = abilitySlots[slot2];
-        abilitySlots[slot2] = temp;
     }
 }

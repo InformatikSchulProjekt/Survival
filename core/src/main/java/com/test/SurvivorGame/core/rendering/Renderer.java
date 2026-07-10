@@ -8,12 +8,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.test.SurvivorGame.core.PlayerState;
 import com.test.SurvivorGame.core.data.PlayerData;
 import com.test.SurvivorGame.entity.Player;
-import com.test.SurvivorGame.entity.abilityObjects.projectile.*;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.entity.drops.ChestObject;
 import com.test.SurvivorGame.entity.drops.ChestType;
 import com.test.SurvivorGame.entity.drops.DroppedObject;
 import com.test.SurvivorGame.entity.enemy.Boss;
-import com.test.SurvivorGame.entity.enemy.WatcherBoss;
 import com.test.SurvivorGame.screen.GameState;
 import com.test.SurvivorGame.screen.hud.*;
 import com.test.SurvivorGame.world.maps.GameMap;
@@ -22,6 +21,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.test.SurvivorGame.entity.abilityObjects.AbilityObject;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.FireArrowProjectile;
+import com.test.SurvivorGame.entity.abilityObjects.projectile.Fireball;
 import com.test.SurvivorGame.world.World;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -39,30 +40,31 @@ public class Renderer {
     private final ChestUI chestUI;
     private final SettingsUI settingsUI;
     private final InventoryUI inventoryUI;
+    private final AbilitiesUI abilitiesUI;
     private final MapFinishedUI mapFinishedUI;
 
-//    private final Texture playerTexture;
-//    private final Texture idle2;
-//    private final Texture idle3;
-//    private final Texture idle4;
-//    private final Texture back1;
-//    private final Texture back2;
-//    private final Texture front1;
-//    private final Texture front2;
-//    private final Texture front3;
-//    private final Texture right1;
-//    private final Texture right2;
-//    private final Texture right3;
-//    private final Texture right4;
-//    private final Texture left1;
-//    private final Texture left2;
-//    private final Texture left3;
-//    private final Texture left4;
-//    private final Animation<TextureRegion> idleAnimation;
-//    private final Animation<TextureRegion> backAnimation;
-//    private final Animation<TextureRegion> frontAnimation;
-//    private final Animation<TextureRegion> rightAnimation;
-//    private final Animation<TextureRegion> leftAnimation;
+    private final Texture playerTexture;
+    private final Texture idle2;
+    private final Texture idle3;
+    private final Texture idle4;
+    private final Texture back1;
+    private final Texture back2;
+    private final Texture front1;
+    private final Texture front2;
+    private final Texture front3;
+    private final Texture right1;
+    private final Texture right2;
+    private final Texture right3;
+    private final Texture right4;
+    private final Texture left1;
+    private final Texture left2;
+    private final Texture left3;
+    private final Texture left4;
+    private final Animation<TextureRegion> idleAnimation;
+    private final Animation<TextureRegion> backAnimation;
+    private final Animation<TextureRegion> frontAnimation;
+    private final Animation<TextureRegion> rightAnimation;
+    private final Animation<TextureRegion> leftAnimation;
     private float playerAnimationTime = 0f;
     //Ab hier mancer
     private final Texture pyromancerTexture;
@@ -300,134 +302,22 @@ public class Renderer {
     private final Animation<TextureRegion> enemy1rightAnimation;
     private final Animation<TextureRegion> enemy1leftAnimation;
     private final Texture bossTexture;
-    private final Texture boss1;
-    private final Texture boss2;
-    private final Texture boss3;
-    private final Texture boss4;
-    private final Texture boss5;
-    private final Texture boss6;
-    private final Texture boss7;
-    private final Texture boss8;
-    private final Texture boss9;
-    private final Texture boss10;
-    private final Texture boss11;
-    private final Texture boss12;
-    private final Texture boss13;
-    //watcherboss
-    private final Texture watcherTexture;
+    private final Texture bossidle2;
+    private final Texture bossidle3;
+    private final Texture bossback1;
+    private final Texture bossback2;
+    private final Texture bossfront1;
+    private final Texture bossfront2;
+    private final Texture bossright1;
+    private final Texture bossright2;
+    private final Texture bossleft1;
+    private final Texture bossleft2;
+    private final Animation<TextureRegion> bossidleAnimation;
+    private final Animation<TextureRegion> bossbackAnimation;
+    private final Animation<TextureRegion> bossfrontAnimation;
+    private final Animation<TextureRegion> bossrightAnimation;
+    private final Animation<TextureRegion> bossleftAnimation;
 
-    private final Texture watcher1;
-    private final Texture watcher2;
-    private final Texture watcher3;
-    private final Texture watcher4;
-    private final Animation<TextureRegion> watcherLeftAnimation;
-    private final Animation<TextureRegion> watcherBackAnimation;
-    private final Animation<TextureRegion> watcherFrontAnimation;
-    private final Animation<TextureRegion> watcherRightAnimation;
-
-
-
-
-
-    //    private final Texture bossidle2;
-//    private final Texture bossidle3;
-//    private final Texture bossback1;
-//    private final Texture bossback2;
-//    private final Texture bossfront1;
-//    private final Texture bossfront2;
-//    private final Texture bossright1;
-//    private final Texture bossright2;
-//    private final Texture bossleft1;
-//    private final Texture bossleft2;
-//    private final Animation<TextureRegion> bossidleAnimation;
-//    private final Animation<TextureRegion> bossbackAnimation;
-//    private final Animation<TextureRegion> bossfrontAnimation;
-//    private final Animation<TextureRegion> bossrightAnimation;
-//    private final Animation<TextureRegion> bossleftAnimation;
-    private final Animation<TextureRegion> bossAnimation;
-    //Ab hier Slime
-    // Idle
-    private final Texture slimeIdle0;
-    private final Texture slimeIdle1;
-    private final Texture slimeIdle2;
-    private final Texture slimeIdle3;
-
-    // Move
-    private final Texture slimeMove0;
-    private final Texture slimeMove1;
-    private final Texture slimeMove2;
-    private final Texture slimeMove3;
-
-    // Attack
-    private final Texture slimeAttack0;
-    private final Texture slimeAttack1;
-    private final Texture slimeAttack2;
-    private final Texture slimeAttack3;
-    private final Texture slimeAttack4;
-
-    // Hurt
-    private final Texture slimeHurt0;
-    private final Texture slimeHurt1;
-    private final Texture slimeHurt2;
-    private final Texture slimeHurt3;
-
-    // Die
-    private final Texture slimeDie0;
-    private final Texture slimeDie1;
-    private final Texture slimeDie2;
-    private final Texture slimeDie3;
-
-    // Animationen
-    private final Animation<TextureRegion> slimeIdleAnimation;
-    private final Animation<TextureRegion> slimeMoveAnimation;
-    private final Animation<TextureRegion> slimeAttackAnimation;
-    private final Animation<TextureRegion> slimeHurtAnimation;
-    private final Animation<TextureRegion> slimeDieAnimation;
-    //Ab hier Skeleton
-    // Walk Left
-    private final Texture skeletonWL1;
-    private final Texture skeletonWL2;
-    private final Texture skeletonWL3;
-    private final Texture skeletonWL4;
-    private final Texture skeletonWL5;
-    private final Texture skeletonWL6;
-    private final Texture skeletonWL7;
-    private final Texture skeletonWL8;
-    private final Texture skeletonWL9;
-    private final Texture skeletonWL10;
-
-    // Walk Right
-    private final Texture skeletonWR1;
-    private final Texture skeletonWR2;
-    private final Texture skeletonWR3;
-    private final Texture skeletonWR4;
-    private final Texture skeletonWR5;
-    private final Texture skeletonWR6;
-    private final Texture skeletonWR7;
-    private final Texture skeletonWR8;
-    private final Texture skeletonWR9;
-    private final Texture skeletonWR10;
-
-    // Attack
-    private final Texture skeletonAttack1;
-    private final Texture skeletonAttack2;
-    private final Texture skeletonAttack3;
-
-    // Death
-    private final Texture skeletonDeath1;
-    private final Texture skeletonDeath2;
-    private final Texture skeletonDeath3;
-    private final Texture skeletonDeath4;
-
-    // Damage
-    private final Texture skeletonTakeDmg;
-
-    // Animationen
-    private final Animation<TextureRegion> skeletonWalkLeftAnimation;
-    private final Animation<TextureRegion> skeletonWalkRightAnimation;
-    private final Animation<TextureRegion> skeletonAttackAnimation;
-    private final Animation<TextureRegion> skeletonDeathAnimation;
-    private final Animation<TextureRegion> skeletonDamageAnimation;
     // Fireball
     private final Texture fireball0;
     private final Texture fireball1;
@@ -445,37 +335,6 @@ public class Renderer {
     private final Animation<TextureRegion> fireballExplosionAnimation;
     private final HUDRenderer hud;
 
-    // WaterArrow
-    private final Texture waterArrow1;
-    private final Texture waterArrow2;
-    private final Texture waterArrow3;
-    private final Texture waterArrow4;
-    private final Animation<TextureRegion> waterArrowAnimation;
-
-    // Wave
-    private final Texture wave1;
-    private final Texture wave2;
-    private final Texture wave3;
-    private final Texture wave4;
-    private final Animation<TextureRegion> waveAnimation;
-
-    // WindBullet
-    private final Texture windBullet1;
-    private final Texture windBullet2;
-    private final Texture windBullet3;
-    private final Texture windBullet4;
-    private final Animation<TextureRegion> windBulletAnimation;
-
-    // WindCutter
-    private final Texture windCutter1;
-    private final Texture windCutter2;
-    private final Texture windCutter3;
-    private final Texture windCutter4;
-    private final Animation<TextureRegion> windCutterAnimation;
-
-    // RockBlast
-    private final Texture rockBlast0;
-    private final Animation<TextureRegion> rockBlastAnimation;
 
     //FireArrow
     private final Texture firearrow0;
@@ -524,6 +383,7 @@ public class Renderer {
                     ChestUI chestUI,
                     SettingsUI settingsUI,
                     InventoryUI inventoryUI,
+                    AbilitiesUI abilitiesUI,
                     MapFinishedUI mapFinishedUI)
     {
         this.batch = batch;
@@ -538,6 +398,7 @@ public class Renderer {
         this.chestUI = chestUI;
         this.settingsUI = settingsUI;
         this.inventoryUI = inventoryUI;
+        this.abilitiesUI = abilitiesUI;
         this.mapFinishedUI = mapFinishedUI;
 
         this.normalChestTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
@@ -585,215 +446,53 @@ public class Renderer {
             new TextureRegion(legendaryChest5));
         legendaryChestOpenedAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 
-////old Player ...
-//        this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
-//        TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
-//        idle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
-//        idle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
-//        idle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
-//        idleAnimation = new Animation<>(0.4f,
-//            new TextureRegion(idle2),
-//            new TextureRegion(idle3),
-//            new TextureRegion(idle4));
-//        idleAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//
-//        front1 = new Texture(Gdx.files.internal("Player/front 1.png"));
-//        front2 = new Texture(Gdx.files.internal("Player/front 2.png"));
-//        front3 = new Texture(Gdx.files.internal("Player/front 3.png"));
-//        frontAnimation = new Animation<>(0.2f,
-//            new TextureRegion(front1),
-//            new TextureRegion(front2),
-//            new TextureRegion(front3));
-//        frontAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//
-//        back1 = new Texture(Gdx.files.internal("Player/back 1.png"));
-//        back2 = new Texture(Gdx.files.internal("Player/back 2.png"));
-//        backAnimation = new Animation<>(0.2f,
-//            new TextureRegion(back1),
-//            new TextureRegion(back2));
-//        backAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//        right1 = new Texture(Gdx.files.internal("Player/right 1.png"));
-//        right2 = new Texture(Gdx.files.internal("Player/right 2.png"));
-//        right3 = new Texture(Gdx.files.internal("Player/right 3.png"));
-//        right4 = new Texture(Gdx.files.internal("Player/right 4.png"));
-//        rightAnimation = new Animation<>(0.2f,
-//            new TextureRegion(right1),
-//            new TextureRegion(right2),
-//            new TextureRegion(right3),
-//            new TextureRegion(right4));
-//        rightAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//        left1 = new Texture(Gdx.files.internal("Player/left 1.png"));
-//        left2 = new Texture(Gdx.files.internal("Player/left 2.png"));
-//        left3 = new Texture(Gdx.files.internal("Player/left 3.png"));
-//        left4 = new Texture(Gdx.files.internal("Player/left 4.png"));
-//        leftAnimation = new Animation<>(0.2f,
-//            new TextureRegion(left1),
-//            new TextureRegion(left2),
-//            new TextureRegion(left3),
-//            new TextureRegion(left4));
-//        leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        this.watcherTexture = new Texture(Gdx.files.internal("Boss/skeletonBoss4.png"));
-        TextureRegion[][] frames = TextureRegion.split(watcherTexture, 64, 64);
-        watcher1 = new Texture(Gdx.files.internal("Boss/skeletonBoss4.png"));
-        watcherFrontAnimation = new Animation<>(0.2f,
-            new TextureRegion(watcher1));
-        watcherFrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+//old Player ...
+        this.playerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
+        TextureRegion[][] frames = TextureRegion.split(playerTexture, 64, 64);
+        idle2 = new Texture(Gdx.files.internal("Player/idle 2.png"));
+        idle3 = new Texture(Gdx.files.internal("Player/idle 3.png"));
+        idle4 = new Texture(Gdx.files.internal("Player/idle 4.png"));
+        idleAnimation = new Animation<>(0.4f,
+            new TextureRegion(idle2),
+            new TextureRegion(idle3),
+            new TextureRegion(idle4));
+        idleAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        watcher2 = new Texture(Gdx.files.internal("Boss/skeletonBoss2.png"));
-        watcherBackAnimation = new Animation<>(0.2f,
-            new TextureRegion(watcher2));
-        watcherBackAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        watcher3 = new Texture(Gdx.files.internal("Boss/skeletonBoss1.png"));
-        watcherRightAnimation= new Animation<>(0.2f,
-            new TextureRegion(watcher3));
-        watcherRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        watcher4 = new Texture(Gdx.files.internal("Boss/skeletonBoss3.png"));
-        watcherLeftAnimation = new Animation<>(0.2f,
-            new TextureRegion(watcher4));
-        watcherLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        //Slime ab hier
-        // Idle
-        slimeIdle0 = new Texture(Gdx.files.internal("Slime/slime-idle-0.png"));
-        slimeIdle1 = new Texture(Gdx.files.internal("Slime/slime-idle-1.png"));
-        slimeIdle2 = new Texture(Gdx.files.internal("Slime/slime-idle-2.png"));
-        slimeIdle3 = new Texture(Gdx.files.internal("Slime/slime-idle-3.png"));
+        front1 = new Texture(Gdx.files.internal("Player/front 1.png"));
+        front2 = new Texture(Gdx.files.internal("Player/front 2.png"));
+        front3 = new Texture(Gdx.files.internal("Player/front 3.png"));
+        frontAnimation = new Animation<>(0.2f,
+            new TextureRegion(front1),
+            new TextureRegion(front2),
+            new TextureRegion(front3));
+        frontAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
-        slimeIdleAnimation = new Animation<>(0.15f,
-            new TextureRegion(slimeIdle0),
-            new TextureRegion(slimeIdle1),
-            new TextureRegion(slimeIdle2),
-            new TextureRegion(slimeIdle3));
-        slimeIdleAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
-// Move
-        slimeMove0 = new Texture(Gdx.files.internal("Slime/slime-move-0.png"));
-        slimeMove1 = new Texture(Gdx.files.internal("Slime/slime-move-1.png"));
-        slimeMove2 = new Texture(Gdx.files.internal("Slime/slime-move-2.png"));
-        slimeMove3 = new Texture(Gdx.files.internal("Slime/slime-move-3.png"));
-
-        slimeMoveAnimation = new Animation<>(0.12f,
-            new TextureRegion(slimeMove0),
-            new TextureRegion(slimeMove1),
-            new TextureRegion(slimeMove2),
-            new TextureRegion(slimeMove3));
-        slimeMoveAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
-// Attack
-        slimeAttack0 = new Texture(Gdx.files.internal("Slime/slime-attack-0.png"));
-        slimeAttack1 = new Texture(Gdx.files.internal("Slime/slime-attack-1.png"));
-        slimeAttack2 = new Texture(Gdx.files.internal("Slime/slime-attack-2.png"));
-        slimeAttack3 = new Texture(Gdx.files.internal("Slime/slime-attack-3.png"));
-        slimeAttack4 = new Texture(Gdx.files.internal("Slime/slime-attack-4.png"));
-
-        slimeAttackAnimation = new Animation<>(0.10f,
-            new TextureRegion(slimeAttack0),
-            new TextureRegion(slimeAttack1),
-            new TextureRegion(slimeAttack2),
-            new TextureRegion(slimeAttack3),
-            new TextureRegion(slimeAttack4));
-
-// Hurt
-        slimeHurt0 = new Texture(Gdx.files.internal("Slime/slime-hurt-0.png"));
-        slimeHurt1 = new Texture(Gdx.files.internal("Slime/slime-hurt-1.png"));
-        slimeHurt2 = new Texture(Gdx.files.internal("Slime/slime-hurt-2.png"));
-        slimeHurt3 = new Texture(Gdx.files.internal("Slime/slime-hurt-3.png"));
-
-        slimeHurtAnimation = new Animation<>(0.15f,
-            new TextureRegion(slimeHurt0),
-            new TextureRegion(slimeHurt1),
-            new TextureRegion(slimeHurt2),
-            new TextureRegion(slimeHurt3));
-
-// Die
-        slimeDie0 = new Texture(Gdx.files.internal("Slime/slime-die-0.png"));
-        slimeDie1 = new Texture(Gdx.files.internal("Slime/slime-die-1.png"));
-        slimeDie2 = new Texture(Gdx.files.internal("Slime/slime-die-2.png"));
-        slimeDie3 = new Texture(Gdx.files.internal("Slime/slime-die-3.png"));
-
-        slimeDieAnimation = new Animation<>(0.15f,
-            new TextureRegion(slimeDie0),
-            new TextureRegion(slimeDie1),
-            new TextureRegion(slimeDie2),
-            new TextureRegion(slimeDie3));
-
-        //Skeleton ab hier
-        // Walk Left
-        skeletonWL1 = new Texture(Gdx.files.internal("skeleton/skeleton wl1.png"));
-        skeletonWL2 = new Texture(Gdx.files.internal("skeleton/skeleton wl2.png"));
-        skeletonWL3 = new Texture(Gdx.files.internal("skeleton/skeleton wl3.png"));
-        skeletonWL4 = new Texture(Gdx.files.internal("skeleton/skeleton wl4.png"));
-        skeletonWL5 = new Texture(Gdx.files.internal("skeleton/skeleton wl5.png"));
-        skeletonWL6 = new Texture(Gdx.files.internal("skeleton/skeleton wl6.png"));
-        skeletonWL7 = new Texture(Gdx.files.internal("skeleton/skeleton wl7.png"));
-        skeletonWL8 = new Texture(Gdx.files.internal("skeleton/skeleton wl8.png"));
-        skeletonWL9 = new Texture(Gdx.files.internal("skeleton/skeleton wl9.png"));
-        skeletonWL10 = new Texture(Gdx.files.internal("skeleton/skeleton wl10.png"));
-
-        skeletonWalkLeftAnimation = new Animation<>(0.10f,
-            new TextureRegion(skeletonWL1),
-            new TextureRegion(skeletonWL2),
-            new TextureRegion(skeletonWL3),
-            new TextureRegion(skeletonWL4),
-            new TextureRegion(skeletonWL5),
-            new TextureRegion(skeletonWL6),
-            new TextureRegion(skeletonWL7),
-            new TextureRegion(skeletonWL8),
-            new TextureRegion(skeletonWL9),
-            new TextureRegion(skeletonWL10));
-        skeletonWalkLeftAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
-// Walk Right
-        skeletonWR1 = new Texture(Gdx.files.internal("skeleton/skeleton wr1.png"));
-        skeletonWR2 = new Texture(Gdx.files.internal("skeleton/skeleton wr2.png"));
-        skeletonWR3 = new Texture(Gdx.files.internal("skeleton/skeleton wr3.png"));
-        skeletonWR4 = new Texture(Gdx.files.internal("skeleton/skeleton wr4.png"));
-        skeletonWR5 = new Texture(Gdx.files.internal("skeleton/skeleton wr5.png"));
-        skeletonWR6 = new Texture(Gdx.files.internal("skeleton/skeleton wr6.png"));
-        skeletonWR7 = new Texture(Gdx.files.internal("skeleton/skeleton wr7.png"));
-        skeletonWR8 = new Texture(Gdx.files.internal("skeleton/skeleton wr8.png"));
-        skeletonWR9 = new Texture(Gdx.files.internal("skeleton/skeleton wr9.png"));
-        skeletonWR10 = new Texture(Gdx.files.internal("skeleton/skeleton wr10.png"));
-
-        skeletonWalkRightAnimation = new Animation<>(0.10f,
-            new TextureRegion(skeletonWR1),
-            new TextureRegion(skeletonWR2),
-            new TextureRegion(skeletonWR3),
-            new TextureRegion(skeletonWR4),
-            new TextureRegion(skeletonWR5),
-            new TextureRegion(skeletonWR6),
-            new TextureRegion(skeletonWR7),
-            new TextureRegion(skeletonWR8),
-            new TextureRegion(skeletonWR9),
-            new TextureRegion(skeletonWR10));
-        skeletonWalkRightAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
-// Attack
-        skeletonAttack1 = new Texture(Gdx.files.internal("skeleton/skeleton attack1.png"));
-        skeletonAttack2 = new Texture(Gdx.files.internal("skeleton/skeleton attack2.png"));
-        skeletonAttack3 = new Texture(Gdx.files.internal("skeleton/skeleton attack3.png"));
-
-        skeletonAttackAnimation = new Animation<>(0.12f,
-            new TextureRegion(skeletonAttack1),
-            new TextureRegion(skeletonAttack2),
-            new TextureRegion(skeletonAttack3));
-
-// Death
-        skeletonDeath1 = new Texture(Gdx.files.internal("skeleton/skeleton death1.png"));
-        skeletonDeath2 = new Texture(Gdx.files.internal("skeleton/skeleton death2.png"));
-        skeletonDeath3 = new Texture(Gdx.files.internal("skeleton/skeleton death3.png"));
-        skeletonDeath4 = new Texture(Gdx.files.internal("skeleton/skeleton death4.png"));
-
-        skeletonDeathAnimation = new Animation<>(0.15f,
-            new TextureRegion(skeletonDeath1),
-            new TextureRegion(skeletonDeath2),
-            new TextureRegion(skeletonDeath3),
-            new TextureRegion(skeletonDeath4));
-
-// Damage
-        skeletonTakeDmg = new Texture(Gdx.files.internal("skeleton/skeleton takedmg.png"));
-
-        skeletonDamageAnimation = new Animation<>(0.15f,
-            new TextureRegion(skeletonTakeDmg));
+        back1 = new Texture(Gdx.files.internal("Player/back 1.png"));
+        back2 = new Texture(Gdx.files.internal("Player/back 2.png"));
+        backAnimation = new Animation<>(0.2f,
+            new TextureRegion(back1),
+            new TextureRegion(back2));
+        backAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        right1 = new Texture(Gdx.files.internal("Player/right 1.png"));
+        right2 = new Texture(Gdx.files.internal("Player/right 2.png"));
+        right3 = new Texture(Gdx.files.internal("Player/right 3.png"));
+        right4 = new Texture(Gdx.files.internal("Player/right 4.png"));
+        rightAnimation = new Animation<>(0.2f,
+            new TextureRegion(right1),
+            new TextureRegion(right2),
+            new TextureRegion(right3),
+            new TextureRegion(right4));
+        rightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        left1 = new Texture(Gdx.files.internal("Player/left 1.png"));
+        left2 = new Texture(Gdx.files.internal("Player/left 2.png"));
+        left3 = new Texture(Gdx.files.internal("Player/left 3.png"));
+        left4 = new Texture(Gdx.files.internal("Player/left 4.png"));
+        leftAnimation = new Animation<>(0.2f,
+            new TextureRegion(left1),
+            new TextureRegion(left2),
+            new TextureRegion(left3),
+            new TextureRegion(left4));
+        leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
         //pyromancer ab hier
         this.pyromancerTexture = new Texture(Gdx.files.internal("Placeholder/PlayerPH.png"));
         pyromanceridle2 = new Texture(Gdx.files.internal("Mancer/Pyromancer/sprite_r4_c1.png"));
@@ -1254,62 +953,40 @@ public class Renderer {
             new TextureRegion(enemy1left5));
         enemy1leftAnimation.setPlayMode(Animation.PlayMode.LOOP);
         //ab hier boss
-        this.bossTexture = new Texture(Gdx.files.internal("Boss/Agis1.png"));
+        this.bossTexture = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
         TextureRegion[][] bossframes = TextureRegion.split(bossTexture, 64, 64);
-//        bossidle2 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-//        bossidle3 = new Texture(Gdx.files.internal("Boss/Agis2.png"));
-//        bossidleAnimation = new Animation<>(0.4f,
-//            new TextureRegion(bossidle2),
-//            new TextureRegion(bossidle3));
-//        bossidleAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//
-//        bossfront1 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-//        bossfront2 = new Texture(Gdx.files.internal("Boss/Agis2.png"));
-//        bossfrontAnimation = new Animation<>(0.2f,
-//            new TextureRegion(bossfront1),
-//            new TextureRegion(bossfront2));
-//        bossfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//
-//        bossback1 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-//        bossback2 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-//        bossbackAnimation = new Animation<>(0.2f,
-//            new TextureRegion(bossback1),
-//            new TextureRegion(bossback2));
-//        bossbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
-//        bossright1 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-//        bossright2 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-//        bossrightAnimation = new Animation<>(0.2f,
-//            new TextureRegion(bossright1),
-//            new TextureRegion(bossright2));
-//        bossrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
-        boss1 = new Texture(Gdx.files.internal("Boss/Agis1.png"));
-        boss2 = new Texture(Gdx.files.internal("Boss/Agis2.png"));
-        boss3 = new Texture(Gdx.files.internal("Boss/Agis3.png"));
-        boss4 = new Texture(Gdx.files.internal("Boss/Agis4.png"));
-        boss5 = new Texture(Gdx.files.internal("Boss/Agis5.png"));
-        boss6 = new Texture(Gdx.files.internal("Boss/Agis6.png"));
-        boss7 = new Texture(Gdx.files.internal("Boss/Agis7.png"));
-        boss8 = new Texture(Gdx.files.internal("Boss/Agis8.png"));
-        boss9 = new Texture(Gdx.files.internal("Boss/Agis9.png"));
-        boss10 = new Texture(Gdx.files.internal("Boss/Agis10.png"));
-        boss11 = new Texture(Gdx.files.internal("Boss/Agis11.png"));
-        boss12 = new Texture(Gdx.files.internal("Boss/Agis12.png"));
-        boss13 = new Texture(Gdx.files.internal("Boss/Agis13.png"));
-        bossAnimation = new Animation<>(0.2f,
-            new TextureRegion(boss1),
-            new TextureRegion(boss2),
-            new TextureRegion(boss3),
-            new TextureRegion(boss4),
-            new TextureRegion(boss5),
-            new TextureRegion(boss6),
-            new TextureRegion(boss7),
-            new TextureRegion(boss8),
-            new TextureRegion(boss9),
-            new TextureRegion(boss10),
-            new TextureRegion(boss11),
-            new TextureRegion(boss12),
-            new TextureRegion(boss13));
-        bossAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        bossidle2 = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
+        bossidle3 = new Texture(Gdx.files.internal("Boss/BossIdle2.png"));
+        bossidleAnimation = new Animation<>(0.4f,
+            new TextureRegion(bossidle2),
+            new TextureRegion(bossidle3));
+        bossidleAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        bossfront1 = new Texture(Gdx.files.internal("Boss/BossFront1.png"));
+        bossfront2 = new Texture(Gdx.files.internal("Boss/BossFront2.png"));
+        bossfrontAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossfront1),
+            new TextureRegion(bossfront2));
+        bossfrontAnimation.setPlayMode(Animation.PlayMode.LOOP);
+
+        bossback1 = new Texture(Gdx.files.internal("Boss/BossIdle1.png"));
+        bossback2 = new Texture(Gdx.files.internal("Boss/BossIdle2.png"));
+        bossbackAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossback1),
+            new TextureRegion(bossback2));
+        bossbackAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        bossright1 = new Texture(Gdx.files.internal("Boss/BossRight1.png"));
+        bossright2 = new Texture(Gdx.files.internal("Boss/BossRight2.png"));
+        bossrightAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossright1),
+            new TextureRegion(bossright2));
+        bossrightAnimation.setPlayMode(Animation.PlayMode.LOOP);
+        bossleft1 = new Texture(Gdx.files.internal("Boss/Bossleft1.png"));
+        bossleft2 = new Texture(Gdx.files.internal("Boss/Bossleft2.png"));
+        bossleftAnimation = new Animation<>(0.2f,
+            new TextureRegion(bossleft1),
+            new TextureRegion(bossleft2));
+        bossleftAnimation.setPlayMode(Animation.PlayMode.LOOP);
 
         // Fireball Animation laden
         fireball0 = new Texture(Gdx.files.internal("Ability/fireball0000.png"));
@@ -1345,63 +1022,6 @@ public class Renderer {
             new TextureRegion(fireball11));
         fireballExplosionAnimation.setPlayMode(Animation.PlayMode.NORMAL);
 
-        // ab hier water arrow
-        waterArrow1 = new Texture(Gdx.files.internal("Ability/waterArrow1.png"));
-        waterArrow2 = new Texture(Gdx.files.internal("Ability/waterArrow2.png"));
-        waterArrow3 = new Texture(Gdx.files.internal("Ability/waterArrow3.png"));
-        waterArrow4 = new Texture(Gdx.files.internal("Ability/waterArrow4.png"));
-
-        waterArrowAnimation = new Animation<>(0.08f,
-            new TextureRegion(waterArrow1),
-            new TextureRegion(waterArrow2),
-            new TextureRegion(waterArrow3),
-            new TextureRegion(waterArrow4));
-        waterArrowAnimation.setPlayMode(Animation.PlayMode.NORMAL);
-
-        // ab hier wave
-        wave1 = new Texture(Gdx.files.internal("Ability/wave1.png"));
-        wave2 = new Texture(Gdx.files.internal("Ability/wave2.png"));
-        wave3 = new Texture(Gdx.files.internal("Ability/wave3.png"));
-        wave4 = new Texture(Gdx.files.internal("Ability/wave4.png"));
-
-        waveAnimation = new Animation<>(0.1f,
-            new TextureRegion(wave1),
-            new TextureRegion(wave2),
-            new TextureRegion(wave3),
-            new TextureRegion(wave4));
-        waveAnimation.setPlayMode(Animation.PlayMode.LOOP);
-
-        // ab hier wind bullet
-        windBullet1 = new Texture(Gdx.files.internal("Ability/WindBullet1.png"));
-        windBullet2 = new Texture(Gdx.files.internal("Ability/WindBullet2.png"));
-        windBullet3 = new Texture(Gdx.files.internal("Ability/WindBullet3.png"));
-        windBullet4 = new Texture(Gdx.files.internal("Ability/WindBullet4.png"));
-
-        windBulletAnimation = new Animation<>(0.08f,
-            new TextureRegion(windBullet1),
-            new TextureRegion(windBullet2),
-            new TextureRegion(windBullet3),
-            new TextureRegion(windBullet4));
-        windBulletAnimation.setPlayMode(Animation.PlayMode.NORMAL);
-
-        // ab hier wind cutter
-        windCutter1 = new Texture(Gdx.files.internal("Ability/WindCutter1.png"));
-        windCutter2 = new Texture(Gdx.files.internal("Ability/WindCutter2.png"));
-        windCutter3 = new Texture(Gdx.files.internal("Ability/WindCutter3.png"));
-        windCutter4 = new Texture(Gdx.files.internal("Ability/WindCutter4.png"));
-
-        windCutterAnimation = new Animation<>(0.08f,
-            new TextureRegion(windCutter1),
-            new TextureRegion(windCutter2),
-            new TextureRegion(windCutter3),
-            new TextureRegion(windCutter4));
-        windCutterAnimation.setPlayMode(Animation.PlayMode.NORMAL);
-
-        // ab hier rock blast
-        rockBlast0 = new Texture(Gdx.files.internal("Ability/RockBlast.png"));
-        rockBlastAnimation = new Animation<>(0.1f,
-            new TextureRegion(rockBlast0));
-        rockBlastAnimation.setPlayMode(Animation.PlayMode.NORMAL);
         // Ab hier Fire Arow
         firearrow0 = new Texture (Gdx.files.internal("Ability/fireArrow1.png"));
         firearrow1 = new Texture (Gdx.files.internal("Ability/fireArrow2.png"));
@@ -1441,6 +1061,7 @@ public class Renderer {
         chestUI.resize(width, height);
         settingsUI.resize(width, height);
         inventoryUI.resize(width,height);
+        abilitiesUI.resize(width, height);
         mapFinishedUI.resize(width, height);
     }
     public void render(GameMap map, World world, float deltaTime, GameState gameState)
@@ -1451,8 +1072,6 @@ public class Renderer {
         //das updated die viewport kamera und sorgt dafür, dass der Spieler verfolgt wird davon
         viewport.apply();
         OrthographicCamera cam = (OrthographicCamera) viewport.getCamera();
-        cam.zoom = 1.5f;   // weiter raus (1 = normal)
-
 
         float halfW = viewport.getWorldWidth() / 2f;
         float halfH = viewport.getWorldHeight() / 2f;
@@ -1480,8 +1099,6 @@ public class Renderer {
         for (Enemy e : world.getEnemies()) {
             if (e instanceof Boss) {
                 renderBoss((Boss) e);
-            }else if (e instanceof WatcherBoss){
-                renderWatcher((WatcherBoss) e);
             }
         }
         for (DroppedObject drop : world.getDroppedObjects()) {
@@ -1501,17 +1118,7 @@ public class Renderer {
                 renderFireArrow((FireArrowProjectile) abilityObject, deltaTime);
             } else if (abilityObject instanceof WaterBlastProjectile) {
                 renderWaterBlast((WaterBlastProjectile) abilityObject, deltaTime);
-            } else if (abilityObject instanceof WaterArrowProjectile) {
-                renderWaterArrow((WaterArrowProjectile) abilityObject, deltaTime);
-            } else if (abilityObject instanceof WaveProjectile) {
-                renderWave((WaveProjectile) abilityObject, deltaTime);
-            } else if (abilityObject instanceof WindBulletProjectile) {
-                renderWindBullet((WindBulletProjectile) abilityObject, deltaTime);
-            } else if (abilityObject instanceof WindCutterProjectile) {
-                renderWindCutter((WindCutterProjectile) abilityObject, deltaTime);
-            } else if (abilityObject instanceof RockBlastProjectile) {
-                renderRockBlast((RockBlastProjectile) abilityObject, deltaTime);
-            } else {
+            }else {
                 abilityObject.draw(batch);
             }
         }
@@ -1680,51 +1287,29 @@ public class Renderer {
 
     private void renderEnemy(Enemy enemy) {
 
-        Animation<TextureRegion> animation = null;
+        Animation<TextureRegion> animation;
 
-        switch (enemy.getEnemyType()) {
-            case SLIME:
-
-                if (enemy.isDead()) {
-                    animation = slimeDieAnimation;
-                } else if (enemy.isDamageFlashing()) {
-                    animation = slimeHurtAnimation;
-                } else if (enemy.isAttacking()) {
-                    animation = slimeAttackAnimation;
-                } else {
-
-                    if (enemy.getFacingDirection() == enemy.getFacingDirection().LEFT) {
-                        animation = slimeMoveAnimation;
-                    } else {
-                        animation = slimeMoveAnimation;
-                    }
-
-                }
-                break;
-
-
-        case SKELETON:
-
-                if (enemy.isDead()) {
-                    animation = skeletonDeathAnimation;
-                } else if (enemy.isDamageFlashing()) {
-                    animation = skeletonDamageAnimation;
-                } else if (enemy.isAttacking()) {
-                    animation = skeletonAttackAnimation;
-                } else {
-
-                    if (enemy.getFacingDirection() == enemy.getFacingDirection().LEFT) {
-                        animation = skeletonWalkLeftAnimation;
-                    } else {
-                        animation = skeletonWalkRightAnimation;
-                    }
-
-                }
-                break;
+        if (!enemy.isMoving()) {
+            animation = enemy1idleAnimation;
+        } else {
+            switch (enemy.getFacingDirection()) {
+                case UP:
+                    animation = enemy1frontAnimation;
+                    break;
+                case LEFT:
+                    animation = enemy1leftAnimation;
+                    break;
+                case RIGHT:
+                    animation = enemy1rightAnimation;
+                    break;
+                case DOWN:
+                default:
+                    animation = enemy1backAnimation;
+                    break;
+            }
         }
+        TextureRegion currentFrame = animation.getKeyFrame(enemy.getAnimationTime());
 
-        TextureRegion currentFrame =
-            animation.getKeyFrame(enemy.getAnimationTime());
 
         batch.draw(
             currentFrame,
@@ -1737,27 +1322,26 @@ public class Renderer {
     private void renderBoss(Boss boss) {
 
         Animation<TextureRegion> animation;
-        animation = bossAnimation;
 
-//        if (!boss.isMoving()) {
-//            animation = bossAnimation;
-//        } else {
-//            switch (boss.getFacingDirection()) {
-//                case UP:
-//                    animation = bossfrontAnimation;
-//                    break;
-//                case LEFT:
-//                    animation = bossleftAnimation;
-//                    break;
-//                case RIGHT:
-//                    animation = bossrightAnimation;
-//                    break;
-//                case DOWN:
-//                default:
-//                    animation = bossbackAnimation;
-//                    break;
-//            }
-//        }
+        if (!boss.isMoving()) {
+            animation = bossidleAnimation;
+        } else {
+            switch (boss.getFacingDirection()) {
+                case UP:
+                    animation = bossfrontAnimation;
+                    break;
+                case LEFT:
+                    animation = bossleftAnimation;
+                    break;
+                case RIGHT:
+                    animation = bossrightAnimation;
+                    break;
+                case DOWN:
+                default:
+                    animation = bossbackAnimation;
+                    break;
+            }
+        }
         TextureRegion currentFrame = animation.getKeyFrame(boss.getAnimationTime());
 
 
@@ -1769,42 +1353,6 @@ public class Renderer {
             boss.getHeight()
         );
     }
-    private void renderWatcher(WatcherBoss watcherBoss) {
-
-        Animation<TextureRegion> animation;
-        animation = bossAnimation;
-
-        if (!watcherBoss.isMoving()) {
-            animation = bossAnimation;
-        } else {
-            switch (watcherBoss.getFacingDirection()) {
-                case UP:
-                    animation = watcherFrontAnimation;
-                    break;
-                case LEFT:
-                    animation = watcherLeftAnimation;
-                    break;
-                case RIGHT:
-                    animation = watcherRightAnimation;
-                    break;
-                case DOWN:
-                default:
-                    animation = watcherBackAnimation;
-                    break;
-            }
-        }
-        TextureRegion currentFrame = animation.getKeyFrame(watcherBoss.getAnimationTime());
-
-
-        batch.draw(
-            currentFrame,
-            watcherBoss.getX(),
-            watcherBoss.getY(),
-            watcherBoss.getWidth(),
-            watcherBoss.getHeight()
-        );
-    }
-
     private void renderChest(ChestObject chest) {
 
         Animation<TextureRegion> animation = null;
@@ -1843,85 +1391,6 @@ public class Renderer {
             chest.getY(),
             chest.getWidth(),
             chest.getHeight()
-        );
-    }
-    private void renderWaterArrow(WaterArrowProjectile waterArrow, float deltaTime) {
-        TextureRegion currentFrame = waterArrowAnimation.getKeyFrame(waterArrow.getAnimationTime());
-
-        batch.draw(
-            currentFrame,
-            waterArrow.getX(),
-            waterArrow.getY(),
-            waterArrow.getWidth() / 2,
-            waterArrow.getHeight() / 2,
-            waterArrow.getWidth(),
-            waterArrow.getHeight(),
-            1,
-            1,
-            waterArrow.getRotation()
-        );
-    }
-
-    private void renderWave(WaveProjectile wave, float deltaTime) {
-        TextureRegion currentFrame = waveAnimation.getKeyFrame(wave.getAnimationTime());
-
-        batch.draw(
-            currentFrame,
-            wave.getX(),
-            wave.getY(),
-            wave.getWidth() / 2,
-            wave.getHeight() / 2,
-            wave.getWidth(),
-            wave.getHeight(),
-            1,
-            1,
-            wave.getRotation()
-        );
-    }
-
-    private void renderWindBullet(WindBulletProjectile windBullet, float deltaTime) {
-        TextureRegion currentFrame = windBulletAnimation.getKeyFrame(windBullet.getAnimationTime());
-
-        batch.draw(
-            currentFrame,
-            windBullet.getX(),
-            windBullet.getY(),
-            windBullet.getWidth() / 2,
-            windBullet.getHeight() / 2,
-            windBullet.getWidth(),
-            windBullet.getHeight(),
-            1,
-            1,
-            windBullet.getRotation()
-        );
-    }
-
-    private void renderWindCutter(WindCutterProjectile windCutter, float deltaTime) {
-        TextureRegion currentFrame = windCutterAnimation.getKeyFrame(windCutter.getAnimationTime());
-
-        batch.draw(
-            currentFrame,
-            windCutter.getX(),
-            windCutter.getY(),
-            windCutter.getWidth() / 2,
-            windCutter.getHeight() / 2,
-            windCutter.getWidth(),
-            windCutter.getHeight(),
-            1,
-            1,
-            windCutter.getRotation()
-        );
-    }
-
-    private void renderRockBlast(RockBlastProjectile rockBlast, float deltaTime) {
-        TextureRegion currentFrame = rockBlastAnimation.getKeyFrame(rockBlast.getAnimationTime());
-
-        batch.draw(
-            currentFrame,
-            rockBlast.getX(),
-            rockBlast.getY(),
-            rockBlast.getWidth(),
-            rockBlast.getHeight()
         );
     }
     private void renderFireball(Fireball fireball, float deltaTime) {
@@ -2019,23 +1488,22 @@ public class Renderer {
     }
 
     public void dispose() {
-//        idle2.dispose();
-//        idle3.dispose();
-//        idle4.dispose();
-//        back1.dispose();
-//        back2.dispose();
-//        front1.dispose();
-//        front2.dispose();
-//        front3.dispose();
-//        right1.dispose();
-//        right2.dispose();
-//        right3.dispose();
-//        right4.dispose();
-//        left1.dispose();
-//        left2.dispose();
-//        left3.dispose();
-//        left4.dispose();
-
+        idle2.dispose();
+        idle3.dispose();
+        idle4.dispose();
+        back1.dispose();
+        back2.dispose();
+        front1.dispose();
+        front2.dispose();
+        front3.dispose();
+        right1.dispose();
+        right2.dispose();
+        right3.dispose();
+        right4.dispose();
+        left1.dispose();
+        left2.dispose();
+        left3.dispose();
+        left4.dispose();
 
         pyromanceridle2.dispose();
         pyromanceridle3.dispose();
@@ -2212,29 +1680,16 @@ public class Renderer {
         enemy1left2.dispose();
         enemy1left3.dispose();
         enemy1left4.dispose();
-//        bossidle2.dispose();
-//        bossidle3.dispose();
-//        bossback1.dispose();
-//        bossback2.dispose();
-//        bossfront1.dispose();
-//        bossfront2.dispose();
-//        bossright1.dispose();
-//        bossright2.dispose();
-//        bossleft1.dispose();
-//        bossleft2.dispose();
-        boss1.dispose();
-        boss2.dispose();
-        boss3.dispose();
-        boss4.dispose();
-        boss5.dispose();
-        boss6.dispose();
-        boss7.dispose();
-        boss8.dispose();
-        boss9.dispose();
-        boss10.dispose();
-        boss11.dispose();
-        boss12.dispose();
-        boss13.dispose();
+        bossidle2.dispose();
+        bossidle3.dispose();
+        bossback1.dispose();
+        bossback2.dispose();
+        bossfront1.dispose();
+        bossfront2.dispose();
+        bossright1.dispose();
+        bossright2.dispose();
+        bossleft1.dispose();
+        bossleft2.dispose();
         fireball0.dispose();
         fireball1.dispose();
         fireball2.dispose();
@@ -2259,87 +1714,6 @@ public class Renderer {
         legendaryChest3.dispose();
         legendaryChest4.dispose();
         legendaryChest5.dispose();
-// Slime
-        slimeIdle0.dispose();
-        slimeIdle1.dispose();
-        slimeIdle2.dispose();
-        slimeIdle3.dispose();
 
-        slimeMove0.dispose();
-        slimeMove1.dispose();
-        slimeMove2.dispose();
-        slimeMove3.dispose();
-
-        slimeAttack0.dispose();
-        slimeAttack1.dispose();
-        slimeAttack2.dispose();
-        slimeAttack3.dispose();
-        slimeAttack4.dispose();
-
-        slimeHurt0.dispose();
-        slimeHurt1.dispose();
-        slimeHurt2.dispose();
-        slimeHurt3.dispose();
-
-        slimeDie0.dispose();
-        slimeDie1.dispose();
-        slimeDie2.dispose();
-        slimeDie3.dispose();
-
-// Skeleton
-        skeletonWL1.dispose();
-        skeletonWL2.dispose();
-        skeletonWL3.dispose();
-        skeletonWL4.dispose();
-        skeletonWL5.dispose();
-        skeletonWL6.dispose();
-        skeletonWL7.dispose();
-        skeletonWL8.dispose();
-        skeletonWL9.dispose();
-        skeletonWL10.dispose();
-
-        skeletonWR1.dispose();
-        skeletonWR2.dispose();
-        skeletonWR3.dispose();
-        skeletonWR4.dispose();
-        skeletonWR5.dispose();
-        skeletonWR6.dispose();
-        skeletonWR7.dispose();
-        skeletonWR8.dispose();
-        skeletonWR9.dispose();
-        skeletonWR10.dispose();
-
-        skeletonAttack1.dispose();
-        skeletonAttack2.dispose();
-        skeletonAttack3.dispose();
-
-        skeletonDeath1.dispose();
-        skeletonDeath2.dispose();
-        skeletonDeath3.dispose();
-        skeletonDeath4.dispose();
-
-        skeletonTakeDmg.dispose();
-
-        waterArrow1.dispose();
-        waterArrow2.dispose();
-        waterArrow3.dispose();
-        waterArrow4.dispose();
-
-        wave1.dispose();
-        wave2.dispose();
-        wave3.dispose();
-        wave4.dispose();
-
-        windBullet1.dispose();
-        windBullet2.dispose();
-        windBullet3.dispose();
-        windBullet4.dispose();
-
-        windCutter1.dispose();
-        windCutter2.dispose();
-        windCutter3.dispose();
-        windCutter4.dispose();
-
-        rockBlast0.dispose();
     }
 }
