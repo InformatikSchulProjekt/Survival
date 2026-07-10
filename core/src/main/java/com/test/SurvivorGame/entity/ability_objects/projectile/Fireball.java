@@ -10,12 +10,12 @@ import com.test.SurvivorGame.world.maps.GameMap;
 import java.util.List;
 
 public class Fireball extends Projectile {
-
     private final World world;
     private final float explosionRadius;
     private final float explosionDamage;
     private final float totalLifetime;
 
+    private final float damage;
     private float animationTime = 0f;
     private float lifetimeCounter = 0f;
     private boolean hasExploded = false;
@@ -40,8 +40,8 @@ public class Fireball extends Projectile {
         this.explosionRadius = explosionRadius;
         this.explosionDamage = damage;
         this.totalLifetime = duration;
+        this.damage = damage;
     }
-
 
     @Override
     public void update(float deltaTime, GameMap map) {
@@ -103,7 +103,8 @@ public class Fireball extends Projectile {
         return hasExploded;
     }
 
-    public float getExplosionRadius() {
-        return explosionRadius;
+    @Override
+    public float getDamage() {
+        return damage;
     }
 }

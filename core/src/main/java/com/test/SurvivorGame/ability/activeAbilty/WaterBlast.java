@@ -3,11 +3,8 @@ package com.test.SurvivorGame.ability.activeAbilty;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.test.SurvivorGame.core.PlayerState;
-import com.test.SurvivorGame.core.stat.PlayerStats;
 import com.test.SurvivorGame.core.stat.StatScope;
 import com.test.SurvivorGame.core.stat.StatType;
-import com.test.SurvivorGame.entity.Player;
 import com.test.SurvivorGame.entity.ability_objects.projectile.WaterBlastProjectile;
 import com.test.SurvivorGame.world.World;
 
@@ -15,18 +12,17 @@ public class WaterBlast extends ActiveAbility {
 
     public static final String ID = "water_blast";
 
-    private float duration = 3f;
-    private float baseWidth = 2f;
-    private float height= 1f;
-    private float speed = 5f;
-    private float baseCooldown = 1f; // müsst ihr noch anpassen
+    private static final float BASE_DURATION = 3f;
+    private static final float BASE_WIDTH = 2f;
+    private static final float BASE_HEIGHT = 1f;
+    private static final float BASE_SPEED = 5f;
+    private static final float BASE_COOLDOWN = 1f;
+    private static final float BASE_DAMAGE = 1f;
 
-    private float baseDamage = 1f;
-
-    private Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
+    private final Texture texture = new Texture(Gdx.files.internal("Placeholder/ProjectileAbilityPH.png"));
 
     public WaterBlast(World world, Viewport viewport) {
-        super(world, viewport);
+        super(ID, world, viewport, StatScope.WATER);
     }
 
     @Override
@@ -34,13 +30,13 @@ public class WaterBlast extends ActiveAbility {
         WaterBlastProjectile waterBlastProjectile = new WaterBlastProjectile(
             player.getX(),
             player.getY(),
-            baseWidth,
-            height,
+            BASE_WIDTH * getSize(),
+            BASE_HEIGHT * getSize(),
             texture,
             player,
             viewport,
-            speed,
-            duration,
+            BASE_SPEED,
+            BASE_DURATION,
             getDamage()
         );
 
@@ -52,21 +48,38 @@ public class WaterBlast extends ActiveAbility {
     }
 
     public float getDamage() {
-        float damage = baseDamage;
-        damage *= playerStats.getStat(StatType.MAGIC_DAMAGE);
-        damage *= playerStats.getStat(StatScope.WATER, StatType.MAGIC_DAMAGE);
-        if(getLevel() >= 2){
+        float damage = BASE_DAMAGE;
+
+        if (getLevel() >= 2) {
             damage *= 1.1f;
         }
-        if(getLevel() ==5){
+
+        if (getLevel() == 5) {
             damage *= 1.25f;
         }
-        return damage;
+
+        return applyStat(damage, StatType.MAGIC_DAMAGE);
+    }
+
+    public float getSize() {
+        return applyStat(1f, StatType.MAGIC_SIZE);
     }
 
     @Override
-    public String getID() {
-        return ID;
+    public float getCooldown() {
+        float cooldown = BASE_COOLDOWN;
+
+        if (getLevel() >= 3) {
+            cooldown *= 0.9f;
+        }
+
+        if (getLevel() >= 4) {
+            cooldown *= 0.8f;
+        }
+
+        float cooldownModifier = applyStat(1f, StatType.MAGIC_COOLDOWN_REDUCTION);
+
+        return cooldown / cooldownModifier;
     }
 
     @Override
@@ -79,32 +92,15 @@ public class WaterBlast extends ActiveAbility {
         return 5;
     }
 
-    public float getCooldown() {
-        float cooldown = baseCooldown;
-        if(getLevel() >= 3){
-            cooldown *= 0.9f;
-        }
-        if(getLevel() >= 4){
-            cooldown *= 0.8f;
-        }
-        return cooldown;
-    }
-
     @Override
     public String getDescription(int level) {
-        switch (level) {
-            case 1:
-                return "Shoots a water blast that explodes on impact";
-            case 2:
-                return "Water blast damage increased by 10%";
-            case 3:
-                return "Water blast cooldown decreased by 10%";
-            case 4:
-                return "cooldown reduced by 20%";
-            case 5:
-                return "Damage increased by 25%";
-            default:
-                return "No description available";
-        }
+        return switch (level) {
+            case 1 -> "Shoots a water blast that explodes on impact";
+            case 2 -> "Water blast damage increased by 10%";
+            case 3 -> "Water blast cooldown decreased by 10%";
+            case 4 -> "Cooldown reduced by 20%";
+            case 5 -> "Damage increased by 25%";
+            default -> "No description available";
+        };
     }
 }
