@@ -8,7 +8,7 @@ public class Penguin extends Enemy {
 
     private static final Vector2 SIZE = new Vector2(1f, 1.5f);
     private static final float MAX_HP = 1f;
-    private static final float MOVEMENT_SPEED = 5f;
+    private static final float MOVEMENT_SPEED = 4f;
     private static final float DAMAGE = 0.67f;
 
 
