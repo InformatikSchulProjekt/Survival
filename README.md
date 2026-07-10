@@ -14,10 +14,7 @@ Viel mehr Informationen werden dir nun auch nicht mehr helfen, also spiel einfac
 ## Secrets
 - Um die Secret Klasse zu finden, muss man einfach ganz oft Klassen auswählen und mit einer Chance von `3%` kriegt man die SECRET Klasse!
 
-# Code Dokumentation
-TO BE DONE
-
-# SurvivorGame
+# LibGDX
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
