@@ -7,8 +7,8 @@ public class Slime extends Enemy{
 
     private static final Vector2 SIZE = new Vector2(1,1);
     private static final float MAX_HP = 2f;
-    private static final float MOVEMENT_SPEED = 2f;
-    private static final float DAMAGE = 1f;
+    private static final float MOVEMENT_SPEED = 1.5f;
+    private static final float DAMAGE = 0.7f;
 
 
     public Slime(float x, float y, World world, float hpMultiplier) {
