@@ -13,9 +13,9 @@ public class SafeMeadows extends GameMap {
         new MapSettings(
             new ArrayList<>(List.of(
                 EnemyType.BOSS
-                //Hier eig noch mehr verschiedene Boss-Arten, wenn wir welche haben
+                // Hier eig noch mehr verschiedene Boss-Arten, wenn wir welche in der Map haben
             )),
-            120f, //gemeinsam überlegen wie wavetime hardcoded sein soll und co.
+            120f,
             1.5f,
             0.3f
         );
